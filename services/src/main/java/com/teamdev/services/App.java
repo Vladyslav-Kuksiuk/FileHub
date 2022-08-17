@@ -5,6 +5,9 @@ package com.teamdev.services;
 
 import com.google.common.flogger.FluentLogger;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class App {
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -18,7 +21,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        logger.atInfo()
-              .log("[Logging message in main]");
+
     }
 }

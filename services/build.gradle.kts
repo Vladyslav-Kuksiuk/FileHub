@@ -5,10 +5,12 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/7.5.1/userguide/building_java_projects.html
  */
+import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("net.ltgt.errorprone") version "2.0.2"
 }
 
 repositories {
@@ -22,6 +24,22 @@ java {
     }
 }
 
+buildscript {
+
+    repositories {
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+
+    dependencies {
+        classpath("net.ltgt.gradle:gradle-errorprone-plugin:2.0.2")
+    }
+
+}
+
+apply(plugin = "net.ltgt.errorprone")
+
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
@@ -29,6 +47,8 @@ dependencies {
     // This dependency is used by the application.
     testImplementation("com.google.guava:guava-testlib:31.1-jre")
     implementation("com.google.guava:guava:31.1-jre")
+
+    compileOnly("com.google.errorprone:error_prone_core:2.15.0")
 
     // Logging libs
     implementation("com.google.flogger:flogger:0.7.4")
@@ -43,4 +63,12 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.errorprone.disableWarningsInGeneratedCode.set(true)
+}
+
+tasks.named<JavaCompile>("compileTestJava") {
+    options.errorprone.isEnabled.set(false)
 }
