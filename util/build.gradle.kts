@@ -41,10 +41,6 @@ buildscript {
 apply(plugin = "net.ltgt.errorprone")
 
 dependencies {
-
-    implementation(project(":persistent"))
-    implementation(project(":util"))
-
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
@@ -55,8 +51,6 @@ dependencies {
     implementation("javax.validation:validation-api:2.0.1.Final")
 
     compileOnly("com.google.errorprone:error_prone_core:2.15.0")
-
-    implementation("org.jasypt:jasypt:1.9.3")
 
     // Logging libs
     implementation("com.google.flogger:flogger:0.7.4")
