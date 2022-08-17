@@ -31,9 +31,8 @@ dependencies {
     implementation("com.google.guava:guava:31.1-jre")
 
     // Logging libs
-    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+    implementation("com.google.flogger:flogger:0.7.4")
+    implementation("com.google.flogger:flogger-log4j2-backend:0.7.4")
 }
 
 application {

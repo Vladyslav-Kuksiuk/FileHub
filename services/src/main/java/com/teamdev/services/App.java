@@ -3,27 +3,22 @@
  */
 package com.teamdev.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.flogger.FluentLogger;
 
 public class App {
 
-    private static final Logger logger = LoggerFactory.getLogger(App.class);
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public static String getGreeting() {
 
-        if (logger.isInfoEnabled()) {
-            logger.info("[Greeting requested]");
-        }
+        logger.atInfo()
+              .log("[Logging message in greeting]");
 
         return "Hello World!";
     }
 
     public static void main(String[] args) {
-
-        if (logger.isInfoEnabled()) {
-            logger.info("[App started]");
-        }
-
+        logger.atInfo()
+              .log("[Logging message in main]");
     }
 }
