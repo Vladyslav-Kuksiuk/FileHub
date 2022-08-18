@@ -1,12 +1,13 @@
 package com.teamdev.persistent.dao;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class RecordIdentifier<T> {
 
     private final T id;
 
-    public RecordIdentifier(T id) {
+    public RecordIdentifier(@NotNull T id) {
         this.id = id;
     }
 
