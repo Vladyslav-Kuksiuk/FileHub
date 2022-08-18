@@ -7,6 +7,10 @@ import com.teamdev.persistent.database.user.UserData;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * {@link UserDao} implementation which is intended to work with user
+ * in {@link InMemoryDatabase}.
+ */
 public class InMemoryUserDao implements UserDao {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -17,6 +21,13 @@ public class InMemoryUserDao implements UserDao {
         this.database = database;
     }
 
+    /**
+     * Method to find a record in the {@link InMemoryDatabase}.
+     *
+     * @param id
+     *         Record identifier.
+     * @return
+     */
     @Override
     public UserRecord find(@NotNull RecordIdentifier<String> id) {
 
@@ -34,6 +45,12 @@ public class InMemoryUserDao implements UserDao {
         return userRecord;
     }
 
+    /**
+     * Method to delete a record in the {@link InMemoryDatabase}.
+     *
+     * @param id
+     *         Record identifier.
+     */
     @Override
     public void delete(@NotNull RecordIdentifier<String> id) {
 
@@ -45,6 +62,12 @@ public class InMemoryUserDao implements UserDao {
 
     }
 
+    /**
+     * Method to create a record in the {@link InMemoryDatabase}.
+     *
+     * @param record
+     *         Record to create.
+     */
     @Override
     public void create(@NotNull UserRecord record) {
 
@@ -59,6 +82,12 @@ public class InMemoryUserDao implements UserDao {
               .log("[USER CREATED] - login: %s", record.getLogin());
     }
 
+    /**
+     * Method to create a record in the {@link InMemoryDatabase}.
+     *
+     * @param record
+     *         Record to update.
+     */
     @Override
     public void update(@NotNull UserRecord record) {
 

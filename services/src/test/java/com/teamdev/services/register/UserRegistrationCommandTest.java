@@ -3,8 +3,6 @@ package com.teamdev.services.register;
 import com.google.common.testing.NullPointerTester;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Constructor;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserRegistrationCommandTest {

@@ -3,6 +3,12 @@ package com.teamdev.persistent.dao;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Value object to store identifier for {@link DatabaseRecord}.
+ *
+ * @param <T>
+ *         identifier type.
+ */
 public class RecordIdentifier<T> {
 
     private final T id;

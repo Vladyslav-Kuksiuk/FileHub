@@ -7,7 +7,10 @@ import com.teamdev.util.EmailValidator;
 
 import javax.validation.constraints.NotNull;
 
-public class UserRecord extends DatabaseRecord {
+/**
+ * {@link DatabaseRecord} implementation which is intended to store data about the user.
+ */
+public class UserRecord extends DatabaseRecord<String> {
 
     private final String login;
     private final String password;

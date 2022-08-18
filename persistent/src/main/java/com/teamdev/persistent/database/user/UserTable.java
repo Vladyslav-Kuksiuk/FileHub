@@ -6,6 +6,9 @@ import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Database table imitation to store {@link UserData}.
+ */
 public class UserTable {
 
     private final Map<String, UserData> users = new HashMap<>();

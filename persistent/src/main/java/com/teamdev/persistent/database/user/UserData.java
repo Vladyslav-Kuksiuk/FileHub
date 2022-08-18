@@ -5,6 +5,9 @@ import com.teamdev.util.EmailValidator;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Class which is intended to store information about user.
+ */
 public class UserData {
 
     private final String login;

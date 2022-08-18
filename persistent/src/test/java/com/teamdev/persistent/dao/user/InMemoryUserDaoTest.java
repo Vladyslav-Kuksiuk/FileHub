@@ -18,21 +18,26 @@ class InMemoryUserDaoTest {
         UserData user2 = new UserData("login2", "password2", "email2@email.com");
         UserData user3 = new UserData("login3", "password3", "email3@email.com");
 
-        database.userTable().addUser(user1);
-        database.userTable().addUser(user2);
-        database.userTable().addUser(user3);
+        database.userTable()
+                .addUser(user1);
+        database.userTable()
+                .addUser(user2);
+        database.userTable()
+                .addUser(user3);
     }
 
     @Test
     void createTest() {
         UserRecord newUser = new UserRecord(new RecordIdentifier<>("login4"),
-                                           "login4",
-                                           "password4",
-                                           "email4@email.com");
+                                            "login4",
+                                            "password4",
+                                            "email4@email.com");
 
         userDao.create(newUser);
 
-        assertEquals("password4", database.userTable().getUser("login4").getPassword());
+        assertEquals("password4", database.userTable()
+                                          .getUser("login4")
+                                          .getPassword());
     }
 
     @Test
@@ -48,13 +53,15 @@ class InMemoryUserDaoTest {
     void updateTest() {
 
         UserRecord updatedUser = new UserRecord(new RecordIdentifier<>("login2"),
-                                            "login2",
-                                            "password2",
-                                            "changed@email.com");
+                                                "login2",
+                                                "password2",
+                                                "changed@email.com");
 
         userDao.update(updatedUser);
 
-        assertEquals("changed@email.com", database.userTable().getUser("login2").getEmail());
+        assertEquals("changed@email.com", database.userTable()
+                                                  .getUser("login2")
+                                                  .getEmail());
     }
 
     @Test
@@ -62,7 +69,8 @@ class InMemoryUserDaoTest {
 
         userDao.delete(new RecordIdentifier<>("login3"));
 
-        assertThrows(IllegalStateException.class, ()->database.userTable().getUser("login3"));
+        assertThrows(IllegalStateException.class, () -> database.userTable()
+                                                                .getUser("login3"));
 
     }
 }

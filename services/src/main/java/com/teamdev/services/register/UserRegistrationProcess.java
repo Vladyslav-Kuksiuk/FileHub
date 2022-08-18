@@ -11,6 +11,10 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * A {@link ProcessService} implementation which is intended to process
+ * user registration.
+ */
 public class UserRegistrationProcess implements ProcessService<UserRegistrationCommand> {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();

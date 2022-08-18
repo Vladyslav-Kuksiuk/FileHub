@@ -8,13 +8,13 @@ import com.teamdev.services.ProcessService;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserRegistrationProcessTest {
 
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final UserDao userDao = new InMemoryUserDao(database);
-    private final ProcessService<UserRegistrationCommand> registerProcess = new UserRegistrationProcess(userDao);
+    private final ProcessService<UserRegistrationCommand> registerProcess = new UserRegistrationProcess(
+            userDao);
 
     @Test
     void registerTest() {
@@ -33,7 +33,8 @@ class UserRegistrationProcessTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registerProcess, registerProcess.getClass()
-                                                          .getMethod("run", UserRegistrationCommand.class));
+                                                          .getMethod("run",
+                                                                     UserRegistrationCommand.class));
 
     }
 

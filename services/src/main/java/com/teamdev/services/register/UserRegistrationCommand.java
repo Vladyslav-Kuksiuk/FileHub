@@ -6,6 +6,10 @@ import com.teamdev.util.EmailValidator;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * A {@link Command} implementation which is intended to store
+ * data about user registration.
+ */
 public class UserRegistrationCommand implements Command {
 
     private final String login;
