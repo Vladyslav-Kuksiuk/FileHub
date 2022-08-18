@@ -1,6 +1,6 @@
-package com.teamdev.persistent.database;
+package com.teamdev.database;
 
-import com.teamdev.persistent.database.user.UserTable;
+import com.teamdev.database.user.UserTable;
 
 /**
  * Database imitation.
@@ -11,6 +11,10 @@ public class InMemoryDatabase {
 
     public UserTable userTable() {
         return userTable;
+    }
+
+    public void clean() throws DatabaseException {
+        userTable.clean();
     }
 
 }

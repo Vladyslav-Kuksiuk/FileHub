@@ -1,5 +1,7 @@
 package com.teamdev.services;
 
+import com.teamdev.persistent.dao.DataAccessException;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -8,8 +10,8 @@ import javax.validation.constraints.NotNull;
  * @param <C>
  *         {@link Command}.
  */
-public interface ProcessService<C extends Command> {
+public interface ApplicationProcess<C extends Command> {
 
-    void run(@NotNull C command);
+    void run(@NotNull C command) throws DataAccessException;
 
 }

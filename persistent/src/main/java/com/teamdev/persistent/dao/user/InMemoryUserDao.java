@@ -1,9 +1,12 @@
 package com.teamdev.persistent.dao.user;
 
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.database.DatabaseException;
+import com.teamdev.database.DatabaseTransactionException;
+import com.teamdev.database.InMemoryDatabase;
+import com.teamdev.database.user.UserData;
+import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.persistent.database.InMemoryDatabase;
-import com.teamdev.persistent.database.user.UserData;
 
 import javax.validation.constraints.NotNull;
 
@@ -29,10 +32,16 @@ public class InMemoryUserDao implements UserDao {
      * @return
      */
     @Override
-    public UserRecord find(@NotNull RecordIdentifier<String> id) {
+    public UserRecord find(@NotNull RecordIdentifier<String> id) throws DataAccessException {
 
-        UserData userData = database.userTable()
-                                    .getUser(id.getId());
+        UserData userData;
+
+        try {
+            userData = database.userTable()
+                               .getUser(id.getId());
+        } catch (DatabaseTransactionException exception) {
+            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        }
 
         UserRecord userRecord = new UserRecord(new RecordIdentifier<>(userData.getLogin()),
                                                userData.getLogin(),
@@ -52,10 +61,14 @@ public class InMemoryUserDao implements UserDao {
      *         Record identifier.
      */
     @Override
-    public void delete(@NotNull RecordIdentifier<String> id) {
+    public void delete(@NotNull RecordIdentifier<String> id) throws DataAccessException {
 
-        database.userTable()
-                .deleteUser(id.getId());
+        try {
+            database.userTable()
+                    .deleteUser(id.getId());
+        } catch (DatabaseTransactionException | DatabaseException exception) {
+            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        }
 
         logger.atInfo()
               .log("[USER DELETED] - id: %s", id.getId());
@@ -69,14 +82,18 @@ public class InMemoryUserDao implements UserDao {
      *         Record to create.
      */
     @Override
-    public void create(@NotNull UserRecord record) {
+    public void create(@NotNull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getLogin(),
                                          record.getPassword(),
                                          record.getEmail());
 
-        database.userTable()
-                .addUser(userData);
+        try {
+            database.userTable()
+                    .addUser(userData);
+        } catch (DatabaseTransactionException | DatabaseException exception) {
+            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        }
 
         logger.atInfo()
               .log("[USER CREATED] - login: %s", record.getLogin());
@@ -89,14 +106,17 @@ public class InMemoryUserDao implements UserDao {
      *         Record to update.
      */
     @Override
-    public void update(@NotNull UserRecord record) {
+    public void update(@NotNull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getLogin(),
                                          record.getPassword(),
                                          record.getEmail());
-
-        database.userTable()
-                .updateUser(userData);
+        try {
+            database.userTable()
+                    .updateUser(userData);
+        } catch (DatabaseTransactionException | DatabaseException exception) {
+            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        }
 
         logger.atInfo()
               .log("[USER UPDATED] - login: %s", record.getLogin());

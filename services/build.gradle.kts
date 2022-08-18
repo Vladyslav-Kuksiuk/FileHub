@@ -44,6 +44,7 @@ dependencies {
 
     implementation(project(":persistent"))
     implementation(project(":util"))
+    implementation(project(":database"))
 
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")

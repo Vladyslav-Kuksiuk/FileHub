@@ -2,20 +2,21 @@ package com.teamdev.services.register;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
-import com.teamdev.services.ProcessService;
+import com.teamdev.services.ApplicationProcess;
 import com.teamdev.util.EmailValidator;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 import javax.validation.constraints.NotNull;
 
 /**
- * A {@link ProcessService} implementation which is intended to process
+ * A {@link ApplicationProcess} implementation which is intended to process
  * user registration.
  */
-public class UserRegistrationProcess implements ProcessService<UserRegistrationCommand> {
+public class UserRegistrationProcess implements ApplicationProcess<UserRegistrationCommand> {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -26,7 +27,7 @@ public class UserRegistrationProcess implements ProcessService<UserRegistrationC
     }
 
     @Override
-    public void run(@NotNull UserRegistrationCommand command) {
+    public void run(@NotNull UserRegistrationCommand command) throws DataAccessException {
         Preconditions.checkState(!command.getLogin()
                                          .isEmpty());
         Preconditions.checkState(!command.getPassword()

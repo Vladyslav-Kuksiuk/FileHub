@@ -19,7 +19,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      *         Record identifier.
      * @return Found record.
      */
-    R find(@NotNull RecordIdentifier<I> id);
+    R find(@NotNull RecordIdentifier<I> id) throws DataAccessException;
 
     /**
      * Method to delete a record in the database.
@@ -27,7 +27,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      * @param id
      *         Record identifier.
      */
-    void delete(@NotNull RecordIdentifier<I> id);
+    void delete(@NotNull RecordIdentifier<I> id) throws DataAccessException;
 
     /**
      * Method to create a record in the database.
@@ -35,7 +35,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      * @param record
      *         Record to create.
      */
-    void create(@NotNull R record);
+    void create(@NotNull R record) throws DataAccessException;
 
     /**
      * Method to create a record in the database.
@@ -43,6 +43,6 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      * @param record
      *         Record to update.
      */
-    void update(@NotNull R record);
+    void update(@NotNull R record) throws DataAccessException;
 
 }

@@ -1,4 +1,4 @@
-package com.teamdev.persistent.database.user;
+package com.teamdev.database.user;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.util.EmailValidator;
