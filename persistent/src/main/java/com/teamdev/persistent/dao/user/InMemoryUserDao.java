@@ -29,7 +29,7 @@ public class InMemoryUserDao implements UserDao {
      *
      * @param id
      *         Record identifier.
-     * @return
+     * @return {@link UserRecord}.
      */
     @Override
     public UserRecord find(@NotNull RecordIdentifier<String> id) throws DataAccessException {
@@ -38,12 +38,12 @@ public class InMemoryUserDao implements UserDao {
 
         try {
             userData = database.userTable()
-                               .getUser(id.getId());
+                               .getUserById(id.getValue());
         } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
-        UserRecord userRecord = new UserRecord(new RecordIdentifier<>(userData.getLogin()),
+        UserRecord userRecord = new UserRecord(new RecordIdentifier<>(userData.getId()),
                                                userData.getLogin(),
                                                userData.getPassword(),
                                                userData.getEmail());
@@ -65,13 +65,13 @@ public class InMemoryUserDao implements UserDao {
 
         try {
             database.userTable()
-                    .deleteUser(id.getId());
+                    .deleteUser(id.getValue());
         } catch (DatabaseTransactionException | DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
         logger.atInfo()
-              .log("[USER DELETED] - id: %s", id.getId());
+              .log("[USER DELETED] - id: %s", id.getValue());
 
     }
 
@@ -84,7 +84,9 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public void create(@NotNull UserRecord record) throws DataAccessException {
 
-        UserData userData = new UserData(record.getLogin(),
+        UserData userData = new UserData(record.getId()
+                                               .getValue(),
+                                         record.getLogin(),
                                          record.getPassword(),
                                          record.getEmail());
 
@@ -108,7 +110,9 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public void update(@NotNull UserRecord record) throws DataAccessException {
 
-        UserData userData = new UserData(record.getLogin(),
+        UserData userData = new UserData(record.getId()
+                                               .getValue(),
+                                         record.getLogin(),
                                          record.getPassword(),
                                          record.getEmail());
         try {

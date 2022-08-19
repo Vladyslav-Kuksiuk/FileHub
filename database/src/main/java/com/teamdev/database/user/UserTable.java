@@ -5,12 +5,13 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
+import com.teamdev.database.InMemoryDatabase;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -24,10 +25,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class UserTable {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
-
-    private Map<String, UserData> users = new HashMap<>();
     private final Gson gson;
-    private final File file = new File("users.json");
+    private final File file = new File(InMemoryDatabase.DATABASE_FOLDER_PATH+"users.json");
+    private Map<String, UserData> users = new HashMap<>();
 
     public UserTable() {
 
@@ -43,7 +43,7 @@ public class UserTable {
             if (!file.exists()) {
                 file.createNewFile();
 
-                try (FileWriter writer = new FileWriter(file)) {
+                try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
                     writer.write(gson.toJson(users));
                 }
 
@@ -61,7 +61,16 @@ public class UserTable {
 
     }
 
-    public UserData getUser(@NotNull String id) throws DatabaseTransactionException {
+    /**
+     * Method to get data about user by id.
+     *
+     * @param id
+     *         User id.
+     * @return {@link UserData} by id.
+     * @throws DatabaseTransactionException
+     *         if user doesn't exist.
+     */
+    public UserData getUserById(@NotNull String id) throws DatabaseTransactionException {
 
         if (!users.containsKey(id)) {
             throw new DatabaseTransactionException("User with this id doesn't exist.");
@@ -70,19 +79,39 @@ public class UserTable {
         return users.get(id);
     }
 
+    /**
+     * Method to add data about new user.
+     *
+     * @param user
+     *         {@link UserData}.
+     * @throws DatabaseException
+     *         if database connection not working.
+     * @throws DatabaseTransactionException
+     *         if user already exists.
+     */
     public void addUser(@NotNull UserData user) throws DatabaseException,
                                                        DatabaseTransactionException {
 
-        if (users.containsKey(user.getLogin())) {
+        if (users.containsKey(user.getId())) {
             throw new DatabaseTransactionException("User with this login already exists.");
         }
 
-        users.put(user.getLogin(), user);
+        users.put(user.getId(), user);
 
         updateDatabaseInFile();
 
     }
 
+    /**
+     * Method to delete data about user by id.
+     *
+     * @param id
+     *         User id.
+     * @throws DatabaseTransactionException
+     *         if user doesn't exist.
+     * @throws DatabaseException
+     *         if database connection not working.
+     */
     public void deleteUser(@NotNull String id) throws DatabaseTransactionException,
                                                       DatabaseException {
         if (!users.containsKey(id)) {
@@ -95,13 +124,23 @@ public class UserTable {
 
     }
 
+    /**
+     * Method to update data about user.
+     *
+     * @param user
+     *         {@link UserData}.
+     * @throws DatabaseTransactionException
+     *         if user already exists.
+     * @throws DatabaseException
+     *         if database connection not working.
+     */
     public void updateUser(@NotNull UserData user) throws DatabaseTransactionException,
                                                           DatabaseException {
-        if (!users.containsKey(user.getLogin())) {
+        if (!users.containsKey(user.getId())) {
             throw new DatabaseTransactionException("User with this id doesn't exist.");
         }
 
-        users.put(user.getLogin(), user);
+        users.put(user.getId(), user);
 
         updateDatabaseInFile();
 
@@ -109,7 +148,7 @@ public class UserTable {
 
     private void updateDatabaseInFile() throws DatabaseException {
 
-        try (FileWriter writer = new FileWriter(file, false)) {
+        try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
             writer.write(gson.toJson(users));
 
         } catch (IOException e) {
@@ -120,10 +159,16 @@ public class UserTable {
 
     }
 
+    /**
+     * Clean all data about users.
+     *
+     * @throws DatabaseException
+     *         if database connection not working.
+     */
     public void clean() throws DatabaseException {
         users = new HashMap<>();
         try {
-            if(file.delete()){
+            if (file.delete()) {
                 file.createNewFile();
             }
         } catch (IOException e) {

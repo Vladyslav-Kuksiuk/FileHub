@@ -29,7 +29,7 @@ class UserRegistrationProcessTest {
 
         registerProcess.run(command);
         assertEquals("vlad.kuksiuk@gmail.com", database.userTable()
-                                                       .getUser("Hellamb")
+                                                       .getUserById("Hellamb")
                                                        .getEmail());
     }
 

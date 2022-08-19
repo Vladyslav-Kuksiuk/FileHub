@@ -18,16 +18,16 @@ class InMemoryUserDaoTest {
 
     InMemoryUserDaoTest() throws DatabaseTransactionException, DatabaseException {
         database.clean();
-        UserData user1 = new UserData("login1", "password1", "email1@email.com");
-        UserData user2 = new UserData("login2", "password2", "email2@email.com");
-        UserData user3 = new UserData("login3", "password3", "email3@email.com");
+        UserData user1 = new UserData("login1", "login1", "password1", "email1@email.com");
+        UserData user2 = new UserData("login2", "login2", "password2", "email2@email.com");
+        UserData user3 = new UserData("login3", "login3", "password3", "email3@email.com");
 
-            database.userTable()
-                    .addUser(user1);
-            database.userTable()
-                    .addUser(user2);
-            database.userTable()
-                    .addUser(user3);
+        database.userTable()
+                .addUser(user1);
+        database.userTable()
+                .addUser(user2);
+        database.userTable()
+                .addUser(user3);
     }
 
     @Test
@@ -40,7 +40,7 @@ class InMemoryUserDaoTest {
         userDao.create(newUser);
 
         assertEquals("password4", database.userTable()
-                                          .getUser("login4")
+                                          .getUserById("login4")
                                           .getPassword());
     }
 
@@ -64,7 +64,7 @@ class InMemoryUserDaoTest {
         userDao.update(updatedUser);
 
         assertEquals("changed@email.com", database.userTable()
-                                                  .getUser("login2")
+                                                  .getUserById("login2")
                                                   .getEmail());
     }
 
@@ -74,7 +74,7 @@ class InMemoryUserDaoTest {
         userDao.delete(new RecordIdentifier<>("login3"));
 
         assertThrows(DatabaseTransactionException.class, () -> database.userTable()
-                                                                .getUser("login3"));
+                                                                       .getUserById("login3"));
 
     }
 }

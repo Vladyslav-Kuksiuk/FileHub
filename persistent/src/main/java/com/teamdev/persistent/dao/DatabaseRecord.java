@@ -10,13 +10,13 @@ import javax.validation.constraints.NotNull;
  */
 public abstract class DatabaseRecord<I> {
 
-    private final RecordIdentifier<I> identifier;
+    private final RecordIdentifier<I> id;
 
-    protected DatabaseRecord(@NotNull RecordIdentifier<I> identifier) {
-        this.identifier = identifier;
+    protected DatabaseRecord(@NotNull RecordIdentifier<I> id) {
+        this.id = id;
     }
 
-    public RecordIdentifier<I> getIdentifier() {
-        return identifier;
+    public RecordIdentifier<I> getId() {
+        return id;
     }
 }

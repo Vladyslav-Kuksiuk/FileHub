@@ -10,21 +10,29 @@ import javax.validation.constraints.NotNull;
  */
 public class UserData {
 
+    private final String id;
     private final String login;
     private final String password;
     private final String email;
 
-    public UserData(@NotNull String login,
+    public UserData(@NotNull String id,
+                    @NotNull String login,
                     @NotNull String password,
                     @NotNull String email) {
 
+        Preconditions.checkState(!id.isEmpty());
         Preconditions.checkState(!login.isEmpty());
         Preconditions.checkState(!password.isEmpty());
         Preconditions.checkState(EmailValidator.validate(email));
 
+        this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getLogin() {

@@ -2,7 +2,7 @@ package com.teamdev.persistent.dao;
 
 import javax.validation.constraints.NotNull;
 
-public class DataAccessException extends Exception{
+public class DataAccessException extends Exception {
 
     public DataAccessException(@NotNull String message) {
         super(message);

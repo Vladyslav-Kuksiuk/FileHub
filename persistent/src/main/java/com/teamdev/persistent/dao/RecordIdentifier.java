@@ -17,7 +17,7 @@ public class RecordIdentifier<T> {
         this.id = id;
     }
 
-    public T getId() {
+    public T getValue() {
         return id;
     }
 
