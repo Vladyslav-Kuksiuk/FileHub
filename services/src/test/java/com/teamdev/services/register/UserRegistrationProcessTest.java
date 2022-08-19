@@ -10,14 +10,14 @@ import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.services.ApplicationProcess;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class UserRegistrationProcessTest {
 
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final UserDao userDao = new InMemoryUserDao(database);
-    private final ApplicationProcess<UserRegistrationCommand> registerProcess = new UserRegistrationProcess(
-            userDao);
+    private final ApplicationProcess<UserRegistrationCommand> registerProcess =
+            new UserRegistrationProcess(userDao);
 
     @Test
     void registerTest() throws DataAccessException, DatabaseTransactionException,
@@ -25,12 +25,14 @@ class UserRegistrationProcessTest {
         database.clean();
         UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
                                                                       "password",
-                                                                      "vlad.kuksiuk@gmail.com");
+                                                                      "email@email.com");
 
         registerProcess.run(command);
-        assertEquals("vlad.kuksiuk@gmail.com", database.userTable()
-                                                       .getUserById("Hellamb")
-                                                       .getEmail());
+        assertWithMessage("User registration failed.")
+                .that(database.userTable()
+                              .getUserById("Hellamb")
+                              .getEmail())
+                .matches("email@email.com");
     }
 
     @Test

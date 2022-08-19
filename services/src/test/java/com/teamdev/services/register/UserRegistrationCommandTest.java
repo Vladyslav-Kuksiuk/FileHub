@@ -11,10 +11,11 @@ class UserRegistrationCommandTest {
     void invalidLoginTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            UserRegistrationCommand command = new UserRegistrationCommand("",
-                                                                          "password",
-                                                                          "vlad.kuksiuk@gmail.com");
-        });
+            UserRegistrationCommand command =
+                    new UserRegistrationCommand("",
+                                                "password",
+                                                "email@email.com");
+        }, "User registration command creation with illegal login passed.");
 
     }
 
@@ -22,10 +23,11 @@ class UserRegistrationCommandTest {
     void invalidPasswordTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
-                                                                          "",
-                                                                          "vlad.kuksiuk@gmail.com");
-        });
+            UserRegistrationCommand command =
+                    new UserRegistrationCommand("Hellamb",
+                                                "",
+                                                "email@email.com");
+        }, "User registration command creation with illegal password passed.");
 
     }
 
@@ -33,10 +35,11 @@ class UserRegistrationCommandTest {
     void invalidEmailTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
-                                                                          "password",
-                                                                          "vlad.kuksiukgmail.com");
-        });
+            UserRegistrationCommand command =
+                    new UserRegistrationCommand("Hellamb",
+                                                "password",
+                                                "email.com");
+        }, "User registration command creation with illegal email passed.");
 
     }
 
@@ -44,7 +47,7 @@ class UserRegistrationCommandTest {
     void nullTest() throws NoSuchMethodException {
 
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(String.class, "vlad.kuksiuk@gmail.com");
+        tester.setDefault(String.class, "email@email.com");
         tester.testAllPublicConstructors(UserRegistrationCommand.class);
 
     }

@@ -26,7 +26,7 @@ public class UserTable {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
     private final Gson gson;
-    private final File file = new File(InMemoryDatabase.DATABASE_FOLDER_PATH+"users.json");
+    private final File file = new File(InMemoryDatabase.DATABASE_FOLDER_PATH + "users.json");
     private Map<String, UserData> users = new HashMap<>();
 
     public UserTable() {
@@ -146,7 +146,7 @@ public class UserTable {
 
     }
 
-    private void updateDatabaseInFile() throws DatabaseException {
+    private synchronized void updateDatabaseInFile() throws DatabaseException {
 
         try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
             writer.write(gson.toJson(users));

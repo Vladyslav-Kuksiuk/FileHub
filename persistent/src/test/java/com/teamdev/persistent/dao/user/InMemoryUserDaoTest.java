@@ -45,12 +45,33 @@ class InMemoryUserDaoTest {
     }
 
     @Test
+    void createExistingUserTest() {
+
+        assertThrows(DataAccessException.class,
+                     () -> userDao.create(new UserRecord(new RecordIdentifier<>("login1"),
+                                                         "login1",
+                                                         "password",
+                                                         "email@email.com")),
+                     "Create already existing user not failed.");
+
+    }
+
+    @Test
     void findTest() throws DataAccessException {
 
         String email = userDao.find(new RecordIdentifier<>("login1"))
                               .getEmail();
 
         assertEquals("email1@email.com", email);
+    }
+
+    @Test
+    void findAbsentTest() {
+
+        assertThrows(DataAccessException.class,
+                     () -> userDao.find(new RecordIdentifier<>("notLogin")),
+                     "Find absent user not failed.");
+
     }
 
     @Test
@@ -69,12 +90,35 @@ class InMemoryUserDaoTest {
     }
 
     @Test
+    void updateAbsentTest() {
+
+        assertThrows(DataAccessException.class,
+                     () -> {
+                         userDao.update(new UserRecord(new RecordIdentifier<>("notLogin"),
+                                                       "notLogin",
+                                                       "password",
+                                                       "email@email.com"));
+                     }, "Update absent user not failed.");
+
+    }
+
+    @Test
     void deleteTest() throws DataAccessException {
 
         userDao.delete(new RecordIdentifier<>("login3"));
 
         assertThrows(DatabaseTransactionException.class, () -> database.userTable()
                                                                        .getUserById("login3"));
+
+    }
+
+    @Test
+    void deleteAbsentTest() {
+
+        assertThrows(DataAccessException.class,
+                     () -> {
+                         userDao.delete(new RecordIdentifier<>("notLogin"));
+                     }, "Delete absent user not failed.");
 
     }
 }

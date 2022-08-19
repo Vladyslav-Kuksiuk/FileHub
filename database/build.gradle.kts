@@ -61,6 +61,8 @@ dependencies {
     // Logging libs
     implementation("com.google.flogger:flogger:0.7.4")
     implementation("com.google.flogger:flogger-log4j2-backend:0.7.4")
+
+    testImplementation("com.google.truth:truth:1.1.3")
 }
 
 application {
