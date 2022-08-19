@@ -31,19 +31,19 @@ public class UserData {
         this.email = email;
     }
 
-    public String getId() {
+    public String id() {
         return id;
     }
 
-    public String getLogin() {
+    public String login() {
         return login;
     }
 
-    public String getPassword() {
+    public String password() {
         return password;
     }
 
-    public String getEmail() {
+    public String email() {
         return email;
     }
 

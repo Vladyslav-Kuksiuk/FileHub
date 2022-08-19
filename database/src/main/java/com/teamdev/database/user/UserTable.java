@@ -92,11 +92,11 @@ public class UserTable {
     public void addUser(@NotNull UserData user) throws DatabaseException,
                                                        DatabaseTransactionException {
 
-        if (users.containsKey(user.getId())) {
+        if (users.containsKey(user.id())) {
             throw new DatabaseTransactionException("User with this login already exists.");
         }
 
-        users.put(user.getId(), user);
+        users.put(user.id(), user);
 
         updateDatabaseInFile();
 
@@ -136,11 +136,11 @@ public class UserTable {
      */
     public void updateUser(@NotNull UserData user) throws DatabaseTransactionException,
                                                           DatabaseException {
-        if (!users.containsKey(user.getId())) {
+        if (!users.containsKey(user.id())) {
             throw new DatabaseTransactionException("User with this id doesn't exist.");
         }
 
-        users.put(user.getId(), user);
+        users.put(user.id(), user);
 
         updateDatabaseInFile();
 

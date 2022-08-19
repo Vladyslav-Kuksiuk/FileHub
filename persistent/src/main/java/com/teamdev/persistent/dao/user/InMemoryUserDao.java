@@ -43,13 +43,13 @@ public class InMemoryUserDao implements UserDao {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
-        UserRecord userRecord = new UserRecord(new RecordIdentifier<>(userData.getId()),
-                                               userData.getLogin(),
-                                               userData.getPassword(),
-                                               userData.getEmail());
+        UserRecord userRecord = new UserRecord(new RecordIdentifier<>(userData.id()),
+                                               userData.login(),
+                                               userData.password(),
+                                               userData.email());
 
         logger.atInfo()
-              .log("[USER FOUND] - login: %s", userData.getLogin());
+              .log("[USER FOUND] - login: %s", userData.login());
 
         return userRecord;
     }

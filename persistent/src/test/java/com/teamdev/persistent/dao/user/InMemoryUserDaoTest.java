@@ -41,7 +41,7 @@ class InMemoryUserDaoTest {
 
         assertEquals("password4", database.userTable()
                                           .getUserById("login4")
-                                          .getPassword());
+                                          .password());
     }
 
     @Test
@@ -86,7 +86,7 @@ class InMemoryUserDaoTest {
 
         assertEquals("changed@email.com", database.userTable()
                                                   .getUserById("login2")
-                                                  .getEmail());
+                                                  .email());
     }
 
     @Test

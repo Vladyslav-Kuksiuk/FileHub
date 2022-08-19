@@ -31,7 +31,7 @@ class UserRegistrationProcessTest {
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
                               .getUserById("Hellamb")
-                              .getEmail())
+                              .email())
                 .matches("email@email.com");
     }
 

@@ -17,19 +17,19 @@ class UserDataTest {
                                          "email@email.com");
 
         Truth.assertWithMessage("User id reading failed.")
-             .that(userData.getId())
+             .that(userData.id())
              .matches("user");
 
         Truth.assertWithMessage("User login reading failed.")
-             .that(userData.getLogin())
+             .that(userData.login())
              .matches("user");
 
         Truth.assertWithMessage("User password reading failed.")
-             .that(userData.getPassword())
+             .that(userData.password())
              .matches("password");
 
         Truth.assertWithMessage("User email reading failed.")
-             .that(userData.getEmail())
+             .that(userData.email())
              .matches("email@email.com");
 
     }
