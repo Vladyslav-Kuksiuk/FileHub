@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * A {@link ApplicationProcess} implementation which is intended to process
  * user registration.
  */
-public class UserRegistrationProcess implements ApplicationProcess<UserRegistrationCommand> {
+public class UserRegistrationProcess implements ApplicationProcess<UserRegistrationCommand, UserRegistrationResponse> {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -27,7 +27,7 @@ public class UserRegistrationProcess implements ApplicationProcess<UserRegistrat
     }
 
     @Override
-    public void run(@NotNull UserRegistrationCommand command) throws DataAccessException {
+    public UserRegistrationResponse run(@NotNull UserRegistrationCommand command) throws DataAccessException {
         Preconditions.checkState(!command.getLogin()
                                          .isEmpty());
         Preconditions.checkState(!command.getPassword()
@@ -46,6 +46,8 @@ public class UserRegistrationProcess implements ApplicationProcess<UserRegistrat
                                                command.getEmail());
 
         userDao.create(userRecord);
+
+        return new UserRegistrationResponse(new RecordIdentifier<>(command.getLogin()));
 
     }
 }
