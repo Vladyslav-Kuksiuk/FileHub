@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -85,9 +86,9 @@ public class UserTable {
      * @param user
      *         {@link UserData}.
      * @throws DatabaseException
-     *         if database connection not working.
+     *         If database connection not working.
      * @throws DatabaseTransactionException
-     *         if user already exists.
+     *         If user already exists.
      */
     public void addUser(@NotNull UserData user) throws DatabaseException,
                                                        DatabaseTransactionException {
@@ -108,9 +109,9 @@ public class UserTable {
      * @param id
      *         User id.
      * @throws DatabaseTransactionException
-     *         if user doesn't exist.
+     *         If user doesn't exist.
      * @throws DatabaseException
-     *         if database connection not working.
+     *         If database connection not working.
      */
     public void deleteUser(@NotNull String id) throws DatabaseTransactionException,
                                                       DatabaseException {
@@ -130,9 +131,9 @@ public class UserTable {
      * @param user
      *         {@link UserData}.
      * @throws DatabaseTransactionException
-     *         if user already exists.
+     *         If user already exists.
      * @throws DatabaseException
-     *         if database connection not working.
+     *         If database connection not working.
      */
     public void updateUser(@NotNull UserData user) throws DatabaseTransactionException,
                                                           DatabaseException {
@@ -143,6 +144,31 @@ public class UserTable {
         users.put(user.id(), user);
 
         updateDatabaseInFile();
+
+    }
+
+    /**
+     * Method to get data about user by login.
+     *
+     * @param login
+     *         User login.
+     * @return {@link UserData}.
+     * @throws DatabaseTransactionException
+     *         If user doesn't exist.
+     */
+    public UserData getUserByLogin(@NotNull String login) throws DatabaseTransactionException {
+
+        Optional<UserData> foundUser = users.values()
+                                            .stream()
+                                            .filter(user -> user.login()
+                                                                .equals(login))
+                                            .findFirst();
+
+        if (foundUser.isEmpty()) {
+            throw new DatabaseTransactionException("User with this login doesn't exist.");
+        }
+
+        return foundUser.get();
 
     }
 
@@ -163,7 +189,7 @@ public class UserTable {
      * Clean all data about users.
      *
      * @throws DatabaseException
-     *         if database connection not working.
+     *         If database connection not working.
      */
     public void clean() throws DatabaseException {
         users = new HashMap<>();

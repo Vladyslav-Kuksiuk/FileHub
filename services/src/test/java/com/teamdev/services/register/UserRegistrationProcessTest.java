@@ -16,7 +16,7 @@ class UserRegistrationProcessTest {
 
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final UserDao userDao = new InMemoryUserDao(database);
-    private final ApplicationProcess<UserRegistrationCommand> registerProcess =
+    private final ApplicationProcess<UserRegistrationCommand, UserRegistrationResponse> registerProcess =
             new UserRegistrationProcess(userDao);
 
     @Test
