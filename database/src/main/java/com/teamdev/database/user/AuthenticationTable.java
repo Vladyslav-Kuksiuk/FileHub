@@ -7,27 +7,27 @@ import com.teamdev.database.InMemoryDatabaseTable;
 import javax.validation.constraints.NotNull;
 
 /**
- * {@link InMemoryDatabaseTable} implementation to store {@link AuthorizationData}.
+ * {@link InMemoryDatabaseTable} implementation to store {@link AuthenticationData}.
  */
-public class AuthorizationTable extends InMemoryDatabaseTable<String, AuthorizationData> {
+public class AuthenticationTable extends InMemoryDatabaseTable<String, AuthenticationData> {
 
     private final static String FILE_NAME = "userAuthorizations.json";
 
-    public AuthorizationTable() throws DatabaseException {
+    public AuthenticationTable() throws DatabaseException {
         super(FILE_NAME);
 
     }
 
     /**
-     * Method to get {@link AuthorizationData} from table.
+     * Method to get {@link AuthenticationData} from table.
      *
      * @param userId
      *         Authorized user id.
-     * @return {@link AuthorizationData}.
+     * @return {@link AuthenticationData}.
      * @throws DatabaseTransactionException
      *         If database connection not working.
      */
-    public AuthorizationData getAuthorizationByUserId(@NotNull String userId) throws
+    public AuthenticationData getAuthorizationByUserId(@NotNull String userId) throws
                                                                               DatabaseTransactionException {
         if (!tableMap().containsKey(userId)) {
             throw new DatabaseTransactionException(
@@ -39,14 +39,14 @@ public class AuthorizationTable extends InMemoryDatabaseTable<String, Authorizat
     }
 
     /**
-     * Method to add {@link AuthorizationData} to the table.
+     * Method to add {@link AuthenticationData} to the table.
      *
      * @param authorization
-     *         {@link AuthorizationData}.
+     *         {@link AuthenticationData}.
      * @throws DatabaseException
      *         If database connection not working.
      */
-    public void addUserAuthorization(@NotNull AuthorizationData authorization) throws
+    public void addUserAuthorization(@NotNull AuthenticationData authorization) throws
                                                                                DatabaseException {
 
         tableMap().put(authorization.userId(), authorization);

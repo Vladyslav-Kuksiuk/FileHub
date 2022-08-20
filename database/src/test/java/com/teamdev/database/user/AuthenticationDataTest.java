@@ -6,25 +6,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class AuthorizationDataTest {
+class AuthenticationDataTest {
 
     @Test
     void createAuthorizationDataTest() {
 
-        AuthorizationData authorizationData = new AuthorizationData("user",
-                                                                    "BF487GW87FB4W874FO8W7WB4F",
-                                                                    1661011835);
+        AuthenticationData authenticationData = new AuthenticationData("user",
+                                                                       "BF487GW87FB4W874FO8W7WB4F",
+                                                                       1661011835);
 
         Truth.assertWithMessage("User id reading failed.")
-             .that(authorizationData.userId())
+             .that(authenticationData.userId())
              .matches("user");
 
         Truth.assertWithMessage("Authentication token reading failed.")
-             .that(authorizationData.authenticationToken())
+             .that(authenticationData.authenticationToken())
              .matches("BF487GW87FB4W874FO8W7WB4F");
 
         Truth.assertWithMessage("Authorization time reading failed.")
-             .that(authorizationData.authorizationTime())
+             .that(authenticationData.authorizationTime())
              .isEqualTo(1661011835);
 
     }
@@ -33,9 +33,9 @@ class AuthorizationDataTest {
     void invalidUserIdTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            AuthorizationData userData = new AuthorizationData("",
-                                                               "BF487GW87FB4W874FO8W7WB4F",
-                                                               1661011835);
+            AuthenticationData userData = new AuthenticationData("",
+                                                                 "BF487GW87FB4W874FO8W7WB4F",
+                                                                 1661011835);
         }, "User authorization data creation with illegal userId passed.");
 
     }
@@ -44,9 +44,9 @@ class AuthorizationDataTest {
     void invalidTokenTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            AuthorizationData userData = new AuthorizationData("user",
-                                                               "",
-                                                               1661011835);
+            AuthenticationData userData = new AuthenticationData("user",
+                                                                 "",
+                                                                 1661011835);
         }, "User authorization data creation with illegal authentication token passed.");
 
     }
@@ -55,9 +55,9 @@ class AuthorizationDataTest {
     void invalidTimeTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            AuthorizationData userData = new AuthorizationData("user",
-                                                               "BF487GW87FB4W874FO8W7WB4F",
-                                                               -2);
+            AuthenticationData userData = new AuthenticationData("user",
+                                                                 "BF487GW87FB4W874FO8W7WB4F",
+                                                                 -2);
         }, "User authorization data creation with illegal authorization time passed.");
 
     }
@@ -67,7 +67,7 @@ class AuthorizationDataTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(String.class, "VGF847VF487VF48");
-        tester.testAllPublicConstructors(AuthorizationData.class);
+        tester.testAllPublicConstructors(AuthenticationData.class);
 
     }
 }

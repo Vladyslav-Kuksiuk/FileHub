@@ -9,18 +9,18 @@ import java.util.Date;
 
 /**
  * {@link DatabaseRecord} implementation which is intended to
- * store data about user authorization.
+ * store data about user authentication.
  */
-public class AuthorizationRecord extends DatabaseRecord<String> {
+public class AuthenticationRecord extends DatabaseRecord<String> {
 
     private final RecordIdentifier<String> userId;
     private final String authenticationToken;
     private final Date authorizationTime;
 
-    public AuthorizationRecord(@NotNull RecordIdentifier<String> id,
-                               @NotNull RecordIdentifier<String> userId,
-                               @NotNull String authenticationToken,
-                               @NotNull Date authorizationTime) {
+    public AuthenticationRecord(@NotNull RecordIdentifier<String> id,
+                                @NotNull RecordIdentifier<String> userId,
+                                @NotNull String authenticationToken,
+                                @NotNull Date authorizationTime) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(userId);

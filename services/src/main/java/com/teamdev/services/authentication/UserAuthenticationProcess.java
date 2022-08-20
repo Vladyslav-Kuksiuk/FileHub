@@ -1,9 +1,9 @@
-package com.teamdev.services.authorization;
+package com.teamdev.services.authentication;
 
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.persistent.dao.user.AuthorizationRecord;
+import com.teamdev.persistent.dao.user.AuthenticationRecord;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
 import com.teamdev.services.ApplicationProcess;
@@ -12,12 +12,16 @@ import com.teamdev.util.StringEncryptor;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class UserAuthorizationProcess implements ApplicationProcess<UserAuthorizationCommand, UserAuthorizationResponse> {
+/**
+ * A {@link ApplicationProcess} implementation which is intended to process
+ * user authentication.
+ */
+public class UserAuthenticationProcess implements ApplicationProcess<UserAuthenticationCommand, UserAuthenticationResponse> {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
     private final UserDao userDao;
 
-    public UserAuthorizationProcess(@NotNull UserDao userDao) {
+    public UserAuthenticationProcess(@NotNull UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -26,7 +30,7 @@ public class UserAuthorizationProcess implements ApplicationProcess<UserAuthoriz
      * user authorization.
      */
     @Override
-    public UserAuthorizationResponse run(@NotNull UserAuthorizationCommand command) throws
+    public UserAuthenticationResponse run(@NotNull UserAuthenticationCommand command) throws
                                                                                     DataAccessException {
 
         logger.atInfo()
@@ -45,17 +49,17 @@ public class UserAuthorizationProcess implements ApplicationProcess<UserAuthoriz
         String authenticationToken = StringEncryptor.encrypt(
                 userRecord.login() + authorizationTime);
 
-        AuthorizationRecord authorizationRecord =
-                new AuthorizationRecord(new RecordIdentifier<>(userRecord.login()),
-                                        userRecord.getId(),
-                                        authenticationToken,
-                                        authorizationTime);
+        AuthenticationRecord authenticationRecord =
+                new AuthenticationRecord(new RecordIdentifier<>(userRecord.login()),
+                                         userRecord.getId(),
+                                         authenticationToken,
+                                         authorizationTime);
 
-        userDao.authorize(authorizationRecord);
+        userDao.authorize(authenticationRecord);
 
-        UserAuthorizationResponse response =
-                new UserAuthorizationResponse(userRecord.getId(),
-                                              authenticationToken);
+        UserAuthenticationResponse response =
+                new UserAuthenticationResponse(userRecord.getId(),
+                                               authenticationToken);
 
         return response;
     }

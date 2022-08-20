@@ -1,6 +1,6 @@
 package com.teamdev.database;
 
-import com.teamdev.database.user.AuthorizationTable;
+import com.teamdev.database.user.AuthenticationTable;
 import com.teamdev.database.user.UserTable;
 
 /**
@@ -11,7 +11,7 @@ public class InMemoryDatabase {
     public static final String DATABASE_FOLDER_PATH = "D:\\Work\\DatabaseFolder\\Tables\\";
 
     private final UserTable userTable = new UserTable();
-    private final AuthorizationTable authorizationTable = new AuthorizationTable();
+    private final AuthenticationTable authenticationTable = new AuthenticationTable();
 
     public InMemoryDatabase() throws DatabaseException {
     }
@@ -20,13 +20,13 @@ public class InMemoryDatabase {
         return userTable;
     }
 
-    public AuthorizationTable authorizationTable() {
-        return authorizationTable;
+    public AuthenticationTable authorizationTable() {
+        return authenticationTable;
     }
 
     public void clean() throws DatabaseException {
         userTable.clean();
-        authorizationTable.clean();
+        authenticationTable.clean();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.teamdev.services.authorization;
+package com.teamdev.services.authentication;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.database.DatabaseException;
@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class UserAuthorizationProcessIntegrationTest {
+class UserAuthenticationProcessIntegrationTest {
 
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final UserDao userDao = new InMemoryUserDao(database);
-    private final UserAuthorizationProcess authorizationProcess =
-            new UserAuthorizationProcess(userDao);
+    private final UserAuthenticationProcess authorizationProcess =
+            new UserAuthenticationProcess(userDao);
 
-    UserAuthorizationProcessIntegrationTest() throws DatabaseException {
+    UserAuthenticationProcessIntegrationTest() throws DatabaseException {
     }
 
     @Test
@@ -34,9 +34,9 @@ class UserAuthorizationProcessIntegrationTest {
         database.userTable()
                 .addUser(user);
 
-        UserAuthorizationCommand command = new UserAuthorizationCommand("user", "password");
+        UserAuthenticationCommand command = new UserAuthenticationCommand("user", "password");
 
-        UserAuthorizationResponse response = authorizationProcess.run(command);
+        UserAuthenticationResponse response = authorizationProcess.run(command);
 
         assertWithMessage("User authorization failed.")
                 .that(database.authorizationTable()
@@ -51,7 +51,7 @@ class UserAuthorizationProcessIntegrationTest {
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(authorizationProcess, authorizationProcess.getClass()
                                                                     .getMethod("run",
-                                                                               UserAuthorizationCommand.class));
+                                                                               UserAuthenticationCommand.class));
 
     }
 }

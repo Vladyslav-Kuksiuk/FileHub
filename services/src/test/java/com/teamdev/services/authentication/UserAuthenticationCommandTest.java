@@ -1,16 +1,16 @@
-package com.teamdev.services.authorization;
+package com.teamdev.services.authentication;
 
 import com.google.common.testing.NullPointerTester;
 import org.junit.jupiter.api.Test;
 
-class UserAuthorizationCommandTest {
+class UserAuthenticationCommandTest {
 
     @Test
     void nullTest() throws NoSuchMethodException {
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(String.class, "FN458FB847BF");
-        tester.testAllPublicConstructors(UserAuthorizationCommand.class);
+        tester.testAllPublicConstructors(UserAuthenticationCommand.class);
 
     }
 

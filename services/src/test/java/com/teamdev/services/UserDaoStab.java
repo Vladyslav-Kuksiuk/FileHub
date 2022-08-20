@@ -3,7 +3,7 @@ package com.teamdev.services;
 import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.persistent.dao.user.AuthorizationRecord;
+import com.teamdev.persistent.dao.user.AuthenticationRecord;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
 
@@ -15,13 +15,13 @@ import java.util.Optional;
 public class UserDaoStab implements UserDao {
 
     private final Map<RecordIdentifier<String>, UserRecord> users = new HashMap<>();
-    private final Map<RecordIdentifier<String>, AuthorizationRecord> authorizations = new HashMap<>();
+    private final Map<RecordIdentifier<String>, AuthenticationRecord> authorizations = new HashMap<>();
 
     public Map<RecordIdentifier<String>, UserRecord> usersMap() {
         return Collections.unmodifiableMap(users);
     }
 
-    public Map<RecordIdentifier<String>, AuthorizationRecord> authorizationsMap() {
+    public Map<RecordIdentifier<String>, AuthenticationRecord> authorizationsMap() {
         return Collections.unmodifiableMap(authorizations);
     }
 
@@ -88,11 +88,11 @@ public class UserDaoStab implements UserDao {
     }
 
     @Override
-    public void authorize(AuthorizationRecord authorizationRecord) throws DataAccessException {
+    public void authorize(AuthenticationRecord authenticationRecord) throws DataAccessException {
 
-        Preconditions.checkNotNull(authorizationRecord);
+        Preconditions.checkNotNull(authenticationRecord);
 
-        authorizations.put(authorizationRecord.getId(), authorizationRecord);
+        authorizations.put(authenticationRecord.getId(), authenticationRecord);
 
     }
 }

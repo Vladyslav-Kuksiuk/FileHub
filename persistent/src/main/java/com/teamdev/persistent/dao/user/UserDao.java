@@ -12,6 +12,6 @@ public interface UserDao extends DataAccessObject<UserRecord, String> {
 
     UserRecord findByLogin(@NotNull String login) throws DataAccessException;
 
-    void authorize(AuthorizationRecord authorizationRecord) throws DataAccessException;
+    void authorize(AuthenticationRecord authenticationRecord) throws DataAccessException;
 
 }

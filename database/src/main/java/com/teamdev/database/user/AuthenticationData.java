@@ -5,9 +5,9 @@ import com.google.common.base.Preconditions;
 import javax.validation.constraints.NotNull;
 
 /**
- * Class which is intended to store information about authorization.
+ * Class which is intended to store information about authentication.
  */
-public class AuthorizationData {
+public class AuthenticationData {
 
     private final String userId;
 
@@ -15,9 +15,9 @@ public class AuthorizationData {
 
     private final long authorizationTime;
 
-    public AuthorizationData(@NotNull String userId,
-                             @NotNull String authenticationToken,
-                             long authorizationTime) {
+    public AuthenticationData(@NotNull String userId,
+                              @NotNull String authenticationToken,
+                              long authorizationTime) {
         Preconditions.checkState(!userId.isEmpty());
         Preconditions.checkState(!authenticationToken.isEmpty());
         Preconditions.checkState(authorizationTime >= 0);

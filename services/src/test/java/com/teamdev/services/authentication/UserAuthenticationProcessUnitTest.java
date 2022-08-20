@@ -1,4 +1,4 @@
-package com.teamdev.services.authorization;
+package com.teamdev.services.authentication;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.persistent.dao.DataAccessException;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class UserAuthorizationProcessUnitTest {
+public class UserAuthenticationProcessUnitTest {
 
     @Test
     void authorizationTest() throws DataAccessException {
         UserDaoStab dao = new UserDaoStab();
-        UserAuthorizationProcess authorizationProcess = new UserAuthorizationProcess(dao);
+        UserAuthenticationProcess authorizationProcess = new UserAuthenticationProcess(dao);
 
         UserRecord user = new UserRecord(new RecordIdentifier<>("user"),
                                          "user",
@@ -24,9 +24,9 @@ public class UserAuthorizationProcessUnitTest {
 
         dao.create(user);
 
-        UserAuthorizationCommand command = new UserAuthorizationCommand("user", "password");
+        UserAuthenticationCommand command = new UserAuthenticationCommand("user", "password");
 
-        UserAuthorizationResponse response = authorizationProcess.run(command);
+        UserAuthenticationResponse response = authorizationProcess.run(command);
 
         assertWithMessage("User authorization failed.")
                 .that(dao.authorizationsMap()
@@ -38,13 +38,13 @@ public class UserAuthorizationProcessUnitTest {
     @Test
     void nullTest() throws NoSuchMethodException {
 
-        UserAuthorizationProcess authorizationProcess = new UserAuthorizationProcess(
+        UserAuthenticationProcess authorizationProcess = new UserAuthenticationProcess(
                 new UserDaoStab());
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(authorizationProcess, authorizationProcess.getClass()
                                                                     .getMethod("run",
-                                                                               UserAuthorizationCommand.class));
+                                                                               UserAuthenticationCommand.class));
 
     }
 

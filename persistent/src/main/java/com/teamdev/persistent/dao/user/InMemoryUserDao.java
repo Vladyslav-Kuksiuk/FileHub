@@ -4,7 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.database.user.AuthorizationData;
+import com.teamdev.database.user.AuthenticationData;
 import com.teamdev.database.user.UserData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
@@ -156,25 +156,25 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to create a user authorization record in {@link InMemoryDatabase}.
+     * Method to create a user authentication record in {@link InMemoryDatabase}.
      *
-     * @param authorizationRecord
-     *         {@link AuthorizationRecord}.
+     * @param authenticationRecord
+     *         {@link AuthenticationRecord}.
      */
     @Override
-    public void authorize(@NotNull AuthorizationRecord authorizationRecord) throws
+    public void authorize(@NotNull AuthenticationRecord authenticationRecord) throws
                                                                             DataAccessException {
 
-        AuthorizationData authorizationData =
-                new AuthorizationData(authorizationRecord.getId()
-                                                         .getValue(),
-                                      authorizationRecord.authenticationToken(),
-                                      authorizationRecord.authorizationTime()
-                                                         .getTime());
+        AuthenticationData authenticationData =
+                new AuthenticationData(authenticationRecord.getId()
+                                                           .getValue(),
+                                       authenticationRecord.authenticationToken(),
+                                       authenticationRecord.authorizationTime()
+                                                          .getTime());
 
         try {
             database.authorizationTable()
-                    .addUserAuthorization(authorizationData);
+                    .addUserAuthorization(authenticationData);
         } catch (DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
