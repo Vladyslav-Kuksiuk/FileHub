@@ -39,8 +39,8 @@ class UserAuthenticationProcessIntegrationTest {
         UserAuthenticationResponse response = authorizationProcess.run(command);
 
         assertWithMessage("User authorization failed.")
-                .that(database.authorizationTable()
-                              .getAuthorizationByUserId("user")
+                .that(database.authenticationTable()
+                              .getAuthenticationByUserId("user")
                               .authenticationToken())
                 .matches(response.authenticationToken());
     }

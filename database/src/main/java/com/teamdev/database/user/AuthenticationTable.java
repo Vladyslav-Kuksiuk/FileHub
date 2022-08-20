@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  */
 public class AuthenticationTable extends InMemoryDatabaseTable<String, AuthenticationData> {
 
-    private final static String FILE_NAME = "userAuthorizations.json";
+    private final static String FILE_NAME = "userAuthentication.json";
 
     public AuthenticationTable() throws DatabaseException {
         super(FILE_NAME);
@@ -27,11 +27,11 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      * @throws DatabaseTransactionException
      *         If database connection not working.
      */
-    public AuthenticationData getAuthorizationByUserId(@NotNull String userId) throws
-                                                                              DatabaseTransactionException {
+    public AuthenticationData getAuthenticationByUserId(@NotNull String userId) throws
+                                                                                DatabaseTransactionException {
         if (!tableMap().containsKey(userId)) {
             throw new DatabaseTransactionException(
-                    "User authorization with this id doesn't exist.");
+                    "User authentication with this id doesn't exist.");
         }
 
         return tableMap().get(userId);
@@ -41,15 +41,15 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
     /**
      * Method to add {@link AuthenticationData} to the table.
      *
-     * @param authorization
+     * @param authentication
      *         {@link AuthenticationData}.
      * @throws DatabaseException
      *         If database connection not working.
      */
-    public void addUserAuthorization(@NotNull AuthenticationData authorization) throws
-                                                                               DatabaseException {
+    public void addUserAuthentication(@NotNull AuthenticationData authentication) throws
+                                                                                  DatabaseException {
 
-        tableMap().put(authorization.userId(), authorization);
+        tableMap().put(authentication.userId(), authentication);
 
         updateTableInFile();
 

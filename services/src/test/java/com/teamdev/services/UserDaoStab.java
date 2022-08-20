@@ -15,14 +15,14 @@ import java.util.Optional;
 public class UserDaoStab implements UserDao {
 
     private final Map<RecordIdentifier<String>, UserRecord> users = new HashMap<>();
-    private final Map<RecordIdentifier<String>, AuthenticationRecord> authorizations = new HashMap<>();
+    private final Map<RecordIdentifier<String>, AuthenticationRecord> authentications = new HashMap<>();
 
     public Map<RecordIdentifier<String>, UserRecord> usersMap() {
         return Collections.unmodifiableMap(users);
     }
 
     public Map<RecordIdentifier<String>, AuthenticationRecord> authorizationsMap() {
-        return Collections.unmodifiableMap(authorizations);
+        return Collections.unmodifiableMap(authentications);
     }
 
     @Override
@@ -88,11 +88,19 @@ public class UserDaoStab implements UserDao {
     }
 
     @Override
-    public void authorize(AuthenticationRecord authenticationRecord) throws DataAccessException {
+    public void authenticate(AuthenticationRecord authenticationRecord) throws DataAccessException {
 
         Preconditions.checkNotNull(authenticationRecord);
 
-        authorizations.put(authenticationRecord.getId(), authenticationRecord);
+        this.authentications.put(authenticationRecord.getId(), authenticationRecord);
 
+    }
+
+    @Override
+    public AuthenticationRecord findAuthentication(RecordIdentifier<String> id) throws
+                                                                                DataAccessException {
+        Preconditions.checkNotNull(id);
+
+        return authentications.get(id);
     }
 }

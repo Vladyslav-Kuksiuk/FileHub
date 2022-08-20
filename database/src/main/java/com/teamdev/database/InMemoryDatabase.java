@@ -20,7 +20,7 @@ public class InMemoryDatabase {
         return userTable;
     }
 
-    public AuthenticationTable authorizationTable() {
+    public AuthenticationTable authenticationTable() {
         return authenticationTable;
     }
 

@@ -31,7 +31,7 @@ public class UserAuthenticationProcess implements ApplicationProcess<UserAuthent
      */
     @Override
     public UserAuthenticationResponse run(@NotNull UserAuthenticationCommand command) throws
-                                                                                    DataAccessException {
+                                                                                      DataAccessException {
 
         logger.atInfo()
               .log("[PROCESS STARTED] - User authorization - login: %s", command.getLogin());
@@ -55,7 +55,7 @@ public class UserAuthenticationProcess implements ApplicationProcess<UserAuthent
                                          authenticationToken,
                                          authorizationTime);
 
-        userDao.authorize(authenticationRecord);
+        userDao.authenticate(authenticationRecord);
 
         UserAuthenticationResponse response =
                 new UserAuthenticationResponse(userRecord.getId(),

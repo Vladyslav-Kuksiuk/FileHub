@@ -10,6 +10,7 @@ import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * {@link UserDao} implementation which is intended to work with user
@@ -162,22 +163,43 @@ public class InMemoryUserDao implements UserDao {
      *         {@link AuthenticationRecord}.
      */
     @Override
-    public void authorize(@NotNull AuthenticationRecord authenticationRecord) throws
-                                                                            DataAccessException {
+    public void authenticate(@NotNull AuthenticationRecord authenticationRecord) throws
+                                                                                 DataAccessException {
 
         AuthenticationData authenticationData =
                 new AuthenticationData(authenticationRecord.getId()
                                                            .getValue(),
                                        authenticationRecord.authenticationToken(),
                                        authenticationRecord.authorizationTime()
-                                                          .getTime());
+                                                           .getTime());
 
         try {
-            database.authorizationTable()
-                    .addUserAuthorization(authenticationData);
+            database.authenticationTable()
+                    .addUserAuthentication(authenticationData);
         } catch (DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
+    }
+
+    @Override
+    public AuthenticationRecord findAuthentication(RecordIdentifier<String> userId) throws
+                                                                                    DataAccessException {
+
+        AuthenticationData data;
+        try {
+            data = database.authenticationTable()
+                           .getAuthenticationByUserId(userId.getValue());
+        } catch (DatabaseTransactionException exception) {
+            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        }
+
+        AuthenticationRecord record = new AuthenticationRecord(
+                new RecordIdentifier<>(data.userId()),
+                new RecordIdentifier<>(data.userId()),
+                data.authenticationToken(),
+                new Date(data.authorizationTime()));
+
+        return record;
     }
 }
