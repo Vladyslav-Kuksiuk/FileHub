@@ -18,6 +18,15 @@ public class AuthorizationTable extends InMemoryDatabaseTable<String, Authorizat
 
     }
 
+    /**
+     * Method to get {@link AuthorizationData} from table.
+     *
+     * @param userId
+     *         Authorized user id.
+     * @return {@link AuthorizationData}.
+     * @throws DatabaseTransactionException
+     *         If database connection not working.
+     */
     public AuthorizationData getAuthorizationByUserId(@NotNull String userId) throws
                                                                               DatabaseTransactionException {
         if (!tableMap().containsKey(userId)) {
@@ -29,10 +38,18 @@ public class AuthorizationTable extends InMemoryDatabaseTable<String, Authorizat
 
     }
 
+    /**
+     * Method to add {@link AuthorizationData} to the table.
+     *
+     * @param authorization
+     *         {@link AuthorizationData}.
+     * @throws DatabaseException
+     *         If database connection not working.
+     */
     public void addUserAuthorization(@NotNull AuthorizationData authorization) throws
                                                                                DatabaseException {
 
-        tableMap().put(authorization.getUserId(), authorization);
+        tableMap().put(authorization.userId(), authorization);
 
         updateTableInFile();
 

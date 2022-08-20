@@ -2,6 +2,7 @@ package com.teamdev.services.authorization;
 
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.persistent.dao.DataAccessException;
+import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.dao.user.AuthorizationRecord;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
@@ -45,7 +46,8 @@ public class UserAuthorizationProcess implements ApplicationProcess<UserAuthoriz
                 userRecord.getLogin() + authorizationTime);
 
         AuthorizationRecord authorizationRecord =
-                new AuthorizationRecord(userRecord.getId(),
+                new AuthorizationRecord(new RecordIdentifier<>(userRecord.getLogin()),
+                                        userRecord.getId(),
                                         authenticationToken,
                                         authorizationTime);
 
