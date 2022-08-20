@@ -36,11 +36,11 @@ public class AuthorizationRecord extends DatabaseRecord<String> {
         return userId;
     }
 
-    public String getAuthenticationToken() {
+    public String authenticationToken() {
         return authenticationToken;
     }
 
-    public Date getAuthorizationTime() {
+    public Date authorizationTime() {
         return new Date(authorizationTime.getTime());
     }
 }

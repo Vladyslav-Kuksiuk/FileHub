@@ -4,6 +4,9 @@ import com.google.common.base.Preconditions;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Class which is intended to store information about authorization.
+ */
 public class AuthorizationData {
 
     private final String userId;

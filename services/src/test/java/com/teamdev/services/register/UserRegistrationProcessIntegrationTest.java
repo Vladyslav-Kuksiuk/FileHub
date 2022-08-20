@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class UserRegistrationProcessTest {
+class UserRegistrationProcessIntegrationTest {
 
     private final InMemoryDatabase database;
     private final ApplicationProcess<UserRegistrationCommand, UserRegistrationResponse> registerProcess;
 
-    UserRegistrationProcessTest() throws DatabaseException {
+    UserRegistrationProcessIntegrationTest() throws DatabaseException {
         database = new InMemoryDatabase();
         database.clean();
 

@@ -60,7 +60,7 @@ class InMemoryUserDaoTest {
     void findTest() throws DataAccessException {
 
         String email = userDao.find(new RecordIdentifier<>("login1"))
-                              .getEmail();
+                              .email();
 
         assertEquals("email1@email.com", email);
     }

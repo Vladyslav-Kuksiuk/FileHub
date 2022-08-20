@@ -87,9 +87,9 @@ public class InMemoryUserDao implements UserDao {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
-                                         record.getLogin(),
-                                         record.getPassword(),
-                                         record.getEmail());
+                                         record.login(),
+                                         record.password(),
+                                         record.email());
 
         try {
             database.userTable()
@@ -99,7 +99,7 @@ public class InMemoryUserDao implements UserDao {
         }
 
         logger.atInfo()
-              .log("[USER CREATED] - login: %s", record.getLogin());
+              .log("[USER CREATED] - login: %s", record.login());
     }
 
     /**
@@ -113,9 +113,9 @@ public class InMemoryUserDao implements UserDao {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
-                                         record.getLogin(),
-                                         record.getPassword(),
-                                         record.getEmail());
+                                         record.login(),
+                                         record.password(),
+                                         record.email());
         try {
             database.userTable()
                     .updateUser(userData);
@@ -124,7 +124,7 @@ public class InMemoryUserDao implements UserDao {
         }
 
         logger.atInfo()
-              .log("[USER UPDATED] - login: %s", record.getLogin());
+              .log("[USER UPDATED] - login: %s", record.login());
 
     }
 
@@ -168,8 +168,8 @@ public class InMemoryUserDao implements UserDao {
         AuthorizationData authorizationData =
                 new AuthorizationData(authorizationRecord.getId()
                                                          .getValue(),
-                                      authorizationRecord.getAuthenticationToken(),
-                                      authorizationRecord.getAuthorizationTime()
+                                      authorizationRecord.authenticationToken(),
+                                      authorizationRecord.authorizationTime()
                                                          .getTime());
 
         try {

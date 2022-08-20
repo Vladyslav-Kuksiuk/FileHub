@@ -35,7 +35,7 @@ public class UserAuthorizationProcess implements ApplicationProcess<UserAuthoriz
         UserRecord userRecord = userDao.findByLogin(command.getLogin());
 
         boolean isPasswordMatch = StringEncryptor.encrypt(command.getPassword())
-                                                 .equals(userRecord.getPassword());
+                                                 .equals(userRecord.password());
 
         if (!isPasswordMatch) {
             throw new DataAccessException("Password incorrect.");
@@ -43,10 +43,10 @@ public class UserAuthorizationProcess implements ApplicationProcess<UserAuthoriz
 
         Date authorizationTime = new Date();
         String authenticationToken = StringEncryptor.encrypt(
-                userRecord.getLogin() + authorizationTime);
+                userRecord.login() + authorizationTime);
 
         AuthorizationRecord authorizationRecord =
-                new AuthorizationRecord(new RecordIdentifier<>(userRecord.getLogin()),
+                new AuthorizationRecord(new RecordIdentifier<>(userRecord.login()),
                                         userRecord.getId(),
                                         authenticationToken,
                                         authorizationTime);

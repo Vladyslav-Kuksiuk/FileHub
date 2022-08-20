@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class UserAuthorizationProcessTest {
+class UserAuthorizationProcessIntegrationTest {
 
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final UserDao userDao = new InMemoryUserDao(database);
     private final UserAuthorizationProcess authorizationProcess =
             new UserAuthorizationProcess(userDao);
 
-    UserAuthorizationProcessTest() throws DatabaseException {
+    UserAuthorizationProcessIntegrationTest() throws DatabaseException {
     }
 
     @Test
