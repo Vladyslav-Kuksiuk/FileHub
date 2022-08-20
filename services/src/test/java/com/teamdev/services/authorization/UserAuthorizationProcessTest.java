@@ -20,6 +20,9 @@ class UserAuthorizationProcessTest {
     private final UserAuthorizationProcess authorizationProcess =
             new UserAuthorizationProcess(userDao);
 
+    UserAuthorizationProcessTest() throws DatabaseException {
+    }
+
     @Test
     void authorizationTest() throws DataAccessException, DatabaseTransactionException,
                                     DatabaseException {

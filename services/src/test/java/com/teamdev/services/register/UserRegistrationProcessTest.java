@@ -14,15 +14,22 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 class UserRegistrationProcessTest {
 
-    private final InMemoryDatabase database = new InMemoryDatabase();
-    private final UserDao userDao = new InMemoryUserDao(database);
-    private final ApplicationProcess<UserRegistrationCommand, UserRegistrationResponse> registerProcess =
-            new UserRegistrationProcess(userDao);
+    private final InMemoryDatabase database;
+    private final ApplicationProcess<UserRegistrationCommand, UserRegistrationResponse> registerProcess;
+
+    UserRegistrationProcessTest() throws DatabaseException {
+        database = new InMemoryDatabase();
+        database.clean();
+
+        UserDao userDao = new InMemoryUserDao(database);
+
+        registerProcess =
+                new UserRegistrationProcess(userDao);
+    }
 
     @Test
     void registerTest() throws DataAccessException, DatabaseTransactionException,
                                DatabaseException {
-        database.clean();
         UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
                                                                       "password",
                                                                       "email@email.com");

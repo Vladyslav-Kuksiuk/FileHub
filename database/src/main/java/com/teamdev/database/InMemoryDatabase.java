@@ -13,6 +13,9 @@ public class InMemoryDatabase {
     private final UserTable userTable = new UserTable();
     private final AuthorizationTable authorizationTable = new AuthorizationTable();
 
+    public InMemoryDatabase() throws DatabaseException {
+    }
+
     public UserTable userTable() {
         return userTable;
     }
