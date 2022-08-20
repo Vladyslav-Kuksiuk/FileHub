@@ -3,45 +3,44 @@ package com.teamdev.services.register;
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
-import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.user.InMemoryUserDao;
-import com.teamdev.persistent.dao.user.UserDao;
-import com.teamdev.services.ApplicationProcess;
+import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.services.UserDaoStab;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class UserRegistrationProcessTest {
-
-    private final InMemoryDatabase database = new InMemoryDatabase();
-    private final UserDao userDao = new InMemoryUserDao(database);
-    private final ApplicationProcess<UserRegistrationCommand> registerProcess =
-            new UserRegistrationProcess(userDao);
+class UserRegistrationProcessUnitTest {
 
     @Test
     void registerTest() throws DataAccessException, DatabaseTransactionException,
                                DatabaseException {
-        database.clean();
+
+        UserDaoStab dao = new UserDaoStab();
+        UserRegistrationProcess registrationProcess = new UserRegistrationProcess(dao);
+
         UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
                                                                       "password",
                                                                       "email@email.com");
 
-        registerProcess.run(command);
+        registrationProcess.run(command);
         assertWithMessage("User registration failed.")
-                .that(database.userTable()
-                              .getUserById("Hellamb")
-                              .email())
+                .that(dao.usersMap()
+                         .get(new RecordIdentifier<>("Hellamb"))
+                         .email())
                 .matches("email@email.com");
     }
 
     @Test
     void nullTest() throws NoSuchMethodException {
 
+        UserDaoStab dao = new UserDaoStab();
+        UserRegistrationProcess registrationProcess = new UserRegistrationProcess(dao);
+
         NullPointerTester tester = new NullPointerTester();
-        tester.testMethod(registerProcess, registerProcess.getClass()
-                                                          .getMethod("run",
-                                                                     UserRegistrationCommand.class));
+        tester.testMethod(registrationProcess, registrationProcess.getClass()
+                                                                  .getMethod("run",
+                                                                             UserRegistrationCommand.class));
 
     }
 

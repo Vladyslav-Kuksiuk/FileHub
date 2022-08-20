@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
  * @param <C>
  *         {@link Command}.
  */
-public interface ApplicationProcess<C extends Command> {
+public interface ApplicationProcess<C extends Command, R extends ServerResponse> {
 
-    void run(@NotNull C command) throws DataAccessException;
+    R run(@NotNull C command) throws DataAccessException;
 
 }

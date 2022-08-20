@@ -24,7 +24,7 @@ class EmailValidatorTest {
     @Test
     void nullTest() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicStaticMethods(EmailValidatorTest.class);
+        tester.testAllPublicStaticMethods(EmailValidator.class);
     }
 
 }

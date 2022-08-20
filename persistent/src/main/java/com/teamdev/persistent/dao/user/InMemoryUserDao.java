@@ -4,6 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
+import com.teamdev.database.user.AuthorizationData;
 import com.teamdev.database.user.UserData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
@@ -25,10 +26,10 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to find a record in the {@link InMemoryDatabase}.
+     * Method to find a user record in the {@link InMemoryDatabase} by id.
      *
      * @param id
-     *         Record identifier.
+     *         User record identifier.
      * @return {@link UserRecord}.
      */
     @Override
@@ -58,7 +59,7 @@ public class InMemoryUserDao implements UserDao {
      * Method to delete a record in the {@link InMemoryDatabase}.
      *
      * @param id
-     *         Record identifier.
+     *         User record identifier.
      */
     @Override
     public void delete(@NotNull RecordIdentifier<String> id) throws DataAccessException {
@@ -79,16 +80,16 @@ public class InMemoryUserDao implements UserDao {
      * Method to create a record in the {@link InMemoryDatabase}.
      *
      * @param record
-     *         Record to create.
+     *         User record to create.
      */
     @Override
     public void create(@NotNull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
-                                         record.getLogin(),
-                                         record.getPassword(),
-                                         record.getEmail());
+                                         record.login(),
+                                         record.password(),
+                                         record.email());
 
         try {
             database.userTable()
@@ -98,23 +99,23 @@ public class InMemoryUserDao implements UserDao {
         }
 
         logger.atInfo()
-              .log("[USER CREATED] - login: %s", record.getLogin());
+              .log("[USER CREATED] - login: %s", record.login());
     }
 
     /**
      * Method to create a record in the {@link InMemoryDatabase}.
      *
      * @param record
-     *         Record to update.
+     *         User record to update.
      */
     @Override
     public void update(@NotNull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
-                                         record.getLogin(),
-                                         record.getPassword(),
-                                         record.getEmail());
+                                         record.login(),
+                                         record.password(),
+                                         record.email());
         try {
             database.userTable()
                     .updateUser(userData);
@@ -123,7 +124,60 @@ public class InMemoryUserDao implements UserDao {
         }
 
         logger.atInfo()
-              .log("[USER UPDATED] - login: %s", record.getLogin());
+              .log("[USER UPDATED] - login: %s", record.login());
+
+    }
+
+    /**
+     * Method to find a user record in the {@link InMemoryDatabase} by login.
+     *
+     * @param login
+     *         User login.
+     * @return {@link UserRecord}.
+     */
+    @Override
+    public UserRecord findByLogin(@NotNull String login) throws DataAccessException {
+
+        UserData userData;
+
+        try {
+            userData = database.userTable()
+                               .getUserByLogin(login);
+        } catch (DatabaseTransactionException exception) {
+            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        }
+
+        UserRecord userRecord = new UserRecord(new RecordIdentifier<>(userData.id()),
+                                               userData.login(),
+                                               userData.password(),
+                                               userData.email());
+
+        return userRecord;
+    }
+
+    /**
+     * Method to create a user authorization record in {@link InMemoryDatabase}.
+     *
+     * @param authorizationRecord
+     *         {@link AuthorizationRecord}.
+     */
+    @Override
+    public void authorize(@NotNull AuthorizationRecord authorizationRecord) throws
+                                                                            DataAccessException {
+
+        AuthorizationData authorizationData =
+                new AuthorizationData(authorizationRecord.getId()
+                                                         .getValue(),
+                                      authorizationRecord.authenticationToken(),
+                                      authorizationRecord.authorizationTime()
+                                                         .getTime());
+
+        try {
+            database.authorizationTable()
+                    .addUserAuthorization(authorizationData);
+        } catch (DatabaseException exception) {
+            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        }
 
     }
 }
