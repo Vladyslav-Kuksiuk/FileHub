@@ -1,5 +1,6 @@
 package com.teamdev.database.user;
 
+import com.google.common.testing.NullPointerTester;
 import com.google.common.truth.Truth;
 import org.junit.jupiter.api.Test;
 
@@ -58,6 +59,15 @@ class AuthorizationDataTest {
                                                                "BF487GW87FB4W874FO8W7WB4F",
                                                                -2);
         }, "User authorization data creation with illegal authorization time passed.");
+
+    }
+
+    @Test
+    void nullTest() {
+
+        NullPointerTester tester = new NullPointerTester();
+        tester.setDefault(String.class, "VGF847VF487VF48");
+        tester.testAllPublicConstructors(AuthorizationData.class);
 
     }
 }
