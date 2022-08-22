@@ -3,7 +3,6 @@ package com.teamdev.services;
 import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.persistent.dao.user.AuthenticationRecord;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
 
@@ -15,16 +14,10 @@ import java.util.Optional;
 public class UserDaoStab implements UserDao {
 
     private final Map<RecordIdentifier<String>, UserRecord> users = new HashMap<>();
-    private final Map<RecordIdentifier<String>, AuthenticationRecord> authentications = new HashMap<>();
 
     public Map<RecordIdentifier<String>, UserRecord> usersMap() {
         return Collections.unmodifiableMap(users);
     }
-
-    public Map<RecordIdentifier<String>, AuthenticationRecord> authorizationsMap() {
-        return Collections.unmodifiableMap(authentications);
-    }
-
     @Override
     public UserRecord find(RecordIdentifier<String> id) throws DataAccessException {
 
@@ -75,32 +68,15 @@ public class UserDaoStab implements UserDao {
         Preconditions.checkNotNull(login);
 
         Optional<UserRecord> optionalUser = users.values()
-                                                 .stream()
-                                                 .filter(user -> user.login()
-                                                                     .equals(login))
-                                                 .findFirst();
+                .stream()
+                .filter(user -> user.login()
+                                    .equals(login))
+                .findFirst();
 
         if (optionalUser.isEmpty()) {
             throw new DataAccessException("User not found.");
         }
 
         return optionalUser.get();
-    }
-
-    @Override
-    public void authenticate(AuthenticationRecord authenticationRecord) throws DataAccessException {
-
-        Preconditions.checkNotNull(authenticationRecord);
-
-        this.authentications.put(authenticationRecord.getId(), authenticationRecord);
-
-    }
-
-    @Override
-    public AuthenticationRecord findAuthentication(RecordIdentifier<String> id) throws
-                                                                                DataAccessException {
-        Preconditions.checkNotNull(id);
-
-        return authentications.get(id);
     }
 }

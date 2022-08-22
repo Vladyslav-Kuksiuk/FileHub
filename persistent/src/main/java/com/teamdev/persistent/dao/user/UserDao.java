@@ -12,9 +12,4 @@ import javax.validation.constraints.NotNull;
 public interface UserDao extends DataAccessObject<UserRecord, String> {
 
     UserRecord findByLogin(@NotNull String login) throws DataAccessException;
-
-    void authenticate(AuthenticationRecord authenticationRecord) throws DataAccessException;
-
-    AuthenticationRecord findAuthentication(RecordIdentifier<String> id) throws DataAccessException;
-
 }

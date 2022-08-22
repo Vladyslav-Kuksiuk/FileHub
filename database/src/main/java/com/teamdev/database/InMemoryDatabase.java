@@ -8,7 +8,7 @@ import com.teamdev.database.user.UserTable;
  */
 public class InMemoryDatabase {
 
-    public static final String DATABASE_FOLDER_PATH = "D:\\Work\\DatabaseFolder\\Tables\\";
+    public static final String DATABASE_FOLDER_PATH = "C:\\Programming\\Database\\Tables\\";
 
     private final UserTable userTable = new UserTable();
     private final AuthenticationTable authenticationTable = new AuthenticationTable();

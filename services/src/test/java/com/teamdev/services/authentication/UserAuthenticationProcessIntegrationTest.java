@@ -6,6 +6,8 @@ import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.user.UserData;
 import com.teamdev.persistent.dao.DataAccessException;
+import com.teamdev.persistent.dao.authentication.AuthenticationDao;
+import com.teamdev.persistent.dao.authentication.InMemoryAuthenticationDao;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.util.StringEncryptor;
@@ -17,8 +19,9 @@ class UserAuthenticationProcessIntegrationTest {
 
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final UserDao userDao = new InMemoryUserDao(database);
+    private final AuthenticationDao authenticationDao = new InMemoryAuthenticationDao(database);
     private final UserAuthenticationProcess authorizationProcess =
-            new UserAuthenticationProcess(userDao);
+            new UserAuthenticationProcess(userDao, authenticationDao);
 
     UserAuthenticationProcessIntegrationTest() throws DatabaseException {
     }
@@ -40,7 +43,7 @@ class UserAuthenticationProcessIntegrationTest {
 
         assertWithMessage("User authorization failed.")
                 .that(database.authenticationTable()
-                              .getAuthenticationByUserId("user")
+                              .getAuthorizationByUserId("user")
                               .authenticationToken())
                 .matches(response.authenticationToken());
     }

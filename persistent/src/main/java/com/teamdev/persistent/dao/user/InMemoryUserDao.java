@@ -4,7 +4,6 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.database.user.AuthenticationData;
 import com.teamdev.database.user.UserData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
@@ -154,52 +153,5 @@ public class InMemoryUserDao implements UserDao {
                                                userData.email());
 
         return userRecord;
-    }
-
-    /**
-     * Method to create a user authentication record in {@link InMemoryDatabase}.
-     *
-     * @param authenticationRecord
-     *         {@link AuthenticationRecord}.
-     */
-    @Override
-    public void authenticate(@NotNull AuthenticationRecord authenticationRecord) throws
-                                                                                 DataAccessException {
-
-        AuthenticationData authenticationData =
-                new AuthenticationData(authenticationRecord.getId()
-                                                           .getValue(),
-                                       authenticationRecord.authenticationToken(),
-                                       authenticationRecord.authorizationTime()
-                                                           .getTime());
-
-        try {
-            database.authenticationTable()
-                    .addUserAuthentication(authenticationData);
-        } catch (DatabaseException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
-
-    }
-
-    @Override
-    public AuthenticationRecord findAuthentication(RecordIdentifier<String> userId) throws
-                                                                                    DataAccessException {
-
-        AuthenticationData data;
-        try {
-            data = database.authenticationTable()
-                           .getAuthenticationByUserId(userId.getValue());
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
-
-        AuthenticationRecord record = new AuthenticationRecord(
-                new RecordIdentifier<>(data.userId()),
-                new RecordIdentifier<>(data.userId()),
-                data.authenticationToken(),
-                new Date(data.authorizationTime()));
-
-        return record;
     }
 }
