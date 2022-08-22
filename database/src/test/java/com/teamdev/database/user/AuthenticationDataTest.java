@@ -39,12 +39,12 @@ class AuthenticationDataTest {
     void invalidUserIdTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            AuthenticationData authenticationData = new AuthenticationData("",
-                                                                           "BF487GW87FB4W874FO8W7WB4F",
-                                                                           LocalDateTime.now(
-                                                                                                LocalDateTimeUtil.TIME_ZONE)
-                                                                                        .plusDays(1)
-                                                                                        .toString());
+            AuthenticationData authenticationData =
+                    new AuthenticationData("",
+                                           "BF487GW87FB4W874FO8W7WB4F",
+                                           LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
+                                                        .plusDays(1)
+                                                        .toString());
         }, "User authorization data creation with illegal userId passed.");
 
     }
@@ -53,12 +53,12 @@ class AuthenticationDataTest {
     void invalidTokenTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            AuthenticationData authenticationData = new AuthenticationData("user",
-                                                                           "",
-                                                                           LocalDateTime.now(
-                                                                                                LocalDateTimeUtil.TIME_ZONE)
-                                                                                        .plusDays(1)
-                                                                                        .toString());
+            AuthenticationData authenticationData =
+                    new AuthenticationData("user",
+                                           "",
+                                           LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
+                                                        .plusDays(1)
+                                                        .toString());
         }, "User authorization data creation with illegal authentication token passed.");
 
     }

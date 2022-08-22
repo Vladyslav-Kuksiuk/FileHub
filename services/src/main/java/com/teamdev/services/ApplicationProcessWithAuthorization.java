@@ -25,10 +25,14 @@ public abstract class ApplicationProcessWithAuthorization
         if (!authenticationRecord.authenticationToken()
                                  .equals(command.authenticationToken()) ||
                 authenticationRecord.expireTime()
-                                    .isAfter(LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE))) {
+                                    .isBefore(LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE))) {
             throw new DataAccessException("Authentication token verification failed.");
         }
 
+    }
+
+    protected AuthenticationDao authenticationDao() {
+        return authenticationDao;
     }
 
 }
