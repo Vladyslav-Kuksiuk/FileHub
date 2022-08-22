@@ -8,10 +8,11 @@ import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
 import com.teamdev.services.ApplicationProcess;
+import com.teamdev.util.LocalDateTimeUtil;
 import com.teamdev.util.StringEncryptor;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * A {@link ApplicationProcess} implementation which is intended to process
@@ -49,14 +50,16 @@ public class UserAuthenticationProcess implements ApplicationProcess<UserAuthent
             throw new DataAccessException("Password incorrect.");
         }
 
-        Date authorizationTime = new Date();
+        LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);
+        LocalDateTime expireDateTime = authenticationTime.plusDays(1);
+
         String authenticationToken = StringEncryptor.encrypt(
-                userRecord.login() + authorizationTime);
+                userRecord.login() + expireDateTime);
 
         AuthenticationRecord authenticationRecord =
                 new AuthenticationRecord(userRecord.getId(),
                                          authenticationToken,
-                                         authorizationTime);
+                                         expireDateTime);
 
         authenticationDao.create(authenticationRecord);
 

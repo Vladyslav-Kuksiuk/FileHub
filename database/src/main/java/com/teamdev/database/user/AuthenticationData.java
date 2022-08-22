@@ -13,18 +13,18 @@ public class AuthenticationData {
 
     private final String authenticationToken;
 
-    private final long authorizationTime;
+    private final String expireTime;
 
     public AuthenticationData(@NotNull String userId,
                               @NotNull String authenticationToken,
-                              long authorizationTime) {
+                              @NotNull String expireTime) {
         Preconditions.checkState(!userId.isEmpty());
         Preconditions.checkState(!authenticationToken.isEmpty());
-        Preconditions.checkState(authorizationTime >= 0);
+        Preconditions.checkState(!expireTime.isEmpty());
 
         this.userId = userId;
         this.authenticationToken = authenticationToken;
-        this.authorizationTime = authorizationTime;
+        this.expireTime = expireTime;
     }
 
     public String userId() {
@@ -35,7 +35,7 @@ public class AuthenticationData {
         return authenticationToken;
     }
 
-    public long authorizationTime() {
-        return authorizationTime;
+    public String expireTime() {
+        return expireTime;
     }
 }

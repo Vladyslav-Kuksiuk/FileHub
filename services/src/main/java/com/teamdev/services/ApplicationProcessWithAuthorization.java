@@ -4,15 +4,15 @@ import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
+import com.teamdev.util.LocalDateTimeUtil;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public abstract class ApplicationProcessWithAuthorization
         <C extends CommandWithAuthorizationData, R extends ServerResponse>
         implements ApplicationProcess<C, R> {
 
-    private final long TOKEN_EXPIRATION_TIME = 24 * 60 * 60; //24 hours in seconds
     private final AuthenticationDao authenticationDao;
 
     protected ApplicationProcessWithAuthorization(@NotNull AuthenticationDao authenticationDao) {
@@ -24,8 +24,8 @@ public abstract class ApplicationProcessWithAuthorization
 
         if (!authenticationRecord.authenticationToken()
                                  .equals(command.authenticationToken()) ||
-                authenticationRecord.authorizationTime()
-                                    .getTime() > new Date().getTime() + TOKEN_EXPIRATION_TIME) {
+                authenticationRecord.expireTime()
+                                    .isAfter(LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE))) {
             throw new DataAccessException("Authentication token verification failed.");
         }
 

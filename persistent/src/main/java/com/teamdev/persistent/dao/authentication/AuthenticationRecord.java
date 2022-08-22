@@ -5,7 +5,7 @@ import com.teamdev.persistent.dao.DatabaseRecord;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * {@link DatabaseRecord} implementation which is intended to
@@ -14,25 +14,25 @@ import java.util.Date;
 public class AuthenticationRecord extends DatabaseRecord<String> {
 
     private final String authenticationToken;
-    private final Date authorizationTime;
+    private final LocalDateTime expireTime;
 
     public AuthenticationRecord(@NotNull RecordIdentifier<String> id,
                                 @NotNull String authenticationToken,
-                                @NotNull Date authorizationTime) {
+                                @NotNull LocalDateTime expireTime) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(authenticationToken);
-        Preconditions.checkNotNull(authorizationTime);
+        Preconditions.checkNotNull(expireTime);
 
         this.authenticationToken = authenticationToken;
-        this.authorizationTime = new Date(authorizationTime.getTime());
+        this.expireTime = expireTime;
     }
 
     public String authenticationToken() {
         return authenticationToken;
     }
 
-    public Date authorizationTime() {
-        return new Date(authorizationTime.getTime());
+    public LocalDateTime expireTime() {
+        return expireTime;
     }
 }

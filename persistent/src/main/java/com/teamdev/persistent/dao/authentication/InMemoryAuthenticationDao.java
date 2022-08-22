@@ -10,7 +10,7 @@ import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * {@link AuthenticationDao} implementation which is intended to work with authentications
@@ -53,7 +53,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
         AuthenticationRecord authenticationRecord =
                 new AuthenticationRecord(new RecordIdentifier<>(authenticationData.userId()),
                                          authenticationData.authenticationToken(),
-                                         new Date(authenticationData.authorizationTime()));
+                                         LocalDateTime.parse(authenticationData.expireTime()));
 
         logger.atInfo()
               .log("[AUTHENTICATION FOUND] - login: %s", authenticationRecord.getId()
@@ -87,7 +87,6 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *
      * @param record
      *         {@link AuthenticationRecord}.
-     * @throws DataAccessException
      */
     @Override
     public void create(@NotNull AuthenticationRecord record) throws DataAccessException {
@@ -95,8 +94,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
         AuthenticationData data = new AuthenticationData(record.getId()
                                                                .getValue(),
                                                          record.authenticationToken(),
-                                                         record.authorizationTime()
-                                                               .getTime());
+                                                         record.expireTime()
+                                                               .toString());
 
         try {
             database.authenticationTable()
@@ -112,7 +111,6 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *
      * @param record
      *         {@link AuthenticationRecord}.
-     * @throws DataAccessException
      */
     @Override
     public void update(@NotNull AuthenticationRecord record) throws DataAccessException {
@@ -120,8 +118,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
         AuthenticationData data = new AuthenticationData(record.getId()
                                                                .getValue(),
                                                          record.authenticationToken(),
-                                                         record.authorizationTime()
-                                                               .getTime());
+                                                         record.expireTime()
+                                                               .toString());
 
         try {
             database.authenticationTable()

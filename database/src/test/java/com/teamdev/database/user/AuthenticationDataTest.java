@@ -2,7 +2,10 @@ package com.teamdev.database.user;
 
 import com.google.common.testing.NullPointerTester;
 import com.google.common.truth.Truth;
+import com.teamdev.util.LocalDateTimeUtil;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -11,9 +14,12 @@ class AuthenticationDataTest {
     @Test
     void createAuthorizationDataTest() {
 
+        LocalDateTime expireTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
+                                                .plusDays(1);
+
         AuthenticationData authenticationData = new AuthenticationData("user",
                                                                        "BF487GW87FB4W874FO8W7WB4F",
-                                                                       1661011835);
+                                                                       expireTime.toString());
 
         Truth.assertWithMessage("User id reading failed.")
              .that(authenticationData.userId())
@@ -24,8 +30,8 @@ class AuthenticationDataTest {
              .matches("BF487GW87FB4W874FO8W7WB4F");
 
         Truth.assertWithMessage("Authorization time reading failed.")
-             .that(authenticationData.authorizationTime())
-             .isEqualTo(1661011835);
+             .that(authenticationData.expireTime())
+             .isEqualTo(expireTime.toString());
 
     }
 
@@ -33,9 +39,12 @@ class AuthenticationDataTest {
     void invalidUserIdTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            AuthenticationData userData = new AuthenticationData("",
-                                                                 "BF487GW87FB4W874FO8W7WB4F",
-                                                                 1661011835);
+            AuthenticationData authenticationData = new AuthenticationData("",
+                                                                           "BF487GW87FB4W874FO8W7WB4F",
+                                                                           LocalDateTime.now(
+                                                                                                LocalDateTimeUtil.TIME_ZONE)
+                                                                                        .plusDays(1)
+                                                                                        .toString());
         }, "User authorization data creation with illegal userId passed.");
 
     }
@@ -44,21 +53,13 @@ class AuthenticationDataTest {
     void invalidTokenTest() {
 
         assertThrows(IllegalStateException.class, () -> {
-            AuthenticationData userData = new AuthenticationData("user",
-                                                                 "",
-                                                                 1661011835);
+            AuthenticationData authenticationData = new AuthenticationData("user",
+                                                                           "",
+                                                                           LocalDateTime.now(
+                                                                                                LocalDateTimeUtil.TIME_ZONE)
+                                                                                        .plusDays(1)
+                                                                                        .toString());
         }, "User authorization data creation with illegal authentication token passed.");
-
-    }
-
-    @Test
-    void invalidTimeTest() {
-
-        assertThrows(IllegalStateException.class, () -> {
-            AuthenticationData userData = new AuthenticationData("user",
-                                                                 "BF487GW87FB4W874FO8W7WB4F",
-                                                                 -2);
-        }, "User authorization data creation with illegal authorization time passed.");
 
     }
 
