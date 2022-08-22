@@ -5,6 +5,7 @@ import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public abstract class ApplicationProcessWithAuthorization
@@ -14,11 +15,11 @@ public abstract class ApplicationProcessWithAuthorization
     private final long TOKEN_EXPIRATION_TIME = 24 * 60 * 60; //24 hours in seconds
     private final AuthenticationDao authenticationDao;
 
-    protected ApplicationProcessWithAuthorization(AuthenticationDao authenticationDao) {
+    protected ApplicationProcessWithAuthorization(@NotNull AuthenticationDao authenticationDao) {
         this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
     }
 
-    protected void authorize(C command) throws DataAccessException {
+    protected void authorize(@NotNull C command) throws DataAccessException {
         AuthenticationRecord authenticationRecord = authenticationDao.find(command.userId());
 
         if (!authenticationRecord.authenticationToken()

@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.services.ServerResponse;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * {@link ServerResponse} implementation which is intended to store
  * information about the user authentication server's response.
@@ -14,8 +16,8 @@ public class UserAuthenticationResponse implements ServerResponse {
 
     private final String authenticationToken;
 
-    public UserAuthenticationResponse(RecordIdentifier<String> userId,
-                                      String authenticationToken) {
+    public UserAuthenticationResponse(@NotNull RecordIdentifier<String> userId,
+                                      @NotNull String authenticationToken) {
         Preconditions.checkNotNull(authenticationToken);
         Preconditions.checkState(!authenticationToken.isEmpty());
 

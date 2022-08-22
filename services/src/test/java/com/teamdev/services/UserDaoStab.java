@@ -18,6 +18,7 @@ public class UserDaoStab implements UserDao {
     public Map<RecordIdentifier<String>, UserRecord> usersMap() {
         return Collections.unmodifiableMap(users);
     }
+
     @Override
     public UserRecord find(RecordIdentifier<String> id) throws DataAccessException {
 

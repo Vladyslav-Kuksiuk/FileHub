@@ -20,6 +20,10 @@ public class UserRegistrationCommand implements Command {
                                    @NotNull String password,
                                    @NotNull String email) {
 
+        Preconditions.checkNotNull(login);
+        Preconditions.checkNotNull(password);
+        Preconditions.checkNotNull(email);
+
         Preconditions.checkState(!login.isEmpty());
         Preconditions.checkState(!password.isEmpty());
         Preconditions.checkState(EmailValidator.validate(email));

@@ -9,7 +9,6 @@ import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
  * {@link UserDao} implementation which is intended to work with user
@@ -56,7 +55,7 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to delete a record in the {@link InMemoryDatabase}.
+     * Method to delete user record in the {@link InMemoryDatabase}.
      *
      * @param id
      *         User record identifier.
@@ -77,7 +76,7 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to create a record in the {@link InMemoryDatabase}.
+     * Method to create user record in the {@link InMemoryDatabase}.
      *
      * @param record
      *         User record to create.
@@ -103,7 +102,7 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to create a record in the {@link InMemoryDatabase}.
+     * Method to update user record in the {@link InMemoryDatabase}.
      *
      * @param record
      *         User record to update.

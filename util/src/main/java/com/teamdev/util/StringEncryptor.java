@@ -4,6 +4,8 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Class for string encrypting.
  */
@@ -14,7 +16,7 @@ public class StringEncryptor {
     private StringEncryptor() {
     }
 
-    public static String encrypt(String text) {
+    public static String encrypt(@NotNull String text) {
         Preconditions.checkNotNull(text);
 
         return Hashing.sha256()

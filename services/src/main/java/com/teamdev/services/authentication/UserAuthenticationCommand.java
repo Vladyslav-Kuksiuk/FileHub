@@ -17,6 +17,9 @@ public class UserAuthenticationCommand implements Command {
     public UserAuthenticationCommand(@NotNull String login,
                                      @NotNull String password) {
 
+        Preconditions.checkNotNull(login);
+        Preconditions.checkNotNull(password);
+
         Preconditions.checkState(!login.isEmpty());
         Preconditions.checkState(!password.isEmpty());
 

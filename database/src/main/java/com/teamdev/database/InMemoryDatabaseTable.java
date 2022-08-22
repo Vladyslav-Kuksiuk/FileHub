@@ -4,6 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -34,7 +35,7 @@ public abstract class InMemoryDatabaseTable<K, V> {
 
     private Map<K, V> tableMap;
 
-    protected InMemoryDatabaseTable(String fileName) throws DatabaseException {
+    protected InMemoryDatabaseTable(@NotNull String fileName) throws DatabaseException {
 
         file = new File(InMemoryDatabase.DATABASE_FOLDER_PATH + fileName);
 

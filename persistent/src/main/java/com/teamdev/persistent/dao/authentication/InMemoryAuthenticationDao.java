@@ -9,8 +9,13 @@ import com.teamdev.database.user.AuthenticationData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * {@link AuthenticationDao} implementation which is intended to work with authentications
+ * in {@link InMemoryDatabase}.
+ */
 public class InMemoryAuthenticationDao implements AuthenticationDao {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -22,8 +27,18 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
         this.database = database;
     }
 
+    /**
+     * Method to find user authentication record in the {@link InMemoryDatabase} by id.
+     *
+     * @param userId
+     *         Authentication user identifier.
+     * @return {@link AuthenticationRecord}.
+     * @throws DataAccessException
+     *         If user authentication not found.
+     */
     @Override
-    public AuthenticationRecord find(RecordIdentifier<String> userId) throws DataAccessException {
+    public AuthenticationRecord find(@NotNull RecordIdentifier<String> userId) throws
+                                                                               DataAccessException {
         Preconditions.checkNotNull(userId);
 
         AuthenticationData authenticationData;
@@ -40,23 +55,42 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                          authenticationData.authenticationToken(),
                                          new Date(authenticationData.authorizationTime()));
 
+        logger.atInfo()
+              .log("[AUTHENTICATION FOUND] - login: %s", authenticationRecord.getId()
+                                                                             .getValue());
+
         return authenticationRecord;
     }
 
+    /**
+     * Method to delete user authentication record in the {@link InMemoryDatabase}.
+     *
+     * @param userId
+     *         Authenticated user identifier.
+     * @throws DataAccessException
+     *         If user authentication not found.
+     */
     @Override
-    public void delete(RecordIdentifier<String> id) throws DataAccessException {
+    public void delete(@NotNull RecordIdentifier<String> userId) throws DataAccessException {
 
         try {
             database.authenticationTable()
-                    .deleteAuthorization(id.getValue());
+                    .deleteAuthorization(userId.getValue());
         } catch (DatabaseTransactionException | DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
     }
 
+    /**
+     * Method to create user authentication record in the {@link InMemoryDatabase}.
+     *
+     * @param record
+     *         {@link AuthenticationRecord}.
+     * @throws DataAccessException
+     */
     @Override
-    public void create(AuthenticationRecord record) throws DataAccessException {
+    public void create(@NotNull AuthenticationRecord record) throws DataAccessException {
 
         AuthenticationData data = new AuthenticationData(record.getId()
                                                                .getValue(),
@@ -73,8 +107,15 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
     }
 
+    /**
+     * Method to update user authentication in the {@link InMemoryDatabase}.
+     *
+     * @param record
+     *         {@link AuthenticationRecord}.
+     * @throws DataAccessException
+     */
     @Override
-    public void update(AuthenticationRecord record) throws DataAccessException {
+    public void update(@NotNull AuthenticationRecord record) throws DataAccessException {
 
         AuthenticationData data = new AuthenticationData(record.getId()
                                                                .getValue(),

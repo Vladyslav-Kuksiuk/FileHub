@@ -2,6 +2,7 @@ package com.teamdev.util;
 
 import com.google.common.base.Preconditions;
 
+import javax.validation.constraints.NotNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +25,7 @@ public class EmailValidator {
      *         Email.
      * @return Validation result.
      */
-    public static boolean validate(CharSequence email) {
+    public static boolean validate(@NotNull CharSequence email) {
         Preconditions.checkNotNull(email);
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
