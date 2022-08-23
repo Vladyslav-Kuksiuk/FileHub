@@ -4,7 +4,7 @@ import com.teamdev.database.user.AuthenticationTable;
 import com.teamdev.database.user.UserTable;
 
 /**
- * Database imitation.
+ * Database which tables store data in memory and synchronize it with file.
  */
 public class InMemoryDatabase {
 

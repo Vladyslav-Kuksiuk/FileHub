@@ -17,7 +17,7 @@ public class AuthenticationData extends Data<String> {
     public AuthenticationData(@NotNull String id,
                               @NotNull String authenticationToken,
                               @NotNull String expireTime) {
-        super(id);
+        super(Preconditions.checkNotNull(id));
         Preconditions.checkState(!authenticationToken.isEmpty());
         Preconditions.checkState(!expireTime.isEmpty());
 

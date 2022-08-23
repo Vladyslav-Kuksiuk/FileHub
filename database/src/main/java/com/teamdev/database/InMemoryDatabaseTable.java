@@ -109,6 +109,10 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
 
                 writer.write("]");
 
+                logger.atInfo()
+                      .log("[DATABASE TABLE UPDATED IN FILE] - table: %s", this.getClass()
+                                                                               .getSimpleName());
+
             } catch (IOException e) {
                 logger.atWarning()
                       .log("[DATABASE TABLE SAVING CRASHED]");

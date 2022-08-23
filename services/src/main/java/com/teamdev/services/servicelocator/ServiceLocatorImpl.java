@@ -22,6 +22,9 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * {@link ServiceLocator} implementation which is configured to work with {@link InMemoryDatabase}.
+ */
 public class ServiceLocatorImpl implements ServiceLocator {
 
     private final Map<Class<? extends ApplicationProcess<? extends Command, ? extends ServerResponse>>, ApplicationProcess> services =
@@ -45,6 +48,14 @@ public class ServiceLocatorImpl implements ServiceLocator {
 
     }
 
+    /**
+     * Method witch is intended to give configured {@link ApplicationProcess} implementation
+     * for work with {@link InMemoryDatabase}.
+     *
+     * @param serviceClass
+     *         {@link ApplicationProcess} class which configured implementation is requested.
+     * @return configured {@link ApplicationProcess} implementation.
+     */
     @Override
     public ApplicationProcess locate(@Nonnull Class serviceClass) {
         Preconditions.checkNotNull(serviceClass);

@@ -9,6 +9,14 @@ import com.teamdev.util.LocalDateTimeUtil;
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 
+/**
+ * {@link ApplicationProcess} extension with authorization feature.
+ *
+ * @param <C>
+ *         {@link CommandWithAuthorizationData} implementation.
+ * @param <R>
+ *         {@link ServerResponse} implementation.
+ */
 public abstract class ApplicationProcessWithAuthorization
         <C extends CommandWithAuthorizationData, R extends ServerResponse>
         implements ApplicationProcess<C, R> {
@@ -19,6 +27,14 @@ public abstract class ApplicationProcessWithAuthorization
         this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
     }
 
+    /**
+     * Method to authorize user by token and token expiration time checking.
+     *
+     * @param command
+     *         {@link CommandWithAuthorizationData} implementation.
+     * @throws DataAccessException
+     *         If user not authenticated.
+     */
     protected void authorize(@Nonnull C command) throws DataAccessException {
         AuthenticationRecord authenticationRecord = authenticationDao.find(command.userId());
 

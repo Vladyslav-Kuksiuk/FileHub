@@ -5,6 +5,9 @@ import com.teamdev.persistent.dao.RecordIdentifier;
 
 import javax.annotation.Nonnull;
 
+/**
+ * {@link Command} extension with data for authorization.
+ */
 public abstract class CommandWithAuthorizationData implements Command {
 
     private final RecordIdentifier<String> userId;

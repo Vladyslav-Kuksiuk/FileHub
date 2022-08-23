@@ -51,11 +51,12 @@ class UserRegistrationProcessIntegrationTest {
                                                                           "password",
                                                                           "email@email.com");
 
+            registerProcess.run(command);
+
             if (i % 25 == 0) {
-                Thread.sleep(1000);
+                Thread.sleep(4000);
             }
 
-            registerProcess.run(command);
         }
         assertWithMessage("User registration failed.")
                 .that(database.userTable()

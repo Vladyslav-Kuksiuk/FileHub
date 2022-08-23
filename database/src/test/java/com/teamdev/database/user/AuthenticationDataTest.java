@@ -22,7 +22,7 @@ class AuthenticationDataTest {
                                                                        expireTime.toString());
 
         Truth.assertWithMessage("User id reading failed.")
-             .that(authenticationData.userId())
+             .that(authenticationData.id())
              .matches("user");
 
         Truth.assertWithMessage("Authentication token reading failed.")
@@ -32,20 +32,6 @@ class AuthenticationDataTest {
         Truth.assertWithMessage("Authorization time reading failed.")
              .that(authenticationData.expireTime())
              .isEqualTo(expireTime.toString());
-
-    }
-
-    @Test
-    void invalidUserIdTest() {
-
-        assertThrows(IllegalStateException.class, () -> {
-            AuthenticationData authenticationData =
-                    new AuthenticationData("",
-                                           "BF487GW87FB4W874FO8W7WB4F",
-                                           LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                                                        .plusDays(1)
-                                                        .toString());
-        }, "User authorization data creation with illegal userId passed.");
 
     }
 

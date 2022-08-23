@@ -19,7 +19,7 @@ public class UserData extends Data<String> {
                     @NotNull String login,
                     @NotNull String password,
                     @NotNull String email) {
-        super(id);
+        super(Preconditions.checkNotNull(id));
         Preconditions.checkState(!login.isEmpty());
         Preconditions.checkState(!password.isEmpty());
         Preconditions.checkState(EmailValidator.validate(email));
