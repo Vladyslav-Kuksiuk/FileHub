@@ -13,12 +13,11 @@ import java.util.Optional;
  */
 public class UserTable extends InMemoryDatabaseTable<String, UserData> {
 
+    private final static String FILE_NAME = "users.json";
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final static String FILE_NAME = "users.json";
-
     public UserTable() throws DatabaseException {
-        super(FILE_NAME);
+        super(FILE_NAME, UserData[].class);
 
     }
 
@@ -118,7 +117,8 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      */
     public UserData getUserByLogin(@NotNull String login) throws DatabaseTransactionException {
 
-        logger.atInfo().log("%s",tableMap());
+        logger.atInfo()
+              .log("%s", tableMap());
 
         Optional<UserData> foundUser = tableMap().values()
                 .stream()

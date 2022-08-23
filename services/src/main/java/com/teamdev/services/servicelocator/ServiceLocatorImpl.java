@@ -47,7 +47,8 @@ public class ServiceLocatorImpl implements ServiceLocator {
     @Override
     public ApplicationProcess locate(Class serviceClass) {
         Preconditions.checkNotNull(serviceClass);
-        Preconditions.checkState(services.containsKey(serviceClass), "Service implementation not found.");
+        Preconditions.checkState(services.containsKey(serviceClass),
+                                 "Service implementation not found.");
         return services.get(serviceClass);
     }
 }

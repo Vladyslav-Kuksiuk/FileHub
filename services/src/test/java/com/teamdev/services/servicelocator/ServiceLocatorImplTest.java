@@ -1,5 +1,7 @@
 package com.teamdev.services.servicelocator;
 
+import com.teamdev.database.DatabaseException;
+import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.services.ServiceLocator;
@@ -15,7 +17,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class ServiceLocatorImplTest {
 
     @Test
-    void locateTest() throws DataAccessException {
+    void locateTest() throws DataAccessException, DatabaseException {
+        InMemoryDatabase database = new InMemoryDatabase();
+        database.clean();
 
         ServiceLocator locator = new ServiceLocatorImpl();
 
@@ -42,7 +46,8 @@ class ServiceLocatorImplTest {
         UserAuthenticationResponse authResponse = authProcess.run(
                 new UserAuthenticationCommand("SLuser", "SLpassword"));
 
-        assertWithMessage("User registration and authentication process, picket from ServiceLocator failed.")
+        assertWithMessage(
+                "User registration and authentication process, picket from ServiceLocator failed.")
                 .that(authResponse.userId())
                 .isEqualTo(new RecordIdentifier<>("SLuser"));
 

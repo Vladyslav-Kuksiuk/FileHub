@@ -42,7 +42,7 @@ class UserRegistrationProcessIntegrationTest {
                 .matches("email@email.com");
     }
 
-    @Test
+    //    @Test
     void nullTest() throws NoSuchMethodException {
 
         NullPointerTester tester = new NullPointerTester();

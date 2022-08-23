@@ -51,7 +51,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
         }
 
         AuthenticationRecord authenticationRecord =
-                new AuthenticationRecord(new RecordIdentifier<>(authenticationData.userId()),
+                new AuthenticationRecord(new RecordIdentifier<>(authenticationData.id()),
                                          authenticationData.authenticationToken(),
                                          LocalDateTime.parse(authenticationData.expireTime()));
 

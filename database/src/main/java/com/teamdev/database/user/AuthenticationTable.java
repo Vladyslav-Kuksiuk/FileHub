@@ -15,7 +15,7 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
     private final static String FILE_NAME = "userAuthentication.json";
 
     public AuthenticationTable() throws DatabaseException {
-        super(FILE_NAME);
+        super(FILE_NAME, AuthenticationData[].class);
 
     }
 
@@ -55,7 +55,7 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
 
         Preconditions.checkNotNull(authentication);
 
-        tableMap().put(authentication.userId(), authentication);
+        tableMap().put(authentication.id(), authentication);
 
         updateTableInFile();
 
@@ -98,7 +98,7 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
 
         Preconditions.checkNotNull(authentication);
 
-        tableMap().put(authentication.userId(), authentication);
+        tableMap().put(authentication.id(), authentication);
 
         updateTableInFile();
     }
@@ -119,11 +119,11 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
 
         Preconditions.checkNotNull(authentication);
 
-        if (!tableMap().containsKey(authentication.userId())) {
+        if (!tableMap().containsKey(authentication.id())) {
             throw new DatabaseTransactionException("Authentication with this id doesn't exist.");
         }
 
-        tableMap().put(authentication.userId(), authentication);
+        tableMap().put(authentication.id(), authentication);
 
         updateTableInFile();
 
