@@ -29,14 +29,6 @@ class ServiceLocatorImplTest {
             registrationProcess.run(new UserRegistrationCommand("SLuser",
                                                                 "SLpassword",
                                                                 "email@email.com"));
-
-            registrationProcess.run(new UserRegistrationCommand("SLuser2",
-                                                                "SLpassword",
-                                                                "email@email.com"));
-
-            registrationProcess.run(new UserRegistrationCommand("SLuser3",
-                                                                "SLpassword",
-                                                                "email@email.com"));
         } catch (DataAccessException exception) {
 
         }

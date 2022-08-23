@@ -14,6 +14,7 @@ import java.util.Optional;
 public class UserTable extends InMemoryDatabaseTable<String, UserData> {
 
     private final static String FILE_NAME = "users.json";
+    private final Object locker = new Object();
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public UserTable() throws DatabaseException {
@@ -51,14 +52,15 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      */
     public void addUser(@NotNull UserData user) throws DatabaseException,
                                                        DatabaseTransactionException {
+        synchronized (locker) {
+            if (tableMap().containsKey(user.id())) {
+                throw new DatabaseTransactionException("User with this login already exists.");
+            }
 
-        if (tableMap().containsKey(user.id())) {
-            throw new DatabaseTransactionException("User with this login already exists.");
+            tableMap().put(user.id(), user);
+
+            updateTableInFile();
         }
-
-        tableMap().put(user.id(), user);
-
-        updateTableInFile();
 
     }
 
@@ -74,13 +76,15 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      */
     public void deleteUser(@NotNull String id) throws DatabaseTransactionException,
                                                       DatabaseException {
-        if (!tableMap().containsKey(id)) {
-            throw new DatabaseTransactionException("User with this id doesn't exist.");
+        synchronized (locker) {
+            if (!tableMap().containsKey(id)) {
+                throw new DatabaseTransactionException("User with this id doesn't exist.");
+            }
+
+            tableMap().remove(id);
+
+            updateTableInFile();
         }
-
-        tableMap().remove(id);
-
-        updateTableInFile();
 
     }
 
@@ -96,13 +100,15 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      */
     public void updateUser(@NotNull UserData user) throws DatabaseTransactionException,
                                                           DatabaseException {
-        if (!tableMap().containsKey(user.id())) {
-            throw new DatabaseTransactionException("User with this id doesn't exist.");
+        synchronized (locker) {
+            if (!tableMap().containsKey(user.id())) {
+                throw new DatabaseTransactionException("User with this id doesn't exist.");
+            }
+
+            tableMap().put(user.id(), user);
+
+            updateTableInFile();
         }
-
-        tableMap().put(user.id(), user);
-
-        updateTableInFile();
 
     }
 

@@ -9,7 +9,7 @@ import com.teamdev.persistent.dao.user.UserRecord;
 import com.teamdev.util.EmailValidator;
 import com.teamdev.util.StringEncryptor;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * {@link UserRegistrationProcess} implementation.
@@ -20,12 +20,12 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
 
     private final UserDao userDao;
 
-    public UserRegistrationProcessImpl(@NotNull UserDao userDao) {
+    public UserRegistrationProcessImpl(@Nonnull UserDao userDao) {
         this.userDao = userDao;
     }
 
     @Override
-    public UserRegistrationResponse run(@NotNull UserRegistrationCommand command) throws
+    public UserRegistrationResponse run(@Nonnull UserRegistrationCommand command) throws
                                                                                   DataAccessException {
         Preconditions.checkState(!command.getLogin()
                                          .isEmpty());

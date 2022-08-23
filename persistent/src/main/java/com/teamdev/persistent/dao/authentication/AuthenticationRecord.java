@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DatabaseRecord;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 
 /**
@@ -16,9 +16,9 @@ public class AuthenticationRecord extends DatabaseRecord<String> {
     private final String authenticationToken;
     private final LocalDateTime expireTime;
 
-    public AuthenticationRecord(@NotNull RecordIdentifier<String> id,
-                                @NotNull String authenticationToken,
-                                @NotNull LocalDateTime expireTime) {
+    public AuthenticationRecord(@Nonnull RecordIdentifier<String> id,
+                                @Nonnull String authenticationToken,
+                                @Nonnull LocalDateTime expireTime) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(authenticationToken);

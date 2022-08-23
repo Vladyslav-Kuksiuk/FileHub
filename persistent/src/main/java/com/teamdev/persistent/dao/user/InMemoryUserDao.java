@@ -8,7 +8,7 @@ import com.teamdev.database.user.UserData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * {@link UserDao} implementation which is intended to work with user
@@ -20,7 +20,7 @@ public class InMemoryUserDao implements UserDao {
 
     private final InMemoryDatabase database;
 
-    public InMemoryUserDao(@NotNull InMemoryDatabase database) {
+    public InMemoryUserDao(@Nonnull InMemoryDatabase database) {
         this.database = database;
     }
 
@@ -32,7 +32,7 @@ public class InMemoryUserDao implements UserDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public UserRecord find(@NotNull RecordIdentifier<String> id) throws DataAccessException {
+    public UserRecord find(@Nonnull RecordIdentifier<String> id) throws DataAccessException {
 
         UserData userData;
 
@@ -61,7 +61,7 @@ public class InMemoryUserDao implements UserDao {
      *         User record identifier.
      */
     @Override
-    public void delete(@NotNull RecordIdentifier<String> id) throws DataAccessException {
+    public void delete(@Nonnull RecordIdentifier<String> id) throws DataAccessException {
 
         try {
             database.userTable()
@@ -82,7 +82,7 @@ public class InMemoryUserDao implements UserDao {
      *         User record to create.
      */
     @Override
-    public void create(@NotNull UserRecord record) throws DataAccessException {
+    public void create(@Nonnull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
@@ -108,7 +108,7 @@ public class InMemoryUserDao implements UserDao {
      *         User record to update.
      */
     @Override
-    public void update(@NotNull UserRecord record) throws DataAccessException {
+    public void update(@Nonnull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
@@ -135,7 +135,7 @@ public class InMemoryUserDao implements UserDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public UserRecord findByLogin(@NotNull String login) throws DataAccessException {
+    public UserRecord findByLogin(@Nonnull String login) throws DataAccessException {
 
         UserData userData;
 

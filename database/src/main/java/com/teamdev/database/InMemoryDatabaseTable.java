@@ -86,9 +86,6 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
                 }
             }
 
-//            for (D data : tableMap().values()) {
-//                writer.write(gson.toJson(data));
-//            }
             writer.write("]");
 
         } catch (IOException e) {
@@ -117,6 +114,11 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
     }
 
     protected Map<I, D> tableMap() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Thread sleep failed");
+        }
         return tableMap;
     }
 }

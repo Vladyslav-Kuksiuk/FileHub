@@ -1,6 +1,6 @@
 package com.teamdev.persistent.dao;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.io.Serial;
 
 /**
@@ -11,11 +11,11 @@ public class DataAccessException extends Exception {
     @Serial
     private static final long serialVersionUID = 8905325487892940162L;
 
-    public DataAccessException(@NotNull String message) {
+    public DataAccessException(@Nonnull String message) {
         super(message);
     }
 
-    public DataAccessException(@NotNull String message, @NotNull Throwable cause) {
+    public DataAccessException(@Nonnull String message, @Nonnull Throwable cause) {
         super(message, cause);
     }
 }

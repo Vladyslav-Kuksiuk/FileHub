@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.teamdev.services.Command;
 import com.teamdev.util.EmailValidator;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * A {@link Command} implementation which is intended to store
@@ -16,9 +16,9 @@ public class UserRegistrationCommand implements Command {
     private final String password;
     private final String email;
 
-    public UserRegistrationCommand(@NotNull String login,
-                                   @NotNull String password,
-                                   @NotNull String email) {
+    public UserRegistrationCommand(@Nonnull String login,
+                                   @Nonnull String password,
+                                   @Nonnull String email) {
 
         Preconditions.checkNotNull(login);
         Preconditions.checkNotNull(password);

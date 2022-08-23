@@ -6,7 +6,7 @@ import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
 import com.teamdev.util.LocalDateTimeUtil;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 
 public abstract class ApplicationProcessWithAuthorization
@@ -15,11 +15,11 @@ public abstract class ApplicationProcessWithAuthorization
 
     private final AuthenticationDao authenticationDao;
 
-    protected ApplicationProcessWithAuthorization(@NotNull AuthenticationDao authenticationDao) {
+    protected ApplicationProcessWithAuthorization(@Nonnull AuthenticationDao authenticationDao) {
         this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
     }
 
-    protected void authorize(@NotNull C command) throws DataAccessException {
+    protected void authorize(@Nonnull C command) throws DataAccessException {
         AuthenticationRecord authenticationRecord = authenticationDao.find(command.userId());
 
         if (!authenticationRecord.authenticationToken()

@@ -3,7 +3,7 @@ package com.teamdev.services.authentication;
 import com.google.common.base.Preconditions;
 import com.teamdev.services.Command;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * A {@link Command} implementation which is intended to store
@@ -14,9 +14,8 @@ public class UserAuthenticationCommand implements Command {
     private final String login;
     private final String password;
 
-    public UserAuthenticationCommand(@NotNull String login,
-                                     @NotNull String password) {
-
+    public UserAuthenticationCommand(@Nonnull String login,
+                                     @Nonnull String password) {
         Preconditions.checkNotNull(login);
         Preconditions.checkNotNull(password);
 

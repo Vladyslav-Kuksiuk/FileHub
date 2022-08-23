@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.services.CommandWithAuthorizationData;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * A {@link CommandWithAuthorizationData} implementation which is intended to store
@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 public class UserLogoutCommand extends CommandWithAuthorizationData {
 
     protected UserLogoutCommand(
-            @NotNull RecordIdentifier<String> userId,
-            @NotNull String authenticationToken) {
+            @Nonnull RecordIdentifier<String> userId,
+            @Nonnull String authenticationToken) {
         super(Preconditions.checkNotNull(userId),
               Preconditions.checkNotNull(authenticationToken));
     }

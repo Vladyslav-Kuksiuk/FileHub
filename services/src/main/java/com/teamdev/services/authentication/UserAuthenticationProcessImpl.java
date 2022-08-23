@@ -11,7 +11,7 @@ import com.teamdev.services.ApplicationProcess;
 import com.teamdev.util.LocalDateTimeUtil;
 import com.teamdev.util.StringEncryptor;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 
 /**
@@ -34,7 +34,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
      * user authentication.
      */
     @Override
-    public UserAuthenticationResponse run(@NotNull UserAuthenticationCommand command) throws
+    public UserAuthenticationResponse run(@Nonnull UserAuthenticationCommand command) throws
                                                                                       DataAccessException {
 
         logger.atInfo()

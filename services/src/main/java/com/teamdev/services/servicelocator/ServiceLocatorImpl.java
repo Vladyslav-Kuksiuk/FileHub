@@ -18,6 +18,7 @@ import com.teamdev.services.logout.UserLogoutProcessImpl;
 import com.teamdev.services.register.UserRegistrationProcess;
 import com.teamdev.services.register.UserRegistrationProcessImpl;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class ServiceLocatorImpl implements ServiceLocator {
     }
 
     @Override
-    public ApplicationProcess locate(Class serviceClass) {
+    public ApplicationProcess locate(@Nonnull Class serviceClass) {
         Preconditions.checkNotNull(serviceClass);
         Preconditions.checkState(services.containsKey(serviceClass),
                                  "Service implementation not found.");

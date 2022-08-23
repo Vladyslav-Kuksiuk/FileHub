@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.services.ServerResponse;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * {@link ServerResponse} implementation which is intended to store
@@ -16,8 +16,8 @@ public class UserAuthenticationResponse implements ServerResponse {
 
     private final String authenticationToken;
 
-    public UserAuthenticationResponse(@NotNull RecordIdentifier<String> userId,
-                                      @NotNull String authenticationToken) {
+    public UserAuthenticationResponse(@Nonnull RecordIdentifier<String> userId,
+                                      @Nonnull String authenticationToken) {
         Preconditions.checkNotNull(authenticationToken);
         Preconditions.checkState(!authenticationToken.isEmpty());
 

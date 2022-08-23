@@ -4,15 +4,15 @@ import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * {@link UserLogoutProcess} implementation.
  */
 public class UserLogoutProcessImpl extends UserLogoutProcess {
 
-    public UserLogoutProcessImpl(
-            AuthenticationDao authenticationDao) {
+    public UserLogoutProcessImpl(@Nonnull
+                                         AuthenticationDao authenticationDao) {
         super(authenticationDao);
     }
 
@@ -26,7 +26,7 @@ public class UserLogoutProcessImpl extends UserLogoutProcess {
      *         If user not authenticated.
      */
     @Override
-    public UserLogoutResponse run(@NotNull UserLogoutCommand command) throws DataAccessException {
+    public UserLogoutResponse run(@Nonnull UserLogoutCommand command) throws DataAccessException {
         Preconditions.checkNotNull(command);
         authorize(command);
 

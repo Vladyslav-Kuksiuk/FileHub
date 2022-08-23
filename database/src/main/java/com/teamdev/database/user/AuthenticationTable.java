@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 public class AuthenticationTable extends InMemoryDatabaseTable<String, AuthenticationData> {
 
     private final static String FILE_NAME = "userAuthentication.json";
+    private final Object locker = new Object();
 
     public AuthenticationTable() throws DatabaseException {
         super(FILE_NAME, AuthenticationData[].class);
@@ -52,12 +53,13 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      */
     public void addAuthorization(@NotNull AuthenticationData authentication) throws
                                                                              DatabaseException {
+        synchronized (locker) {
+            Preconditions.checkNotNull(authentication);
 
-        Preconditions.checkNotNull(authentication);
+            tableMap().put(authentication.id(), authentication);
 
-        tableMap().put(authentication.id(), authentication);
-
-        updateTableInFile();
+            updateTableInFile();
+        }
 
     }
 
@@ -74,14 +76,16 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
     public void deleteAuthorization(@NotNull String userId) throws DatabaseTransactionException,
                                                                    DatabaseException {
         Preconditions.checkNotNull(userId);
+        synchronized (locker) {
+            if (!tableMap().containsKey(userId)) {
+                throw new DatabaseTransactionException(
+                        "Authentication with this id doesn't exist.");
+            }
 
-        if (!tableMap().containsKey(userId)) {
-            throw new DatabaseTransactionException("Authentication with this id doesn't exist.");
+            tableMap().remove(userId);
+
+            updateTableInFile();
         }
-
-        tableMap().remove(userId);
-
-        updateTableInFile();
 
     }
 
@@ -95,12 +99,13 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      */
     public void addUserAuthentication(@NotNull AuthenticationData authentication) throws
                                                                                   DatabaseException {
+        synchronized (locker) {
+            Preconditions.checkNotNull(authentication);
 
-        Preconditions.checkNotNull(authentication);
+            tableMap().put(authentication.id(), authentication);
 
-        tableMap().put(authentication.id(), authentication);
-
-        updateTableInFile();
+            updateTableInFile();
+        }
     }
 
     /**
@@ -118,14 +123,16 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
                                                                                 DatabaseException {
 
         Preconditions.checkNotNull(authentication);
+        synchronized (locker) {
+            if (!tableMap().containsKey(authentication.id())) {
+                throw new DatabaseTransactionException(
+                        "Authentication with this id doesn't exist.");
+            }
 
-        if (!tableMap().containsKey(authentication.id())) {
-            throw new DatabaseTransactionException("Authentication with this id doesn't exist.");
+            tableMap().put(authentication.id(), authentication);
+
+            updateTableInFile();
         }
-
-        tableMap().put(authentication.id(), authentication);
-
-        updateTableInFile();
 
     }
 

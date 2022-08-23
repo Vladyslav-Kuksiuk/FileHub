@@ -9,7 +9,7 @@ import com.teamdev.database.user.AuthenticationData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 
 /**
@@ -22,7 +22,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
     private final InMemoryDatabase database;
 
-    public InMemoryAuthenticationDao(InMemoryDatabase database) {
+    public InMemoryAuthenticationDao(@Nonnull InMemoryDatabase database) {
         Preconditions.checkNotNull(database);
         this.database = database;
     }
@@ -37,7 +37,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         If user authentication not found.
      */
     @Override
-    public AuthenticationRecord find(@NotNull RecordIdentifier<String> userId) throws
+    public AuthenticationRecord find(@Nonnull RecordIdentifier<String> userId) throws
                                                                                DataAccessException {
         Preconditions.checkNotNull(userId);
 
@@ -71,7 +71,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         If user authentication not found.
      */
     @Override
-    public void delete(@NotNull RecordIdentifier<String> userId) throws DataAccessException {
+    public void delete(@Nonnull RecordIdentifier<String> userId) throws DataAccessException {
 
         try {
             database.authenticationTable()
@@ -89,7 +89,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         {@link AuthenticationRecord}.
      */
     @Override
-    public void create(@NotNull AuthenticationRecord record) throws DataAccessException {
+    public void create(@Nonnull AuthenticationRecord record) throws DataAccessException {
 
         AuthenticationData data = new AuthenticationData(record.getId()
                                                                .getValue(),
@@ -113,7 +113,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         {@link AuthenticationRecord}.
      */
     @Override
-    public void update(@NotNull AuthenticationRecord record) throws DataAccessException {
+    public void update(@Nonnull AuthenticationRecord record) throws DataAccessException {
 
         AuthenticationData data = new AuthenticationData(record.getId()
                                                                .getValue(),

@@ -5,7 +5,7 @@ import com.teamdev.persistent.dao.DatabaseRecord;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.util.EmailValidator;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * {@link DatabaseRecord} implementation which is intended to store data about the user.
@@ -16,10 +16,10 @@ public class UserRecord extends DatabaseRecord<String> {
     private final String password;
     private final String email;
 
-    public UserRecord(@NotNull RecordIdentifier<String> id,
-                      @NotNull String login,
-                      @NotNull String password,
-                      @NotNull String email) {
+    public UserRecord(@Nonnull RecordIdentifier<String> id,
+                      @Nonnull String login,
+                      @Nonnull String password,
+                      @Nonnull String email) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(login);
