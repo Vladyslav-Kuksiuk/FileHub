@@ -42,7 +42,29 @@ class UserRegistrationProcessIntegrationTest {
                 .matches("email@email.com");
     }
 
-    //    @Test
+    @Test
+    void registerManyTest() throws DataAccessException, DatabaseTransactionException,
+                                   DatabaseException, InterruptedException {
+
+        for (int i = 0; i < 100; i++) {
+            UserRegistrationCommand command = new UserRegistrationCommand("user" + i,
+                                                                          "password",
+                                                                          "email@email.com");
+
+            if (i % 25 == 0) {
+                Thread.sleep(1000);
+            }
+
+            registerProcess.run(command);
+        }
+        assertWithMessage("User registration failed.")
+                .that(database.userTable()
+                              .getUserById("user99")
+                              .email())
+                .matches("email@email.com");
+    }
+
+    @Test
     void nullTest() throws NoSuchMethodException {
 
         NullPointerTester tester = new NullPointerTester();

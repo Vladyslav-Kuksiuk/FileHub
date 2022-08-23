@@ -10,6 +10,7 @@ import com.teamdev.util.EmailValidator;
 import com.teamdev.util.StringEncryptor;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * {@link UserRegistrationProcess} implementation.
@@ -20,7 +21,8 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
 
     private final UserDao userDao;
 
-    public UserRegistrationProcessImpl(@Nonnull UserDao userDao) {
+    @ParametersAreNonnullByDefault
+    public UserRegistrationProcessImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 

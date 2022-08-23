@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -31,6 +35,10 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
     private final Gson gson = new Gson();
 
     private final File file;
+
+    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
+    private ScheduledFuture<Boolean> fileWritingFuture = null;
 
     private Map<I, D> tableMap = new HashMap<>();
 
@@ -71,28 +79,45 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      * @throws DatabaseException
      *         If database connection not working.
      */
-    protected synchronized void updateTableInFile() throws DatabaseException {
+    protected void updateTableInFile() throws DatabaseException {
 
-        try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
+        Optional<ScheduledFuture<Boolean>> fileWritingFuture = Optional.ofNullable(
+                this.fileWritingFuture);
 
-            writer.write("[");
-            Iterator iterator = tableMap.values()
-                                        .iterator();
+        fileWritingFuture.ifPresent(future -> future.cancel(true));
 
-            while (iterator.hasNext()) {
-                writer.write(gson.toJson(iterator.next()));
-                if (iterator.hasNext()) {
-                    writer.write(",");
-                }
+        var future = executor.schedule(() -> {
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Thread sleep failed");
             }
 
-            writer.write("]");
+            try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
 
-        } catch (IOException e) {
-            logger.atWarning()
-                  .log("[DATABASE TABLE SAVING CRASHED]");
-            throw new DatabaseException("Database table saving crashed.", e.getCause());
-        }
+                writer.write("[");
+                Iterator<D> iterator = tableMap.values()
+                                               .iterator();
+
+                while (iterator.hasNext()) {
+                    writer.write(gson.toJson(iterator.next()));
+                    if (iterator.hasNext()) {
+                        writer.write(",");
+                    }
+                }
+
+                writer.write("]");
+
+            } catch (IOException e) {
+                logger.atWarning()
+                      .log("[DATABASE TABLE SAVING CRASHED]");
+                throw new DatabaseException("Database table saving crashed.", e.getCause());
+            }
+            return true;
+        }, 500, TimeUnit.MILLISECONDS);
+
+        this.fileWritingFuture = future;
 
     }
 
@@ -114,11 +139,6 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
     }
 
     protected Map<I, D> tableMap() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Thread sleep failed");
-        }
         return tableMap;
     }
 }
