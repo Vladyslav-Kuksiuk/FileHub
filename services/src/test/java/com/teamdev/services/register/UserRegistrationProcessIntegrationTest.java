@@ -24,7 +24,7 @@ class UserRegistrationProcessIntegrationTest {
         UserDao userDao = new InMemoryUserDao(database);
 
         registerProcess =
-                new UserRegistrationProcess(userDao);
+                new UserRegistrationProcessImpl(userDao);
     }
 
     @Test

@@ -20,8 +20,8 @@ class UserAuthenticationProcessIntegrationTest {
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final UserDao userDao = new InMemoryUserDao(database);
     private final AuthenticationDao authenticationDao = new InMemoryAuthenticationDao(database);
-    private final UserAuthenticationProcess authorizationProcess =
-            new UserAuthenticationProcess(userDao, authenticationDao);
+    private final UserAuthenticationProcessImpl authorizationProcess =
+            new UserAuthenticationProcessImpl(userDao, authenticationDao);
 
     UserAuthenticationProcessIntegrationTest() throws DatabaseException {
     }

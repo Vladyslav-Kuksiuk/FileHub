@@ -17,8 +17,9 @@ public class UserAuthenticationProcessUnitTest {
     void authorizationTest() throws DataAccessException {
         UserDaoStab userDao = new UserDaoStab();
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserAuthenticationProcess authorizationProcess = new UserAuthenticationProcess(userDao,
-                                                                                       authenticationDao);
+        UserAuthenticationProcessImpl authorizationProcess = new UserAuthenticationProcessImpl(
+                userDao,
+                authenticationDao);
 
         UserRecord user = new UserRecord(new RecordIdentifier<>("user"),
                                          "user",
@@ -41,7 +42,7 @@ public class UserAuthenticationProcessUnitTest {
     @Test
     void nullTest() throws NoSuchMethodException {
 
-        UserAuthenticationProcess authorizationProcess = new UserAuthenticationProcess(
+        UserAuthenticationProcessImpl authorizationProcess = new UserAuthenticationProcessImpl(
                 new UserDaoStab(),
                 new AuthenticationDaoStab());
 

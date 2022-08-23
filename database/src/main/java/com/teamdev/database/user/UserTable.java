@@ -1,5 +1,6 @@
 package com.teamdev.database.user;
 
+import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabaseTable;
@@ -11,6 +12,8 @@ import java.util.Optional;
  * {@link InMemoryDatabaseTable} implementation to store {@link UserData}.
  */
 public class UserTable extends InMemoryDatabaseTable<String, UserData> {
+
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private final static String FILE_NAME = "users.json";
 
@@ -114,6 +117,8 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      *         If user doesn't exist.
      */
     public UserData getUserByLogin(@NotNull String login) throws DatabaseTransactionException {
+
+        logger.atInfo().log("%s",tableMap());
 
         Optional<UserData> foundUser = tableMap().values()
                 .stream()

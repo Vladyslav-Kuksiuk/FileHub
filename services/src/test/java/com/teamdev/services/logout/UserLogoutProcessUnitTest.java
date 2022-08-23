@@ -20,7 +20,7 @@ class UserLogoutProcessUnitTest {
     void logoutUserTest() throws DataAccessException {
         UserDaoStab userDao = new UserDaoStab();
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserLogoutProcess logoutProcess = new UserLogoutProcess(authenticationDao);
+        UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
 
         RecordIdentifier<String> userId = new RecordIdentifier<>("user");
         String authToken = "token";
@@ -48,7 +48,7 @@ class UserLogoutProcessUnitTest {
     void logoutAbsentUser() throws DataAccessException {
         UserDaoStab userDao = new UserDaoStab();
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserLogoutProcess logoutProcess = new UserLogoutProcess(authenticationDao);
+        UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
 
         RecordIdentifier<String> userId = new RecordIdentifier<>("user");
         String authToken = "token";
@@ -62,7 +62,7 @@ class UserLogoutProcessUnitTest {
 
         UserDaoStab dao = new UserDaoStab();
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserLogoutProcess logoutProcess = new UserLogoutProcess(authenticationDao);
+        UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(logoutProcess, logoutProcess.getClass()
