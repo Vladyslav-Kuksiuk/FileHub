@@ -5,6 +5,10 @@ import com.teamdev.services.Query;
 
 import javax.annotation.Nonnull;
 
+/**
+ * A {@link Query} implementation which is intended to store
+ * data about file downloading.
+ */
 public class FileDownloadQuery implements Query {
 
     private final String userId;

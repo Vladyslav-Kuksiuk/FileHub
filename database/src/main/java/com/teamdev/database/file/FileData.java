@@ -4,6 +4,9 @@ import com.teamdev.database.Data;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Class which is intended to store information about file meta context.
+ */
 public class FileData extends Data<String> {
 
     private final String ownerId;

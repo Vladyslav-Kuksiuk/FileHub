@@ -2,6 +2,7 @@ package com.teamdev.database.user;
 
 import com.google.common.testing.NullPointerTester;
 import com.google.common.truth.Truth;
+import com.teamdev.database.authentication.AuthenticationData;
 import com.teamdev.util.LocalDateTimeUtil;
 import org.junit.jupiter.api.Test;
 

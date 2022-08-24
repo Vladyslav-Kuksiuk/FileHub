@@ -7,6 +7,9 @@ import com.teamdev.database.InMemoryDatabaseTable;
 
 import javax.annotation.Nonnull;
 
+/**
+ * {@link InMemoryDatabaseTable} implementation to store {@link FileData}.
+ */
 public class FileTable extends InMemoryDatabaseTable<String, FileData> {
 
     private static final String FILE_NAME = "files.json";

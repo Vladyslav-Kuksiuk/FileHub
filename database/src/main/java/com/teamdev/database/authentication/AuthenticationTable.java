@@ -1,4 +1,4 @@
-package com.teamdev.database.user;
+package com.teamdev.database.authentication;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.database.DatabaseException;

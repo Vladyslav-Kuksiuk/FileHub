@@ -1,7 +1,7 @@
 package com.teamdev.database;
 
+import com.teamdev.database.authentication.AuthenticationTable;
 import com.teamdev.database.file.FileTable;
-import com.teamdev.database.user.AuthenticationTable;
 import com.teamdev.database.user.UserTable;
 
 /**

@@ -5,6 +5,9 @@ import com.teamdev.persistent.dao.RecordIdentifier;
 
 import javax.annotation.Nonnull;
 
+/**
+ * {@link DatabaseRecord} implementation which is intended to store data about file meta context.
+ */
 public class FileRecord extends DatabaseRecord<String> {
 
     private final String filePath;

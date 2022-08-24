@@ -9,6 +9,9 @@ import com.teamdev.persistent.filestorage.FileStorage;
 
 import javax.annotation.Nonnull;
 
+/**
+ * {@link FileUploadProcess} implementation.
+ */
 public class FileUploadProcessImpl extends FileUploadProcess {
 
     private final FileDao fileDao;

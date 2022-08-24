@@ -21,7 +21,8 @@ import java.util.concurrent.TimeUnit;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * A class that simulates a database table as {@link Map} and synchronizes it with a JSON file.
+ * A class that store {@link Data} implementation in {@link Map} and
+ * have methods to synchronize it with a JSON file.
  *
  * @param <I>
  *         Data identifier type.

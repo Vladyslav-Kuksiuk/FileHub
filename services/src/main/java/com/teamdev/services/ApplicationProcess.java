@@ -6,9 +6,12 @@ import javax.validation.constraints.NotNull;
 
 /**
  * A Service Interface which is intended to process commands.
+ * Commands processing causes changes in the database.
  *
  * @param <C>
- *         {@link Command}.
+ *         {@link Command} implementation.
+ * @param <R>
+ *         {@link ServerResponse} implementation.
  */
 public interface ApplicationProcess<C extends Command, R extends ServerResponse> {
 

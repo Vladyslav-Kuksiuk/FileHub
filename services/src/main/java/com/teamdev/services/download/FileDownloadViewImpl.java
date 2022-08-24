@@ -9,6 +9,9 @@ import com.teamdev.persistent.filestorage.FileStorage;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 
+/**
+ * {@link FileDownloadView} implementation.
+ */
 public class FileDownloadViewImpl implements FileDownloadView {
 
     private final FileDao fileDao;

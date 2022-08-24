@@ -7,6 +7,10 @@ import com.teamdev.services.CommandWithAuthorizationData;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 
+/**
+ * A {@link CommandWithAuthorizationData} implementation which is intended to store
+ * data about file uploading.
+ */
 public class FileUploadCommand extends CommandWithAuthorizationData {
 
     private final String filePath;

@@ -5,7 +5,7 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.database.user.AuthenticationData;
+import com.teamdev.database.authentication.AuthenticationData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
