@@ -5,7 +5,7 @@ import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabaseTable;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * {@link InMemoryDatabaseTable} implementation to store {@link AuthenticationData}.
@@ -30,7 +30,7 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      *         If database connection not working.
      */
 
-    public AuthenticationData getAuthorizationByUserId(@NotNull String userId) throws
+    public AuthenticationData getAuthorizationByUserId(@Nonnull String userId) throws
                                                                                DatabaseTransactionException {
         Preconditions.checkNotNull(userId);
 
@@ -51,7 +51,7 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      * @throws DatabaseException
      *         If database connection not working.
      */
-    public void addAuthorization(@NotNull AuthenticationData authentication) throws
+    public void addAuthorization(@Nonnull AuthenticationData authentication) throws
                                                                              DatabaseException {
         synchronized (locker) {
             Preconditions.checkNotNull(authentication);
@@ -73,8 +73,8 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      * @throws DatabaseException
      *         If database connection not working.
      */
-    public void deleteAuthorization(@NotNull String userId) throws DatabaseTransactionException,
-                                                                   DatabaseException {
+    public void deleteAuthentication(@Nonnull String userId) throws DatabaseTransactionException,
+                                                                    DatabaseException {
         Preconditions.checkNotNull(userId);
         synchronized (locker) {
             if (!tableMap().containsKey(userId)) {
@@ -90,25 +90,6 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
     }
 
     /**
-     * Method to add {@link AuthenticationData} to the table.
-     *
-     * @param authentication
-     *         {@link AuthenticationData}.
-     * @throws DatabaseException
-     *         If database connection not working.
-     */
-    public void addUserAuthentication(@NotNull AuthenticationData authentication) throws
-                                                                                  DatabaseException {
-        synchronized (locker) {
-            Preconditions.checkNotNull(authentication);
-
-            tableMap().put(authentication.id(), authentication);
-
-            updateTableInFile();
-        }
-    }
-
-    /**
      * Method to update {@link AuthenticationData} in the table.
      *
      * @param authentication
@@ -118,9 +99,9 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      * @throws DatabaseException
      *         If database connection not working.
      */
-    public void updateAuthorization(@NotNull AuthenticationData authentication) throws
-                                                                                DatabaseTransactionException,
-                                                                                DatabaseException {
+    public void updateAuthentication(@Nonnull AuthenticationData authentication) throws
+                                                                                 DatabaseTransactionException,
+                                                                                 DatabaseException {
 
         Preconditions.checkNotNull(authentication);
         synchronized (locker) {

@@ -75,7 +75,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         try {
             database.authenticationTable()
-                    .deleteAuthorization(userId.getValue());
+                    .deleteAuthentication(userId.getValue());
         } catch (DatabaseTransactionException | DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }

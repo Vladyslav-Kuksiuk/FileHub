@@ -1,5 +1,6 @@
 package com.teamdev.database;
 
+import com.teamdev.database.file.FileTable;
 import com.teamdev.database.user.AuthenticationTable;
 import com.teamdev.database.user.UserTable;
 
@@ -12,6 +13,7 @@ public class InMemoryDatabase {
 
     private final UserTable userTable = new UserTable();
     private final AuthenticationTable authenticationTable = new AuthenticationTable();
+    private final FileTable fileTable = new FileTable();
 
     public InMemoryDatabase() throws DatabaseException {
     }
@@ -24,9 +26,14 @@ public class InMemoryDatabase {
         return authenticationTable;
     }
 
+    public FileTable fileTable() {
+        return fileTable;
+    }
+
     public void clean() throws DatabaseException {
         userTable.clean();
         authenticationTable.clean();
+        fileTable.clean();
     }
 
 }

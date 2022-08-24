@@ -91,7 +91,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                throw new RuntimeException("Thread sleep failed");
+                throw new RuntimeException("Thread sleep failed.");
             }
 
             try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
