@@ -4,6 +4,8 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.persistent.dao.DataAccessException;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +49,35 @@ public class FileStorage {
             throw new DataAccessException("File writing failed.");
         }
 
-        logger.atInfo().log("[FILE WRITTEN] - path: %s", fullPath);
+        logger.atInfo()
+              .log("[FILE WRITTEN] - path: %s", fullPath);
+
+    }
+
+    public InputStream downloadFile(String filePath) throws DataAccessException {
+        String fullPath = STORAGE_FOLDER_PATH + filePath;
+        File file = new File(fullPath);
+
+        if (!file.exists()) {
+            throw new DataAccessException("File reading failed.");
+        }
+
+        try {
+            InputStream fileInput = new FileInputStream(file);
+            return fileInput;
+        } catch (FileNotFoundException e) {
+            throw new DataAccessException("File reading failed.");
+        }
+
+    }
+
+    public void clean() {
+        File file = new File(STORAGE_FOLDER_PATH);
+
+        if (file.exists()) {
+            file.delete();
+            file.mkdirs();
+        }
 
     }
 

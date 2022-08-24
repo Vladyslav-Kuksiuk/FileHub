@@ -1,8 +1,9 @@
-package com.teamdev.services.filesave;
+package com.teamdev.services.upload;
 
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.DataAccessException;
+import com.teamdev.persistent.filestorage.FileStorage;
 import com.teamdev.services.ServiceLocator;
 import com.teamdev.services.authentication.UserAuthenticationCommand;
 import com.teamdev.services.authentication.UserAuthenticationProcess;
@@ -15,13 +16,16 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class FileUploadProcessImplTest {
 
     @Test
-    void run() throws DataAccessException, FileNotFoundException, DatabaseException {
+    void run() throws DataAccessException, IOException, DatabaseException, InterruptedException {
 
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
@@ -48,6 +52,16 @@ class FileUploadProcessImplTest {
                                                 authResp.authenticationToken(),
                                                 "user\\hello.txt",
                                                 inputStream));
+
+        InputStream testFileStream = new FileInputStream(
+                new File(FileStorage.STORAGE_FOLDER_PATH + "user\\hello.txt"));
+        String testText = new String(testFileStream.readAllBytes(), StandardCharsets.UTF_8);
+
+        Thread.sleep(3000);
+
+        assertWithMessage("File uploading failed.")
+                .that(testText)
+                .isEqualTo("Hello world!");
 
     }
 }

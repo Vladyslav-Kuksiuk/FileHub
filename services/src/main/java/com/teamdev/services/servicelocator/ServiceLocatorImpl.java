@@ -16,12 +16,12 @@ import com.teamdev.services.ServerResponse;
 import com.teamdev.services.ServiceLocator;
 import com.teamdev.services.authentication.UserAuthenticationProcess;
 import com.teamdev.services.authentication.UserAuthenticationProcessImpl;
-import com.teamdev.services.filesave.FileUploadProcess;
-import com.teamdev.services.filesave.FileUploadProcessImpl;
 import com.teamdev.services.logout.UserLogoutProcess;
 import com.teamdev.services.logout.UserLogoutProcessImpl;
 import com.teamdev.services.register.UserRegistrationProcess;
 import com.teamdev.services.register.UserRegistrationProcessImpl;
+import com.teamdev.services.upload.FileUploadProcess;
+import com.teamdev.services.upload.FileUploadProcessImpl;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
