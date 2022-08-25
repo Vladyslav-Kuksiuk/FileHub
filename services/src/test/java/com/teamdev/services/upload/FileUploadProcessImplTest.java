@@ -27,6 +27,13 @@ class FileUploadProcessImplTest {
     @Test
     void run() throws DataAccessException, IOException, DatabaseException, InterruptedException {
 
+        String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH+"Test\\";
+
+        File filesDirectory = new File(testFolderPath);
+        if(!filesDirectory.exists()){
+            filesDirectory.mkdirs();
+        }
+
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
 
@@ -46,7 +53,7 @@ class FileUploadProcessImplTest {
                                               "password"));
 
         InputStream inputStream = new FileInputStream(
-                new File("C:\\Programming\\Database\\Test\\hello.txt"));
+                new File(testFolderPath+"hello.txt"));
 
         uploadProcess.run(new FileUploadCommand(regResp.userId(),
                                                 authResp.authenticationToken(),

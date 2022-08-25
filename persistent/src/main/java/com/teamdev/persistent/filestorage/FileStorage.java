@@ -1,6 +1,7 @@
 package com.teamdev.persistent.filestorage;
 
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.DataAccessException;
 
 import java.io.File;
@@ -16,8 +17,15 @@ import java.io.OutputStream;
  */
 public class FileStorage {
 
-    public static final String STORAGE_FOLDER_PATH = "C:\\Programming\\Database\\Files\\";
+    public static final String STORAGE_FOLDER_PATH = InMemoryDatabase.DATABASE_FOLDER_PATH+ "Files\\";
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    public FileStorage() {
+        File filesDirectory = new File(STORAGE_FOLDER_PATH);
+        if(!filesDirectory.exists()){
+            filesDirectory.mkdirs();
+        }
+    }
 
     /**
      * Method to save files to file system from {@link InputStream} by given path.

@@ -1,21 +1,36 @@
 package com.teamdev.database;
 
+import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.authentication.AuthenticationTable;
 import com.teamdev.database.file.FileTable;
 import com.teamdev.database.user.UserTable;
+
+import java.io.File;
 
 /**
  * Database which tables store data in memory and synchronize it with file.
  */
 public class InMemoryDatabase {
 
-    public static final String DATABASE_FOLDER_PATH = "C:\\Programming\\Database\\Tables\\";
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final UserTable userTable = new UserTable();
-    private final AuthenticationTable authenticationTable = new AuthenticationTable();
-    private final FileTable fileTable = new FileTable();
+    public static final String DATABASE_FOLDER_PATH = "C:\\Programming\\Database\\";
+    public static final String DATABASE_TABLES_FOLDER_PATH = DATABASE_FOLDER_PATH+"Tables\\";
+
+    private final UserTable userTable;
+    private final AuthenticationTable authenticationTable;
+    private final FileTable fileTable;
 
     public InMemoryDatabase() throws DatabaseException {
+
+        File tablesDirectory = new File(DATABASE_TABLES_FOLDER_PATH);
+        if(!tablesDirectory.exists()){
+            tablesDirectory.mkdirs();
+        }
+
+        userTable = new UserTable();
+        authenticationTable = new AuthenticationTable();
+        fileTable = new FileTable();
     }
 
     public UserTable userTable() {

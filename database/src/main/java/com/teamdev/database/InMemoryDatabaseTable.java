@@ -47,7 +47,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
                                     @Nonnull Class<D[]> dataArrayClass) throws
                                                                         DatabaseException {
 
-        file = new File(InMemoryDatabase.DATABASE_FOLDER_PATH + fileName);
+        file = new File(InMemoryDatabase.DATABASE_TABLES_FOLDER_PATH + fileName);
 
         try {
 
