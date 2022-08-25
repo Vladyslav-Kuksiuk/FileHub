@@ -1,7 +1,5 @@
 package com.teamdev.persistent.dao;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * An interface that provides methods for CRUD operations.
  *
@@ -19,7 +17,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      *         Record identifier.
      * @return Found record.
      */
-    R find(@NotNull RecordIdentifier<I> id) throws DataAccessException;
+    R find(RecordIdentifier<I> id) throws DataAccessException;
 
     /**
      * Method to delete a record in the database.
@@ -27,7 +25,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      * @param id
      *         Record identifier.
      */
-    void delete(@NotNull RecordIdentifier<I> id) throws DataAccessException;
+    void delete(RecordIdentifier<I> id) throws DataAccessException;
 
     /**
      * Method to create a record in the database.
@@ -35,7 +33,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      * @param record
      *         Record to create.
      */
-    void create(@NotNull R record) throws DataAccessException;
+    void create(R record) throws DataAccessException;
 
     /**
      * Method to create a record in the database.
@@ -43,6 +41,6 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      * @param record
      *         Record to update.
      */
-    void update(@NotNull R record) throws DataAccessException;
+    void update(R record) throws DataAccessException;
 
 }

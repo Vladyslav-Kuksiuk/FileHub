@@ -4,12 +4,11 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.database.user.AuthenticationData;
 import com.teamdev.database.user.UserData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * {@link UserDao} implementation which is intended to work with user
@@ -21,7 +20,7 @@ public class InMemoryUserDao implements UserDao {
 
     private final InMemoryDatabase database;
 
-    public InMemoryUserDao(@NotNull InMemoryDatabase database) {
+    public InMemoryUserDao(@Nonnull InMemoryDatabase database) {
         this.database = database;
     }
 
@@ -33,7 +32,7 @@ public class InMemoryUserDao implements UserDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public UserRecord find(@NotNull RecordIdentifier<String> id) throws DataAccessException {
+    public UserRecord find(@Nonnull RecordIdentifier<String> id) throws DataAccessException {
 
         UserData userData;
 
@@ -56,13 +55,13 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to delete a record in the {@link InMemoryDatabase}.
+     * Method to delete user record in the {@link InMemoryDatabase}.
      *
      * @param id
      *         User record identifier.
      */
     @Override
-    public void delete(@NotNull RecordIdentifier<String> id) throws DataAccessException {
+    public void delete(@Nonnull RecordIdentifier<String> id) throws DataAccessException {
 
         try {
             database.userTable()
@@ -77,13 +76,13 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to create a record in the {@link InMemoryDatabase}.
+     * Method to create user record in the {@link InMemoryDatabase}.
      *
      * @param record
      *         User record to create.
      */
     @Override
-    public void create(@NotNull UserRecord record) throws DataAccessException {
+    public void create(@Nonnull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
@@ -103,13 +102,13 @@ public class InMemoryUserDao implements UserDao {
     }
 
     /**
-     * Method to create a record in the {@link InMemoryDatabase}.
+     * Method to update user record in the {@link InMemoryDatabase}.
      *
      * @param record
      *         User record to update.
      */
     @Override
-    public void update(@NotNull UserRecord record) throws DataAccessException {
+    public void update(@Nonnull UserRecord record) throws DataAccessException {
 
         UserData userData = new UserData(record.getId()
                                                .getValue(),
@@ -136,7 +135,7 @@ public class InMemoryUserDao implements UserDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public UserRecord findByLogin(@NotNull String login) throws DataAccessException {
+    public UserRecord findByLogin(@Nonnull String login) throws DataAccessException {
 
         UserData userData;
 
@@ -153,31 +152,5 @@ public class InMemoryUserDao implements UserDao {
                                                userData.email());
 
         return userRecord;
-    }
-
-    /**
-     * Method to create a user authentication record in {@link InMemoryDatabase}.
-     *
-     * @param authenticationRecord
-     *         {@link AuthenticationRecord}.
-     */
-    @Override
-    public void authorize(@NotNull AuthenticationRecord authenticationRecord) throws
-                                                                            DataAccessException {
-
-        AuthenticationData authenticationData =
-                new AuthenticationData(authenticationRecord.getId()
-                                                           .getValue(),
-                                       authenticationRecord.authenticationToken(),
-                                       authenticationRecord.authorizationTime()
-                                                          .getTime());
-
-        try {
-            database.authorizationTable()
-                    .addUserAuthorization(authenticationData);
-        } catch (DatabaseException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
-
     }
 }

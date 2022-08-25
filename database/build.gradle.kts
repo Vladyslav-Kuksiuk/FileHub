@@ -63,6 +63,8 @@ dependencies {
     implementation("com.google.flogger:flogger-log4j2-backend:0.7.4")
 
     testImplementation("com.google.truth:truth:1.1.3")
+
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
 }
 
 application {

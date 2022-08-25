@@ -1,6 +1,6 @@
 package com.teamdev.persistent.dao;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Class to store information about record in database.
@@ -12,7 +12,7 @@ public abstract class DatabaseRecord<I> {
 
     private final RecordIdentifier<I> id;
 
-    protected DatabaseRecord(@NotNull RecordIdentifier<I> id) {
+    protected DatabaseRecord(@Nonnull RecordIdentifier<I> id) {
         this.id = id;
     }
 

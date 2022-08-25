@@ -24,7 +24,7 @@ class UserRegistrationProcessIntegrationTest {
         UserDao userDao = new InMemoryUserDao(database);
 
         registerProcess =
-                new UserRegistrationProcess(userDao);
+                new UserRegistrationProcessImpl(userDao);
     }
 
     @Test
@@ -38,6 +38,29 @@ class UserRegistrationProcessIntegrationTest {
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
                               .getUserById("Hellamb")
+                              .email())
+                .matches("email@email.com");
+    }
+
+    @Test
+    void registerManyTest() throws DataAccessException, DatabaseTransactionException,
+                                   DatabaseException, InterruptedException {
+
+        for (int i = 0; i < 100; i++) {
+            UserRegistrationCommand command = new UserRegistrationCommand("user" + i,
+                                                                          "password",
+                                                                          "email@email.com");
+
+            registerProcess.run(command);
+
+            if (i % 25 == 0) {
+                Thread.sleep(4000);
+            }
+
+        }
+        assertWithMessage("User registration failed.")
+                .that(database.userTable()
+                              .getUserById("user99")
                               .email())
                 .matches("email@email.com");
     }

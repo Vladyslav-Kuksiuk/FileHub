@@ -1,6 +1,6 @@
 package com.teamdev.persistent.dao;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 /**
@@ -13,7 +13,7 @@ public class RecordIdentifier<T> {
 
     private final T id;
 
-    public RecordIdentifier(@NotNull T id) {
+    public RecordIdentifier(@Nonnull T id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public class RecordIdentifier<T> {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nonnull Object o) {
         if (this == o) {
             return true;
         }

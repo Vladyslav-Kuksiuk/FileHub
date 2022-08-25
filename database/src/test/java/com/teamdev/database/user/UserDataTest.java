@@ -35,17 +35,6 @@ class UserDataTest {
     }
 
     @Test
-    void illegalIdTest() {
-
-        assertThrows(IllegalStateException.class, () -> {
-            UserData userData = new UserData("",
-                                             "user",
-                                             "password",
-                                             "email@email.com");
-        }, "User data creation with illegal id passed.");
-    }
-
-    @Test
     void illegalLoginTest() {
 
         assertThrows(IllegalStateException.class, () -> {

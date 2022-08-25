@@ -2,6 +2,7 @@ package com.teamdev.persistent.dao.user;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
 import org.junit.jupiter.api.Test;
 
 class AuthenticationRecordTest {

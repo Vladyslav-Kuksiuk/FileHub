@@ -1,5 +1,6 @@
 package com.teamdev.database.user;
 
+import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabaseTable;
@@ -12,10 +13,12 @@ import java.util.Optional;
  */
 public class UserTable extends InMemoryDatabaseTable<String, UserData> {
 
-    private final static String FILE_NAME = "users.json";
+    private static final String FILE_NAME = "users.json";
+    private final Object locker = new Object();
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public UserTable() throws DatabaseException {
-        super(FILE_NAME);
+        super(FILE_NAME, UserData[].class);
 
     }
 
@@ -49,14 +52,15 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      */
     public void addUser(@NotNull UserData user) throws DatabaseException,
                                                        DatabaseTransactionException {
+        synchronized (locker) {
+            if (tableMap().containsKey(user.id())) {
+                throw new DatabaseTransactionException("User with this login already exists.");
+            }
 
-        if (tableMap().containsKey(user.id())) {
-            throw new DatabaseTransactionException("User with this login already exists.");
+            tableMap().put(user.id(), user);
+
+            updateTableInFile();
         }
-
-        tableMap().put(user.id(), user);
-
-        updateTableInFile();
 
     }
 
@@ -72,13 +76,15 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      */
     public void deleteUser(@NotNull String id) throws DatabaseTransactionException,
                                                       DatabaseException {
-        if (!tableMap().containsKey(id)) {
-            throw new DatabaseTransactionException("User with this id doesn't exist.");
+        synchronized (locker) {
+            if (!tableMap().containsKey(id)) {
+                throw new DatabaseTransactionException("User with this id doesn't exist.");
+            }
+
+            tableMap().remove(id);
+
+            updateTableInFile();
         }
-
-        tableMap().remove(id);
-
-        updateTableInFile();
 
     }
 
@@ -94,13 +100,15 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      */
     public void updateUser(@NotNull UserData user) throws DatabaseTransactionException,
                                                           DatabaseException {
-        if (!tableMap().containsKey(user.id())) {
-            throw new DatabaseTransactionException("User with this id doesn't exist.");
+        synchronized (locker) {
+            if (!tableMap().containsKey(user.id())) {
+                throw new DatabaseTransactionException("User with this id doesn't exist.");
+            }
+
+            tableMap().put(user.id(), user);
+
+            updateTableInFile();
         }
-
-        tableMap().put(user.id(), user);
-
-        updateTableInFile();
 
     }
 
@@ -116,10 +124,10 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
     public UserData getUserByLogin(@NotNull String login) throws DatabaseTransactionException {
 
         Optional<UserData> foundUser = tableMap().values()
-                                                 .stream()
-                                                 .filter(user -> user.login()
-                                                                     .equals(login))
-                                                 .findFirst();
+                .stream()
+                .filter(user -> user.login()
+                                    .equals(login))
+                .findFirst();
 
         if (foundUser.isEmpty()) {
             throw new DatabaseTransactionException("User with this login doesn't exist.");

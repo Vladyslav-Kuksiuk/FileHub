@@ -1,6 +1,6 @@
 package com.teamdev.database;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.io.Serial;
 
 /**
@@ -11,11 +11,11 @@ public class DatabaseException extends Exception {
     @Serial
     private static final long serialVersionUID = -600675094186265865L;
 
-    public DatabaseException(@NotNull String message) {
+    public DatabaseException(@Nonnull String message) {
         super(message);
     }
 
-    public DatabaseException(@NotNull String message, @NotNull Throwable cause) {
+    public DatabaseException(@Nonnull String message, @Nonnull Throwable cause) {
         super(message, cause);
     }
 }

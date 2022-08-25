@@ -17,7 +17,7 @@ class UserRegistrationProcessUnitTest {
                                DatabaseException {
 
         UserDaoStab dao = new UserDaoStab();
-        UserRegistrationProcess registrationProcess = new UserRegistrationProcess(dao);
+        UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(dao);
 
         UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
                                                                       "password",
@@ -35,7 +35,7 @@ class UserRegistrationProcessUnitTest {
     void nullTest() throws NoSuchMethodException {
 
         UserDaoStab dao = new UserDaoStab();
-        UserRegistrationProcess registrationProcess = new UserRegistrationProcess(dao);
+        UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(dao);
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registrationProcess, registrationProcess.getClass()
