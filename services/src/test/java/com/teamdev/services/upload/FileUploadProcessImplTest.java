@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +33,15 @@ class FileUploadProcessImplTest {
         File filesDirectory = new File(testFolderPath);
         if(!filesDirectory.exists()){
             filesDirectory.mkdirs();
+        }
+
+        File testFile = new File(testFolderPath+"hello.txt");
+
+        if(!testFile.exists()){
+            testFile.createNewFile();
+            FileWriter writer = new FileWriter(testFile);
+            writer.write("Hello world!");
+            writer.close();
         }
 
         InMemoryDatabase database = new InMemoryDatabase();
