@@ -63,5 +63,7 @@ class FileUploadProcessImplTest {
                 .that(testText)
                 .isEqualTo("Hello world!");
 
+        Thread.sleep(3000);
+
     }
 }

@@ -17,7 +17,7 @@ class UserRegistrationProcessIntegrationTest {
     private final InMemoryDatabase database;
     private final ApplicationProcess<UserRegistrationCommand, UserRegistrationResponse> registerProcess;
 
-    UserRegistrationProcessIntegrationTest() throws DatabaseException {
+    UserRegistrationProcessIntegrationTest() throws DatabaseException, InterruptedException {
         database = new InMemoryDatabase();
         database.clean();
 
@@ -25,11 +25,13 @@ class UserRegistrationProcessIntegrationTest {
 
         registerProcess =
                 new UserRegistrationProcessImpl(userDao);
+
+        Thread.sleep(3000);
     }
 
     @Test
     void registerTest() throws DataAccessException, DatabaseTransactionException,
-                               DatabaseException {
+                               DatabaseException, InterruptedException {
         UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
                                                                       "password",
                                                                       "email@email.com");
@@ -40,6 +42,8 @@ class UserRegistrationProcessIntegrationTest {
                               .getUserById("Hellamb")
                               .email())
                 .matches("email@email.com");
+
+        Thread.sleep(3000);
     }
 
     @Test
@@ -63,6 +67,8 @@ class UserRegistrationProcessIntegrationTest {
                               .getUserById("user99")
                               .email())
                 .matches("email@email.com");
+
+        Thread.sleep(3000);
     }
 
     @Test

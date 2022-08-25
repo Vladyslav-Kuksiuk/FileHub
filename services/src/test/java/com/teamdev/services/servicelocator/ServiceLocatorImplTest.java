@@ -17,7 +17,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class ServiceLocatorImplTest {
 
     @Test
-    void locateTest() throws DataAccessException, DatabaseException {
+    void locateTest() throws DataAccessException, DatabaseException, InterruptedException {
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
 
@@ -42,6 +42,8 @@ class ServiceLocatorImplTest {
                 "User registration and authentication process, picket from ServiceLocator failed.")
                 .that(authResponse.userId())
                 .isEqualTo(new RecordIdentifier<>("SLuser"));
+
+        Thread.sleep(3000);
 
     }
 }

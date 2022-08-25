@@ -21,8 +21,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileDownloadViewImplTest {
 
     @Test
-    void request() throws DatabaseException, DatabaseTransactionException, IOException,
-                          DataAccessException {
+    void downloadTest() throws DatabaseException, DatabaseTransactionException, IOException,
+                               DataAccessException {
 
         InMemoryDatabase database = new InMemoryDatabase();
         FileStorage fileStorage = new FileStorage();

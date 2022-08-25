@@ -14,7 +14,7 @@ class UserRegistrationProcessUnitTest {
 
     @Test
     void registerTest() throws DataAccessException, DatabaseTransactionException,
-                               DatabaseException {
+                               DatabaseException, InterruptedException {
 
         UserDaoStab dao = new UserDaoStab();
         UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(dao);
@@ -29,6 +29,8 @@ class UserRegistrationProcessUnitTest {
                          .get(new RecordIdentifier<>("Hellamb"))
                          .email())
                 .matches("email@email.com");
+
+        Thread.sleep(3000);
     }
 
     @Test
