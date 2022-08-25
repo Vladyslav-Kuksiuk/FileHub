@@ -3,7 +3,7 @@ package com.teamdev.database;
 import com.google.common.flogger.FluentLogger;
 import com.google.gson.Gson;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -43,8 +43,9 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
 
     private Map<I, D> tableMap = new HashMap<>();
 
-    protected InMemoryDatabaseTable(@NotNull String fileName, Class<D[]> dataArrayClass) throws
-                                                                                         DatabaseException {
+    protected InMemoryDatabaseTable(@Nonnull String fileName,
+                                    @Nonnull Class<D[]> dataArrayClass) throws
+                                                                        DatabaseException {
 
         file = new File(InMemoryDatabase.DATABASE_FOLDER_PATH + fileName);
 
@@ -75,7 +76,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
     }
 
     /**
-     * Save {@link Map} in file.
+     * Save {@link Map} with {@link Data} in file as JSON.
      *
      * @throws DatabaseException
      *         If database connection not working.

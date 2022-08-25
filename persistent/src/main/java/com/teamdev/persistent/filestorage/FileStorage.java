@@ -11,11 +11,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Class to work with files in file system.
+ */
 public class FileStorage {
 
     public static final String STORAGE_FOLDER_PATH = "C:\\Programming\\Database\\Files\\";
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+    /**
+     * Method to save files to file system from {@link InputStream} by given path.
+     *
+     * @param filePath
+     *         path to save the file.
+     * @param fileInput
+     *         file to save.
+     * @throws DataAccessException
+     *         If file cannot be written or created.
+     */
     public void uploadFile(String filePath, InputStream fileInput) throws DataAccessException {
 
         String fullPath = STORAGE_FOLDER_PATH + filePath;
@@ -54,6 +67,15 @@ public class FileStorage {
 
     }
 
+    /**
+     * Method to convert file in file system to {@link InputStream} by given path.
+     *
+     * @param filePath
+     *         path where file stored.
+     * @return {@link InputStream} from found file.
+     * @throws DataAccessException
+     *         If file not found or cannot be read.
+     */
     public InputStream downloadFile(String filePath) throws DataAccessException {
         String fullPath = STORAGE_FOLDER_PATH + filePath;
         File file = new File(fullPath);
@@ -71,6 +93,9 @@ public class FileStorage {
 
     }
 
+    /**
+     * Method to clean all files in root directory.
+     */
     public void clean() {
         File file = new File(STORAGE_FOLDER_PATH);
 

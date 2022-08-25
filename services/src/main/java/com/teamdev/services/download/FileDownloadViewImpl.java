@@ -5,6 +5,7 @@ import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.dao.file.FileDao;
 import com.teamdev.persistent.dao.file.FileRecord;
 import com.teamdev.persistent.filestorage.FileStorage;
+import com.teamdev.services.Query;
 
 import javax.annotation.Nonnull;
 import java.io.InputStream;
@@ -23,6 +24,15 @@ public class FileDownloadViewImpl implements FileDownloadView {
         this.fileStorage = fileStorage;
     }
 
+    /**
+     * Method to find file by path and return it, if user have access.
+     *
+     * @param query
+     *         {@link Query} implementation to request.
+     * @return {@link FileDownloadResponse}.
+     * @throws DataAccessException
+     *         If access denied or file not found.
+     */
     @Override
     public FileDownloadResponse request(FileDownloadQuery query) throws DataAccessException {
 

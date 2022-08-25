@@ -8,11 +8,11 @@ import com.teamdev.database.InMemoryDatabaseTable;
 import javax.annotation.Nonnull;
 
 /**
- * {@link InMemoryDatabaseTable} implementation to store {@link AuthenticationData}.
+ * Implementation of {@link InMemoryDatabaseTable} to store {@link AuthenticationData}.
  */
 public class AuthenticationTable extends InMemoryDatabaseTable<String, AuthenticationData> {
 
-    private final static String FILE_NAME = "userAuthentication.json";
+    private static final String FILE_NAME = "userAuthentication.json";
     private final Object locker = new Object();
 
     public AuthenticationTable() throws DatabaseException {
