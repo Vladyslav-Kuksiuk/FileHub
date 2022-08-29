@@ -14,7 +14,7 @@ public class InMemoryDatabase {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String DATABASE_FOLDER_PATH = "C:\\Programming\\Database\\";
+    public static final String DATABASE_FOLDER_PATH = "D:\\Work\\DatabaseFolder\\";
     public static final String DATABASE_TABLES_FOLDER_PATH = DATABASE_FOLDER_PATH+"Tables\\";
 
     private final UserTable userTable;
