@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserLogoutProcessUnitTest {
 
     @Test
-    void logoutUserTest() throws DataAccessException, InterruptedException {
+    void logoutUserTest() throws DataAccessException, InterruptedException,
+                                 UserNotAuthenticatedException {
         UserDaoStab userDao = new UserDaoStab();
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
         UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
@@ -47,7 +48,7 @@ class UserLogoutProcessUnitTest {
     }
 
     @Test
-    void logoutAbsentUser() throws DataAccessException {
+    void logoutAbsentUser() {
         UserDaoStab userDao = new UserDaoStab();
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
         UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
@@ -55,7 +56,7 @@ class UserLogoutProcessUnitTest {
         RecordIdentifier<String> userId = new RecordIdentifier<>("user");
         String authToken = "token";
 
-        assertThrows(DataAccessException.class,
+        assertThrows(UserNotAuthenticatedException.class,
                      () -> logoutProcess.run(new UserLogoutCommand(userId)));
 
     }

@@ -25,6 +25,6 @@ public interface ApplicationProcess<C extends Command, R> {
      * @throws DataAccessException
      *         If the database query fails.
      */
-    R run(@NotNull C command) throws DataAccessException;
+    R run(@NotNull C command) throws ProcessException;
 
 }

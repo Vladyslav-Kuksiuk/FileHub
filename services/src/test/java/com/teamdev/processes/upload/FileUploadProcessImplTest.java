@@ -3,12 +3,13 @@ package com.teamdev.processes.upload;
 import com.teamdev.ServiceLocator;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.filestorage.FileStorage;
 import com.teamdev.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.processes.authentication.UserAuthenticationResponse;
+import com.teamdev.processes.authentication.UserDataMismatchException;
+import com.teamdev.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.processes.register.UserRegistrationCommand;
 import com.teamdev.processes.register.UserRegistrationProcess;
 import com.teamdev.servicelocator.ServiceLocatorImpl;
@@ -26,8 +27,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileUploadProcessImplTest {
 
     @Test
-    void fileUploadTest() throws DataAccessException, IOException, DatabaseException,
-                                 InterruptedException {
+    void fileUploadTest() throws IOException, DatabaseException,
+                                 InterruptedException, FileAlreadyExistsException,
+                                 UserAlreadyRegisteredException, UserDataMismatchException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
 

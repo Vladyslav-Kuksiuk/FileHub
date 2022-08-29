@@ -8,6 +8,8 @@ import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.processes.authentication.UserAuthenticationResponse;
+import com.teamdev.processes.authentication.UserDataMismatchException;
+import com.teamdev.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.processes.register.UserRegistrationCommand;
 import com.teamdev.processes.register.UserRegistrationProcess;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,7 @@ class ServiceLocatorImplTest {
 
     @Test
     void locateTest() throws DataAccessException, DatabaseException, InterruptedException,
-                             DatabaseTransactionException {
+                             DatabaseTransactionException, UserDataMismatchException {
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
 
@@ -30,7 +32,7 @@ class ServiceLocatorImplTest {
             registrationProcess.run(new UserRegistrationCommand("SLuser",
                                                                 "SLpassword",
                                                                 "email@email.com"));
-        } catch (DataAccessException exception) {
+        } catch (UserAlreadyRegisteredException exception) {
 
         }
 

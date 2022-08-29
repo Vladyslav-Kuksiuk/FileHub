@@ -25,13 +25,17 @@ public class FileUploadProcessImpl implements FileUploadProcess {
     }
 
     @Override
-    public Boolean run(FileUploadCommand command) throws DataAccessException {
+    public Boolean run(FileUploadCommand command) throws FileAlreadyExistsException {
 
         FileRecord fileRecord = new FileRecord(new RecordIdentifier<>(command.filePath()),
                                                command.userId(),
                                                command.filePath());
 
-        fileDao.create(fileRecord);
+        try {
+            fileDao.create(fileRecord);
+        } catch (DataAccessException exception) {
+            throw new FileAlreadyExistsException(exception.getMessage());
+        }
 
         fileStorage.uploadFile(command.filePath(), command.fileInputStream());
 

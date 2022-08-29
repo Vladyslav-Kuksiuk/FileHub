@@ -1,6 +1,5 @@
 package com.teamdev.processes.register;
 
-import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.processes.ApplicationProcess;
 
@@ -11,5 +10,6 @@ import com.teamdev.processes.ApplicationProcess;
 public interface UserRegistrationProcess extends ApplicationProcess<UserRegistrationCommand, RecordIdentifier<String>> {
 
     @Override
-    RecordIdentifier<String> run(UserRegistrationCommand command) throws DataAccessException;
+    RecordIdentifier<String> run(UserRegistrationCommand command) throws
+                                                                  UserAlreadyRegisteredException;
 }

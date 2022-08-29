@@ -26,7 +26,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
 
     @Override
     public RecordIdentifier<String> run(@Nonnull UserRegistrationCommand command) throws
-                                                                                  DataAccessException {
+                                                                                  UserAlreadyRegisteredException {
         logger.atInfo()
               .log("[PROCESS STARTED] - User registration - login: %s", command.getLogin());
 
@@ -37,7 +37,11 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
                                                StringEncryptor.encrypt(command.getPassword()),
                                                command.getEmail());
 
-        userDao.create(userRecord);
+        try {
+            userDao.create(userRecord);
+        } catch (DataAccessException exception) {
+            throw new UserAlreadyRegisteredException(exception.getMessage());
+        }
 
         return userId;
 

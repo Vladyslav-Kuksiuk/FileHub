@@ -28,7 +28,7 @@ class UserAuthenticationProcessIntegrationTest {
 
     @Test
     void authorizationTest() throws DataAccessException, DatabaseTransactionException,
-                                    DatabaseException {
+                                    DatabaseException, UserDataMismatchException {
         database.clean();
 
         UserData user = new UserData("user", "user", StringEncryptor.encrypt("password"),

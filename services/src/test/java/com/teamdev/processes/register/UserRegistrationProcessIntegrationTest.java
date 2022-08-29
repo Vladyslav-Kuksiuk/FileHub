@@ -4,11 +4,11 @@ import com.google.common.testing.NullPointerTester;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.processes.ApplicationProcess;
+import com.teamdev.processes.ProcessException;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -31,8 +31,8 @@ class UserRegistrationProcessIntegrationTest {
     }
 
     @Test
-    void registerTest() throws DataAccessException, DatabaseTransactionException,
-                               DatabaseException, InterruptedException {
+    void registerTest() throws DatabaseTransactionException,
+                               InterruptedException, ProcessException {
         UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
                                                                       "password",
                                                                       "email@email.com");
@@ -48,8 +48,8 @@ class UserRegistrationProcessIntegrationTest {
     }
 
     @Test
-    void registerManyTest() throws DataAccessException, DatabaseTransactionException,
-                                   DatabaseException, InterruptedException {
+    void registerManyTest() throws DatabaseTransactionException,
+                                   InterruptedException, ProcessException {
 
         for (int i = 0; i < 100; i++) {
             UserRegistrationCommand command = new UserRegistrationCommand("user" + i,

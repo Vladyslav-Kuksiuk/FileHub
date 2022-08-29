@@ -35,18 +35,23 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
      */
     @Override
     public UserAuthenticationResponse run(@Nonnull UserAuthenticationCommand command) throws
-                                                                                      DataAccessException {
+                                                                                      UserDataMismatchException {
 
         logger.atInfo()
               .log("[PROCESS STARTED] - User authentication - login: %s", command.getLogin());
 
-        UserRecord userRecord = userDao.findByLogin(command.getLogin());
+        UserRecord userRecord = null;
+        try {
+            userRecord = userDao.findByLogin(command.getLogin());
+        } catch (DataAccessException exception) {
+            throw new UserDataMismatchException(exception.getMessage());
+        }
 
         boolean isPasswordMatch = StringEncryptor.encrypt(command.getPassword())
                                                  .equals(userRecord.password());
 
         if (!isPasswordMatch) {
-            throw new DataAccessException("Password incorrect.");
+            throw new UserDataMismatchException("Password incorrect.");
         }
 
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);
@@ -60,7 +65,11 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                                          authenticationToken,
                                          expireDateTime);
 
-        authenticationDao.create(authenticationRecord);
+        try {
+            authenticationDao.create(authenticationRecord);
+        } catch (DataAccessException exception) {
+            throw new UserDataMismatchException(exception.getMessage());
+        }
 
         UserAuthenticationResponse response =
                 new UserAuthenticationResponse(authenticationToken);

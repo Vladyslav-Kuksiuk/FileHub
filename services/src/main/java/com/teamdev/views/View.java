@@ -23,6 +23,6 @@ public interface View<Q extends Query, R> {
      * @throws DataAccessException
      *         If the database query fails.
      */
-    R request(Q query) throws DataAccessException;
+    R request(Q query) throws ViewException;
 
 }

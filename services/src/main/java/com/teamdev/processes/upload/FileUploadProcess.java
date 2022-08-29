@@ -1,6 +1,5 @@
 package com.teamdev.processes.upload;
 
-import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.processes.ApplicationProcess;
 
 /**
@@ -10,5 +9,5 @@ import com.teamdev.processes.ApplicationProcess;
 public interface FileUploadProcess extends ApplicationProcess<FileUploadCommand, Boolean> {
 
     @Override
-    Boolean run(FileUploadCommand command) throws DataAccessException;
+    Boolean run(FileUploadCommand command) throws FileAlreadyExistsException;
 }

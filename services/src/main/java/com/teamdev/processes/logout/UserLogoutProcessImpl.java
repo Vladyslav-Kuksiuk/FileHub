@@ -26,15 +26,19 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
      * @param command
      *         {@link UserLogoutCommand}.
      * @return User identifier.
-     * @throws DataAccessException
+     * @throws UserNotAuthenticatedException
      *         If user not authenticated.
      */
     @Override
     public RecordIdentifier<String> run(@Nonnull UserLogoutCommand command) throws
-                                                                            DataAccessException {
+                                                                            UserNotAuthenticatedException {
         Preconditions.checkNotNull(command);
 
-        authenticationDao.delete(command.userId());
+        try {
+            authenticationDao.delete(command.userId());
+        } catch (DataAccessException exception) {
+            throw new UserNotAuthenticatedException(exception.getMessage());
+        }
 
         return command.userId();
     }

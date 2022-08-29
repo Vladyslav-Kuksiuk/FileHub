@@ -2,9 +2,6 @@ package com.teamdev.processes.register;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.UserDaoStab;
-import com.teamdev.database.DatabaseException;
-import com.teamdev.database.DatabaseTransactionException;
-import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +10,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class UserRegistrationProcessUnitTest {
 
     @Test
-    void registerTest() throws DataAccessException, DatabaseTransactionException,
-                               DatabaseException, InterruptedException {
+    void registerTest() throws InterruptedException, UserAlreadyRegisteredException {
 
         UserDaoStab dao = new UserDaoStab();
         UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(dao);
@@ -40,9 +36,10 @@ class UserRegistrationProcessUnitTest {
         UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(dao);
 
         NullPointerTester tester = new NullPointerTester();
-        tester.testMethod(registrationProcess, registrationProcess.getClass()
-                                                                  .getMethod("run",
-                                                                             UserRegistrationCommand.class));
+        tester.testMethod(registrationProcess,
+                          registrationProcess.getClass()
+                                             .getMethod("run",
+                                                        UserRegistrationCommand.class));
 
     }
 

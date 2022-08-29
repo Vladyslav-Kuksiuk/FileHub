@@ -30,19 +30,22 @@ public class FileDownloadViewImpl implements FileDownloadView {
      * @param query
      *         {@link Query} implementation to request.
      * @return {@link FileDownloadResponse}.
-     * @throws DataAccessException
-     *         If access denied or file not found.
      */
     @Override
-    public FileDownloadResponse request(FileDownloadQuery query) throws DataAccessException {
+    public FileDownloadResponse request(FileDownloadQuery query) throws FileAccessDeniedException {
 
-        FileRecord fileRecord = fileDao.find(new RecordIdentifier<>(query.filePath()));
+        FileRecord fileRecord = null;
+        try {
+            fileRecord = fileDao.find(new RecordIdentifier<>(query.filePath()));
+        } catch (DataAccessException exception) {
+            throw new FileAccessDeniedException(exception.getMessage());
+        }
 
         if (!query.userId()
                   .equals(fileRecord.ownerId()
                                     .getValue())) {
 
-            throw new DataAccessException("Access to file not allowed.");
+            throw new FileAccessDeniedException("Access to file not allowed.");
 
         }
 

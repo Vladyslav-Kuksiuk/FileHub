@@ -14,7 +14,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 public class UserAuthenticationProcessUnitTest {
 
     @Test
-    void authorizationTest() throws DataAccessException {
+    void authorizationTest() throws DataAccessException, UserDataMismatchException {
         UserDaoStab userDao = new UserDaoStab();
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
         UserAuthenticationProcessImpl authorizationProcess = new UserAuthenticationProcessImpl(
