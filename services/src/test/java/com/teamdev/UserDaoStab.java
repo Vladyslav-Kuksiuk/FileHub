@@ -69,10 +69,10 @@ public class UserDaoStab implements UserDao {
         Preconditions.checkNotNull(login);
 
         Optional<UserRecord> optionalUser = users.values()
-                .stream()
-                .filter(user -> user.login()
-                                    .equals(login))
-                .findFirst();
+                                                 .stream()
+                                                 .filter(user -> user.login()
+                                                                     .equals(login))
+                                                 .findFirst();
 
         if (optionalUser.isEmpty()) {
             throw new DataAccessException("User not found.");

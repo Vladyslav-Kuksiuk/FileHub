@@ -1,10 +1,10 @@
 package com.teamdev.servicelocator;
 
+import com.teamdev.ServiceLocator;
 import com.teamdev.database.DatabaseException;
+import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.ServiceLocator;
 import com.teamdev.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.processes.authentication.UserAuthenticationResponse;
@@ -17,7 +17,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class ServiceLocatorImplTest {
 
     @Test
-    void locateTest() throws DataAccessException, DatabaseException, InterruptedException {
+    void locateTest() throws DataAccessException, DatabaseException, InterruptedException,
+                             DatabaseTransactionException {
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
 
@@ -38,12 +39,20 @@ class ServiceLocatorImplTest {
         UserAuthenticationResponse authResponse = authProcess.run(
                 new UserAuthenticationCommand("SLuser", "SLpassword"));
 
+        Thread.sleep(3000);
+
+        database = new InMemoryDatabase();
+
+        System.err.println(database.authenticationTable()
+                                   .getAuthenticationByUserId("SLuser")
+                                   .authenticationToken());
+
         assertWithMessage(
                 "User registration and authentication process, picket from ServiceLocator failed.")
-                .that(authResponse.userId())
-                .isEqualTo(new RecordIdentifier<>("SLuser"));
-
-        Thread.sleep(3000);
+                .that(authResponse.authenticationToken())
+                .isEqualTo(database.authenticationTable()
+                                   .getAuthenticationByUserId("SLuser")
+                                   .authenticationToken());
 
     }
 }

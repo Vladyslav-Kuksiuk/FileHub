@@ -2,7 +2,6 @@ package com.teamdev.processes.authentication;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.processes.authentication.UserAuthenticationResponse;
 import org.junit.jupiter.api.Test;
 
 class UserAuthenticationResponseTest {

@@ -86,7 +86,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
         Optional<ScheduledFuture<Boolean>> fileWritingFuture = Optional.ofNullable(
                 this.fileWritingFuture);
 
-        fileWritingFuture.ifPresent(future -> future.cancel(true));
+        fileWritingFuture.ifPresent(future -> future.cancel(false));
 
         var future = executor.schedule(() -> {
 

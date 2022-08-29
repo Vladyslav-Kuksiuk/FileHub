@@ -1,7 +1,6 @@
 package com.teamdev.servicelocator;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.ServerResponse;
 import com.teamdev.ServiceLocator;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
@@ -32,7 +31,7 @@ import java.util.Map;
  */
 public class ServiceLocatorImpl implements ServiceLocator {
 
-    private final Map<Class<? extends ApplicationProcess<? extends Command, ? extends ServerResponse>>, ApplicationProcess> services =
+    private final Map<Class<? extends ApplicationProcess<? extends Command, ?>>, ApplicationProcess> services =
             new HashMap<>();
 
     public ServiceLocatorImpl() {

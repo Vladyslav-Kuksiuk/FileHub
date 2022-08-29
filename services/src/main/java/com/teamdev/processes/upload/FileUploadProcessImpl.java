@@ -25,7 +25,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
     }
 
     @Override
-    public FileUploadResponse run(FileUploadCommand command) throws DataAccessException {
+    public Boolean run(FileUploadCommand command) throws DataAccessException {
 
         FileRecord fileRecord = new FileRecord(new RecordIdentifier<>(command.filePath()),
                                                command.userId(),
@@ -35,6 +35,6 @@ public class FileUploadProcessImpl implements FileUploadProcess {
 
         fileStorage.uploadFile(command.filePath(), command.fileInputStream());
 
-        return new FileUploadResponse();
+        return true;
     }
 }

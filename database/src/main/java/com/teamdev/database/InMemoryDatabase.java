@@ -12,11 +12,9 @@ import java.io.File;
  */
 public class InMemoryDatabase {
 
-    private final FluentLogger logger = FluentLogger.forEnclosingClass();
-
     public static final String DATABASE_FOLDER_PATH = "D:\\Work\\DatabaseFolder\\";
-    public static final String DATABASE_TABLES_FOLDER_PATH = DATABASE_FOLDER_PATH+"Tables\\";
-
+    public static final String DATABASE_TABLES_FOLDER_PATH = DATABASE_FOLDER_PATH + "Tables\\";
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
     private final UserTable userTable;
     private final AuthenticationTable authenticationTable;
     private final FileTable fileTable;
@@ -24,7 +22,7 @@ public class InMemoryDatabase {
     public InMemoryDatabase() throws DatabaseException {
 
         File tablesDirectory = new File(DATABASE_TABLES_FOLDER_PATH);
-        if(!tablesDirectory.exists()){
+        if (!tablesDirectory.exists()) {
             tablesDirectory.mkdirs();
         }
 

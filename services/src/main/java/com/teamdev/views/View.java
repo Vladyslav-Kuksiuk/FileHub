@@ -1,6 +1,5 @@
 package com.teamdev.views;
 
-import com.teamdev.ServerResponse;
 import com.teamdev.persistent.dao.DataAccessException;
 
 /**
@@ -10,9 +9,9 @@ import com.teamdev.persistent.dao.DataAccessException;
  * @param <Q>
  *         {@link Query} implementation.
  * @param <R>
- *         {@link ServerResponse} implementation
+ *         Server response type.
  */
-public interface View<Q extends Query, R extends ServerResponse> {
+public interface View<Q extends Query, R> {
 
     /**
      * Method which process {@link Query} and communicate
@@ -20,7 +19,7 @@ public interface View<Q extends Query, R extends ServerResponse> {
      *
      * @param query
      *         {@link Query} implementation to request.
-     * @return {@link ServerResponse} implementation.
+     * @return Server response type.
      * @throws DataAccessException
      *         If the database query fails.
      */

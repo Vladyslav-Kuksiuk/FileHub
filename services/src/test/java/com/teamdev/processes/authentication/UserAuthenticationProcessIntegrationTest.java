@@ -10,9 +10,6 @@ import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.InMemoryAuthenticationDao;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
 import com.teamdev.persistent.dao.user.UserDao;
-import com.teamdev.processes.authentication.UserAuthenticationCommand;
-import com.teamdev.processes.authentication.UserAuthenticationProcessImpl;
-import com.teamdev.processes.authentication.UserAuthenticationResponse;
 import com.teamdev.util.StringEncryptor;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +43,7 @@ class UserAuthenticationProcessIntegrationTest {
 
         assertWithMessage("User authorization failed.")
                 .that(database.authenticationTable()
-                              .getAuthorizationByUserId("user")
+                              .getAuthenticationByUserId("user")
                               .authenticationToken())
                 .matches(response.authenticationToken());
     }

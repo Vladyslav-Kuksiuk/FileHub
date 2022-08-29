@@ -45,7 +45,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         try {
             authenticationData = database.authenticationTable()
-                                         .getAuthorizationByUserId(userId.getValue());
+                                         .getAuthenticationByUserId(userId.getValue());
         } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
@@ -99,7 +99,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         try {
             database.authenticationTable()
-                    .addAuthorization(data);
+                    .addAuthentication(data);
         } catch (DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
@@ -123,7 +123,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         try {
             database.authenticationTable()
-                    .addAuthorization(data);
+                    .addAuthentication(data);
         } catch (DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }

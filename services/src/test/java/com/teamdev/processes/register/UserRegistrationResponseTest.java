@@ -1,7 +1,6 @@
 package com.teamdev.processes.register;
 
 import com.google.common.testing.NullPointerTester;
-import com.teamdev.processes.register.UserRegistrationResponse;
 import org.junit.jupiter.api.Test;
 
 class UserRegistrationResponseTest {

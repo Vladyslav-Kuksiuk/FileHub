@@ -1,6 +1,5 @@
 package com.teamdev.processes;
 
-import com.teamdev.ServerResponse;
 import com.teamdev.persistent.dao.DataAccessException;
 
 import javax.validation.constraints.NotNull;
@@ -12,9 +11,9 @@ import javax.validation.constraints.NotNull;
  * @param <C>
  *         {@link Command} implementation.
  * @param <R>
- *         {@link ServerResponse} implementation.
+ *         Server response.
  */
-public interface ApplicationProcess<C extends Command, R extends ServerResponse> {
+public interface ApplicationProcess<C extends Command, R> {
 
     /**
      * Method which process {@link Command} and communicate

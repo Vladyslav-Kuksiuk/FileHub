@@ -17,12 +17,13 @@ import java.io.OutputStream;
  */
 public class FileStorage {
 
-    public static final String STORAGE_FOLDER_PATH = InMemoryDatabase.DATABASE_FOLDER_PATH+ "Files\\";
+    public static final String STORAGE_FOLDER_PATH =
+            InMemoryDatabase.DATABASE_FOLDER_PATH + "Files\\";
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public FileStorage() {
         File filesDirectory = new File(STORAGE_FOLDER_PATH);
-        if(!filesDirectory.exists()){
+        if (!filesDirectory.exists()) {
             filesDirectory.mkdirs();
         }
     }

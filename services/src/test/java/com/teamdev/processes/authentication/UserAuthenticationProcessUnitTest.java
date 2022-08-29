@@ -1,11 +1,11 @@
 package com.teamdev.processes.authentication;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.AuthenticationDaoStab;
+import com.teamdev.UserDaoStab;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.dao.user.UserRecord;
-import com.teamdev.AuthenticationDaoStab;
-import com.teamdev.UserDaoStab;
 import com.teamdev.util.StringEncryptor;
 import org.junit.jupiter.api.Test;
 

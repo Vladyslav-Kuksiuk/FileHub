@@ -1,11 +1,11 @@
 package com.teamdev.processes.register;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.UserDaoStab;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.UserDaoStab;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;

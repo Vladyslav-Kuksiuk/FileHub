@@ -63,8 +63,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         authenticationDao.create(authenticationRecord);
 
         UserAuthenticationResponse response =
-                new UserAuthenticationResponse(userRecord.getId(),
-                                               authenticationToken);
+                new UserAuthenticationResponse(authenticationToken);
 
         return response;
     }
