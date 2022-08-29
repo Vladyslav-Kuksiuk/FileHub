@@ -1,15 +1,15 @@
 package com.teamdev.processes.register;
 
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.processes.ApplicationProcess;
 
 /**
  * A {@link ApplicationProcess} extended interface which implementation is intended to process
  * user registration.
  */
-public interface UserRegistrationProcess extends ApplicationProcess<UserRegistrationCommand, RecordIdentifier<String>> {
+public interface UserRegistrationProcess extends ApplicationProcess<UserRegistrationCommand, RecordId<String>> {
 
     @Override
-    RecordIdentifier<String> run(UserRegistrationCommand command) throws
-                                                                  UserAlreadyRegisteredException;
+    RecordId<String> run(UserRegistrationCommand command) throws
+                                                          UserAlreadyRegisteredException;
 }

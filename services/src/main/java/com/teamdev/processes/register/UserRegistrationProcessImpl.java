@@ -2,7 +2,7 @@ package com.teamdev.processes.register;
 
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
 import com.teamdev.util.StringEncryptor;
@@ -25,23 +25,32 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     }
 
     @Override
-    public RecordIdentifier<String> run(@Nonnull UserRegistrationCommand command) throws
-                                                                                  UserAlreadyRegisteredException {
+    public RecordId<String> run(@Nonnull UserRegistrationCommand command) throws
+                                                                          UserAlreadyRegisteredException {
         logger.atInfo()
-              .log("[PROCESS STARTED] - User registration - login: %s", command.getLogin());
+              .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
 
-        RecordIdentifier<String> userId = new RecordIdentifier<>(command.getLogin());
+        RecordId<String> userId = new RecordId<>(command.login());
 
         UserRecord userRecord = new UserRecord(userId,
-                                               command.getLogin(),
-                                               StringEncryptor.encrypt(command.getPassword()),
-                                               command.getEmail());
+                                               command.login(),
+                                               StringEncryptor.encrypt(command.password()),
+                                               command.email());
 
         try {
             userDao.create(userRecord);
+
         } catch (DataAccessException exception) {
+
+            logger.atWarning()
+                  .log("[PROCESS FAILED] - User registration - login: %s - Exception message: %s.",
+                       command.login(), exception.getMessage());
+
             throw new UserAlreadyRegisteredException(exception.getMessage());
         }
+
+        logger.atInfo()
+              .log("[PROCESS FINISHED] - User registration - login: %s.", command.login());
 
         return userId;
 

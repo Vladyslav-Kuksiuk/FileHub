@@ -45,10 +45,6 @@ class ServiceLocatorImplTest {
 
         database = new InMemoryDatabase();
 
-        System.err.println(database.authenticationTable()
-                                   .getAuthenticationByUserId("SLuser")
-                                   .authenticationToken());
-
         assertWithMessage(
                 "User registration and authentication process, picket from ServiceLocator failed.")
                 .that(authResponse.authenticationToken())

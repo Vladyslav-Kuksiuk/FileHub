@@ -4,7 +4,9 @@ import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.file.FileData;
-import com.teamdev.persistent.dao.DataAccessException;
+import com.teamdev.persistent.dao.RecordId;
+import com.teamdev.persistent.dao.file.FileDao;
+import com.teamdev.persistent.dao.file.InMemoryFileDao;
 import com.teamdev.persistent.filestorage.FileStorage;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +24,10 @@ class FileDownloadViewImplTest {
 
     @Test
     void downloadTest() throws DatabaseException, DatabaseTransactionException, IOException,
-                               DataAccessException {
+                               FileAccessDeniedException {
 
         InMemoryDatabase database = new InMemoryDatabase();
+        FileDao fileDao = new InMemoryFileDao(database);
         FileStorage fileStorage = new FileStorage();
         database.clean();
 
@@ -48,7 +51,13 @@ class FileDownloadViewImplTest {
 
         }
 
-        InputStream storageFileInput = fileStorage.downloadFile("user\\myFile.txt");
+        FileDownloadView downloadView = new FileDownloadViewImpl(fileDao, fileStorage);
+
+        FileDownloadQuery downloadQuery = new FileDownloadQuery(new RecordId<>("user"),
+                                                                "user\\myFile.txt");
+
+        InputStream storageFileInput = downloadView.request(downloadQuery)
+                                                   .fileInput(); //fileStorage.downloadFile("user\\myFile.txt");
 
         String storedTestText = new String(storageFileInput.readAllBytes(), StandardCharsets.UTF_8);
 

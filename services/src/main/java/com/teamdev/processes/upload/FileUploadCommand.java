@@ -1,7 +1,7 @@
 package com.teamdev.processes.upload;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.processes.AuthenticatedUserCommand;
 
 import javax.annotation.Nonnull;
@@ -17,7 +17,7 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
     private final InputStream fileInputStream;
 
     protected FileUploadCommand(
-            @Nonnull RecordIdentifier<String> userId,
+            @Nonnull RecordId<String> userId,
             @Nonnull String filePath,
             @Nonnull InputStream fileInputStream) {
         super(userId);

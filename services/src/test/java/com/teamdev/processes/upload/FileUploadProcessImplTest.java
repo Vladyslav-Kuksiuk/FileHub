@@ -3,7 +3,7 @@ package com.teamdev.processes.upload;
 import com.teamdev.ServiceLocator;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.filestorage.FileStorage;
 import com.teamdev.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
@@ -57,7 +57,7 @@ class FileUploadProcessImplTest {
                 UserAuthenticationProcess.class);
         FileUploadProcess uploadProcess = locator.locate(FileUploadProcess.class);
 
-        RecordIdentifier<String> userId = registrationProcess.run(
+        RecordId<String> userId = registrationProcess.run(
                 new UserRegistrationCommand("user",
                                             "password",
                                             "email@email.com"));

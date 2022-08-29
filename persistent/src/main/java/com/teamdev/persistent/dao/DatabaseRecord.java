@@ -10,13 +10,13 @@ import javax.annotation.Nonnull;
  */
 public abstract class DatabaseRecord<I> {
 
-    private final RecordIdentifier<I> id;
+    private final RecordId<I> id;
 
-    protected DatabaseRecord(@Nonnull RecordIdentifier<I> id) {
+    protected DatabaseRecord(@Nonnull RecordId<I> id) {
         this.id = id;
     }
 
-    public RecordIdentifier<I> getId() {
+    public RecordId<I> getId() {
         return id;
     }
 }

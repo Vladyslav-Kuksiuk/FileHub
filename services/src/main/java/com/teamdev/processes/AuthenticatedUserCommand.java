@@ -1,7 +1,7 @@
 package com.teamdev.processes;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 
 import javax.annotation.Nonnull;
 
@@ -10,13 +10,13 @@ import javax.annotation.Nonnull;
  */
 public abstract class AuthenticatedUserCommand implements Command {
 
-    private final RecordIdentifier<String> userId;
+    private final RecordId<String> userId;
 
-    protected AuthenticatedUserCommand(@Nonnull RecordIdentifier<String> userId) {
+    protected AuthenticatedUserCommand(@Nonnull RecordId<String> userId) {
         this.userId = Preconditions.checkNotNull(userId);
     }
 
-    public RecordIdentifier<String> userId() {
+    public RecordId<String> userId() {
         return userId;
     }
 }

@@ -2,7 +2,7 @@ package com.teamdev;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
 
@@ -12,14 +12,14 @@ import java.util.Map;
 
 public class AuthenticationDaoStab implements AuthenticationDao {
 
-    private final Map<RecordIdentifier<String>, AuthenticationRecord> authentications = new HashMap<>();
+    private final Map<RecordId<String>, AuthenticationRecord> authentications = new HashMap<>();
 
-    public Map<RecordIdentifier<String>, AuthenticationRecord> authenticationsMap() {
+    public Map<RecordId<String>, AuthenticationRecord> authenticationsMap() {
         return Collections.unmodifiableMap(authentications);
     }
 
     @Override
-    public AuthenticationRecord find(RecordIdentifier<String> id) throws DataAccessException {
+    public AuthenticationRecord find(RecordId<String> id) throws DataAccessException {
 
         Preconditions.checkNotNull(id);
 
@@ -31,7 +31,7 @@ public class AuthenticationDaoStab implements AuthenticationDao {
     }
 
     @Override
-    public void delete(RecordIdentifier<String> id) throws DataAccessException {
+    public void delete(RecordId<String> id) throws DataAccessException {
 
         Preconditions.checkNotNull(id);
 

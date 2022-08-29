@@ -1,8 +1,9 @@
 package com.teamdev.processes.logout;
 
 import com.google.common.base.Preconditions;
+import com.google.common.flogger.FluentLogger;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 
 import javax.annotation.Nonnull;
@@ -12,6 +13,7 @@ import javax.annotation.Nonnull;
  */
 public class UserLogoutProcessImpl implements UserLogoutProcess {
 
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
     private final AuthenticationDao authenticationDao;
 
     public UserLogoutProcessImpl(@Nonnull
@@ -30,15 +32,29 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
      *         If user not authenticated.
      */
     @Override
-    public RecordIdentifier<String> run(@Nonnull UserLogoutCommand command) throws
-                                                                            UserNotAuthenticatedException {
+    public RecordId<String> run(@Nonnull UserLogoutCommand command) throws
+                                                                    UserNotAuthenticatedException {
         Preconditions.checkNotNull(command);
+
+        logger.atInfo()
+              .log("[PROCESS STARTED] - User logout - login: %s", command.userId()
+                                                                         .value());
 
         try {
             authenticationDao.delete(command.userId());
         } catch (DataAccessException exception) {
+
+            logger.atWarning()
+                  .log("[PROCESS FAILED] - User logout - login: %s - Exception message: %s",
+                       command.userId()
+                              .value(), exception.getMessage());
+
             throw new UserNotAuthenticatedException(exception.getMessage());
         }
+
+        logger.atInfo()
+              .log("[PROCESS FINISHED] - User logout - login: %s", command.userId()
+                                                                          .value());
 
         return command.userId();
     }

@@ -2,7 +2,7 @@ package com.teamdev.processes.register;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.UserDaoStab;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -22,7 +22,7 @@ class UserRegistrationProcessUnitTest {
         registrationProcess.run(command);
         assertWithMessage("User registration failed.")
                 .that(dao.usersMap()
-                         .get(new RecordIdentifier<>("Hellamb"))
+                         .get(new RecordId<>("Hellamb"))
                          .email())
                 .matches("email@email.com");
 

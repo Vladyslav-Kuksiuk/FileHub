@@ -38,19 +38,24 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                                                                                       UserDataMismatchException {
 
         logger.atInfo()
-              .log("[PROCESS STARTED] - User authentication - login: %s", command.getLogin());
+              .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
 
         UserRecord userRecord = null;
         try {
-            userRecord = userDao.findByLogin(command.getLogin());
+            userRecord = userDao.findByLogin(command.login());
         } catch (DataAccessException exception) {
             throw new UserDataMismatchException(exception.getMessage());
         }
 
-        boolean isPasswordMatch = StringEncryptor.encrypt(command.getPassword())
+        boolean isPasswordMatch = StringEncryptor.encrypt(command.password())
                                                  .equals(userRecord.password());
 
         if (!isPasswordMatch) {
+
+            logger.atWarning()
+                  .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: Password incorrect.",
+                       command.login());
+
             throw new UserDataMismatchException("Password incorrect.");
         }
 
@@ -68,11 +73,19 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         try {
             authenticationDao.create(authenticationRecord);
         } catch (DataAccessException exception) {
+
+            logger.atWarning()
+                  .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: %s.",
+                       command.login(), exception.getMessage());
+
             throw new UserDataMismatchException(exception.getMessage());
         }
 
         UserAuthenticationResponse response =
                 new UserAuthenticationResponse(authenticationToken);
+
+        logger.atInfo()
+              .log("[PROCESS FINISHED] - User authentication - login: %s.", command.login());
 
         return response;
     }

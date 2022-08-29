@@ -9,15 +9,15 @@ import java.util.Objects;
  * @param <T>
  *         identifier type.
  */
-public class RecordIdentifier<T> {
+public class RecordId<T> {
 
     private final T id;
 
-    public RecordIdentifier(@Nonnull T id) {
+    public RecordId(@Nonnull T id) {
         this.id = id;
     }
 
-    public T getValue() {
+    public T value() {
         return id;
     }
 
@@ -31,10 +31,10 @@ public class RecordIdentifier<T> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RecordIdentifier)) {
+        if (!(o instanceof RecordId)) {
             return false;
         }
-        RecordIdentifier<T> that = (RecordIdentifier<T>) o;
+        RecordId<T> that = (RecordId<T>) o;
         return id.equals(that.id);
     }
 }

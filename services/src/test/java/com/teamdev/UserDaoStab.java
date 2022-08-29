@@ -2,7 +2,7 @@ package com.teamdev;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
 
@@ -13,14 +13,14 @@ import java.util.Optional;
 
 public class UserDaoStab implements UserDao {
 
-    private final Map<RecordIdentifier<String>, UserRecord> users = new HashMap<>();
+    private final Map<RecordId<String>, UserRecord> users = new HashMap<>();
 
-    public Map<RecordIdentifier<String>, UserRecord> usersMap() {
+    public Map<RecordId<String>, UserRecord> usersMap() {
         return Collections.unmodifiableMap(users);
     }
 
     @Override
-    public UserRecord find(RecordIdentifier<String> id) throws DataAccessException {
+    public UserRecord find(RecordId<String> id) throws DataAccessException {
 
         Preconditions.checkNotNull(id);
 
@@ -32,7 +32,7 @@ public class UserDaoStab implements UserDao {
     }
 
     @Override
-    public void delete(RecordIdentifier<String> id) throws DataAccessException {
+    public void delete(RecordId<String> id) throws DataAccessException {
 
         Preconditions.checkNotNull(id);
 

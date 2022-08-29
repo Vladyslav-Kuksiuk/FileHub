@@ -4,7 +4,7 @@ import com.google.common.testing.NullPointerTester;
 import com.teamdev.AuthenticationDaoStab;
 import com.teamdev.UserDaoStab;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
 import com.teamdev.persistent.dao.user.UserRecord;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class UserLogoutProcessUnitTest {
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
         UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
 
-        RecordIdentifier<String> userId = new RecordIdentifier<>("user");
+        RecordId<String> userId = new RecordId<>("user");
         String authToken = "token";
 
         userDao.create(new UserRecord(userId,
@@ -53,7 +53,7 @@ class UserLogoutProcessUnitTest {
         AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
         UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
 
-        RecordIdentifier<String> userId = new RecordIdentifier<>("user");
+        RecordId<String> userId = new RecordId<>("user");
         String authToken = "token";
 
         assertThrows(UserNotAuthenticatedException.class,

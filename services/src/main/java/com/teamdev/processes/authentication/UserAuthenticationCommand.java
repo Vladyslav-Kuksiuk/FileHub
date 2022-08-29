@@ -26,11 +26,11 @@ public class UserAuthenticationCommand implements Command {
         this.password = password;
     }
 
-    public String getLogin() {
+    public String login() {
         return login;
     }
 
-    public String getPassword() {
+    public String password() {
         return password;
     }
 

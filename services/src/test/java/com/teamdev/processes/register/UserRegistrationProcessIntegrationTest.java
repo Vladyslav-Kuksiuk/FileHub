@@ -4,7 +4,7 @@ import com.google.common.testing.NullPointerTester;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.processes.ApplicationProcess;
@@ -16,7 +16,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class UserRegistrationProcessIntegrationTest {
 
     private final InMemoryDatabase database;
-    private final ApplicationProcess<UserRegistrationCommand, RecordIdentifier<String>> registerProcess;
+    private final ApplicationProcess<UserRegistrationCommand, RecordId<String>> registerProcess;
 
     UserRegistrationProcessIntegrationTest() throws DatabaseException, InterruptedException {
         database = new InMemoryDatabase();

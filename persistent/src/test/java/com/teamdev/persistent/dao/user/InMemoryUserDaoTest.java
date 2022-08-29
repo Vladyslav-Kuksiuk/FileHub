@@ -5,7 +5,7 @@ import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.user.UserData;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +32,7 @@ class InMemoryUserDaoTest {
 
     @Test
     void createTest() throws DataAccessException, DatabaseTransactionException {
-        UserRecord newUser = new UserRecord(new RecordIdentifier<>("login4"),
+        UserRecord newUser = new UserRecord(new RecordId<>("login4"),
                                             "login4",
                                             "password4",
                                             "email4@email.com");
@@ -48,7 +48,7 @@ class InMemoryUserDaoTest {
     void createExistingUserTest() {
 
         assertThrows(DataAccessException.class,
-                     () -> userDao.create(new UserRecord(new RecordIdentifier<>("login1"),
+                     () -> userDao.create(new UserRecord(new RecordId<>("login1"),
                                                          "login1",
                                                          "password",
                                                          "email@email.com")),
@@ -59,7 +59,7 @@ class InMemoryUserDaoTest {
     @Test
     void findTest() throws DataAccessException {
 
-        String email = userDao.find(new RecordIdentifier<>("login1"))
+        String email = userDao.find(new RecordId<>("login1"))
                               .email();
 
         assertEquals("email1@email.com", email);
@@ -69,7 +69,7 @@ class InMemoryUserDaoTest {
     void findAbsentTest() {
 
         assertThrows(DataAccessException.class,
-                     () -> userDao.find(new RecordIdentifier<>("notLogin")),
+                     () -> userDao.find(new RecordId<>("notLogin")),
                      "Find absent user not failed.");
 
     }
@@ -77,7 +77,7 @@ class InMemoryUserDaoTest {
     @Test
     void updateTest() throws DatabaseTransactionException, DataAccessException {
 
-        UserRecord updatedUser = new UserRecord(new RecordIdentifier<>("login2"),
+        UserRecord updatedUser = new UserRecord(new RecordId<>("login2"),
                                                 "login2",
                                                 "password2",
                                                 "changed@email.com");
@@ -94,7 +94,7 @@ class InMemoryUserDaoTest {
 
         assertThrows(DataAccessException.class,
                      () -> {
-                         userDao.update(new UserRecord(new RecordIdentifier<>("notLogin"),
+                         userDao.update(new UserRecord(new RecordId<>("notLogin"),
                                                        "notLogin",
                                                        "password",
                                                        "email@email.com"));
@@ -105,7 +105,7 @@ class InMemoryUserDaoTest {
     @Test
     void deleteTest() throws DataAccessException {
 
-        userDao.delete(new RecordIdentifier<>("login3"));
+        userDao.delete(new RecordId<>("login3"));
 
         assertThrows(DatabaseTransactionException.class, () -> database.userTable()
                                                                        .getUserById("login3"));
@@ -117,7 +117,7 @@ class InMemoryUserDaoTest {
 
         assertThrows(DataAccessException.class,
                      () -> {
-                         userDao.delete(new RecordIdentifier<>("notLogin"));
+                         userDao.delete(new RecordId<>("notLogin"));
                      }, "Delete absent user not failed.");
 
     }

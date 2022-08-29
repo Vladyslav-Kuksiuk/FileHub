@@ -1,6 +1,7 @@
 package com.teamdev.views.download;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.views.Query;
 
 import javax.annotation.Nonnull;
@@ -11,16 +12,16 @@ import javax.annotation.Nonnull;
  */
 public class FileDownloadQuery implements Query {
 
-    private final String userId;
+    private final RecordId<String> userId;
     private final String filePath;
 
-    public FileDownloadQuery(@Nonnull String userId,
+    public FileDownloadQuery(@Nonnull RecordId<String> userId,
                              @Nonnull String filePath) {
         this.userId = Preconditions.checkNotNull(userId);
         this.filePath = Preconditions.checkNotNull(filePath);
     }
 
-    public String userId() {
+    public RecordId<String> userId() {
         return userId;
     }
 
