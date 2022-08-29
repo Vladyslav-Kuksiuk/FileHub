@@ -21,7 +21,7 @@ public interface ApplicationProcess<C extends Command, R> {
      *
      * @param command
      *         {@link Command} to process.
-     * @return {@link ServerResponse}.
+     * @return Server response.
      * @throws DataAccessException
      *         If the database query fails.
      */

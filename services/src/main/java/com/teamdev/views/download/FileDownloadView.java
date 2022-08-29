@@ -1,5 +1,6 @@
 package com.teamdev.views.download;
 
+import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.views.View;
 
 /**
@@ -8,4 +9,6 @@ import com.teamdev.views.View;
  */
 public interface FileDownloadView extends View<FileDownloadQuery, FileDownloadResponse> {
 
+    @Override
+    FileDownloadResponse request(FileDownloadQuery query) throws DataAccessException;
 }

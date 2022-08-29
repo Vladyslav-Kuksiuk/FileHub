@@ -1,5 +1,6 @@
 package com.teamdev.processes.logout;
 
+import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.processes.ApplicationProcess;
 
@@ -9,4 +10,6 @@ import com.teamdev.processes.ApplicationProcess;
  */
 public interface UserLogoutProcess extends ApplicationProcess<UserLogoutCommand, RecordIdentifier<String>> {
 
+    @Override
+    RecordIdentifier<String> run(UserLogoutCommand command) throws DataAccessException;
 }

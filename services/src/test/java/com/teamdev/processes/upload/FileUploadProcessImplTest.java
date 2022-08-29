@@ -4,13 +4,13 @@ import com.teamdev.ServiceLocator;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.DataAccessException;
+import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.filestorage.FileStorage;
 import com.teamdev.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.processes.authentication.UserAuthenticationResponse;
 import com.teamdev.processes.register.UserRegistrationCommand;
 import com.teamdev.processes.register.UserRegistrationProcess;
-import com.teamdev.processes.register.UserRegistrationResponse;
 import com.teamdev.servicelocator.ServiceLocatorImpl;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileUploadProcessImplTest {
 
     @Test
-    void run() throws DataAccessException, IOException, DatabaseException, InterruptedException {
+    void fileUploadTest() throws DataAccessException, IOException, DatabaseException,
+                                 InterruptedException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
 
@@ -54,7 +55,7 @@ class FileUploadProcessImplTest {
                 UserAuthenticationProcess.class);
         FileUploadProcess uploadProcess = locator.locate(FileUploadProcess.class);
 
-        UserRegistrationResponse regResp = registrationProcess.run(
+        RecordIdentifier<String> userId = registrationProcess.run(
                 new UserRegistrationCommand("user",
                                             "password",
                                             "email@email.com"));
@@ -65,7 +66,7 @@ class FileUploadProcessImplTest {
         InputStream inputStream = new FileInputStream(
                 new File(testFolderPath + "hello.txt"));
 
-        uploadProcess.run(new FileUploadCommand(regResp.userId(),
+        uploadProcess.run(new FileUploadCommand(userId,
                                                 "user\\hello.txt",
                                                 inputStream));
 
@@ -73,13 +74,11 @@ class FileUploadProcessImplTest {
                 new File(FileStorage.STORAGE_FOLDER_PATH + "user\\hello.txt"));
         String testText = new String(testFileStream.readAllBytes(), StandardCharsets.UTF_8);
 
-        Thread.sleep(3000);
+        Thread.sleep(1500);
 
         assertWithMessage("File uploading failed.")
                 .that(testText)
                 .isEqualTo("Hello world!");
-
-        Thread.sleep(3000);
 
     }
 }

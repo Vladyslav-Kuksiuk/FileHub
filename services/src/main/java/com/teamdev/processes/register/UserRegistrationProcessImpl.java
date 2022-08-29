@@ -1,12 +1,10 @@
 package com.teamdev.processes.register;
 
-import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
-import com.teamdev.util.EmailValidator;
 import com.teamdev.util.StringEncryptor;
 
 import javax.annotation.Nonnull;
@@ -27,25 +25,21 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     }
 
     @Override
-    public UserRegistrationResponse run(@Nonnull UserRegistrationCommand command) throws
+    public RecordIdentifier<String> run(@Nonnull UserRegistrationCommand command) throws
                                                                                   DataAccessException {
-        Preconditions.checkState(!command.getLogin()
-                                         .isEmpty());
-        Preconditions.checkState(!command.getPassword()
-                                         .isEmpty());
-        Preconditions.checkState(EmailValidator.validate(command.getEmail()));
-
         logger.atInfo()
               .log("[PROCESS STARTED] - User registration - login: %s", command.getLogin());
 
-        UserRecord userRecord = new UserRecord(new RecordIdentifier<>(command.getLogin()),
+        RecordIdentifier<String> userId = new RecordIdentifier<>(command.getLogin());
+
+        UserRecord userRecord = new UserRecord(userId,
                                                command.getLogin(),
                                                StringEncryptor.encrypt(command.getPassword()),
                                                command.getEmail());
 
         userDao.create(userRecord);
 
-        return new UserRegistrationResponse(new RecordIdentifier<>(command.getLogin()));
+        return userId;
 
     }
 }
