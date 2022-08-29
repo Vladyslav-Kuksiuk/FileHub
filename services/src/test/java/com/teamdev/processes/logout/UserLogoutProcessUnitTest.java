@@ -1,12 +1,12 @@
 package com.teamdev.processes.logout;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.AuthenticationDaoStab;
+import com.teamdev.UserDaoStab;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
 import com.teamdev.persistent.dao.user.UserRecord;
-import com.teamdev.AuthenticationDaoStab;
-import com.teamdev.UserDaoStab;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -35,7 +35,7 @@ class UserLogoutProcessUnitTest {
                                                           LocalDateTime.now()
                                                                        .plusDays(1)));
 
-        logoutProcess.run(new UserLogoutCommand(userId, authToken));
+        logoutProcess.run(new UserLogoutCommand(userId));
 
         assertWithMessage("User logout failed.")
                 .that(authenticationDao.authenticationsMap()
@@ -56,7 +56,7 @@ class UserLogoutProcessUnitTest {
         String authToken = "token";
 
         assertThrows(DataAccessException.class,
-                     () -> logoutProcess.run(new UserLogoutCommand(userId, authToken)));
+                     () -> logoutProcess.run(new UserLogoutCommand(userId)));
 
     }
 

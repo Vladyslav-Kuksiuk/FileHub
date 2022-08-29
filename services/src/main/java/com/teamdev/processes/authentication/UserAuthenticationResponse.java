@@ -1,8 +1,8 @@
 package com.teamdev.processes.authentication;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.persistent.dao.RecordIdentifier;
 import com.teamdev.ServerResponse;
+import com.teamdev.persistent.dao.RecordIdentifier;
 
 import javax.annotation.Nonnull;
 

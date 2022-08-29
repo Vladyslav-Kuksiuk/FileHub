@@ -8,9 +8,6 @@ import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.processes.ApplicationProcess;
-import com.teamdev.processes.register.UserRegistrationCommand;
-import com.teamdev.processes.register.UserRegistrationProcessImpl;
-import com.teamdev.processes.register.UserRegistrationResponse;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;

@@ -2,7 +2,6 @@ package com.teamdev.processes.upload;
 
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.file.FileDao;
 import com.teamdev.persistent.dao.file.FileRecord;
 import com.teamdev.persistent.filestorage.FileStorage;
@@ -12,16 +11,14 @@ import javax.annotation.Nonnull;
 /**
  * {@link FileUploadProcess} implementation.
  */
-public class FileUploadProcessImpl extends FileUploadProcess {
+public class FileUploadProcessImpl implements FileUploadProcess {
 
     private final FileDao fileDao;
     private final FileStorage fileStorage;
 
     public FileUploadProcessImpl(
-            @Nonnull AuthenticationDao authenticationDao,
             @Nonnull FileDao fileDao,
             @Nonnull FileStorage fileStorage) {
-        super(authenticationDao);
         this.fileDao = fileDao;
         this.fileStorage = fileStorage;
 
@@ -29,8 +26,6 @@ public class FileUploadProcessImpl extends FileUploadProcess {
 
     @Override
     public FileUploadResponse run(FileUploadCommand command) throws DataAccessException {
-
-        authorize(command);
 
         FileRecord fileRecord = new FileRecord(new RecordIdentifier<>(command.filePath()),
                                                command.userId(),

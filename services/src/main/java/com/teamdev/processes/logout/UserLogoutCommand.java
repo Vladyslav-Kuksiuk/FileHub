@@ -2,20 +2,18 @@ package com.teamdev.processes.logout;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.RecordIdentifier;
-import com.teamdev.processes.CommandWithAuthorizationData;
+import com.teamdev.processes.AuthenticatedUserCommand;
 
 import javax.annotation.Nonnull;
 
 /**
- * A {@link CommandWithAuthorizationData} implementation which is intended to store
+ * A {@link AuthenticatedUserCommand} implementation which is intended to store
  * data about user logout.
  */
-public class UserLogoutCommand extends CommandWithAuthorizationData {
+public class UserLogoutCommand extends AuthenticatedUserCommand {
 
     protected UserLogoutCommand(
-            @Nonnull RecordIdentifier<String> userId,
-            @Nonnull String authenticationToken) {
-        super(Preconditions.checkNotNull(userId),
-              Preconditions.checkNotNull(authenticationToken));
+            @Nonnull RecordIdentifier<String> userId) {
+        super(Preconditions.checkNotNull(userId));
     }
 }

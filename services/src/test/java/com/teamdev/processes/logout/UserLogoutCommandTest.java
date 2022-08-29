@@ -1,7 +1,6 @@
 package com.teamdev.processes.logout;
 
 import com.google.common.testing.NullPointerTester;
-import com.teamdev.processes.logout.UserLogoutCommand;
 import org.junit.jupiter.api.Test;
 
 class UserLogoutCommandTest {

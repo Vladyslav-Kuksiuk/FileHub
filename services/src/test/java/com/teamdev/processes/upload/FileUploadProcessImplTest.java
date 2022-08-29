@@ -1,12 +1,10 @@
 package com.teamdev.processes.upload;
 
+import com.teamdev.ServiceLocator;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.filestorage.FileStorage;
-import com.teamdev.processes.upload.FileUploadCommand;
-import com.teamdev.processes.upload.FileUploadProcess;
-import com.teamdev.ServiceLocator;
 import com.teamdev.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.processes.authentication.UserAuthenticationResponse;
@@ -30,16 +28,16 @@ class FileUploadProcessImplTest {
     @Test
     void run() throws DataAccessException, IOException, DatabaseException, InterruptedException {
 
-        String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH+"Test\\";
+        String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
 
         File filesDirectory = new File(testFolderPath);
-        if(!filesDirectory.exists()){
+        if (!filesDirectory.exists()) {
             filesDirectory.mkdirs();
         }
 
-        File testFile = new File(testFolderPath+"hello.txt");
+        File testFile = new File(testFolderPath + "hello.txt");
 
-        if(!testFile.exists()){
+        if (!testFile.exists()) {
             testFile.createNewFile();
             FileWriter writer = new FileWriter(testFile);
             writer.write("Hello world!");
@@ -65,10 +63,9 @@ class FileUploadProcessImplTest {
                                               "password"));
 
         InputStream inputStream = new FileInputStream(
-                new File(testFolderPath+"hello.txt"));
+                new File(testFolderPath + "hello.txt"));
 
         uploadProcess.run(new FileUploadCommand(regResp.userId(),
-                                                authResp.authenticationToken(),
                                                 "user\\hello.txt",
                                                 inputStream));
 

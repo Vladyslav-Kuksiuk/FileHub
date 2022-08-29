@@ -9,11 +9,14 @@ import javax.annotation.Nonnull;
 /**
  * {@link UserLogoutProcess} implementation.
  */
-public class UserLogoutProcessImpl extends UserLogoutProcess {
+public class UserLogoutProcessImpl implements UserLogoutProcess {
+
+    private final AuthenticationDao authenticationDao;
 
     public UserLogoutProcessImpl(@Nonnull
-                                         AuthenticationDao authenticationDao) {
-        super(authenticationDao);
+                                 AuthenticationDao authenticationDao) {
+        this.authenticationDao = authenticationDao;
+
     }
 
     /**
@@ -28,9 +31,8 @@ public class UserLogoutProcessImpl extends UserLogoutProcess {
     @Override
     public UserLogoutResponse run(@Nonnull UserLogoutCommand command) throws DataAccessException {
         Preconditions.checkNotNull(command);
-        authorize(command);
 
-        authenticationDao().delete(command.userId());
+        authenticationDao.delete(command.userId());
 
         return new UserLogoutResponse();
     }

@@ -1,19 +1,11 @@
 package com.teamdev.processes.logout;
 
-import com.teamdev.persistent.dao.authentication.AuthenticationDao;
-import com.teamdev.processes.ApplicationProcessWithAuthorization;
-
-import javax.annotation.Nonnull;
+import com.teamdev.processes.ApplicationProcess;
 
 /**
- * A {@link ApplicationProcessWithAuthorization} extended abstract class
+ * A {@link ApplicationProcess} extended abstract class
  * which implementation is intended to process user logout.
  */
-public abstract class UserLogoutProcess extends ApplicationProcessWithAuthorization<UserLogoutCommand, UserLogoutResponse> {
-
-    protected UserLogoutProcess(@Nonnull
-                                        AuthenticationDao authenticationDao) {
-        super(authenticationDao);
-    }
+public interface UserLogoutProcess extends ApplicationProcess<UserLogoutCommand, UserLogoutResponse> {
 
 }

@@ -1,6 +1,8 @@
 package com.teamdev.servicelocator;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.ServerResponse;
+import com.teamdev.ServiceLocator;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
@@ -12,8 +14,6 @@ import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.filestorage.FileStorage;
 import com.teamdev.processes.ApplicationProcess;
 import com.teamdev.processes.Command;
-import com.teamdev.ServerResponse;
-import com.teamdev.ServiceLocator;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.processes.authentication.UserAuthenticationProcessImpl;
 import com.teamdev.processes.logout.UserLogoutProcess;
@@ -50,7 +50,7 @@ public class ServiceLocatorImpl implements ServiceLocator {
                          new UserAuthenticationProcessImpl(userDao, authDao));
             services.put(UserLogoutProcess.class, new UserLogoutProcessImpl(authDao));
             services.put(FileUploadProcess.class,
-                         new FileUploadProcessImpl(authDao, fileDao, fileStorage));
+                         new FileUploadProcessImpl(fileDao, fileStorage));
 
         } catch (DatabaseException e) {
             throw new RuntimeException("Database connection creation failed.");
