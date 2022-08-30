@@ -37,7 +37,7 @@ class UserRegistrationProcessIntegrationTest {
                                                                       "password",
                                                                       "email@email.com");
 
-        registerProcess.run(command);
+        registerProcess.handle(command);
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
                               .getUserById("Hellamb")
@@ -56,7 +56,7 @@ class UserRegistrationProcessIntegrationTest {
                                                                           "password",
                                                                           "email@email.com");
 
-            registerProcess.run(command);
+            registerProcess.handle(command);
 
             if (i % 25 == 0) {
                 Thread.sleep(1000);
@@ -77,7 +77,7 @@ class UserRegistrationProcessIntegrationTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registerProcess, registerProcess.getClass()
-                                                          .getMethod("run",
+                                                          .getMethod("handle",
                                                                      UserRegistrationCommand.class));
 
     }

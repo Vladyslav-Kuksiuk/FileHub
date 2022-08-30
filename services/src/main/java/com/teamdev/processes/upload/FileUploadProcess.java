@@ -3,11 +3,10 @@ package com.teamdev.processes.upload;
 import com.teamdev.processes.ApplicationProcess;
 
 /**
- * A {@link ApplicationProcess} extended abstract class
- * which implementation is intended to process file upload.
+ * A {@link ApplicationProcess} which implementation is intended to handle file upload.
  */
 public interface FileUploadProcess extends ApplicationProcess<FileUploadCommand, Boolean> {
 
     @Override
-    Boolean run(FileUploadCommand command) throws FileAlreadyExistsException;
+    Boolean handle(FileUploadCommand command) throws FileAlreadyExistsException;
 }

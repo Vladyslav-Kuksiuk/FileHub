@@ -69,7 +69,7 @@ public class FileStorage {
         }
 
         logger.atInfo()
-              .log("[FILE WRITTEN] - path: %s", fullPath);
+              .log("[FILE WRITTEN] - Path: %s.", fullPath);
 
     }
 

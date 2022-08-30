@@ -25,8 +25,8 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     }
 
     @Override
-    public RecordId<String> run(@Nonnull UserRegistrationCommand command) throws
-                                                                          UserAlreadyRegisteredException {
+    public RecordId<String> handle(@Nonnull UserRegistrationCommand command) throws
+                                                                             UserAlreadyRegisteredException {
         logger.atInfo()
               .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
 

@@ -27,7 +27,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
     }
 
     @Override
-    public Boolean run(@Nonnull FileUploadCommand command) throws FileAlreadyExistsException {
+    public Boolean handle(@Nonnull FileUploadCommand command) throws FileAlreadyExistsException {
 
         FileRecord fileRecord = new FileRecord(new RecordId<>(command.filePath()),
                                                command.userId(),

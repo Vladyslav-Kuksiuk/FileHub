@@ -1,10 +1,7 @@
 package com.teamdev.views;
 
-import com.teamdev.persistent.dao.DataAccessException;
-
 /**
- * A Service Interface which is intended to process {@link Query}.
- * {@link Query} processing doesn't cause changes in the database.
+ * A class for handling actor {@link Query} without application state changes.
  *
  * @param <Q>
  *         {@link Query} implementation.
@@ -14,15 +11,14 @@ import com.teamdev.persistent.dao.DataAccessException;
 public interface View<Q extends Query, R> {
 
     /**
-     * Method which process {@link Query} and communicate
-     * with persistent layer of application.
+     * Handle a query.
      *
      * @param query
-     *         {@link Query} implementation to request.
-     * @return Server response type.
-     * @throws DataAccessException
-     *         If the database query fails.
+     *         {@link Query} to handle.
+     * @return Server response.
+     * @throws ViewException
+     *         If {@link Query} can't be handled.
      */
-    R request(Q query) throws ViewException;
+    R handle(Q query) throws ViewException;
 
 }

@@ -19,7 +19,7 @@ class UserRegistrationProcessUnitTest {
                                                                       "password",
                                                                       "email@email.com");
 
-        registrationProcess.run(command);
+        registrationProcess.handle(command);
         assertWithMessage("User registration failed.")
                 .that(dao.usersMap()
                          .get(new RecordId<>("Hellamb"))
@@ -38,7 +38,7 @@ class UserRegistrationProcessUnitTest {
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registrationProcess,
                           registrationProcess.getClass()
-                                             .getMethod("run",
+                                             .getMethod("handle",
                                                         UserRegistrationCommand.class));
 
     }

@@ -1,7 +1,7 @@
 package com.teamdev.processes;
 
 /**
- * A Data Transfer Object Interface which is intended to be used in {@link ApplicationProcess}.
+ * A class for transmitting data from an actor to perform the requested operation.
  */
 public interface Command {
 

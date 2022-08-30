@@ -1,12 +1,9 @@
 package com.teamdev.processes;
 
-import com.teamdev.persistent.dao.DataAccessException;
-
 import javax.validation.constraints.NotNull;
 
 /**
- * A Service Interface which is intended to process commands.
- * Commands processing causes changes in the database.
+ * A class for handling actor {@link Command} with application state changes.
  *
  * @param <C>
  *         {@link Command} implementation.
@@ -16,15 +13,14 @@ import javax.validation.constraints.NotNull;
 public interface ApplicationProcess<C extends Command, R> {
 
     /**
-     * Method which process {@link Command} and communicate
-     * with persistent layer of application.
+     * Handles the command.
      *
      * @param command
-     *         {@link Command} to process.
-     * @return Server response.
-     * @throws DataAccessException
-     *         If the database query fails.
+     *         {@link Command} to handle.
+     * @return Server's command handling result.
+     * @throws ProcessException
+     *         If {@link Command} can't be handled.
      */
-    R run(@NotNull C command) throws ProcessException;
+    R handle(@NotNull C command) throws ProcessException;
 
 }

@@ -4,11 +4,10 @@ import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.processes.ApplicationProcess;
 
 /**
- * A {@link ApplicationProcess} extended abstract class
- * which implementation is intended to process user logout.
+ * A {@link ApplicationProcess} which implementation is intended to handle user logout.
  */
 public interface UserLogoutProcess extends ApplicationProcess<UserLogoutCommand, RecordId<String>> {
 
     @Override
-    RecordId<String> run(UserLogoutCommand command) throws UserNotAuthenticatedException;
+    RecordId<String> handle(UserLogoutCommand command) throws UserNotAuthenticatedException;
 }

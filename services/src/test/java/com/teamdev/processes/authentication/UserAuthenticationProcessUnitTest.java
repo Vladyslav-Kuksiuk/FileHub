@@ -30,7 +30,7 @@ public class UserAuthenticationProcessUnitTest {
 
         UserAuthenticationCommand command = new UserAuthenticationCommand("user", "password");
 
-        UserAuthenticationResponse response = authorizationProcess.run(command);
+        UserAuthenticationResponse response = authorizationProcess.handle(command);
 
         assertWithMessage("User authorization failed.")
                 .that(authenticationDao.authenticationsMap()
@@ -48,7 +48,7 @@ public class UserAuthenticationProcessUnitTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(authorizationProcess, authorizationProcess.getClass()
-                                                                    .getMethod("run",
+                                                                    .getMethod("handle",
                                                                                UserAuthenticationCommand.class));
 
     }

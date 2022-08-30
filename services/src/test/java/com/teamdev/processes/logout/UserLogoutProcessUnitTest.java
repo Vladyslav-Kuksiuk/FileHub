@@ -36,7 +36,7 @@ class UserLogoutProcessUnitTest {
                                                           LocalDateTime.now()
                                                                        .plusDays(1)));
 
-        logoutProcess.run(new UserLogoutCommand(userId));
+        logoutProcess.handle(new UserLogoutCommand(userId));
 
         assertWithMessage("User logout failed.")
                 .that(authenticationDao.authenticationsMap()
@@ -57,7 +57,7 @@ class UserLogoutProcessUnitTest {
         String authToken = "token";
 
         assertThrows(UserNotAuthenticatedException.class,
-                     () -> logoutProcess.run(new UserLogoutCommand(userId)));
+                     () -> logoutProcess.handle(new UserLogoutCommand(userId)));
 
     }
 
@@ -70,7 +70,7 @@ class UserLogoutProcessUnitTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(logoutProcess, logoutProcess.getClass()
-                                                      .getMethod("run",
+                                                      .getMethod("handle",
                                                                  UserLogoutCommand.class));
 
     }

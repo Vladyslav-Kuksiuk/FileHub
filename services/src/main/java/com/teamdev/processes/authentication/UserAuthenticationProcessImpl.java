@@ -34,8 +34,8 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
      * user authentication.
      */
     @Override
-    public UserAuthenticationResponse run(@Nonnull UserAuthenticationCommand command) throws
-                                                                                      UserDataMismatchException {
+    public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command) throws
+                                                                                         UserDataMismatchException {
 
         logger.atInfo()
               .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());

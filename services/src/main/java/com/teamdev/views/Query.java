@@ -1,7 +1,7 @@
 package com.teamdev.views;
 
 /**
- * A Data Transfer Object Interface which is intended to be used in {@link View}.
+ * A class for transmitting data from an actor to perform handling in {@link View}.
  */
 public interface Query {
 

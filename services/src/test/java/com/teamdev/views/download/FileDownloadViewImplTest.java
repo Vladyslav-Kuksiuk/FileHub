@@ -56,8 +56,8 @@ class FileDownloadViewImplTest {
         FileDownloadQuery downloadQuery = new FileDownloadQuery(new RecordId<>("user"),
                                                                 "user\\myFile.txt");
 
-        InputStream storageFileInput = downloadView.request(downloadQuery)
-                                                   .fileInput(); //fileStorage.downloadFile("user\\myFile.txt");
+        InputStream storageFileInput = downloadView.handle(downloadQuery)
+                                                   .fileInput();
 
         String storedTestText = new String(storageFileInput.readAllBytes(), StandardCharsets.UTF_8);
 

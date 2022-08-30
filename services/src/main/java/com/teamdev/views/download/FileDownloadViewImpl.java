@@ -35,8 +35,8 @@ public class FileDownloadViewImpl implements FileDownloadView {
      * @return {@link FileDownloadResponse}.
      */
     @Override
-    public FileDownloadResponse request(@Nonnull FileDownloadQuery query) throws
-                                                                          FileAccessDeniedException {
+    public FileDownloadResponse handle(@Nonnull FileDownloadQuery query) throws
+                                                                         FileAccessDeniedException {
 
         logger.atInfo()
               .log("[VIEW STARTED] - File download - login: %s, file: %s.", query.userId()

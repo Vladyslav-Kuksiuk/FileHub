@@ -9,5 +9,5 @@ import com.teamdev.views.View;
 public interface FileDownloadView extends View<FileDownloadQuery, FileDownloadResponse> {
 
     @Override
-    FileDownloadResponse request(FileDownloadQuery query) throws FileAccessDeniedException;
+    FileDownloadResponse handle(FileDownloadQuery query) throws FileAccessDeniedException;
 }

@@ -29,16 +29,16 @@ class ServiceLocatorImplTest {
         UserRegistrationProcess registrationProcess = locator.locate(UserRegistrationProcess.class);
 
         try {
-            registrationProcess.run(new UserRegistrationCommand("SLuser",
-                                                                "SLpassword",
-                                                                "email@email.com"));
+            registrationProcess.handle(new UserRegistrationCommand("SLuser",
+                                                                   "SLpassword",
+                                                                   "email@email.com"));
         } catch (UserAlreadyRegisteredException exception) {
 
         }
 
         UserAuthenticationProcess authProcess = locator.locate(UserAuthenticationProcess.class);
 
-        UserAuthenticationResponse authResponse = authProcess.run(
+        UserAuthenticationResponse authResponse = authProcess.handle(
                 new UserAuthenticationCommand("SLuser", "SLpassword"));
 
         Thread.sleep(3000);

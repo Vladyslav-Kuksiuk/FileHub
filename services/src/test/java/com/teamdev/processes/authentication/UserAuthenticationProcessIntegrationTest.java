@@ -39,7 +39,7 @@ class UserAuthenticationProcessIntegrationTest {
 
         UserAuthenticationCommand command = new UserAuthenticationCommand("user", "password");
 
-        UserAuthenticationResponse response = authorizationProcess.run(command);
+        UserAuthenticationResponse response = authorizationProcess.handle(command);
 
         assertWithMessage("User authorization failed.")
                 .that(database.authenticationTable()
@@ -53,7 +53,7 @@ class UserAuthenticationProcessIntegrationTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(authorizationProcess, authorizationProcess.getClass()
-                                                                    .getMethod("run",
+                                                                    .getMethod("handle",
                                                                                UserAuthenticationCommand.class));
 
     }

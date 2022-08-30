@@ -57,20 +57,20 @@ class FileUploadProcessImplTest {
                 UserAuthenticationProcess.class);
         FileUploadProcess uploadProcess = locator.locate(FileUploadProcess.class);
 
-        RecordId<String> userId = registrationProcess.run(
+        RecordId<String> userId = registrationProcess.handle(
                 new UserRegistrationCommand("user",
                                             "password",
                                             "email@email.com"));
-        UserAuthenticationResponse authResp = authenticationProcess.run(
+        UserAuthenticationResponse authResp = authenticationProcess.handle(
                 new UserAuthenticationCommand("user",
                                               "password"));
 
         InputStream inputStream = new FileInputStream(
                 new File(testFolderPath + "hello.txt"));
 
-        uploadProcess.run(new FileUploadCommand(userId,
-                                                "user\\hello.txt",
-                                                inputStream));
+        uploadProcess.handle(new FileUploadCommand(userId,
+                                                   "user\\hello.txt",
+                                                   inputStream));
 
         InputStream testFileStream = new FileInputStream(
                 new File(FileStorage.STORAGE_FOLDER_PATH + "user\\hello.txt"));

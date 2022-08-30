@@ -32,8 +32,8 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
      *         If user not authenticated.
      */
     @Override
-    public RecordId<String> run(@Nonnull UserLogoutCommand command) throws
-                                                                    UserNotAuthenticatedException {
+    public RecordId<String> handle(@Nonnull UserLogoutCommand command) throws
+                                                                       UserNotAuthenticatedException {
         Preconditions.checkNotNull(command);
 
         logger.atInfo()
