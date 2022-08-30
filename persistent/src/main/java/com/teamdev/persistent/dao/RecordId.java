@@ -1,6 +1,5 @@
 package com.teamdev.persistent.dao;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 
 /**
@@ -13,7 +12,7 @@ public class RecordId<T> {
 
     private final T id;
 
-    public RecordId(@Nonnull T id) {
+    public RecordId(T id) {
         this.id = id;
     }
 
@@ -27,7 +26,7 @@ public class RecordId<T> {
     }
 
     @Override
-    public boolean equals(@Nonnull Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }

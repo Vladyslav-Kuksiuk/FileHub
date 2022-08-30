@@ -22,4 +22,16 @@ public class FolderData extends Data<String> {
         this.parentFolderId = parentFolderId;
         this.name = name;
     }
+
+    public String ownerId() {
+        return ownerId;
+    }
+
+    public String parentFolderId() {
+        return parentFolderId;
+    }
+
+    public String name() {
+        return name;
+    }
 }
