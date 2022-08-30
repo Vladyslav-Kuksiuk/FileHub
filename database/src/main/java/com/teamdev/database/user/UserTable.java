@@ -1,6 +1,5 @@
 package com.teamdev.database.user;
 
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabaseTable;
 
@@ -14,7 +13,7 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
 
     private static final String FILE_NAME = "users.json";
 
-    public UserTable() throws DatabaseException {
+    public UserTable() {
         super(FILE_NAME, UserData[].class);
 
     }

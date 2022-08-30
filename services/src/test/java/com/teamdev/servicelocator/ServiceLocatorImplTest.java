@@ -1,10 +1,8 @@
 package com.teamdev.servicelocator;
 
 import com.teamdev.ServiceLocator;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.processes.authentication.UserAuthenticationResponse;
@@ -19,7 +17,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class ServiceLocatorImplTest {
 
     @Test
-    void locateTest() throws DataAccessException, DatabaseException, InterruptedException,
+    void locateTest() throws InterruptedException,
                              DatabaseTransactionException, UserDataMismatchException {
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();

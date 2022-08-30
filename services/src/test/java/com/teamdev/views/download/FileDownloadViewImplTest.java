@@ -1,6 +1,5 @@
 package com.teamdev.views.download;
 
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.file.FileData;
@@ -23,7 +22,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileDownloadViewImplTest {
 
     @Test
-    void downloadTest() throws DatabaseException, DatabaseTransactionException, IOException,
+    void downloadTest() throws DatabaseTransactionException, IOException,
                                FileAccessDeniedException {
 
         InMemoryDatabase database = new InMemoryDatabase();

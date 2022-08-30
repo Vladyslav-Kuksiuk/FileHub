@@ -1,7 +1,6 @@
 package com.teamdev.processes.upload;
 
 import com.teamdev.ServiceLocator;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.filestorage.FileStorage;
@@ -27,7 +26,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileUploadProcessImplTest {
 
     @Test
-    void fileUploadTest() throws IOException, DatabaseException,
+    void fileUploadTest() throws IOException,
                                  InterruptedException, FileAlreadyExistsException,
                                  UserAlreadyRegisteredException, UserDataMismatchException {
 

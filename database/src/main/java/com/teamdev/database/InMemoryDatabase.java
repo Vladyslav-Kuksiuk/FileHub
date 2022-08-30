@@ -1,6 +1,5 @@
 package com.teamdev.database;
 
-import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.authentication.AuthenticationTable;
 import com.teamdev.database.file.FileTable;
 import com.teamdev.database.user.UserTable;
@@ -14,12 +13,11 @@ public class InMemoryDatabase {
 
     public static final String DATABASE_FOLDER_PATH = "D:\\Work\\DatabaseFolder\\";
     public static final String DATABASE_TABLES_FOLDER_PATH = DATABASE_FOLDER_PATH + "Tables\\";
-    private final FluentLogger logger = FluentLogger.forEnclosingClass();
     private final UserTable userTable;
     private final AuthenticationTable authenticationTable;
     private final FileTable fileTable;
 
-    public InMemoryDatabase() throws DatabaseException {
+    public InMemoryDatabase() {
 
         File tablesDirectory = new File(DATABASE_TABLES_FOLDER_PATH);
         if (!tablesDirectory.exists()) {
@@ -43,7 +41,7 @@ public class InMemoryDatabase {
         return fileTable;
     }
 
-    public void clean() throws DatabaseException {
+    public void clean() {
         userTable.clean();
         authenticationTable.clean();
         fileTable.clean();

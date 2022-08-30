@@ -2,7 +2,6 @@ package com.teamdev.servicelocator;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.ServiceLocator;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.InMemoryAuthenticationDao;
@@ -36,24 +35,19 @@ public class ServiceLocatorImpl implements ServiceLocator {
 
     public ServiceLocatorImpl() {
 
-        try {
-            InMemoryDatabase database = new InMemoryDatabase();
-            UserDao userDao = new InMemoryUserDao(database);
-            AuthenticationDao authDao = new InMemoryAuthenticationDao(database);
-            FileDao fileDao = new InMemoryFileDao(database);
+        InMemoryDatabase database = new InMemoryDatabase();
+        UserDao userDao = new InMemoryUserDao(database);
+        AuthenticationDao authDao = new InMemoryAuthenticationDao(database);
+        FileDao fileDao = new InMemoryFileDao(database);
 
-            FileStorage fileStorage = new FileStorage();
+        FileStorage fileStorage = new FileStorage();
 
-            services.put(UserRegistrationProcess.class, new UserRegistrationProcessImpl(userDao));
-            services.put(UserAuthenticationProcess.class,
-                         new UserAuthenticationProcessImpl(userDao, authDao));
-            services.put(UserLogoutProcess.class, new UserLogoutProcessImpl(authDao));
-            services.put(FileUploadProcess.class,
-                         new FileUploadProcessImpl(fileDao, fileStorage));
-
-        } catch (DatabaseException e) {
-            throw new RuntimeException("Database connection creation failed.");
-        }
+        services.put(UserRegistrationProcess.class, new UserRegistrationProcessImpl(userDao));
+        services.put(UserAuthenticationProcess.class,
+                     new UserAuthenticationProcessImpl(userDao, authDao));
+        services.put(UserLogoutProcess.class, new UserLogoutProcessImpl(authDao));
+        services.put(FileUploadProcess.class,
+                     new FileUploadProcessImpl(fileDao, fileStorage));
 
     }
 

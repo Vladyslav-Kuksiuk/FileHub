@@ -1,6 +1,5 @@
 package com.teamdev.persistent.dao.user;
 
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.user.UserData;

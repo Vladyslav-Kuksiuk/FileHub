@@ -1,6 +1,5 @@
 package com.teamdev.database.file;
 
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabaseTable;
 
 /**
@@ -10,8 +9,7 @@ public class FileTable extends InMemoryDatabaseTable<String, FileData> {
 
     private static final String FILE_NAME = "files.json";
 
-    public FileTable() throws
-                       DatabaseException {
+    public FileTable() {
         super(FILE_NAME, FileData[].class);
     }
 

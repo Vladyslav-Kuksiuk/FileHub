@@ -1,6 +1,5 @@
 package com.teamdev.processes.register;
 
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.RecordId;
@@ -17,7 +16,7 @@ class UserRegistrationProcessIntegrationTest {
     private final InMemoryDatabase database;
     private final ApplicationProcess<UserRegistrationCommand, RecordId<String>> registerProcess;
 
-    UserRegistrationProcessIntegrationTest() throws DatabaseException, InterruptedException {
+    UserRegistrationProcessIntegrationTest() throws InterruptedException {
         database = new InMemoryDatabase();
         database.clean();
 
