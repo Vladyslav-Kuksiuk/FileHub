@@ -17,10 +17,10 @@ public class FolderRecord extends DatabaseRecord<String> {
 
     private final String name;
 
-    protected FolderRecord(@Nonnull RecordId<String> id,
-                           @Nonnull RecordId<String> ownerId,
-                           @Nullable RecordId<String> parentFolderId,
-                           @Nonnull String name) {
+    public FolderRecord(@Nonnull RecordId<String> id,
+                        @Nonnull RecordId<String> ownerId,
+                        @Nullable RecordId<String> parentFolderId,
+                        @Nonnull String name) {
         super(id);
         this.ownerId = ownerId;
         this.parentFolderId = parentFolderId;

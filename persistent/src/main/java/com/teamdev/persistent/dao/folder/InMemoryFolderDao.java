@@ -6,6 +6,9 @@ import com.teamdev.database.folder.FolderData;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordId;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * {@link FolderDao} implementation which is intended to work with folder
  * in {@link InMemoryDatabase}.
@@ -83,5 +86,26 @@ public class InMemoryFolderDao implements FolderDao {
         } catch (DatabaseTransactionException e) {
             throw new DataAccessException(e.getMessage());
         }
+    }
+
+    @Override
+    public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) throws
+                                                                                   DataAccessException {
+
+        List<FolderRecord> folders = null;
+        try {
+            folders = database.folderTable()
+                               .selectWithSameParentId(parentId.value())
+                               .stream()
+                               .map(data -> new FolderRecord(new RecordId<>(data.id()),
+                                                             new RecordId<>(data.ownerId()),
+                                                             new RecordId<>(data.parentFolderId()),
+                                                             data.name()))
+                               .collect(Collectors.toList());
+        } catch (DatabaseTransactionException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+
+        return folders;
     }
 }
