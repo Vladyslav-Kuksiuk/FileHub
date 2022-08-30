@@ -84,7 +84,7 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public void create(@Nonnull UserRecord record) throws DataAccessException {
 
-        UserData userData = new UserData(record.getId()
+        UserData userData = new UserData(record.id()
                                                .value(),
                                          record.login(),
                                          record.password(),
@@ -110,7 +110,7 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public void update(@Nonnull UserRecord record) throws DataAccessException {
 
-        UserData userData = new UserData(record.getId()
+        UserData userData = new UserData(record.id()
                                                .value(),
                                          record.login(),
                                          record.password(),

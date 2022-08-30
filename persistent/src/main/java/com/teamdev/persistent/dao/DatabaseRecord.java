@@ -16,7 +16,7 @@ public abstract class DatabaseRecord<I> {
         this.id = id;
     }
 
-    public RecordId<I> getId() {
+    public RecordId<I> id() {
         return id;
     }
 }

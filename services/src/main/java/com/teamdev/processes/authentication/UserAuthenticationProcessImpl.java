@@ -66,7 +66,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                 userRecord.login() + expireDateTime);
 
         AuthenticationRecord authenticationRecord =
-                new AuthenticationRecord(userRecord.getId(),
+                new AuthenticationRecord(userRecord.id(),
                                          authenticationToken,
                                          expireDateTime);
 

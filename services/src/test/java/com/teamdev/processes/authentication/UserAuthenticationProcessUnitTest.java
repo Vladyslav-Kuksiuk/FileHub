@@ -1,55 +1,94 @@
 package com.teamdev.processes.authentication;
 
 import com.google.common.testing.NullPointerTester;
-import com.teamdev.AuthenticationDaoStab;
-import com.teamdev.UserDaoStab;
+import com.teamdev.AuthenticationDaoFake;
+import com.teamdev.UserDaoFake;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.user.UserRecord;
 import com.teamdev.util.StringEncryptor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserAuthenticationProcessUnitTest {
 
+    private AuthenticationDaoFake authenticationDao;
+    private UserAuthenticationProcess authenticationProcess;
+
+    private UserRecord registeredUser;
+
+    private UserRecord notRegisteredUser;
+
+    @BeforeEach
+    void setUp() throws DataAccessException {
+        UserDaoFake userDao = new UserDaoFake();
+        authenticationDao = new AuthenticationDaoFake();
+        authenticationProcess = new UserAuthenticationProcessImpl(userDao,
+                                                                  authenticationDao);
+
+        registeredUser = new UserRecord(new RecordId<>("user1"),
+                                        "user1",
+                                        StringEncryptor.encrypt("password1"),
+                                        "email1@email.com");
+
+        notRegisteredUser = new UserRecord(new RecordId<>("user2"),
+                                           "user2",
+                                           StringEncryptor.encrypt("password2"),
+                                           "email2@email.com");
+
+        userDao.create(registeredUser);
+
+    }
+
     @Test
-    void authorizationTest() throws DataAccessException, UserDataMismatchException {
-        UserDaoStab userDao = new UserDaoStab();
-        AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserAuthenticationProcessImpl authorizationProcess = new UserAuthenticationProcessImpl(
-                userDao,
-                authenticationDao);
+    void authenticationTest() throws DataAccessException, UserDataMismatchException {
 
-        UserRecord user = new UserRecord(new RecordId<>("user"),
-                                         "user",
-                                         StringEncryptor.encrypt("password"),
-                                         "email@email.com");
+        UserAuthenticationCommand command = new UserAuthenticationCommand(registeredUser.login(),
+                                                                          "password1");
 
-        userDao.create(user);
+        UserAuthenticationResponse response = authenticationProcess.handle(command);
 
-        UserAuthenticationCommand command = new UserAuthenticationCommand("user", "password");
-
-        UserAuthenticationResponse response = authorizationProcess.handle(command);
-
-        assertWithMessage("User authorization failed.")
-                .that(authenticationDao.authenticationsMap()
-                                       .get(user.getId())
+        assertWithMessage("User authentication failed.")
+                .that(authenticationDao.find(registeredUser.id())
                                        .authenticationToken())
                 .matches(response.authenticationToken());
     }
 
     @Test
+    void loginMismatchTest() {
+
+        UserAuthenticationCommand command = new UserAuthenticationCommand(notRegisteredUser.login(),
+                                                                          "password1");
+
+        assertThrows(UserDataMismatchException.class, () -> authenticationProcess.handle(command),
+                     "User authentication with wrong login not failed.");
+    }
+
+    @Test
+    void passwordMismatchTest() {
+
+        UserAuthenticationCommand command = new UserAuthenticationCommand(registeredUser.login(),
+                                                                          "password2");
+
+        assertThrows(UserDataMismatchException.class, () -> authenticationProcess.handle(command),
+                     "User authentication with wrong password not failed.");
+    }
+
+    @Test
     void nullTest() throws NoSuchMethodException {
 
-        UserAuthenticationProcessImpl authorizationProcess = new UserAuthenticationProcessImpl(
-                new UserDaoStab(),
-                new AuthenticationDaoStab());
+        UserAuthenticationProcessImpl authenticationProcess = new UserAuthenticationProcessImpl(
+                new UserDaoFake(),
+                new AuthenticationDaoFake());
 
         NullPointerTester tester = new NullPointerTester();
-        tester.testMethod(authorizationProcess, authorizationProcess.getClass()
-                                                                    .getMethod("handle",
-                                                                               UserAuthenticationCommand.class));
+        tester.testMethod(authenticationProcess,
+                          authenticationProcess.getClass()
+                                               .getMethod("handle",
+                                                          UserAuthenticationCommand.class));
 
     }
 

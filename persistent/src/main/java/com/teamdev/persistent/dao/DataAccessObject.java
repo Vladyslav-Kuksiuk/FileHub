@@ -8,7 +8,7 @@ package com.teamdev.persistent.dao;
  * @param <I>
  *         {@link RecordId} type.
  */
-public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
+public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
 
     /**
      * Method to find a record in the database.

@@ -1,77 +1,53 @@
 package com.teamdev.processes.logout;
 
-import com.google.common.testing.NullPointerTester;
-import com.teamdev.AuthenticationDaoStab;
-import com.teamdev.UserDaoStab;
+import com.teamdev.AuthenticationDaoFake;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordId;
+import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.AuthenticationRecord;
-import com.teamdev.persistent.dao.user.UserRecord;
+import com.teamdev.util.LocalDateTimeUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserLogoutProcessUnitTest {
 
-    @Test
-    void logoutUserTest() throws DataAccessException, InterruptedException,
-                                 UserNotAuthenticatedException {
-        UserDaoStab userDao = new UserDaoStab();
-        AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
+    private AuthenticationDao authDao;
 
-        RecordId<String> userId = new RecordId<>("user");
-        String authToken = "token";
+    private UserLogoutProcess logoutProcess;
 
-        userDao.create(new UserRecord(userId,
-                                      "user",
-                                      "password",
-                                      "email@email.com"));
-
-        authenticationDao.create(new AuthenticationRecord(userId,
-                                                          authToken,
-                                                          LocalDateTime.now()
-                                                                       .plusDays(1)));
-
-        logoutProcess.handle(new UserLogoutCommand(userId));
-
-        assertWithMessage("User logout failed.")
-                .that(authenticationDao.authenticationsMap()
-                                       .containsKey(userId))
-                .isFalse();
-
-        Thread.sleep(3000);
+    @BeforeEach
+    void setUp() {
+        authDao = new AuthenticationDaoFake();
+        logoutProcess = new UserLogoutProcessImpl(authDao);
 
     }
 
     @Test
-    void logoutAbsentUser() {
-        UserDaoStab userDao = new UserDaoStab();
-        AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
+    void logoutAuthenticatedUserTest() throws UserNotAuthenticatedException, DataAccessException {
 
-        RecordId<String> userId = new RecordId<>("user");
-        String authToken = "token";
+        var realAuth = new AuthenticationRecord(new RecordId<>("user1"),
+                                                "token1",
+                                                LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
+                                                             .plusDays(1));
+
+        authDao.create(realAuth);
+
+        logoutProcess.handle(new UserLogoutCommand(realAuth.id()));
+
+        assertThrows(DataAccessException.class, () -> authDao.find(realAuth.id()));
+
+    }
+
+    @Test
+    void logoutNotAuthenticatedUser() {
 
         assertThrows(UserNotAuthenticatedException.class,
-                     () -> logoutProcess.handle(new UserLogoutCommand(userId)));
-
-    }
-
-    @Test
-    void nullTest() throws NoSuchMethodException {
-
-        UserDaoStab dao = new UserDaoStab();
-        AuthenticationDaoStab authenticationDao = new AuthenticationDaoStab();
-        UserLogoutProcessImpl logoutProcess = new UserLogoutProcessImpl(authenticationDao);
-
-        NullPointerTester tester = new NullPointerTester();
-        tester.testMethod(logoutProcess, logoutProcess.getClass()
-                                                      .getMethod("handle",
-                                                                 UserLogoutCommand.class));
+                     () -> logoutProcess.handle(
+                             new UserLogoutCommand(new RecordId<>("notAuthenticated"))));
 
     }
 }

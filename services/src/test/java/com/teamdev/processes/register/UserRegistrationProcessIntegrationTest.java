@@ -1,6 +1,5 @@
 package com.teamdev.processes.register;
 
-import com.google.common.testing.NullPointerTester;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
@@ -70,16 +69,6 @@ class UserRegistrationProcessIntegrationTest {
                 .matches("email@email.com");
 
         Thread.sleep(1500);
-    }
-
-    @Test
-    void nullTest() throws NoSuchMethodException {
-
-        NullPointerTester tester = new NullPointerTester();
-        tester.testMethod(registerProcess, registerProcess.getClass()
-                                                          .getMethod("handle",
-                                                                     UserRegistrationCommand.class));
-
     }
 
 }

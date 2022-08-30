@@ -1,6 +1,5 @@
 package com.teamdev.processes.authentication;
 
-import com.google.common.testing.NullPointerTester;
 import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
@@ -27,8 +26,8 @@ class UserAuthenticationProcessIntegrationTest {
     }
 
     @Test
-    void authorizationTest() throws DataAccessException, DatabaseTransactionException,
-                                    DatabaseException, UserDataMismatchException {
+    void authenticationTest() throws DataAccessException, DatabaseTransactionException,
+                                     DatabaseException, UserDataMismatchException {
         database.clean();
 
         UserData user = new UserData("user", "user", StringEncryptor.encrypt("password"),
@@ -46,15 +45,5 @@ class UserAuthenticationProcessIntegrationTest {
                               .getAuthenticationByUserId("user")
                               .authenticationToken())
                 .matches(response.authenticationToken());
-    }
-
-    @Test
-    void nullTest() throws NoSuchMethodException {
-
-        NullPointerTester tester = new NullPointerTester();
-        tester.testMethod(authorizationProcess, authorizationProcess.getClass()
-                                                                    .getMethod("handle",
-                                                                               UserAuthenticationCommand.class));
-
     }
 }

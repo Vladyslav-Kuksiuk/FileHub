@@ -56,7 +56,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                          LocalDateTime.parse(authenticationData.expireTime()));
 
         logger.atInfo()
-              .log("[AUTHENTICATION FOUND] - login: %s", authenticationRecord.getId()
+              .log("[AUTHENTICATION FOUND] - login: %s", authenticationRecord.id()
                                                                              .value());
 
         return authenticationRecord;
@@ -91,7 +91,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     @Override
     public void create(@Nonnull AuthenticationRecord record) throws DataAccessException {
 
-        AuthenticationData data = new AuthenticationData(record.getId()
+        AuthenticationData data = new AuthenticationData(record.id()
                                                                .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()
@@ -115,7 +115,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     @Override
     public void update(@Nonnull AuthenticationRecord record) throws DataAccessException {
 
-        AuthenticationData data = new AuthenticationData(record.getId()
+        AuthenticationData data = new AuthenticationData(record.id()
                                                                .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()

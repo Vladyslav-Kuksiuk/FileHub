@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserDaoStab implements UserDao {
+public class UserDaoFake implements UserDao {
 
     private final Map<RecordId<String>, UserRecord> users = new HashMap<>();
 
@@ -47,7 +47,11 @@ public class UserDaoStab implements UserDao {
 
         Preconditions.checkNotNull(record);
 
-        users.put(record.getId(), record);
+        if (users.containsKey(record.id())) {
+            throw new DataAccessException("User already exists.");
+        }
+
+        users.put(record.id(), record);
     }
 
     @Override
@@ -55,11 +59,11 @@ public class UserDaoStab implements UserDao {
 
         Preconditions.checkNotNull(record);
 
-        if (!users.containsKey(record.getId())) {
+        if (!users.containsKey(record.id())) {
             throw new DataAccessException("User not found.");
         }
 
-        users.put(record.getId(), record);
+        users.put(record.id(), record);
 
     }
 

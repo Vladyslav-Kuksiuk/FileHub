@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuthenticationDaoStab implements AuthenticationDao {
+public class AuthenticationDaoFake implements AuthenticationDao {
 
     private final Map<RecordId<String>, AuthenticationRecord> authentications = new HashMap<>();
 
@@ -46,7 +46,7 @@ public class AuthenticationDaoStab implements AuthenticationDao {
 
         Preconditions.checkNotNull(record);
 
-        authentications.put(record.getId(), record);
+        authentications.put(record.id(), record);
     }
 
     @Override
@@ -54,11 +54,11 @@ public class AuthenticationDaoStab implements AuthenticationDao {
 
         Preconditions.checkNotNull(record);
 
-        if (!authentications.containsKey(record.getId())) {
+        if (!authentications.containsKey(record.id())) {
             throw new DataAccessException("Authentication not found.");
         }
 
-        authentications.put(record.getId(), record);
+        authentications.put(record.id(), record);
 
     }
 

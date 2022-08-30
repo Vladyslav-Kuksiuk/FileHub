@@ -84,7 +84,7 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public void create(@Nonnull FileRecord record) throws DataAccessException {
 
-        FileData fileData = new FileData(record.getId()
+        FileData fileData = new FileData(record.id()
                                                .value(),
                                          record.ownerId()
                                                .value(),
@@ -111,7 +111,7 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public void update(@Nonnull FileRecord record) throws DataAccessException {
 
-        FileData fileData = new FileData(record.getId()
+        FileData fileData = new FileData(record.id()
                                                .value(),
                                          record.ownerId()
                                                .value(),
