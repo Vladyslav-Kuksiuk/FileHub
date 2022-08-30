@@ -124,10 +124,10 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
     public UserData getUserByLogin(@NotNull String login) throws DatabaseTransactionException {
 
         Optional<UserData> foundUser = tableMap().values()
-                .stream()
-                .filter(user -> user.login()
-                                    .equals(login))
-                .findFirst();
+                                                 .stream()
+                                                 .filter(user -> user.login()
+                                                                     .equals(login))
+                                                 .findFirst();
 
         if (foundUser.isEmpty()) {
             throw new DatabaseTransactionException("User with this login doesn't exist.");

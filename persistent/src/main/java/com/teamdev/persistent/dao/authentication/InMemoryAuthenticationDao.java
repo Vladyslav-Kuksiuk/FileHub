@@ -7,7 +7,7 @@ import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.authentication.AuthenticationData;
 import com.teamdev.persistent.dao.DataAccessException;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
@@ -37,27 +37,27 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         If user authentication not found.
      */
     @Override
-    public AuthenticationRecord find(@Nonnull RecordIdentifier<String> userId) throws
-                                                                               DataAccessException {
+    public AuthenticationRecord find(@Nonnull RecordId<String> userId) throws
+                                                                       DataAccessException {
         Preconditions.checkNotNull(userId);
 
         AuthenticationData authenticationData;
 
         try {
             authenticationData = database.authenticationTable()
-                                         .getAuthorizationByUserId(userId.getValue());
+                                         .getAuthenticationByUserId(userId.value());
         } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
         AuthenticationRecord authenticationRecord =
-                new AuthenticationRecord(new RecordIdentifier<>(authenticationData.id()),
+                new AuthenticationRecord(new RecordId<>(authenticationData.id()),
                                          authenticationData.authenticationToken(),
                                          LocalDateTime.parse(authenticationData.expireTime()));
 
         logger.atInfo()
-              .log("[AUTHENTICATION FOUND] - login: %s", authenticationRecord.getId()
-                                                                             .getValue());
+              .log("[AUTHENTICATION FOUND] - login: %s", authenticationRecord.id()
+                                                                             .value());
 
         return authenticationRecord;
     }
@@ -71,11 +71,11 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         If user authentication not found.
      */
     @Override
-    public void delete(@Nonnull RecordIdentifier<String> userId) throws DataAccessException {
+    public void delete(@Nonnull RecordId<String> userId) throws DataAccessException {
 
         try {
             database.authenticationTable()
-                    .deleteAuthentication(userId.getValue());
+                    .deleteAuthentication(userId.value());
         } catch (DatabaseTransactionException | DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
@@ -91,15 +91,15 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     @Override
     public void create(@Nonnull AuthenticationRecord record) throws DataAccessException {
 
-        AuthenticationData data = new AuthenticationData(record.getId()
-                                                               .getValue(),
+        AuthenticationData data = new AuthenticationData(record.id()
+                                                               .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()
                                                                .toString());
 
         try {
             database.authenticationTable()
-                    .addAuthorization(data);
+                    .addAuthentication(data);
         } catch (DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
@@ -115,15 +115,15 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     @Override
     public void update(@Nonnull AuthenticationRecord record) throws DataAccessException {
 
-        AuthenticationData data = new AuthenticationData(record.getId()
-                                                               .getValue(),
+        AuthenticationData data = new AuthenticationData(record.id()
+                                                               .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()
                                                                .toString());
 
         try {
             database.authenticationTable()
-                    .addAuthorization(data);
+                    .addAuthentication(data);
         } catch (DatabaseException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }

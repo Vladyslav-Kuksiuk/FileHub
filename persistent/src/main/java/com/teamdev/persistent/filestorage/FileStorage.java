@@ -2,7 +2,6 @@ package com.teamdev.persistent.filestorage;
 
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.InMemoryDatabase;
-import com.teamdev.persistent.dao.DataAccessException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,12 +16,13 @@ import java.io.OutputStream;
  */
 public class FileStorage {
 
-    public static final String STORAGE_FOLDER_PATH = InMemoryDatabase.DATABASE_FOLDER_PATH+ "Files\\";
+    public static final String STORAGE_FOLDER_PATH =
+            InMemoryDatabase.DATABASE_FOLDER_PATH + "Files\\";
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public FileStorage() {
         File filesDirectory = new File(STORAGE_FOLDER_PATH);
-        if(!filesDirectory.exists()){
+        if (!filesDirectory.exists()) {
             filesDirectory.mkdirs();
         }
     }
@@ -34,10 +34,8 @@ public class FileStorage {
      *         path to save the file.
      * @param fileInput
      *         file to save.
-     * @throws DataAccessException
-     *         If file cannot be written or created.
      */
-    public void uploadFile(String filePath, InputStream fileInput) throws DataAccessException {
+    public void uploadFile(String filePath, InputStream fileInput) {
 
         String fullPath = STORAGE_FOLDER_PATH + filePath;
 
@@ -51,8 +49,8 @@ public class FileStorage {
 
             try {
                 targetFile.createNewFile();
-            } catch (IOException e) {
-                throw new DataAccessException("File writing failed.");
+            } catch (IOException exception) {
+                throw new RuntimeException(exception);
             }
 
         }
@@ -67,11 +65,11 @@ public class FileStorage {
             fileInput.close();
 
         } catch (IOException exception) {
-            throw new DataAccessException("File writing failed.");
+            throw new RuntimeException(exception);
         }
 
         logger.atInfo()
-              .log("[FILE WRITTEN] - path: %s", fullPath);
+              .log("[FILE WRITTEN] - Path: %s.", fullPath);
 
     }
 
@@ -81,22 +79,20 @@ public class FileStorage {
      * @param filePath
      *         path where file stored.
      * @return {@link InputStream} from found file.
-     * @throws DataAccessException
-     *         If file not found or cannot be read.
      */
-    public InputStream downloadFile(String filePath) throws DataAccessException {
+    public InputStream downloadFile(String filePath) {
         String fullPath = STORAGE_FOLDER_PATH + filePath;
         File file = new File(fullPath);
 
         if (!file.exists()) {
-            throw new DataAccessException("File reading failed.");
+            throw new RuntimeException("File reading failed.");
         }
 
         try {
             InputStream fileInput = new FileInputStream(file);
             return fileInput;
-        } catch (FileNotFoundException e) {
-            throw new DataAccessException("File reading failed.");
+        } catch (FileNotFoundException exception) {
+            throw new RuntimeException(exception);
         }
 
     }

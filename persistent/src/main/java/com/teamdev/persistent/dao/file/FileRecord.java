@@ -1,7 +1,7 @@
 package com.teamdev.persistent.dao.file;
 
 import com.teamdev.persistent.dao.DatabaseRecord;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 
 import javax.annotation.Nonnull;
 
@@ -11,11 +11,11 @@ import javax.annotation.Nonnull;
 public class FileRecord extends DatabaseRecord<String> {
 
     private final String filePath;
-    private final RecordIdentifier<String> ownerId;
+    private final RecordId<String> ownerId;
 
     public FileRecord(
-            @Nonnull RecordIdentifier<String> id,
-            @Nonnull RecordIdentifier<String> ownerId,
+            @Nonnull RecordId<String> id,
+            @Nonnull RecordId<String> ownerId,
             @Nonnull String filePath) {
         super(id);
         this.ownerId = ownerId;
@@ -26,7 +26,7 @@ public class FileRecord extends DatabaseRecord<String> {
         return filePath;
     }
 
-    public RecordIdentifier<String> ownerId() {
+    public RecordId<String> ownerId() {
         return ownerId;
     }
 }

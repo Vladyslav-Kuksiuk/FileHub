@@ -86,7 +86,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
         Optional<ScheduledFuture<Boolean>> fileWritingFuture = Optional.ofNullable(
                 this.fileWritingFuture);
 
-        fileWritingFuture.ifPresent(future -> future.cancel(true));
+        fileWritingFuture.ifPresent(future -> future.cancel(false));
 
         var future = executor.schedule(() -> {
 
@@ -121,7 +121,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
                 throw new DatabaseException("Database table saving crashed.", e.getCause());
             }
             return true;
-        }, 500, TimeUnit.MILLISECONDS);
+        }, 100, TimeUnit.MILLISECONDS);
 
         this.fileWritingFuture = future;
 

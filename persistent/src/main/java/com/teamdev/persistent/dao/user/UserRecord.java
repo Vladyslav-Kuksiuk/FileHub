@@ -2,7 +2,7 @@ package com.teamdev.persistent.dao.user;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.persistent.dao.DatabaseRecord;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.util.EmailValidator;
 
 import javax.annotation.Nonnull;
@@ -16,7 +16,7 @@ public class UserRecord extends DatabaseRecord<String> {
     private final String password;
     private final String email;
 
-    public UserRecord(@Nonnull RecordIdentifier<String> id,
+    public UserRecord(@Nonnull RecordId<String> id,
                       @Nonnull String login,
                       @Nonnull String password,
                       @Nonnull String email) {

@@ -6,9 +6,9 @@ package com.teamdev.persistent.dao;
  * @param <R>
  *         {@link DatabaseRecord} implementation.
  * @param <I>
- *         {@link RecordIdentifier} type.
+ *         {@link RecordId} type.
  */
-public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
+public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
 
     /**
      * Method to find a record in the database.
@@ -17,7 +17,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      *         Record identifier.
      * @return Found record.
      */
-    R find(RecordIdentifier<I> id) throws DataAccessException;
+    R find(RecordId<I> id) throws DataAccessException;
 
     /**
      * Method to delete a record in the database.
@@ -25,7 +25,7 @@ public interface DataAccessObject<R extends DatabaseRecord<I>, I> {
      * @param id
      *         Record identifier.
      */
-    void delete(RecordIdentifier<I> id) throws DataAccessException;
+    void delete(RecordId<I> id) throws DataAccessException;
 
     /**
      * Method to create a record in the database.

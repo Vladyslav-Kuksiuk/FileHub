@@ -1,7 +1,7 @@
 package com.teamdev.persistent.dao.user;
 
 import com.google.common.testing.NullPointerTester;
-import com.teamdev.persistent.dao.RecordIdentifier;
+import com.teamdev.persistent.dao.RecordId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +14,7 @@ class UserRecordTest {
         assertThrows(IllegalStateException.class,
                      () -> {
                          UserRecord userRecord =
-                                 new UserRecord(new RecordIdentifier<>("user"),
+                                 new UserRecord(new RecordId<>("user"),
                                                 "",
                                                 "password",
                                                 "email@email.com");
@@ -29,7 +29,7 @@ class UserRecordTest {
         assertThrows(IllegalStateException.class,
                      () -> {
                          UserRecord userRecord =
-                                 new UserRecord(new RecordIdentifier<>("user"),
+                                 new UserRecord(new RecordId<>("user"),
                                                 "user",
                                                 "",
                                                 "email@email.com");
@@ -44,7 +44,7 @@ class UserRecordTest {
         assertThrows(IllegalStateException.class,
                      () -> {
                          UserRecord userRecord =
-                                 new UserRecord(new RecordIdentifier<>("user"),
+                                 new UserRecord(new RecordId<>("user"),
                                                 "user",
                                                 "password",
                                                 "email.com");
@@ -58,7 +58,7 @@ class UserRecordTest {
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(String.class, "email@email.com");
-        tester.setDefault(RecordIdentifier.class, new RecordIdentifier<>("user"));
+        tester.setDefault(RecordId.class, new RecordId<>("user"));
         tester.testAllPublicConstructors(UserRecord.class);
 
     }
