@@ -2,7 +2,6 @@ package com.teamdev.persistent.dao.authentication;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.authentication.AuthenticationData;
@@ -75,8 +74,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         try {
             database.authenticationTable()
-                    .deleteAuthentication(userId.value());
-        } catch (DatabaseTransactionException | DatabaseException exception) {
+                    .deleteData(userId.value());
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
@@ -99,8 +98,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         try {
             database.authenticationTable()
-                    .addAuthentication(data);
-        } catch (DatabaseException exception) {
+                    .addData(data);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
@@ -123,8 +122,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         try {
             database.authenticationTable()
-                    .addAuthentication(data);
-        } catch (DatabaseException exception) {
+                    .addData(data);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 

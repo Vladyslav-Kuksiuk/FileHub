@@ -23,11 +23,11 @@ class InMemoryUserDaoTest {
         UserData user3 = new UserData("login3", "login3", "password3", "email3@email.com");
 
         database.userTable()
-                .addUser(user1);
+                .addData(user1);
         database.userTable()
-                .addUser(user2);
+                .addData(user2);
         database.userTable()
-                .addUser(user3);
+                .addData(user3);
     }
 
     @Test
@@ -40,7 +40,7 @@ class InMemoryUserDaoTest {
         userDao.create(newUser);
 
         assertEquals("password4", database.userTable()
-                                          .getUserById("login4")
+                                          .getDataById("login4")
                                           .password());
     }
 
@@ -85,7 +85,7 @@ class InMemoryUserDaoTest {
         userDao.update(updatedUser);
 
         assertEquals("changed@email.com", database.userTable()
-                                                  .getUserById("login2")
+                                                  .getDataById("login2")
                                                   .email());
     }
 
@@ -108,7 +108,7 @@ class InMemoryUserDaoTest {
         userDao.delete(new RecordId<>("login3"));
 
         assertThrows(DatabaseTransactionException.class, () -> database.userTable()
-                                                                       .getUserById("login3"));
+                                                                       .getDataById("login3"));
 
     }
 

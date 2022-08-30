@@ -37,6 +37,8 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
 
     private final File file;
 
+    private final Object locker = new Object();
+
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     private ScheduledFuture<Boolean> fileWritingFuture = null;
@@ -44,8 +46,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
     private Map<I, D> tableMap = new HashMap<>();
 
     protected InMemoryDatabaseTable(@Nonnull String fileName,
-                                    @Nonnull Class<D[]> dataArrayClass) throws
-                                                                        DatabaseException {
+                                    @Nonnull Class<D[]> dataArrayClass) {
 
         file = new File(InMemoryDatabase.DATABASE_TABLES_FOLDER_PATH + fileName);
 
@@ -70,18 +71,98 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
         } catch (IOException exception) {
             logger.atWarning()
                   .log("[DATABASE TABLE READING FAILED]");
-            throw new DatabaseException("Database table reading failed.");
+            throw new RuntimeException("Database table reading failed.");
         }
 
     }
 
     /**
-     * Save {@link Map} with {@link Data} in file as JSON.
+     * Founds {@link Data} in {@code tableMap} by id.
      *
-     * @throws DatabaseException
-     *         If database connection not working.
+     * @param id
+     *         {@link Data} identifier.
+     * @return {@link Data}.
+     * @throws DatabaseTransactionException
+     *         If {@link Data} doesn't exist.
      */
-    protected void updateTableInFile() throws DatabaseException {
+    public D getDataById(@Nonnull I id) throws DatabaseTransactionException {
+
+        if (!tableMap().containsKey(id)) {
+            throw new DatabaseTransactionException("Data with this id doesn't exist.");
+        }
+
+        return tableMap().get(id);
+    }
+
+    /**
+     * Adds {@link Data} to {@code tableMap}.
+     *
+     * @param data
+     *         {@link Data} to add.
+     * @throws DatabaseTransactionException
+     *         If {@link Data} already exists.
+     */
+    public void addData(@Nonnull D data) throws DatabaseTransactionException {
+
+        synchronized (locker) {
+
+            if (tableMap().containsKey(data.id())) {
+                throw new DatabaseTransactionException("Data with this id already exists");
+            }
+
+            tableMap().put(data.id(), data);
+
+            updateTableInFile();
+
+        }
+
+    }
+
+    /**
+     * Deletes {@link Data} from {@code tableMap} by id.
+     *
+     * @param id
+     *         {@link Data} identifier to delete.
+     * @throws DatabaseTransactionException
+     *         If {@link Data} doesn't exist.
+     */
+    public void deleteData(@Nonnull I id) throws DatabaseTransactionException {
+
+        synchronized (locker) {
+            if (!tableMap().containsKey(id)) {
+                throw new DatabaseTransactionException("Data with this id doesn't exist.");
+            }
+
+            tableMap().remove(id);
+
+            updateTableInFile();
+        }
+    }
+
+    /**
+     * Updates {@link Data} in {@code tableMap}.
+     *
+     * @param data
+     *         {@link Data} to update.
+     * @throws DatabaseTransactionException
+     *         If {@link Data} doesn't exist.
+     */
+    public void updateData(@Nonnull D data) throws DatabaseTransactionException {
+        synchronized (locker) {
+            if (!tableMap().containsKey(data.id())) {
+                throw new DatabaseTransactionException("Data with this id doesn't exist.");
+            }
+
+            tableMap().put(data.id(), data);
+
+            updateTableInFile();
+        }
+    }
+
+    /**
+     * Save {@link Map} with {@link Data} in file as JSON.
+     */
+    protected void updateTableInFile() {
 
         Optional<ScheduledFuture<Boolean>> fileWritingFuture = Optional.ofNullable(
                 this.fileWritingFuture);
@@ -118,7 +199,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
             } catch (IOException e) {
                 logger.atWarning()
                       .log("[DATABASE TABLE SAVING CRASHED]");
-                throw new DatabaseException("Database table saving crashed.", e.getCause());
+                throw new RuntimeException("Database in file not accessed.");
             }
             return true;
         }, 100, TimeUnit.MILLISECONDS);
@@ -129,18 +210,15 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
 
     /**
      * Clean all data in map and file.
-     *
-     * @throws DatabaseException
-     *         If database connection not working.
      */
-    public void clean() throws DatabaseException {
+    public void clean() {
         tableMap.clear();
         try {
             if (file.delete()) {
                 file.createNewFile();
             }
         } catch (IOException e) {
-            throw new DatabaseException("Database table cleaning failed.");
+            throw new RuntimeException("Database table cleaning failed.");
         }
     }
 

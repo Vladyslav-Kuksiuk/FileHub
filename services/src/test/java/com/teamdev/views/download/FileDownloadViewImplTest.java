@@ -32,7 +32,7 @@ class FileDownloadViewImplTest {
         database.clean();
 
         database.fileTable()
-                .addFile(new FileData("user\\myFile.txt",
+                .addData(new FileData("user\\myFile.txt",
                                       "user",
                                       "user\\myFile.txt"));
 

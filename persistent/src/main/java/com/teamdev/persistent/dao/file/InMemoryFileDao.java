@@ -1,7 +1,6 @@
 package com.teamdev.persistent.dao.file;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.file.FileData;
@@ -39,7 +38,7 @@ public class InMemoryFileDao implements FileDao {
 
         try {
             fileData = database.fileTable()
-                               .getFileById(id.value());
+                               .getDataById(id.value());
         } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
@@ -65,8 +64,8 @@ public class InMemoryFileDao implements FileDao {
 
         try {
             database.fileTable()
-                    .deleteFile(id.value());
-        } catch (DatabaseException | DatabaseTransactionException exception) {
+                    .deleteData(id.value());
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
@@ -92,8 +91,8 @@ public class InMemoryFileDao implements FileDao {
 
         try {
             database.fileTable()
-                    .addFile(fileData);
-        } catch (DatabaseException | DatabaseTransactionException exception) {
+                    .addData(fileData);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
@@ -119,8 +118,8 @@ public class InMemoryFileDao implements FileDao {
 
         try {
             database.fileTable()
-                    .updateFile(fileData);
-        } catch (DatabaseException | DatabaseTransactionException exception) {
+                    .updateData(fileData);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
