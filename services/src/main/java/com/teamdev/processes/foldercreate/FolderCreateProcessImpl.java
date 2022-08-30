@@ -21,7 +21,8 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull FolderCreateCommand command) throws FolderCreateException {
+    public RecordId<String> handle(@Nonnull FolderCreateCommand command) throws
+                                                                         FolderCreateException {
 
         RecordId<String> folderId = new RecordId<>(command.userId()
                                                           .value() +

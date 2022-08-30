@@ -14,17 +14,18 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
         super(FILE_NAME, FolderData[].class);
     }
 
-    public List<FolderData> selectWithSameParentId(String parentId) throws DatabaseTransactionException {
+    public List<FolderData> selectWithSameParentId(String parentId) throws
+                                                                    DatabaseTransactionException {
 
-        if(!tableMap().containsKey(parentId)){
+        if (!tableMap().containsKey(parentId)) {
             throw new DatabaseTransactionException("Folder with this id doesn't exist.");
         }
 
         return tableMap().values()
-                  .stream()
-                  .filter(data -> data.parentFolderId()
-                                      .equals(parentId))
-                  .collect(Collectors.toList());
+                         .stream()
+                         .filter(data -> data.parentFolderId()
+                                             .equals(parentId))
+                         .collect(Collectors.toList());
     }
 
 }

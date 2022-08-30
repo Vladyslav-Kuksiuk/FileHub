@@ -1,6 +1,6 @@
 package com.teamdev.persistent.dao;
 
-import java.util.Objects;
+import com.google.common.base.Objects;
 
 /**
  * Value object to store identifier for {@link DatabaseRecord}.
@@ -22,7 +22,7 @@ public class RecordId<T> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hashCode(id);
     }
 
     @Override
@@ -30,10 +30,10 @@ public class RecordId<T> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RecordId)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RecordId<T> that = (RecordId<T>) o;
-        return id.equals(that.id);
+        RecordId<?> id1 = (RecordId<?>) o;
+        return Objects.equal(id, id1.id);
     }
 }

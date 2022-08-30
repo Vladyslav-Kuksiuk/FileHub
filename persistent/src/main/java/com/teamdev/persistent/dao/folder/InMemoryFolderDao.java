@@ -95,13 +95,13 @@ public class InMemoryFolderDao implements FolderDao {
         List<FolderRecord> folders = null;
         try {
             folders = database.folderTable()
-                               .selectWithSameParentId(parentId.value())
-                               .stream()
-                               .map(data -> new FolderRecord(new RecordId<>(data.id()),
-                                                             new RecordId<>(data.ownerId()),
-                                                             new RecordId<>(data.parentFolderId()),
-                                                             data.name()))
-                               .collect(Collectors.toList());
+                              .selectWithSameParentId(parentId.value())
+                              .stream()
+                              .map(data -> new FolderRecord(new RecordId<>(data.id()),
+                                                            new RecordId<>(data.ownerId()),
+                                                            new RecordId<>(data.parentFolderId()),
+                                                            data.name()))
+                              .collect(Collectors.toList());
         } catch (DatabaseTransactionException e) {
             throw new DataAccessException(e.getMessage());
         }
