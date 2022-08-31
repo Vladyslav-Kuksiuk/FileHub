@@ -45,12 +45,13 @@ public class ServiceLocatorImpl implements ServiceLocator {
 
         FileStorage fileStorage = new FileStorage();
 
-        services.put(UserRegistrationProcess.class, new UserRegistrationProcessImpl(userDao, folderDao));
+        services.put(UserRegistrationProcess.class,
+                     new UserRegistrationProcessImpl(userDao, folderDao));
         services.put(UserAuthenticationProcess.class,
                      new UserAuthenticationProcessImpl(userDao, authDao));
         services.put(UserLogoutProcess.class, new UserLogoutProcessImpl(authDao));
         services.put(FileUploadProcess.class,
-                     new FileUploadProcessImpl(fileDao, fileStorage));
+                     new FileUploadProcessImpl(folderDao, fileDao, fileStorage));
 
     }
 

@@ -3,28 +3,44 @@ package com.teamdev.database.file;
 import com.teamdev.database.Data;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Class which is intended to store information about file meta context.
  */
 public class FileData extends Data<String> {
 
+    private final String folderId;
     private final String ownerId;
-    private final String filePath;
+    private final String name;
+    private final String extension;
 
     public FileData(@Nonnull String id,
-                    @Nonnull String ownerId,
-                    @Nonnull String filePath) {
+                    @Nonnull String folderId,
+                    @Nullable String ownerId,
+                    @Nonnull String name,
+                    @Nonnull String extension) {
         super(id);
+
+        this.folderId = folderId;
         this.ownerId = ownerId;
-        this.filePath = filePath;
+        this.name = name;
+        this.extension = extension;
+    }
+
+    public String folderId() {
+        return folderId;
     }
 
     public String ownerId() {
         return ownerId;
     }
 
-    public String filePath() {
-        return filePath;
+    public String name() {
+        return name;
+    }
+
+    public String extension() {
+        return extension;
     }
 }

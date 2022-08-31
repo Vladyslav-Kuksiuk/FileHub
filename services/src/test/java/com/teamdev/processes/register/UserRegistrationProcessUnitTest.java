@@ -69,7 +69,8 @@ class UserRegistrationProcessUnitTest {
                 .matches(toRegisterUser.email());
 
         assertWithMessage("Registered user root folder not exists.")
-                .that(folderDao.find(new RecordId<>(toRegisterUser.login()+"_root")).ownerId())
+                .that(folderDao.find(new RecordId<>(toRegisterUser.login() + "_root"))
+                               .ownerId())
                 .isEqualTo(toRegisterUser.id());
     }
 
@@ -88,7 +89,8 @@ class UserRegistrationProcessUnitTest {
 
     @Test
     void nullTest() throws NoSuchMethodException {
-        UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
+        UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(userDao,
+                                                                                          folderDao);
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registrationProcess,

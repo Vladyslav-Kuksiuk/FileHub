@@ -44,11 +44,13 @@ public class InMemoryFileDao implements FileDao {
         }
 
         FileRecord fileRecord = new FileRecord(new RecordId<>(fileData.id()),
+                                               new RecordId<>(fileData.folderId()),
                                                new RecordId<>(fileData.ownerId()),
-                                               fileData.filePath());
+                                               fileData.name(),
+                                               fileData.extension());
 
         logger.atInfo()
-              .log("[FILE FOUNDED] - path: %s", id.value());
+              .log("[FILE FOUNDED] - id: %s", id.value());
 
         return fileRecord;
     }
@@ -70,7 +72,7 @@ public class InMemoryFileDao implements FileDao {
         }
 
         logger.atInfo()
-              .log("[FILE DELETED] - path: %s", id.value());
+              .log("[FILE DELETED] - id: %s", id.value());
 
     }
 
@@ -85,9 +87,12 @@ public class InMemoryFileDao implements FileDao {
 
         FileData fileData = new FileData(record.id()
                                                .value(),
+                                         record.folderId()
+                                               .value(),
                                          record.ownerId()
                                                .value(),
-                                         record.filePath());
+                                         record.name(),
+                                         record.extension());
 
         try {
             database.fileTable()
@@ -97,7 +102,8 @@ public class InMemoryFileDao implements FileDao {
         }
 
         logger.atInfo()
-              .log("[FILE CREATED] - path: %s", record.filePath());
+              .log("[FILE CREATED] - id: %s", record.id()
+                                                    .value());
 
     }
 
@@ -112,9 +118,12 @@ public class InMemoryFileDao implements FileDao {
 
         FileData fileData = new FileData(record.id()
                                                .value(),
+                                         record.folderId()
+                                               .value(),
                                          record.ownerId()
                                                .value(),
-                                         record.filePath());
+                                         record.name(),
+                                         record.extension());
 
         try {
             database.fileTable()
@@ -124,7 +133,8 @@ public class InMemoryFileDao implements FileDao {
         }
 
         logger.atInfo()
-              .log("[FILE UPDATED] - path: %s", record.filePath());
+              .log("[FILE UPDATED] - id: %s", record.id()
+                                                    .value());
 
     }
 }

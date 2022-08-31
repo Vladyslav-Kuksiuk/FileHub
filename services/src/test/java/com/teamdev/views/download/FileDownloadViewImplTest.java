@@ -23,7 +23,7 @@ class FileDownloadViewImplTest {
 
     @Test
     void downloadTest() throws DatabaseTransactionException, IOException,
-                               FileAccessDeniedException {
+                               FileAccessDeniedException, InterruptedException {
 
         InMemoryDatabase database = new InMemoryDatabase();
         FileDao fileDao = new InMemoryFileDao(database);
@@ -31,11 +31,20 @@ class FileDownloadViewImplTest {
         database.clean();
 
         database.fileTable()
-                .addData(new FileData("user\\myFile.txt",
+                .addData(new FileData("myFile",
+                                      "user_root",
                                       "user",
-                                      "user\\myFile.txt"));
+                                      "myFile",
+                                      "txt"));
 
-        File newFile = new File(FileStorage.STORAGE_FOLDER_PATH + "user\\myFile.txt");
+        Thread.sleep(2000);
+
+        File newFile = new File(FileStorage.STORAGE_FOLDER_PATH + "myFile");
+
+        if (newFile.exists()) {
+            newFile.delete();
+            newFile.createNewFile();
+        }
 
         InputStream newFileInput = new ByteArrayInputStream("Test File".getBytes());
 
@@ -53,7 +62,7 @@ class FileDownloadViewImplTest {
         FileDownloadView downloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
         FileDownloadQuery downloadQuery = new FileDownloadQuery(new RecordId<>("user"),
-                                                                "user\\myFile.txt");
+                                                                new RecordId<>("myFile"));
 
         InputStream storageFileInput = downloadView.handle(downloadQuery)
                                                    .fileInput();

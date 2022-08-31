@@ -10,23 +10,38 @@ import javax.annotation.Nonnull;
  */
 public class FileRecord extends DatabaseRecord<String> {
 
-    private final String filePath;
+    private final RecordId<String> folderId;
     private final RecordId<String> ownerId;
+    private final String name;
+    private final String extension;
 
     public FileRecord(
             @Nonnull RecordId<String> id,
+            @Nonnull RecordId<String> folderId,
             @Nonnull RecordId<String> ownerId,
-            @Nonnull String filePath) {
+            @Nonnull String name,
+            @Nonnull String extension) {
         super(id);
+
+        this.folderId = folderId;
         this.ownerId = ownerId;
-        this.filePath = filePath;
+        this.name = name;
+        this.extension = extension;
     }
 
-    public String filePath() {
-        return filePath;
+    public RecordId<String> folderId() {
+        return folderId;
     }
 
     public RecordId<String> ownerId() {
         return ownerId;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String extension() {
+        return extension;
     }
 }

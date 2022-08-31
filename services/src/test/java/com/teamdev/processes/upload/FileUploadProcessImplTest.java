@@ -67,12 +67,15 @@ class FileUploadProcessImplTest {
         InputStream inputStream = new FileInputStream(
                 new File(testFolderPath + "hello.txt"));
 
-        uploadProcess.handle(new FileUploadCommand(userId,
-                                                   "user\\hello.txt",
-                                                   inputStream));
+        RecordId<String> fileId = uploadProcess.handle(new FileUploadCommand(userId,
+                                                                             new RecordId<>(
+                                                                                     "user_root"),
+                                                                             "hello",
+                                                                             "txt",
+                                                                             inputStream));
 
         InputStream testFileStream = new FileInputStream(
-                new File(FileStorage.STORAGE_FOLDER_PATH + "user\\hello.txt"));
+                new File(FileStorage.STORAGE_FOLDER_PATH + fileId.value()));
         String testText = new String(testFileStream.readAllBytes(), StandardCharsets.UTF_8);
 
         Thread.sleep(1500);

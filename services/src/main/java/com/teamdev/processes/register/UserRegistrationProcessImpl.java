@@ -56,7 +56,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
         }
 
         FolderRecord userRootFolder = new FolderRecord(
-                new RecordId<>(command.login()+"_root"),
+                new RecordId<>(command.login() + "_root"),
                 userId,
                 new RecordId<>(null),
                 command.login());
