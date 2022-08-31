@@ -6,6 +6,9 @@ import com.teamdev.database.InMemoryDatabaseTable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * {@link InMemoryDatabaseTable} implementation to store {@link FolderData}.
+ */
 public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
 
     private static final String FILE_NAME = "folders.json";

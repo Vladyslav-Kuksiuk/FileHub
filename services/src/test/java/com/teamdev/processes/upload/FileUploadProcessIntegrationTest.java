@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class FileUploadProcessImplTest {
+class FileUploadProcessIntegrationTest {
 
     @Test
     void fileUploadTest() throws IOException,

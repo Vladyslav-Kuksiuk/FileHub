@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class FileDownloadViewImplTest {
+class FileDownloadViewIntegrationTest {
 
     @Test
     void downloadTest() throws DatabaseTransactionException, IOException,

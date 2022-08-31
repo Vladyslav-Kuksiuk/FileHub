@@ -5,6 +5,9 @@ import com.teamdev.database.Data;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * Class which is intended to store information about folder.
+ */
 public class FolderData extends Data<String> {
 
     private final String ownerId;
