@@ -9,6 +9,8 @@ import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.user.UserRecord;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * {@link FileDao} implementation which is intended to work with files meta context
@@ -136,5 +138,18 @@ public class InMemoryFileDao implements FileDao {
               .log("[FILE UPDATED] - id: %s", record.id()
                                                     .value());
 
+    }
+
+    @Override
+    public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
+        return database.fileTable()
+                       .selectWithSameFolderId(folderId.value())
+                       .stream()
+                       .map(data -> new FileRecord(new RecordId<>(data.id()),
+                                                   new RecordId<>(data.folderId()),
+                                                   new RecordId<>(data.ownerId()),
+                                                   data.name(),
+                                                   data.extension()))
+                       .collect(Collectors.toList());
     }
 }

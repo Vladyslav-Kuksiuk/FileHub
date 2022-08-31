@@ -9,5 +9,5 @@ import com.teamdev.processes.ApplicationProcess;
 public interface FileUploadProcess extends ApplicationProcess<FileUploadCommand, RecordId<String>> {
 
     @Override
-    RecordId<String> handle(FileUploadCommand command) throws FileAlreadyExistsException;
+    RecordId<String> handle(FileUploadCommand command) throws FileUploadException;
 }

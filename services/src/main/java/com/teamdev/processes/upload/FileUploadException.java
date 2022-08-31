@@ -4,9 +4,9 @@ import com.teamdev.processes.ProcessException;
 
 import javax.annotation.Nonnull;
 
-public class FileAlreadyExistsException extends ProcessException {
+public class FileUploadException extends ProcessException {
 
-    public FileAlreadyExistsException(@Nonnull String message) {
+    public FileUploadException(@Nonnull String message) {
         super(message);
     }
 }

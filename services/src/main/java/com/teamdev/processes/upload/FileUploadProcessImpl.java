@@ -34,16 +34,24 @@ public class FileUploadProcessImpl implements FileUploadProcess {
 
     @Override
     public RecordId<String> handle(@Nonnull FileUploadCommand command) throws
-                                                                       FileAlreadyExistsException {
+                                                                       FileUploadException {
 
         try {
             if (!folderDao.find(command.folderId())
                           .ownerId()
                           .equals(command.userId())) {
-                throw new FileAlreadyExistsException("Access denied.");
+                throw new FileUploadException("Access denied.");
             }
+
+            if (fileDao.getFilesInFolder(command.folderId())
+                       .stream()
+                       .anyMatch(record -> record.name()
+                                                 .equals(command.fileName()))) {
+                throw new FileUploadException("File with same path and name already exists.");
+            }
+
         } catch (DataAccessException e) {
-            throw new FileAlreadyExistsException("Access denied.");
+            throw new FileUploadException("Access denied.");
         }
 
         RecordId<String> fileId =
@@ -77,7 +85,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                        command.fileName(),
                        exception.getMessage());
 
-            throw new FileAlreadyExistsException(exception.getMessage());
+            throw new FileUploadException(exception.getMessage());
         }
 
         fileStorage.uploadFile(fileId, command.fileInputStream());

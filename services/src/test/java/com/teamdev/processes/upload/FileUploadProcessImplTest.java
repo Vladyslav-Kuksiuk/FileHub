@@ -27,7 +27,7 @@ class FileUploadProcessImplTest {
 
     @Test
     void fileUploadTest() throws IOException,
-                                 InterruptedException, FileAlreadyExistsException,
+                                 InterruptedException, FileUploadException,
                                  UserAlreadyRegisteredException, UserDataMismatchException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
@@ -74,15 +74,12 @@ class FileUploadProcessImplTest {
                                                                              "txt",
                                                                              inputStream));
 
-        InputStream testFileStream = new FileInputStream(
-                new File(FileStorage.STORAGE_FOLDER_PATH + fileId.value()));
+        File testingFile = new File(FileStorage.STORAGE_FOLDER_PATH + fileId.value());
+        InputStream testFileStream = new FileInputStream(testingFile);
         String testText = new String(testFileStream.readAllBytes(), StandardCharsets.UTF_8);
-
-        Thread.sleep(1500);
 
         assertWithMessage("File uploading failed.")
                 .that(testText)
                 .isEqualTo("Hello world!");
-
     }
 }
