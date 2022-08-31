@@ -3,6 +3,8 @@ package com.teamdev.processes.register;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.RecordId;
+import com.teamdev.persistent.dao.folder.FolderDao;
+import com.teamdev.persistent.dao.folder.InMemoryFolderDao;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.processes.ApplicationProcess;
@@ -21,9 +23,10 @@ class UserRegistrationProcessIntegrationTest {
         database.clean();
 
         UserDao userDao = new InMemoryUserDao(database);
+        FolderDao folderDao = new InMemoryFolderDao(database);
 
         registerProcess =
-                new UserRegistrationProcessImpl(userDao);
+                new UserRegistrationProcessImpl(userDao, folderDao);
 
         Thread.sleep(1500);
     }

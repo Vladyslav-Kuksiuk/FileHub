@@ -1,6 +1,7 @@
 package com.teamdev.processes.register;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.FolderDaoFake;
 import com.teamdev.UserDaoFake;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordId;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserRegistrationProcessUnitTest {
 
     private UserDaoFake userDao;
+    private FolderDaoFake folderDao;
     private UserRegistrationProcess registrationProcess;
 
     private UserRecord registeredUser;
@@ -24,7 +26,8 @@ class UserRegistrationProcessUnitTest {
     @BeforeEach
     void setUp() throws DataAccessException {
         userDao = new UserDaoFake();
-        registrationProcess = new UserRegistrationProcessImpl(userDao);
+        folderDao = new FolderDaoFake();
+        registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
 
         registeredUser = new UserRecord(new RecordId<>("user1"),
                                         "user1",
@@ -41,7 +44,7 @@ class UserRegistrationProcessUnitTest {
     }
 
     @Test
-    void registerTest() throws InterruptedException, UserAlreadyRegisteredException,
+    void registerTest() throws UserAlreadyRegisteredException,
                                DataAccessException {
 
         UserRegistrationCommand command = new UserRegistrationCommand(toRegisterUser.login(),
@@ -64,6 +67,10 @@ class UserRegistrationProcessUnitTest {
                 .that(userDao.find(toRegisterUser.id())
                              .email())
                 .matches(toRegisterUser.email());
+
+        assertWithMessage("Registered user root folder not exists.")
+                .that(folderDao.find(new RecordId<>(toRegisterUser.login()+"_root")).ownerId())
+                .isEqualTo(toRegisterUser.id());
     }
 
     @Test
@@ -81,9 +88,7 @@ class UserRegistrationProcessUnitTest {
 
     @Test
     void nullTest() throws NoSuchMethodException {
-
-        UserDaoFake dao = new UserDaoFake();
-        UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(dao);
+        UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registrationProcess,

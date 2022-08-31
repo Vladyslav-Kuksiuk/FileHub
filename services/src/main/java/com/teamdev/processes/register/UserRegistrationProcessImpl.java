@@ -3,6 +3,8 @@ package com.teamdev.processes.register;
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.RecordId;
+import com.teamdev.persistent.dao.folder.FolderDao;
+import com.teamdev.persistent.dao.folder.FolderRecord;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.dao.user.UserRecord;
 import com.teamdev.util.StringEncryptor;
@@ -19,9 +21,13 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
 
     private final UserDao userDao;
 
+    private final FolderDao folderDao;
+
     @ParametersAreNonnullByDefault
-    public UserRegistrationProcessImpl(UserDao userDao) {
+    public UserRegistrationProcessImpl(@Nonnull UserDao userDao,
+                                       @Nonnull FolderDao folderDao) {
         this.userDao = userDao;
+        this.folderDao = folderDao;
     }
 
     @Override
@@ -47,6 +53,18 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
                        command.login(), exception.getMessage());
 
             throw new UserAlreadyRegisteredException(exception.getMessage());
+        }
+
+        FolderRecord userRootFolder = new FolderRecord(
+                new RecordId<>(command.login()+"_root"),
+                userId,
+                new RecordId<>(null),
+                command.login());
+
+        try {
+            folderDao.create(userRootFolder);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
 
         logger.atInfo()

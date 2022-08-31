@@ -7,6 +7,8 @@ import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.InMemoryAuthenticationDao;
 import com.teamdev.persistent.dao.file.FileDao;
 import com.teamdev.persistent.dao.file.InMemoryFileDao;
+import com.teamdev.persistent.dao.folder.FolderDao;
+import com.teamdev.persistent.dao.folder.InMemoryFolderDao;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
 import com.teamdev.persistent.dao.user.UserDao;
 import com.teamdev.persistent.filestorage.FileStorage;
@@ -39,10 +41,11 @@ public class ServiceLocatorImpl implements ServiceLocator {
         UserDao userDao = new InMemoryUserDao(database);
         AuthenticationDao authDao = new InMemoryAuthenticationDao(database);
         FileDao fileDao = new InMemoryFileDao(database);
+        FolderDao folderDao = new InMemoryFolderDao(database);
 
         FileStorage fileStorage = new FileStorage();
 
-        services.put(UserRegistrationProcess.class, new UserRegistrationProcessImpl(userDao));
+        services.put(UserRegistrationProcess.class, new UserRegistrationProcessImpl(userDao, folderDao));
         services.put(UserAuthenticationProcess.class,
                      new UserAuthenticationProcessImpl(userDao, authDao));
         services.put(UserLogoutProcess.class, new UserLogoutProcessImpl(authDao));
