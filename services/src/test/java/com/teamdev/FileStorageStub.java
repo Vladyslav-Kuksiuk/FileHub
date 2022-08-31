@@ -8,6 +8,8 @@ import java.io.InputStream;
 
 public class FileStorageStub extends FileStorage {
 
+    public static String INPUT_STRING = "test";
+
     @Override
     public void uploadFile(RecordId<String> fileId, InputStream fileInput) {
 
@@ -15,7 +17,7 @@ public class FileStorageStub extends FileStorage {
 
     @Override
     public InputStream downloadFile(RecordId<String> fileId) {
-        return new ByteArrayInputStream("test".getBytes());
+        return new ByteArrayInputStream(INPUT_STRING.getBytes());
     }
 
     @Override
