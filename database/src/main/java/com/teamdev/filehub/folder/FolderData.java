@@ -1,5 +1,6 @@
 package com.teamdev.filehub.folder;
 
+import com.google.common.base.Objects;
 import com.teamdev.filehub.Data;
 
 import javax.annotation.Nonnull;
@@ -36,5 +37,24 @@ public class FolderData extends Data<String> {
 
     public String name() {
         return name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(ownerId, parentFolderId, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FolderData data = (FolderData) o;
+        return Objects.equal(ownerId, data.ownerId) &&
+               Objects.equal(parentFolderId, data.parentFolderId) &&
+               Objects.equal(name, data.name);
     }
 }

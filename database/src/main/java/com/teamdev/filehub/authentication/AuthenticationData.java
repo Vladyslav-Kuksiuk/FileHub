@@ -1,5 +1,6 @@
 package com.teamdev.filehub.authentication;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.Data;
 
@@ -31,5 +32,23 @@ public class AuthenticationData extends Data<String> {
 
     public String expireTime() {
         return expireTime;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(authenticationToken, expireTime);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AuthenticationData data = (AuthenticationData) o;
+        return Objects.equal(authenticationToken, data.authenticationToken) &&
+               Objects.equal(expireTime, data.expireTime);
     }
 }

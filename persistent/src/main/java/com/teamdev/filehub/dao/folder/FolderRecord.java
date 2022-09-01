@@ -1,10 +1,10 @@
 package com.teamdev.filehub.dao.folder;
 
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.DatabaseRecord;
 import com.teamdev.filehub.dao.RecordId;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * {@link DatabaseRecord} implementation which is intended to store data about the folder.
@@ -19,12 +19,12 @@ public class FolderRecord extends DatabaseRecord<String> {
 
     public FolderRecord(@Nonnull RecordId<String> id,
                         @Nonnull RecordId<String> ownerId,
-                        @Nullable RecordId<String> parentFolderId,
+                        @Nonnull RecordId<String> parentFolderId,
                         @Nonnull String name) {
-        super(id);
-        this.ownerId = ownerId;
-        this.parentFolderId = parentFolderId;
-        this.name = name;
+        super(Preconditions.checkNotNull(id));
+        this.ownerId = Preconditions.checkNotNull(ownerId);
+        this.parentFolderId = Preconditions.checkNotNull(parentFolderId);
+        this.name = Preconditions.checkNotNull(name);
     }
 
     public RecordId<String> ownerId() {

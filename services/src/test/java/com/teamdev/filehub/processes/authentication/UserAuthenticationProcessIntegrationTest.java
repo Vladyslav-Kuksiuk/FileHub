@@ -31,7 +31,7 @@ class UserAuthenticationProcessIntegrationTest {
                                      "email@email.com");
 
         database.userTable()
-                .addData(user);
+                .create(user);
 
         UserAuthenticationCommand command = new UserAuthenticationCommand("user", "password");
 

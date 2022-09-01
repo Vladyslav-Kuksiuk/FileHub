@@ -39,7 +39,7 @@ class UserRegistrationProcessIntegrationTest {
         registerProcess.handle(command);
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
-                              .getDataById("Hellamb")
+                              .findById("Hellamb")
                               .get()
                               .email())
                 .matches("email@email.com");
@@ -64,7 +64,7 @@ class UserRegistrationProcessIntegrationTest {
         }
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
-                              .getDataById("user99")
+                              .findById("user99")
                               .get()
                               .email())
                 .matches("email@email.com");

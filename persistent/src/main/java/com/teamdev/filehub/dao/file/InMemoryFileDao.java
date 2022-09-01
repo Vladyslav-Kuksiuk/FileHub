@@ -36,7 +36,7 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public Optional<FileRecord> find(@Nonnull RecordId<String> id) {
 
-        Optional<FileData> optionalFileData = fileTable.getDataById(id.value());
+        Optional<FileData> optionalFileData = fileTable.findById(id.value());
 
         logger.atInfo()
               .log("[FILE FOUNDED] - id: %s", id.value());
@@ -64,7 +64,7 @@ public class InMemoryFileDao implements FileDao {
      */
     @Override
     public void delete(@Nonnull RecordId<String> id) {
-        fileTable.deleteData(id.value());
+        fileTable.delete(id.value());
 
         logger.atInfo()
               .log("[FILE DELETED] - id: %s", id.value());
@@ -89,7 +89,7 @@ public class InMemoryFileDao implements FileDao {
                                          record.name(),
                                          record.extension());
 
-        fileTable.addData(fileData);
+        fileTable.create(fileData);
 
         logger.atInfo()
               .log("[FILE CREATED] - id: %s", record.id()
@@ -115,7 +115,7 @@ public class InMemoryFileDao implements FileDao {
                                          record.name(),
                                          record.extension());
 
-        fileTable.updateData(fileData);
+        fileTable.update(fileData);
 
         logger.atInfo()
               .log("[FILE UPDATED] - id: %s", record.id()

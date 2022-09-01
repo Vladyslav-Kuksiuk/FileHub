@@ -34,7 +34,7 @@ public class InMemoryUserDao implements UserDao {
     public Optional<UserRecord> find(@Nonnull RecordId<String> id) {
 
         Optional<UserData> optionalUserData = userTable
-                .getDataById(id.value());
+                .findById(id.value());
 
         if (optionalUserData.isPresent()) {
 
@@ -59,7 +59,7 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public void delete(@Nonnull RecordId<String> id) {
 
-        userTable.deleteData(id.value());
+        userTable.delete(id.value());
 
         logger.atInfo()
               .log("[USER DELETED] - id: %s", id.value());
@@ -81,7 +81,7 @@ public class InMemoryUserDao implements UserDao {
                                          record.password(),
                                          record.email());
 
-        userTable.addData(userData);
+        userTable.create(userData);
 
         logger.atInfo()
               .log("[USER CREATED] - login: %s", record.login());
@@ -102,7 +102,7 @@ public class InMemoryUserDao implements UserDao {
                                          record.password(),
                                          record.email());
 
-        userTable.updateData(userData);
+        userTable.update(userData);
 
         logger.atInfo()
               .log("[USER UPDATED] - login: %s", record.login());

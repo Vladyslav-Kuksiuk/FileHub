@@ -42,10 +42,8 @@ public class FileDownloadViewImpl implements FileDownloadView {
                    query.fileId()
                         .value());
 
-        FileRecord fileRecord = null;
-
-        fileRecord = fileDao.find(query.fileId())
-                            .get();
+        FileRecord fileRecord = fileDao.find(query.fileId())
+                                       .get();
 
         if (!query.userId()
                   .value()

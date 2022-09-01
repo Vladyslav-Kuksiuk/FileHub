@@ -83,7 +83,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      *         {@link Data} identifier.
      * @return {@link Data}.
      */
-    public Optional<D> getDataById(@Nonnull I id) {
+    public Optional<D> findById(@Nonnull I id) {
 
         return Optional.ofNullable(tableMap().get(id));
     }
@@ -94,7 +94,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      * @param data
      *         {@link Data} to add.
      */
-    public void addData(@Nonnull D data) {
+    public void create(@Nonnull D data) {
 
         if (tableMap().containsKey(data.id())) {
             throw new RuntimeException("Data with this id already exists");
@@ -116,7 +116,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      * @param id
      *         {@link Data} identifier to delete.
      */
-    public void deleteData(@Nonnull I id) {
+    public void delete(@Nonnull I id) {
 
         if (!tableMap().containsKey(id)) {
             throw new RuntimeException("Data with this id doesn't exist.");
@@ -136,7 +136,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      * @param data
      *         {@link Data} to update.
      */
-    public void updateData(@Nonnull D data) {
+    public void update(@Nonnull D data) {
 
         if (!tableMap().containsKey(data.id())) {
             throw new RuntimeException("Data with this id doesn't exist.");

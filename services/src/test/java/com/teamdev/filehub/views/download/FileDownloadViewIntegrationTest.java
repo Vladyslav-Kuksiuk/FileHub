@@ -30,11 +30,11 @@ class FileDownloadViewIntegrationTest {
         database.clean();
 
         database.fileTable()
-                .addData(new FileData("myFile",
-                                      "user_root",
-                                      "user",
-                                      "myFile",
-                                      "txt"));
+                .create(new FileData("myFile",
+                                     "user_root",
+                                     "user",
+                                     "myFile",
+                                     "txt"));
 
         Thread.sleep(2000);
 

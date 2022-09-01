@@ -24,7 +24,7 @@ public class InMemoryFolderDao implements FolderDao {
     @Override
     public Optional<FolderRecord> find(RecordId<String> id) {
 
-        Optional<FolderData> optionalData = folderTable.getDataById(id.value());
+        Optional<FolderData> optionalData = folderTable.findById(id.value());
 
         if (optionalData.isPresent()) {
 
@@ -41,7 +41,7 @@ public class InMemoryFolderDao implements FolderDao {
 
     @Override
     public void delete(RecordId<String> id) {
-        folderTable.deleteData(id.value());
+        folderTable.delete(id.value());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class InMemoryFolderDao implements FolderDao {
                       .value(),
                 record.name());
 
-        folderTable.addData(data);
+        folderTable.create(data);
 
     }
 
@@ -71,7 +71,7 @@ public class InMemoryFolderDao implements FolderDao {
                       .value(),
                 record.name());
 
-        folderTable.updateData(data);
+        folderTable.update(data);
     }
 
     @Override

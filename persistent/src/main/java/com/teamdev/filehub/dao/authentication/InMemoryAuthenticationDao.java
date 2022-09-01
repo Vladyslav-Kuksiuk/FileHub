@@ -34,16 +34,16 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     public Optional<AuthenticationRecord> find(@Nonnull RecordId<String> userId) {
         Preconditions.checkNotNull(userId);
 
-        var optionalAuthData = authTable.findByUserId(userId.value());
+        Optional<AuthenticationData> optionalAuthData = authTable.findByUserId(userId.value());
 
         if (optionalAuthData.isPresent()) {
 
-            var authenticationData = optionalAuthData.get();
+            AuthenticationData authData = optionalAuthData.get();
 
-            return Optional.of(new AuthenticationRecord(new RecordId<>(authenticationData.id()),
-                                                        authenticationData.authenticationToken(),
+            return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
+                                                        authData.authenticationToken(),
                                                         LocalDateTime.parse(
-                                                                authenticationData.expireTime())));
+                                                                authData.expireTime())));
         }
 
         return Optional.empty();
@@ -57,7 +57,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      */
     @Override
     public void delete(@Nonnull RecordId<String> userId) {
-        authTable.deleteData(userId.value());
+        authTable.delete(userId.value());
 
     }
 
@@ -76,7 +76,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                          record.expireTime()
                                                                .toString());
 
-        authTable.addData(data);
+        authTable.create(data);
 
     }
 
@@ -95,7 +95,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                          record.expireTime()
                                                                .toString());
 
-        authTable.addData(data);
+        authTable.update(data);
 
     }
 }
