@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Дуже файно, дуже подобається.
+ */
 class UserLogoutProcessUnitTest {
 
     private AuthenticationDao authDao;

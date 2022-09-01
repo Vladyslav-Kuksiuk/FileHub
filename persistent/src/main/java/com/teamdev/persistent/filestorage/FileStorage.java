@@ -2,6 +2,7 @@ package com.teamdev.persistent.filestorage;
 
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.database.InMemoryDatabase;
+import com.teamdev.persistent.dao.RecordId;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,14 +31,12 @@ public class FileStorage {
     /**
      * Method to save files to file system from {@link InputStream} by given path.
      *
-     * @param filePath
-     *         path to save the file.
      * @param fileInput
      *         file to save.
      */
-    public void uploadFile(String filePath, InputStream fileInput) {
+    public void uploadFile(RecordId<String> fileId, InputStream fileInput) {
 
-        String fullPath = STORAGE_FOLDER_PATH + filePath;
+        String fullPath = STORAGE_FOLDER_PATH + fileId.value();
 
         File targetFile = new File(fullPath);
         if (!targetFile.exists()) {
@@ -76,12 +75,10 @@ public class FileStorage {
     /**
      * Method to convert file in file system to {@link InputStream} by given path.
      *
-     * @param filePath
-     *         path where file stored.
      * @return {@link InputStream} from found file.
      */
-    public InputStream downloadFile(String filePath) {
-        String fullPath = STORAGE_FOLDER_PATH + filePath;
+    public InputStream downloadFile(RecordId<String> fileId) {
+        String fullPath = STORAGE_FOLDER_PATH + fileId.value();
         File file = new File(fullPath);
 
         if (!file.exists()) {

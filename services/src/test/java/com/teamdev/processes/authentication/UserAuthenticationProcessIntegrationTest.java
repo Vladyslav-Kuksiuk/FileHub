@@ -1,10 +1,8 @@
 package com.teamdev.processes.authentication;
 
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.user.UserData;
-import com.teamdev.persistent.dao.DataAccessException;
 import com.teamdev.persistent.dao.authentication.AuthenticationDao;
 import com.teamdev.persistent.dao.authentication.InMemoryAuthenticationDao;
 import com.teamdev.persistent.dao.user.InMemoryUserDao;
@@ -22,19 +20,19 @@ class UserAuthenticationProcessIntegrationTest {
     private final UserAuthenticationProcessImpl authorizationProcess =
             new UserAuthenticationProcessImpl(userDao, authenticationDao);
 
-    UserAuthenticationProcessIntegrationTest() throws DatabaseException {
+    UserAuthenticationProcessIntegrationTest() {
     }
 
     @Test
-    void authenticationTest() throws DataAccessException, DatabaseTransactionException,
-                                     DatabaseException, UserDataMismatchException {
+    void authenticationTest() throws DatabaseTransactionException,
+                                     UserDataMismatchException {
         database.clean();
 
         UserData user = new UserData("user", "user", StringEncryptor.encrypt("password"),
                                      "email@email.com");
 
         database.userTable()
-                .addUser(user);
+                .addData(user);
 
         UserAuthenticationCommand command = new UserAuthenticationCommand("user", "password");
 

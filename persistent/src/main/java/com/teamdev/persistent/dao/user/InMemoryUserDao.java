@@ -1,7 +1,6 @@
 package com.teamdev.persistent.dao.user;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.user.UserData;
@@ -38,7 +37,7 @@ public class InMemoryUserDao implements UserDao {
 
         try {
             userData = database.userTable()
-                               .getUserById(id.value());
+                               .getDataById(id.value());
         } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
@@ -65,8 +64,8 @@ public class InMemoryUserDao implements UserDao {
 
         try {
             database.userTable()
-                    .deleteUser(id.value());
-        } catch (DatabaseTransactionException | DatabaseException exception) {
+                    .deleteData(id.value());
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
@@ -92,8 +91,8 @@ public class InMemoryUserDao implements UserDao {
 
         try {
             database.userTable()
-                    .addUser(userData);
-        } catch (DatabaseTransactionException | DatabaseException exception) {
+                    .addData(userData);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
@@ -117,8 +116,8 @@ public class InMemoryUserDao implements UserDao {
                                          record.email());
         try {
             database.userTable()
-                    .updateUser(userData);
-        } catch (DatabaseTransactionException | DatabaseException exception) {
+                    .updateData(userData);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 

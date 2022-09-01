@@ -13,19 +13,19 @@ import javax.annotation.Nonnull;
 public class FileDownloadQuery implements Query {
 
     private final RecordId<String> userId;
-    private final String filePath;
+    private final RecordId<String> fileId;
 
     public FileDownloadQuery(@Nonnull RecordId<String> userId,
-                             @Nonnull String filePath) {
+                             @Nonnull RecordId<String> fileId) {
         this.userId = Preconditions.checkNotNull(userId);
-        this.filePath = Preconditions.checkNotNull(filePath);
+        this.fileId = Preconditions.checkNotNull(fileId);
     }
 
     public RecordId<String> userId() {
         return userId;
     }
 
-    public String filePath() {
-        return filePath;
+    public RecordId<String> fileId() {
+        return fileId;
     }
 }

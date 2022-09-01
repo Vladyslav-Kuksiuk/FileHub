@@ -13,22 +13,36 @@ import java.io.InputStream;
  */
 public class FileUploadCommand extends AuthenticatedUserCommand {
 
-    private final String filePath;
+    private final RecordId<String> folderId;
+    private final String fileName;
+    private final String fileExtension;
     private final InputStream fileInputStream;
 
     protected FileUploadCommand(
             @Nonnull RecordId<String> userId,
-            @Nonnull String filePath,
+            @Nonnull RecordId<String> folderId,
+            @Nonnull String fileName,
+            @Nonnull String fileExtension,
             @Nonnull InputStream fileInputStream) {
         super(userId);
 
-        this.filePath = Preconditions.checkNotNull(filePath);
+        this.folderId = Preconditions.checkNotNull(folderId);
+        this.fileName = Preconditions.checkNotNull(fileName);
+        this.fileExtension = Preconditions.checkNotNull(fileExtension);
         this.fileInputStream = Preconditions.checkNotNull(fileInputStream);
 
     }
 
-    public String filePath() {
-        return filePath;
+    public RecordId<String> folderId() {
+        return folderId;
+    }
+
+    public String fileName() {
+        return fileName;
+    }
+
+    public String fileExtension() {
+        return fileExtension;
     }
 
     public InputStream fileInputStream() {

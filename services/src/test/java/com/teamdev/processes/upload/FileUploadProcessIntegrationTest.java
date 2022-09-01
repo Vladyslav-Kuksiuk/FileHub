@@ -1,7 +1,6 @@
 package com.teamdev.processes.upload;
 
 import com.teamdev.ServiceLocator;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.filestorage.FileStorage;
@@ -24,11 +23,11 @@ import java.nio.charset.StandardCharsets;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class FileUploadProcessImplTest {
+class FileUploadProcessIntegrationTest {
 
     @Test
-    void fileUploadTest() throws IOException, DatabaseException,
-                                 InterruptedException, FileAlreadyExistsException,
+    void fileUploadTest() throws IOException,
+                                 InterruptedException, FileUploadException,
                                  UserAlreadyRegisteredException, UserDataMismatchException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
@@ -68,19 +67,19 @@ class FileUploadProcessImplTest {
         InputStream inputStream = new FileInputStream(
                 new File(testFolderPath + "hello.txt"));
 
-        uploadProcess.handle(new FileUploadCommand(userId,
-                                                   "user\\hello.txt",
-                                                   inputStream));
+        RecordId<String> fileId = uploadProcess.handle(new FileUploadCommand(userId,
+                                                                             new RecordId<>(
+                                                                                     "user_root"),
+                                                                             "hello",
+                                                                             "txt",
+                                                                             inputStream));
 
-        InputStream testFileStream = new FileInputStream(
-                new File(FileStorage.STORAGE_FOLDER_PATH + "user\\hello.txt"));
+        File testingFile = new File(FileStorage.STORAGE_FOLDER_PATH + fileId.value());
+        InputStream testFileStream = new FileInputStream(testingFile);
         String testText = new String(testFileStream.readAllBytes(), StandardCharsets.UTF_8);
-
-        Thread.sleep(1500);
 
         assertWithMessage("File uploading failed.")
                 .that(testText)
                 .isEqualTo("Hello world!");
-
     }
 }

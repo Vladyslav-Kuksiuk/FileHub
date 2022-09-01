@@ -1,7 +1,6 @@
 package com.teamdev.persistent.dao.file;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.database.DatabaseException;
 import com.teamdev.database.DatabaseTransactionException;
 import com.teamdev.database.InMemoryDatabase;
 import com.teamdev.database.file.FileData;
@@ -10,6 +9,8 @@ import com.teamdev.persistent.dao.RecordId;
 import com.teamdev.persistent.dao.user.UserRecord;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * {@link FileDao} implementation which is intended to work with files meta context
@@ -39,17 +40,19 @@ public class InMemoryFileDao implements FileDao {
 
         try {
             fileData = database.fileTable()
-                               .getFileById(id.value());
+                               .getDataById(id.value());
         } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
         FileRecord fileRecord = new FileRecord(new RecordId<>(fileData.id()),
+                                               new RecordId<>(fileData.folderId()),
                                                new RecordId<>(fileData.ownerId()),
-                                               fileData.filePath());
+                                               fileData.name(),
+                                               fileData.extension());
 
         logger.atInfo()
-              .log("[FILE FOUNDED] - path: %s", id.value());
+              .log("[FILE FOUNDED] - id: %s", id.value());
 
         return fileRecord;
     }
@@ -65,13 +68,13 @@ public class InMemoryFileDao implements FileDao {
 
         try {
             database.fileTable()
-                    .deleteFile(id.value());
-        } catch (DatabaseException | DatabaseTransactionException exception) {
+                    .deleteData(id.value());
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
         logger.atInfo()
-              .log("[FILE DELETED] - path: %s", id.value());
+              .log("[FILE DELETED] - id: %s", id.value());
 
     }
 
@@ -86,19 +89,23 @@ public class InMemoryFileDao implements FileDao {
 
         FileData fileData = new FileData(record.id()
                                                .value(),
+                                         record.folderId()
+                                               .value(),
                                          record.ownerId()
                                                .value(),
-                                         record.filePath());
+                                         record.name(),
+                                         record.extension());
 
         try {
             database.fileTable()
-                    .addFile(fileData);
-        } catch (DatabaseException | DatabaseTransactionException exception) {
+                    .addData(fileData);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
         logger.atInfo()
-              .log("[FILE CREATED] - path: %s", record.filePath());
+              .log("[FILE CREATED] - id: %s", record.id()
+                                                    .value());
 
     }
 
@@ -113,19 +120,36 @@ public class InMemoryFileDao implements FileDao {
 
         FileData fileData = new FileData(record.id()
                                                .value(),
+                                         record.folderId()
+                                               .value(),
                                          record.ownerId()
                                                .value(),
-                                         record.filePath());
+                                         record.name(),
+                                         record.extension());
 
         try {
             database.fileTable()
-                    .updateFile(fileData);
-        } catch (DatabaseException | DatabaseTransactionException exception) {
+                    .updateData(fileData);
+        } catch (DatabaseTransactionException exception) {
             throw new DataAccessException(exception.getMessage(), exception.getCause());
         }
 
         logger.atInfo()
-              .log("[FILE UPDATED] - path: %s", record.filePath());
+              .log("[FILE UPDATED] - id: %s", record.id()
+                                                    .value());
 
+    }
+
+    @Override
+    public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
+        return database.fileTable()
+                       .selectWithSameFolderId(folderId.value())
+                       .stream()
+                       .map(data -> new FileRecord(new RecordId<>(data.id()),
+                                                   new RecordId<>(data.folderId()),
+                                                   new RecordId<>(data.ownerId()),
+                                                   data.name(),
+                                                   data.extension()))
+                       .collect(Collectors.toList());
     }
 }
