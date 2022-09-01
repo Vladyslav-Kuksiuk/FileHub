@@ -1,9 +1,9 @@
 package com.teamdev.filehub.dao.authentication;
 
 import com.google.common.base.Preconditions;
-import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.authentication.AuthenticationData;
+import com.teamdev.filehub.authentication.AuthenticationTable;
 import com.teamdev.filehub.dao.RecordId;
 
 import javax.annotation.Nonnull;
@@ -16,13 +16,11 @@ import java.util.Optional;
  */
 public class InMemoryAuthenticationDao implements AuthenticationDao {
 
-    private final FluentLogger logger = FluentLogger.forEnclosingClass();
+    private final AuthenticationTable authTable;
 
-    private final InMemoryDatabase database;
-
-    public InMemoryAuthenticationDao(@Nonnull InMemoryDatabase database) {
-        Preconditions.checkNotNull(database);
-        this.database = database;
+    public InMemoryAuthenticationDao(@Nonnull AuthenticationTable authTable) {
+        Preconditions.checkNotNull(authTable);
+        this.authTable = authTable;
     }
 
     /**
@@ -36,8 +34,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     public Optional<AuthenticationRecord> find(@Nonnull RecordId<String> userId) {
         Preconditions.checkNotNull(userId);
 
-        var optionalAuthData = database.authenticationTable()
-                                       .findByUserId(userId.value());
+        var optionalAuthData = authTable.findByUserId(userId.value());
 
         if (optionalAuthData.isPresent()) {
 
@@ -60,8 +57,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      */
     @Override
     public void delete(@Nonnull RecordId<String> userId) {
-        database.authenticationTable()
-                .deleteData(userId.value());
+        authTable.deleteData(userId.value());
 
     }
 
@@ -80,8 +76,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                          record.expireTime()
                                                                .toString());
 
-        database.authenticationTable()
-                .addData(data);
+        authTable.addData(data);
 
     }
 
@@ -100,8 +95,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                          record.expireTime()
                                                                .toString());
 
-        database.authenticationTable()
-                .addData(data);
+        authTable.addData(data);
 
     }
 }

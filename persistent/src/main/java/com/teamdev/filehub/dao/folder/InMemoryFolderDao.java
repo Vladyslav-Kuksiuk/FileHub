@@ -3,6 +3,7 @@ package com.teamdev.filehub.dao.folder;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.folder.FolderData;
+import com.teamdev.filehub.folder.FolderTable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,17 +15,16 @@ import java.util.stream.Collectors;
  */
 public class InMemoryFolderDao implements FolderDao {
 
-    private final InMemoryDatabase database;
+    private final FolderTable folderTable;
 
-    public InMemoryFolderDao(InMemoryDatabase database) {
-        this.database = database;
+    public InMemoryFolderDao(FolderTable folderTable) {
+        this.folderTable = folderTable;
     }
 
     @Override
     public Optional<FolderRecord> find(RecordId<String> id) {
 
-        Optional<FolderData> optionalData = database.folderTable()
-                                                    .getDataById(id.value());
+        Optional<FolderData> optionalData = folderTable.getDataById(id.value());
 
         if (optionalData.isPresent()) {
 
@@ -41,8 +41,7 @@ public class InMemoryFolderDao implements FolderDao {
 
     @Override
     public void delete(RecordId<String> id) {
-        database.folderTable()
-                .deleteData(id.value());
+        folderTable.deleteData(id.value());
     }
 
     @Override
@@ -57,8 +56,7 @@ public class InMemoryFolderDao implements FolderDao {
                       .value(),
                 record.name());
 
-        database.folderTable()
-                .addData(data);
+        folderTable.addData(data);
 
     }
 
@@ -73,17 +71,13 @@ public class InMemoryFolderDao implements FolderDao {
                       .value(),
                 record.name());
 
-        database.folderTable()
-                .updateData(data);
+        folderTable.updateData(data);
     }
 
     @Override
     public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) {
 
-        List<FolderRecord> folders = null;
-
-        folders = database.folderTable()
-                          .selectWithSameParentId(parentId.value())
+        return folderTable.selectWithSameParentId(parentId.value())
                           .stream()
                           .map(data -> new FolderRecord(new RecordId<>(data.id()),
                                                         new RecordId<>(data.ownerId()),
@@ -91,6 +85,5 @@ public class InMemoryFolderDao implements FolderDao {
                                                         data.name()))
                           .collect(Collectors.toList());
 
-        return folders;
     }
 }

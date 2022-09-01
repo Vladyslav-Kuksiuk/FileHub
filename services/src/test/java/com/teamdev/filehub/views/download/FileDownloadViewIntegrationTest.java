@@ -25,7 +25,7 @@ class FileDownloadViewIntegrationTest {
                                FileAccessDeniedException, InterruptedException {
 
         InMemoryDatabase database = new InMemoryDatabase();
-        FileDao fileDao = new InMemoryFileDao(database);
+        FileDao fileDao = new InMemoryFileDao(database.fileTable());
         FileStorage fileStorage = new FileStorage();
         database.clean();
 

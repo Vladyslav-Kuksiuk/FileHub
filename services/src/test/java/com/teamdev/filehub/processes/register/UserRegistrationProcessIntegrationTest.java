@@ -21,8 +21,8 @@ class UserRegistrationProcessIntegrationTest {
         database = new InMemoryDatabase();
         database.clean();
 
-        UserDao userDao = new InMemoryUserDao(database);
-        FolderDao folderDao = new InMemoryFolderDao(database);
+        UserDao userDao = new InMemoryUserDao(database.userTable());
+        FolderDao folderDao = new InMemoryFolderDao(database.folderTable());
 
         registerProcess =
                 new UserRegistrationProcessImpl(userDao, folderDao);

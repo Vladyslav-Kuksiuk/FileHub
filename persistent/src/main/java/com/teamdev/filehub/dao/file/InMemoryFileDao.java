@@ -5,6 +5,7 @@ import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
 import com.teamdev.filehub.file.FileData;
+import com.teamdev.filehub.file.FileTable;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -19,10 +20,10 @@ public class InMemoryFileDao implements FileDao {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final InMemoryDatabase database;
+    private final FileTable fileTable;
 
-    public InMemoryFileDao(InMemoryDatabase database) {
-        this.database = database;
+    public InMemoryFileDao(FileTable fileTable) {
+        this.fileTable = fileTable;
     }
 
     /**
@@ -35,8 +36,7 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public Optional<FileRecord> find(@Nonnull RecordId<String> id) {
 
-        Optional<FileData> optionalFileData = database.fileTable()
-                                                      .getDataById(id.value());
+        Optional<FileData> optionalFileData = fileTable.getDataById(id.value());
 
         logger.atInfo()
               .log("[FILE FOUNDED] - id: %s", id.value());
@@ -64,8 +64,7 @@ public class InMemoryFileDao implements FileDao {
      */
     @Override
     public void delete(@Nonnull RecordId<String> id) {
-        database.fileTable()
-                .deleteData(id.value());
+        fileTable.deleteData(id.value());
 
         logger.atInfo()
               .log("[FILE DELETED] - id: %s", id.value());
@@ -90,8 +89,7 @@ public class InMemoryFileDao implements FileDao {
                                          record.name(),
                                          record.extension());
 
-        database.fileTable()
-                .addData(fileData);
+        fileTable.addData(fileData);
 
         logger.atInfo()
               .log("[FILE CREATED] - id: %s", record.id()
@@ -117,8 +115,7 @@ public class InMemoryFileDao implements FileDao {
                                          record.name(),
                                          record.extension());
 
-        database.fileTable()
-                .updateData(fileData);
+        fileTable.updateData(fileData);
 
         logger.atInfo()
               .log("[FILE UPDATED] - id: %s", record.id()
@@ -128,14 +125,13 @@ public class InMemoryFileDao implements FileDao {
 
     @Override
     public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
-        return database.fileTable()
-                       .selectWithSameFolderId(folderId.value())
-                       .stream()
-                       .map(data -> new FileRecord(new RecordId<>(data.id()),
-                                                   new RecordId<>(data.folderId()),
-                                                   new RecordId<>(data.ownerId()),
-                                                   data.name(),
-                                                   data.extension()))
-                       .collect(Collectors.toList());
+        return fileTable.selectWithSameFolderId(folderId.value())
+                        .stream()
+                        .map(data -> new FileRecord(new RecordId<>(data.id()),
+                                                    new RecordId<>(data.folderId()),
+                                                    new RecordId<>(data.ownerId()),
+                                                    data.name(),
+                                                    data.extension()))
+                        .collect(Collectors.toList());
     }
 }

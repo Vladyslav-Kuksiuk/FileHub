@@ -14,8 +14,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class UserAuthenticationProcessIntegrationTest {
 
     private final InMemoryDatabase database = new InMemoryDatabase();
-    private final UserDao userDao = new InMemoryUserDao(database);
-    private final AuthenticationDao authenticationDao = new InMemoryAuthenticationDao(database);
+    private final UserDao userDao = new InMemoryUserDao(database.userTable());
+    private final AuthenticationDao authenticationDao =
+            new InMemoryAuthenticationDao(database.authenticationTable());
     private final UserAuthenticationProcessImpl authorizationProcess =
             new UserAuthenticationProcessImpl(userDao, authenticationDao);
 

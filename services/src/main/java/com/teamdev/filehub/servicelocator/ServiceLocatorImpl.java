@@ -38,10 +38,10 @@ public class ServiceLocatorImpl implements ServiceLocator {
     public ServiceLocatorImpl() {
 
         InMemoryDatabase database = new InMemoryDatabase();
-        UserDao userDao = new InMemoryUserDao(database);
-        AuthenticationDao authDao = new InMemoryAuthenticationDao(database);
-        FileDao fileDao = new InMemoryFileDao(database);
-        FolderDao folderDao = new InMemoryFolderDao(database);
+        UserDao userDao = new InMemoryUserDao(database.userTable());
+        AuthenticationDao authDao = new InMemoryAuthenticationDao(database.authenticationTable());
+        FileDao fileDao = new InMemoryFileDao(database.fileTable());
+        FolderDao folderDao = new InMemoryFolderDao(database.folderTable());
 
         FileStorage fileStorage = new FileStorage();
 

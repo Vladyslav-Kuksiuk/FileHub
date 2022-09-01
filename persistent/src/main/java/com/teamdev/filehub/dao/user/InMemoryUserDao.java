@@ -4,6 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.user.UserData;
+import com.teamdev.filehub.user.UserTable;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -16,10 +17,10 @@ public class InMemoryUserDao implements UserDao {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final InMemoryDatabase database;
+    private final UserTable userTable;
 
-    public InMemoryUserDao(@Nonnull InMemoryDatabase database) {
-        this.database = database;
+    public InMemoryUserDao(@Nonnull UserTable userTable) {
+        this.userTable = userTable;
     }
 
     /**
@@ -32,8 +33,8 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public Optional<UserRecord> find(@Nonnull RecordId<String> id) {
 
-        Optional<UserData> optionalUserData = database.userTable()
-                                                      .getDataById(id.value());
+        Optional<UserData> optionalUserData = userTable
+                .getDataById(id.value());
 
         if (optionalUserData.isPresent()) {
 
@@ -58,8 +59,7 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public void delete(@Nonnull RecordId<String> id) {
 
-        database.userTable()
-                .deleteData(id.value());
+        userTable.deleteData(id.value());
 
         logger.atInfo()
               .log("[USER DELETED] - id: %s", id.value());
@@ -81,8 +81,7 @@ public class InMemoryUserDao implements UserDao {
                                          record.password(),
                                          record.email());
 
-        database.userTable()
-                .addData(userData);
+        userTable.addData(userData);
 
         logger.atInfo()
               .log("[USER CREATED] - login: %s", record.login());
@@ -103,8 +102,7 @@ public class InMemoryUserDao implements UserDao {
                                          record.password(),
                                          record.email());
 
-        database.userTable()
-                .updateData(userData);
+        userTable.updateData(userData);
 
         logger.atInfo()
               .log("[USER UPDATED] - login: %s", record.login());
@@ -121,8 +119,7 @@ public class InMemoryUserDao implements UserDao {
     @Override
     public Optional<UserRecord> findByLogin(@Nonnull String login) {
 
-        Optional<UserData> optionalUserData = database.userTable()
-                                                      .getUserByLogin(login);
+        Optional<UserData> optionalUserData = userTable.getUserByLogin(login);
 
         if (optionalUserData.isPresent()) {
 
