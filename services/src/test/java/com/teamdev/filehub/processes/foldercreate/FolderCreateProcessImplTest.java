@@ -1,7 +1,6 @@
 package com.teamdev.filehub.processes.foldercreate;
 
 import com.teamdev.filehub.FolderDaoFake;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
@@ -19,7 +18,7 @@ class FolderCreateProcessImplTest {
     private FolderRecord rootFolder;
 
     @BeforeEach
-    void setUp() throws DataAccessException {
+    void setUp() {
         folderDao = new FolderDaoFake();
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
 
@@ -34,7 +33,7 @@ class FolderCreateProcessImplTest {
     }
 
     @Test
-    void folderCreationTest() throws FolderCreateException, DataAccessException {
+    void folderCreationTest() throws FolderCreateException {
 
         FolderCreateCommand command = new FolderCreateCommand(rootFolder.ownerId(),
                                                               rootFolder.id(),
@@ -44,13 +43,14 @@ class FolderCreateProcessImplTest {
 
         assertWithMessage("Folder creation failed.")
                 .that(folderDao.find(createdFolderId)
+                               .get()
                                .name())
                 .isEqualTo("newFolder");
 
     }
 
     @Test
-    void sameFolderAlreadyExists() throws DataAccessException {
+    void sameFolderAlreadyExists() {
 
         FolderRecord folder = new FolderRecord(
                 new RecordId<>("user1-folder-id"),

@@ -1,12 +1,11 @@
 package com.teamdev.filehub.dao.folder;
 
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.folder.FolderData;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -22,34 +21,32 @@ public class InMemoryFolderDao implements FolderDao {
     }
 
     @Override
-    public FolderRecord find(RecordId<String> id) throws DataAccessException {
+    public Optional<FolderRecord> find(RecordId<String> id) {
 
-        FolderData data;
-        try {
-            data = database.folderTable()
-                           .getDataById(id.value());
-        } catch (DatabaseTransactionException e) {
-            throw new DataAccessException(e.getMessage());
+        Optional<FolderData> optionalData = database.folderTable()
+                                                    .getDataById(id.value());
+
+        if (optionalData.isPresent()) {
+
+            FolderData data = optionalData.get();
+
+            return Optional.of(new FolderRecord(id,
+                                                new RecordId<>(data.ownerId()),
+                                                new RecordId<>(data.parentFolderId()),
+                                                data.name()));
         }
 
-        return new FolderRecord(id,
-                                new RecordId<>(data.ownerId()),
-                                new RecordId<>(data.parentFolderId()),
-                                data.name());
+        return Optional.empty();
     }
 
     @Override
-    public void delete(RecordId<String> id) throws DataAccessException {
-        try {
-            database.folderTable()
-                    .deleteData(id.value());
-        } catch (DatabaseTransactionException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+    public void delete(RecordId<String> id) {
+        database.folderTable()
+                .deleteData(id.value());
     }
 
     @Override
-    public void create(FolderRecord record) throws DataAccessException {
+    public void create(FolderRecord record) {
 
         FolderData data = new FolderData(
                 record.id()
@@ -60,17 +57,13 @@ public class InMemoryFolderDao implements FolderDao {
                       .value(),
                 record.name());
 
-        try {
-            database.folderTable()
-                    .addData(data);
-        } catch (DatabaseTransactionException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+        database.folderTable()
+                .addData(data);
 
     }
 
     @Override
-    public void update(FolderRecord record) throws DataAccessException {
+    public void update(FolderRecord record) {
         FolderData data = new FolderData(
                 record.id()
                       .value(),
@@ -80,31 +73,23 @@ public class InMemoryFolderDao implements FolderDao {
                       .value(),
                 record.name());
 
-        try {
-            database.folderTable()
-                    .updateData(data);
-        } catch (DatabaseTransactionException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+        database.folderTable()
+                .updateData(data);
     }
 
     @Override
-    public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) throws
-                                                                                   DataAccessException {
+    public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) {
 
         List<FolderRecord> folders = null;
-        try {
-            folders = database.folderTable()
-                              .selectWithSameParentId(parentId.value())
-                              .stream()
-                              .map(data -> new FolderRecord(new RecordId<>(data.id()),
-                                                            new RecordId<>(data.ownerId()),
-                                                            new RecordId<>(data.parentFolderId()),
-                                                            data.name()))
-                              .collect(Collectors.toList());
-        } catch (DatabaseTransactionException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+
+        folders = database.folderTable()
+                          .selectWithSameParentId(parentId.value())
+                          .stream()
+                          .map(data -> new FolderRecord(new RecordId<>(data.id()),
+                                                        new RecordId<>(data.ownerId()),
+                                                        new RecordId<>(data.parentFolderId()),
+                                                        data.name()))
+                          .collect(Collectors.toList());
 
         return folders;
     }

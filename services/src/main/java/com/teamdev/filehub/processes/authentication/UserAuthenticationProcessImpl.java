@@ -2,7 +2,6 @@ package com.teamdev.filehub.processes.authentication;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
 import com.teamdev.filehub.dao.user.UserDao;
@@ -13,6 +12,7 @@ import com.teamdev.util.StringEncryptor;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * A {@link UserAuthenticationProcess} implementation.
@@ -40,12 +40,12 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         logger.atInfo()
               .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
 
-        UserRecord userRecord = null;
-        try {
-            userRecord = userDao.findByLogin(command.login());
-        } catch (DataAccessException exception) {
-            throw new UserDataMismatchException(exception.getMessage());
+        Optional<UserRecord> optionalUserRecord = userDao.findByLogin(command.login());
+
+        if (optionalUserRecord.isEmpty()) {
+            throw new UserDataMismatchException("Authentication data incorrect.");
         }
+        UserRecord userRecord = optionalUserRecord.get();
 
         boolean isPasswordMatch = StringEncryptor.encrypt(command.password())
                                                  .equals(userRecord.password());
@@ -56,7 +56,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                   .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: Password incorrect.",
                        command.login());
 
-            throw new UserDataMismatchException("Password incorrect.");
+            throw new UserDataMismatchException("Authentication data incorrect.");
         }
 
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);
@@ -70,16 +70,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                                          authenticationToken,
                                          expireDateTime);
 
-        try {
-            authenticationDao.create(authenticationRecord);
-        } catch (DataAccessException exception) {
-
-            logger.atWarning()
-                  .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: %s.",
-                       command.login(), exception.getMessage());
-
-            throw new UserDataMismatchException(exception.getMessage());
-        }
+        authenticationDao.create(authenticationRecord);
 
         UserAuthenticationResponse response =
                 new UserAuthenticationResponse(authenticationToken);

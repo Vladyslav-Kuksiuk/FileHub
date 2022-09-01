@@ -1,6 +1,5 @@
 package com.teamdev.filehub.processes.foldercreate;
 
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
@@ -34,25 +33,21 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
                                                      command.parentFolderId(),
                                                      command.folderName());
 
-        try {
-            if (!folderDao.find(command.parentFolderId())
-                          .ownerId()
-                          .equals(command.userId())) {
-                throw new FolderCreateException("Folder creation access denied.");
-            }
-
-            if (folderDao.getInnerFoldersByParentId(command.parentFolderId())
-                         .stream()
-                         .anyMatch(record -> record.name()
-                                                   .equals(command.folderName()))) {
-                throw new FolderCreateException("Folder with same path and name already exists.");
-            }
-
-            folderDao.create(folderRecord);
-
-        } catch (DataAccessException e) {
-            throw new FolderCreateException(e.getMessage());
+        if (!folderDao.find(command.parentFolderId())
+                      .get()
+                      .ownerId()
+                      .equals(command.userId())) {
+            throw new FolderCreateException("Folder creation access denied.");
         }
+
+        if (folderDao.getInnerFoldersByParentId(command.parentFolderId())
+                     .stream()
+                     .anyMatch(record -> record.name()
+                                               .equals(command.folderName()))) {
+            throw new FolderCreateException("Folder with same path and name already exists.");
+        }
+
+        folderDao.create(folderRecord);
 
         return folderId;
     }

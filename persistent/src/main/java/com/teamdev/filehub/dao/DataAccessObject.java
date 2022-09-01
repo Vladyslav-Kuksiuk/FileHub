@@ -1,5 +1,7 @@
 package com.teamdev.filehub.dao;
 
+import java.util.Optional;
+
 /**
  * An interface that provides methods for CRUD operations.
  *
@@ -17,7 +19,7 @@ public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
      *         Record identifier.
      * @return Found record.
      */
-    R find(RecordId<I> id) throws DataAccessException;
+    Optional<R> find(RecordId<I> id);
 
     /**
      * Method to delete a record in the database.
@@ -25,7 +27,7 @@ public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
      * @param id
      *         Record identifier.
      */
-    void delete(RecordId<I> id) throws DataAccessException;
+    void delete(RecordId<I> id);
 
     /**
      * Method to create a record in the database.
@@ -33,7 +35,7 @@ public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
      * @param record
      *         Record to create.
      */
-    void create(R record) throws DataAccessException;
+    void create(R record);
 
     /**
      * Method to create a record in the database.
@@ -41,6 +43,6 @@ public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
      * @param record
      *         Record to update.
      */
-    void update(R record) throws DataAccessException;
+    void update(R record);
 
 }

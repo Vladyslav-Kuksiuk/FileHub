@@ -2,14 +2,13 @@ package com.teamdev.filehub.dao.authentication;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.authentication.AuthenticationData;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * {@link AuthenticationDao} implementation which is intended to work with authentications
@@ -32,33 +31,25 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      * @param userId
      *         Authentication user identifier.
      * @return {@link AuthenticationRecord}.
-     * @throws DataAccessException
-     *         If user authentication not found.
      */
     @Override
-    public AuthenticationRecord find(@Nonnull RecordId<String> userId) throws
-                                                                       DataAccessException {
+    public Optional<AuthenticationRecord> find(@Nonnull RecordId<String> userId) {
         Preconditions.checkNotNull(userId);
 
-        AuthenticationData authenticationData;
+        var optionalAuthData = database.authenticationTable()
+                                       .findByUserId(userId.value());
 
-        try {
-            authenticationData = database.authenticationTable()
-                                         .getAuthenticationByUserId(userId.value());
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        if (optionalAuthData.isPresent()) {
+
+            var authenticationData = optionalAuthData.get();
+
+            return Optional.of(new AuthenticationRecord(new RecordId<>(authenticationData.id()),
+                                                        authenticationData.authenticationToken(),
+                                                        LocalDateTime.parse(
+                                                                authenticationData.expireTime())));
         }
 
-        AuthenticationRecord authenticationRecord =
-                new AuthenticationRecord(new RecordId<>(authenticationData.id()),
-                                         authenticationData.authenticationToken(),
-                                         LocalDateTime.parse(authenticationData.expireTime()));
-
-        logger.atInfo()
-              .log("[AUTHENTICATION FOUND] - login: %s", authenticationRecord.id()
-                                                                             .value());
-
-        return authenticationRecord;
+        return Optional.empty();
     }
 
     /**
@@ -66,18 +57,11 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *
      * @param userId
      *         Authenticated user identifier.
-     * @throws DataAccessException
-     *         If user authentication not found.
      */
     @Override
-    public void delete(@Nonnull RecordId<String> userId) throws DataAccessException {
-
-        try {
-            database.authenticationTable()
-                    .deleteData(userId.value());
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+    public void delete(@Nonnull RecordId<String> userId) {
+        database.authenticationTable()
+                .deleteData(userId.value());
 
     }
 
@@ -88,7 +72,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         {@link AuthenticationRecord}.
      */
     @Override
-    public void create(@Nonnull AuthenticationRecord record) throws DataAccessException {
+    public void create(@Nonnull AuthenticationRecord record) {
 
         AuthenticationData data = new AuthenticationData(record.id()
                                                                .value(),
@@ -96,12 +80,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                          record.expireTime()
                                                                .toString());
 
-        try {
-            database.authenticationTable()
-                    .addData(data);
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+        database.authenticationTable()
+                .addData(data);
 
     }
 
@@ -112,7 +92,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         {@link AuthenticationRecord}.
      */
     @Override
-    public void update(@Nonnull AuthenticationRecord record) throws DataAccessException {
+    public void update(@Nonnull AuthenticationRecord record) {
 
         AuthenticationData data = new AuthenticationData(record.id()
                                                                .value(),
@@ -120,12 +100,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                          record.expireTime()
                                                                .toString());
 
-        try {
-            database.authenticationTable()
-                    .addData(data);
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+        database.authenticationTable()
+                .addData(data);
 
     }
 }

@@ -1,7 +1,6 @@
 package com.teamdev.filehub.views.download;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
 import com.teamdev.filehub.filestorage.FileStorage;
@@ -44,11 +43,9 @@ public class FileDownloadViewImpl implements FileDownloadView {
                         .value());
 
         FileRecord fileRecord = null;
-        try {
-            fileRecord = fileDao.find(query.fileId());
-        } catch (DataAccessException exception) {
-            throw new FileAccessDeniedException(exception.getMessage());
-        }
+
+        fileRecord = fileDao.find(query.fileId())
+                            .get();
 
         if (!query.userId()
                   .value()

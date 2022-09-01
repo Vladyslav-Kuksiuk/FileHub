@@ -1,6 +1,5 @@
 package com.teamdev.filehub.processes.register;
 
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
@@ -32,8 +31,7 @@ class UserRegistrationProcessIntegrationTest {
     }
 
     @Test
-    void registerTest() throws DatabaseTransactionException,
-                               InterruptedException, ProcessException {
+    void registerTest() throws InterruptedException, ProcessException {
         UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
                                                                       "password",
                                                                       "email@email.com");
@@ -42,6 +40,7 @@ class UserRegistrationProcessIntegrationTest {
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
                               .getDataById("Hellamb")
+                              .get()
                               .email())
                 .matches("email@email.com");
 
@@ -49,8 +48,7 @@ class UserRegistrationProcessIntegrationTest {
     }
 
     @Test
-    void registerManyTest() throws DatabaseTransactionException,
-                                   InterruptedException, ProcessException {
+    void registerManyTest() throws InterruptedException, ProcessException {
 
         for (int i = 0; i < 100; i++) {
             UserRegistrationCommand command = new UserRegistrationCommand("user" + i,
@@ -67,6 +65,7 @@ class UserRegistrationProcessIntegrationTest {
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
                               .getDataById("user99")
+                              .get()
                               .email())
                 .matches("email@email.com");
 

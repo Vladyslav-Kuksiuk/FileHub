@@ -1,7 +1,6 @@
 package com.teamdev.filehub.processes.register;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
@@ -43,17 +42,13 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
                                                StringEncryptor.encrypt(command.password()),
                                                command.email());
 
-        try {
-            userDao.create(userRecord);
-
-        } catch (DataAccessException exception) {
-
-            logger.atWarning()
-                  .log("[PROCESS FAILED] - User registration - login: %s - Exception message: %s.",
-                       command.login(), exception.getMessage());
-
-            throw new UserAlreadyRegisteredException(exception.getMessage());
+        if (userDao.findByLogin(command.login())
+                   .isPresent()) {
+            throw new UserAlreadyRegisteredException("User already registered.");
         }
+        ;
+
+        userDao.create(userRecord);
 
         FolderRecord userRootFolder = new FolderRecord(
                 new RecordId<>(command.login() + "_root"),
@@ -61,11 +56,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
                 new RecordId<>(null),
                 command.login());
 
-        try {
-            folderDao.create(userRootFolder);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        }
+        folderDao.create(userRootFolder);
 
         logger.atInfo()
               .log("[PROCESS FINISHED] - User registration - login: %s.", command.login());

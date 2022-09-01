@@ -1,6 +1,5 @@
 package com.teamdev.filehub.processes.authentication;
 
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.InMemoryAuthenticationDao;
@@ -24,8 +23,7 @@ class UserAuthenticationProcessIntegrationTest {
     }
 
     @Test
-    void authenticationTest() throws DatabaseTransactionException,
-                                     UserDataMismatchException {
+    void authenticationTest() throws UserDataMismatchException {
         database.clean();
 
         UserData user = new UserData("user", "user", StringEncryptor.encrypt("password"),
@@ -40,7 +38,8 @@ class UserAuthenticationProcessIntegrationTest {
 
         assertWithMessage("User authorization failed.")
                 .that(database.authenticationTable()
-                              .getAuthenticationByUserId("user")
+                              .findByUserId("user")
+                              .get()
                               .authenticationToken())
                 .matches(response.authenticationToken());
     }

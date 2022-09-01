@@ -1,6 +1,5 @@
 package com.teamdev.filehub;
 
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
@@ -8,6 +7,7 @@ import com.teamdev.filehub.dao.folder.FolderRecord;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FolderDaoFake implements FolderDao {
@@ -15,20 +15,16 @@ public class FolderDaoFake implements FolderDao {
     Map<RecordId<String>, FolderRecord> folders = new HashMap();
 
     @Override
-    public FolderRecord find(RecordId<String> id) throws DataAccessException {
+    public Optional<FolderRecord> find(RecordId<String> id) {
 
-        if (!folders.containsKey(id)) {
-            throw new DataAccessException("Folder with this id doesn't exist");
-        }
-
-        return folders.get(id);
+        return Optional.ofNullable(folders.get(id));
     }
 
     @Override
-    public void delete(RecordId<String> id) throws DataAccessException {
+    public void delete(RecordId<String> id) {
 
         if (!folders.containsKey(id)) {
-            throw new DataAccessException("Folder with this id doesn't exist");
+            throw new RuntimeException("Folder with this id doesn't exist");
         }
 
         folders.remove(id);
@@ -36,10 +32,10 @@ public class FolderDaoFake implements FolderDao {
     }
 
     @Override
-    public void create(FolderRecord record) throws DataAccessException {
+    public void create(FolderRecord record) {
 
         if (folders.containsKey(record.id())) {
-            throw new DataAccessException("Folder with this id already exists");
+            throw new RuntimeException("Folder with this id already exists");
         }
 
         folders.put(record.id(), record);
@@ -47,10 +43,10 @@ public class FolderDaoFake implements FolderDao {
     }
 
     @Override
-    public void update(FolderRecord record) throws DataAccessException {
+    public void update(FolderRecord record) {
 
         if (!folders.containsKey(record.id())) {
-            throw new DataAccessException("Folder with this id doesn't exist");
+            throw new RuntimeException("Folder with this id doesn't exist");
         }
 
         folders.put(record.id(), record);
@@ -58,11 +54,10 @@ public class FolderDaoFake implements FolderDao {
     }
 
     @Override
-    public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) throws
-                                                                                   DataAccessException {
+    public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) {
 
         if (!folders.containsKey(parentId)) {
-            throw new DataAccessException("Folder with this id doesn't exist");
+            throw new RuntimeException("Folder with this id doesn't exist");
         }
 
         return folders.values()

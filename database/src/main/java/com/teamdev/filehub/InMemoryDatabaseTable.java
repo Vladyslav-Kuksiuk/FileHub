@@ -82,16 +82,10 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      * @param id
      *         {@link Data} identifier.
      * @return {@link Data}.
-     * @throws DatabaseTransactionException
-     *         If {@link Data} doesn't exist.
      */
-    public D getDataById(@Nonnull I id) throws DatabaseTransactionException {
+    public Optional<D> getDataById(@Nonnull I id) {
 
-        if (!tableMap().containsKey(id)) {
-            throw new DatabaseTransactionException("Data with this id doesn't exist.");
-        }
-
-        return tableMap().get(id);
+        return Optional.ofNullable(tableMap().get(id));
     }
 
     /**
@@ -99,16 +93,14 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      *
      * @param data
      *         {@link Data} to add.
-     * @throws DatabaseTransactionException
-     *         If {@link Data} already exists.
      */
-    public void addData(@Nonnull D data) throws DatabaseTransactionException {
+    public void addData(@Nonnull D data) {
+
+        if (tableMap().containsKey(data.id())) {
+            throw new RuntimeException("Data with this id already exists");
+        }
 
         synchronized (locker) {
-
-            if (tableMap().containsKey(data.id())) {
-                throw new DatabaseTransactionException("Data with this id already exists");
-            }
 
             tableMap().put(data.id(), data);
 
@@ -123,15 +115,14 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      *
      * @param id
      *         {@link Data} identifier to delete.
-     * @throws DatabaseTransactionException
-     *         If {@link Data} doesn't exist.
      */
-    public void deleteData(@Nonnull I id) throws DatabaseTransactionException {
+    public void deleteData(@Nonnull I id) {
+
+        if (!tableMap().containsKey(id)) {
+            throw new RuntimeException("Data with this id doesn't exist.");
+        }
 
         synchronized (locker) {
-            if (!tableMap().containsKey(id)) {
-                throw new DatabaseTransactionException("Data with this id doesn't exist.");
-            }
 
             tableMap().remove(id);
 
@@ -144,14 +135,14 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      *
      * @param data
      *         {@link Data} to update.
-     * @throws DatabaseTransactionException
-     *         If {@link Data} doesn't exist.
      */
-    public void updateData(@Nonnull D data) throws DatabaseTransactionException {
+    public void updateData(@Nonnull D data) {
+
+        if (!tableMap().containsKey(data.id())) {
+            throw new RuntimeException("Data with this id doesn't exist.");
+        }
+
         synchronized (locker) {
-            if (!tableMap().containsKey(data.id())) {
-                throw new DatabaseTransactionException("Data with this id doesn't exist.");
-            }
 
             tableMap().put(data.id(), data);
 

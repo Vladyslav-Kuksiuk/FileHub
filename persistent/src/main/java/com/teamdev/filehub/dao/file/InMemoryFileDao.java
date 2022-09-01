@@ -1,15 +1,14 @@
 package com.teamdev.filehub.dao.file;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
 import com.teamdev.filehub.file.FileData;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -34,27 +33,27 @@ public class InMemoryFileDao implements FileDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public FileRecord find(@Nonnull RecordId<String> id) throws DataAccessException {
+    public Optional<FileRecord> find(@Nonnull RecordId<String> id) {
 
-        FileData fileData;
-
-        try {
-            fileData = database.fileTable()
-                               .getDataById(id.value());
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
-
-        FileRecord fileRecord = new FileRecord(new RecordId<>(fileData.id()),
-                                               new RecordId<>(fileData.folderId()),
-                                               new RecordId<>(fileData.ownerId()),
-                                               fileData.name(),
-                                               fileData.extension());
+        Optional<FileData> optionalFileData = database.fileTable()
+                                                      .getDataById(id.value());
 
         logger.atInfo()
               .log("[FILE FOUNDED] - id: %s", id.value());
 
-        return fileRecord;
+        if (optionalFileData.isPresent()) {
+
+            FileData fileData = optionalFileData.get();
+
+            return Optional.of(new FileRecord(new RecordId<>(fileData.id()),
+                                              new RecordId<>(fileData.folderId()),
+                                              new RecordId<>(fileData.ownerId()),
+                                              fileData.name(),
+                                              fileData.extension()));
+
+        }
+
+        return Optional.empty();
     }
 
     /**
@@ -64,14 +63,9 @@ public class InMemoryFileDao implements FileDao {
      *         file meta context record identifier.
      */
     @Override
-    public void delete(@Nonnull RecordId<String> id) throws DataAccessException {
-
-        try {
-            database.fileTable()
-                    .deleteData(id.value());
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+    public void delete(@Nonnull RecordId<String> id) {
+        database.fileTable()
+                .deleteData(id.value());
 
         logger.atInfo()
               .log("[FILE DELETED] - id: %s", id.value());
@@ -85,7 +79,7 @@ public class InMemoryFileDao implements FileDao {
      *         file meta context record to create.
      */
     @Override
-    public void create(@Nonnull FileRecord record) throws DataAccessException {
+    public void create(@Nonnull FileRecord record) {
 
         FileData fileData = new FileData(record.id()
                                                .value(),
@@ -96,12 +90,8 @@ public class InMemoryFileDao implements FileDao {
                                          record.name(),
                                          record.extension());
 
-        try {
-            database.fileTable()
-                    .addData(fileData);
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+        database.fileTable()
+                .addData(fileData);
 
         logger.atInfo()
               .log("[FILE CREATED] - id: %s", record.id()
@@ -116,7 +106,7 @@ public class InMemoryFileDao implements FileDao {
      *         file meta context record to update.
      */
     @Override
-    public void update(@Nonnull FileRecord record) throws DataAccessException {
+    public void update(@Nonnull FileRecord record) {
 
         FileData fileData = new FileData(record.id()
                                                .value(),
@@ -127,12 +117,8 @@ public class InMemoryFileDao implements FileDao {
                                          record.name(),
                                          record.extension());
 
-        try {
-            database.fileTable()
-                    .updateData(fileData);
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+        database.fileTable()
+                .updateData(fileData);
 
         logger.atInfo()
               .log("[FILE UPDATED] - id: %s", record.id()

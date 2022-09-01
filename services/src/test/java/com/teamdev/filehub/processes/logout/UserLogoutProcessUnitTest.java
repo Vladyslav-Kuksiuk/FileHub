@@ -1,7 +1,6 @@
 package com.teamdev.filehub.processes.logout;
 
 import com.teamdev.filehub.AuthenticationDaoFake;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
@@ -10,7 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -30,7 +31,7 @@ class UserLogoutProcessUnitTest {
     }
 
     @Test
-    void logoutAuthenticatedUserTest() throws UserNotAuthenticatedException, DataAccessException {
+    void logoutAuthenticatedUserTest() throws UserNotAuthenticatedException {
 
         var realAuth = new AuthenticationRecord(new RecordId<>("user1"),
                                                 "token1",
@@ -41,14 +42,16 @@ class UserLogoutProcessUnitTest {
 
         logoutProcess.handle(new UserLogoutCommand(realAuth.id()));
 
-        assertThrows(DataAccessException.class, () -> authDao.find(realAuth.id()));
+        assertWithMessage("User logout failed.")
+                .that(authDao.find(realAuth.id()))
+                .isEqualTo(Optional.empty());
 
     }
 
     @Test
     void logoutNotAuthenticatedUser() {
 
-        assertThrows(UserNotAuthenticatedException.class,
+        assertThrows(RuntimeException.class,
                      () -> logoutProcess.handle(
                              new UserLogoutCommand(new RecordId<>("notAuthenticated"))));
 

@@ -1,6 +1,5 @@
 package com.teamdev.filehub.servicelocator;
 
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.ServiceLocator;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationCommand;
@@ -17,8 +16,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class ServiceLocatorImplTest {
 
     @Test
-    void locateTest() throws InterruptedException,
-                             DatabaseTransactionException, UserDataMismatchException {
+    void locateTest() throws InterruptedException, UserDataMismatchException {
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
 
@@ -47,7 +45,8 @@ class ServiceLocatorImplTest {
                 "User registration and authentication process, picket from ServiceLocator failed.")
                 .that(authResponse.authenticationToken())
                 .isEqualTo(database.authenticationTable()
-                                   .getAuthenticationByUserId("SLuser")
+                                   .findByUserId("SLuser")
+                                   .get()
                                    .authenticationToken());
 
     }

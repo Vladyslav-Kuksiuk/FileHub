@@ -1,7 +1,6 @@
 package com.teamdev.filehub;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
@@ -9,6 +8,7 @@ import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class AuthenticationDaoFake implements AuthenticationDao {
 
@@ -19,30 +19,26 @@ public class AuthenticationDaoFake implements AuthenticationDao {
     }
 
     @Override
-    public AuthenticationRecord find(RecordId<String> id) throws DataAccessException {
+    public Optional<AuthenticationRecord> find(RecordId<String> id) {
 
         Preconditions.checkNotNull(id);
 
-        if (!authentications.containsKey(id)) {
-            throw new DataAccessException("Authentication not found.");
-        }
-
-        return authentications.get(id);
+        return Optional.ofNullable(authentications.get(id));
     }
 
     @Override
-    public void delete(RecordId<String> id) throws DataAccessException {
+    public void delete(RecordId<String> id) {
 
         Preconditions.checkNotNull(id);
 
         if (!authentications.containsKey(id)) {
-            throw new DataAccessException("Authentication not found.");
+            throw new RuntimeException("Authentication not found.");
         }
         authentications.remove(id);
     }
 
     @Override
-    public void create(AuthenticationRecord record) throws DataAccessException {
+    public void create(AuthenticationRecord record) {
 
         Preconditions.checkNotNull(record);
 
@@ -50,12 +46,12 @@ public class AuthenticationDaoFake implements AuthenticationDao {
     }
 
     @Override
-    public void update(AuthenticationRecord record) throws DataAccessException {
+    public void update(AuthenticationRecord record) {
 
         Preconditions.checkNotNull(record);
 
         if (!authentications.containsKey(record.id())) {
-            throw new DataAccessException("Authentication not found.");
+            throw new RuntimeException("Authentication not found.");
         }
 
         authentications.put(record.id(), record);

@@ -1,7 +1,6 @@
 package com.teamdev.filehub.processes.upload;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
@@ -36,22 +35,18 @@ public class FileUploadProcessImpl implements FileUploadProcess {
     public RecordId<String> handle(@Nonnull FileUploadCommand command) throws
                                                                        FileUploadException {
 
-        try {
-            if (!folderDao.find(command.folderId())
-                          .ownerId()
-                          .equals(command.userId())) {
-                throw new FileUploadException("Access denied.");
-            }
-
-            if (fileDao.getFilesInFolder(command.folderId())
-                       .stream()
-                       .anyMatch(record -> record.name()
-                                                 .equals(command.fileName()))) {
-                throw new FileUploadException("File with same path and name already exists.");
-            }
-
-        } catch (DataAccessException e) {
+        if (!folderDao.find(command.folderId())
+                      .get()
+                      .ownerId()
+                      .equals(command.userId())) {
             throw new FileUploadException("Access denied.");
+        }
+
+        if (fileDao.getFilesInFolder(command.folderId())
+                   .stream()
+                   .anyMatch(record -> record.name()
+                                             .equals(command.fileName()))) {
+            throw new FileUploadException("File with same path and name already exists.");
         }
 
         RecordId<String> fileId =
@@ -74,19 +69,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                           .value(),
                    command.fileName());
 
-        try {
-            fileDao.create(fileRecord);
-        } catch (DataAccessException exception) {
-
-            logger.atWarning()
-                  .log("[PROCESS FAILED] - File uploading - user id: %s, file: %s - Exception message: %s.",
-                       command.userId()
-                              .value(),
-                       command.fileName(),
-                       exception.getMessage());
-
-            throw new FileUploadException(exception.getMessage());
-        }
+        fileDao.create(fileRecord);
 
         fileStorage.uploadFile(fileId, command.fileInputStream());
 

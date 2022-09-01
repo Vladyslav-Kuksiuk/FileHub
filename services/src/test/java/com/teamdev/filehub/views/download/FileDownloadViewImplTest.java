@@ -2,7 +2,6 @@ package com.teamdev.filehub.views.download;
 
 import com.teamdev.filehub.FileDaoFake;
 import com.teamdev.filehub.FileStorageStub;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
@@ -12,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.NoSuchElementException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,7 +22,7 @@ class FileDownloadViewImplTest {
     private FileDownloadView fileDownloadView;
 
     @BeforeEach
-    void setUp() throws DataAccessException {
+    void setUp() {
 
         fileDao = new FileDaoFake();
 
@@ -62,7 +62,7 @@ class FileDownloadViewImplTest {
         FileDownloadQuery query = new FileDownloadQuery(new RecordId<>("user"),
                                                         new RecordId<>("notUploadedFileId"));
 
-        assertThrows(FileAccessDeniedException.class,
+        assertThrows(NoSuchElementException.class,
                      () -> fileDownloadView.handle(query),
                      "Absent file download not failed.");
 

@@ -1,7 +1,5 @@
 package com.teamdev.filehub;
 
-import com.google.common.base.Preconditions;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.dao.user.UserRecord;
@@ -20,47 +18,35 @@ public class UserDaoFake implements UserDao {
     }
 
     @Override
-    public UserRecord find(RecordId<String> id) throws DataAccessException {
+    public Optional<UserRecord> find(RecordId<String> id) {
 
-        Preconditions.checkNotNull(id);
-
-        if (!users.containsKey(id)) {
-            throw new DataAccessException("User not found.");
-        }
-
-        return users.get(id);
+        return Optional.ofNullable(users.get(id));
     }
 
     @Override
-    public void delete(RecordId<String> id) throws DataAccessException {
-
-        Preconditions.checkNotNull(id);
+    public void delete(RecordId<String> id) {
 
         if (!users.containsKey(id)) {
-            throw new DataAccessException("User not found.");
+            throw new RuntimeException("User not found.");
         }
         users.remove(id);
     }
 
     @Override
-    public void create(UserRecord record) throws DataAccessException {
-
-        Preconditions.checkNotNull(record);
+    public void create(UserRecord record) {
 
         if (users.containsKey(record.id())) {
-            throw new DataAccessException("User already exists.");
+            throw new RuntimeException("User already exists.");
         }
 
         users.put(record.id(), record);
     }
 
     @Override
-    public void update(UserRecord record) throws DataAccessException {
-
-        Preconditions.checkNotNull(record);
+    public void update(UserRecord record) {
 
         if (!users.containsKey(record.id())) {
-            throw new DataAccessException("User not found.");
+            throw new RuntimeException("User not found.");
         }
 
         users.put(record.id(), record);
@@ -68,9 +54,7 @@ public class UserDaoFake implements UserDao {
     }
 
     @Override
-    public UserRecord findByLogin(String login) throws DataAccessException {
-
-        Preconditions.checkNotNull(login);
+    public Optional<UserRecord> findByLogin(String login) {
 
         Optional<UserRecord> optionalUser = users.values()
                                                  .stream()
@@ -78,10 +62,6 @@ public class UserDaoFake implements UserDao {
                                                                      .equals(login))
                                                  .findFirst();
 
-        if (optionalUser.isEmpty()) {
-            throw new DataAccessException("User not found.");
-        }
-
-        return optionalUser.get();
+        return optionalUser;
     }
 }

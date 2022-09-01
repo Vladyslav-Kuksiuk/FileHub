@@ -1,6 +1,5 @@
 package com.teamdev.filehub.dao.folder;
 
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.DataAccessObject;
 import com.teamdev.filehub.dao.RecordId;
 
@@ -11,7 +10,6 @@ import java.util.List;
  */
 public interface FolderDao extends DataAccessObject<String, FolderRecord> {
 
-    List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) throws
-                                                                            DataAccessException;
+    List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId);
 
 }

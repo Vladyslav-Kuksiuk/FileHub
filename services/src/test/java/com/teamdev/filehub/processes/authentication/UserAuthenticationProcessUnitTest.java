@@ -3,7 +3,6 @@ package com.teamdev.filehub.processes.authentication;
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.AuthenticationDaoFake;
 import com.teamdev.filehub.UserDaoFake;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
 import com.teamdev.util.StringEncryptor;
@@ -23,7 +22,7 @@ public class UserAuthenticationProcessUnitTest {
     private UserRecord notRegisteredUser;
 
     @BeforeEach
-    void setUp() throws DataAccessException {
+    void setUp() {
         UserDaoFake userDao = new UserDaoFake();
         authenticationDao = new AuthenticationDaoFake();
         authenticationProcess = new UserAuthenticationProcessImpl(userDao,
@@ -44,7 +43,7 @@ public class UserAuthenticationProcessUnitTest {
     }
 
     @Test
-    void authenticationTest() throws DataAccessException, UserDataMismatchException {
+    void authenticationTest() throws UserDataMismatchException {
 
         UserAuthenticationCommand command = new UserAuthenticationCommand(registeredUser.login(),
                                                                           "password1");
@@ -53,6 +52,7 @@ public class UserAuthenticationProcessUnitTest {
 
         assertWithMessage("User authentication failed.")
                 .that(authenticationDao.find(registeredUser.id())
+                                       .get()
                                        .authenticationToken())
                 .matches(response.authenticationToken());
     }

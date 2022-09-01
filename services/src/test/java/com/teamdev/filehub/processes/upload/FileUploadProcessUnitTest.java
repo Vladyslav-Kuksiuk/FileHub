@@ -3,7 +3,6 @@ package com.teamdev.filehub.processes.upload;
 import com.teamdev.filehub.FileDaoFake;
 import com.teamdev.filehub.FileStorageStub;
 import com.teamdev.filehub.FolderDaoFake;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,7 +24,7 @@ class FileUploadProcessUnitTest {
     private FolderRecord rootFolder;
 
     @BeforeEach
-    void setUp() throws DataAccessException {
+    void setUp() {
 
         FolderDao folderDao = new FolderDaoFake();
 
@@ -47,7 +47,7 @@ class FileUploadProcessUnitTest {
     }
 
     @Test
-    void fileUploadTest() throws FileUploadException, DataAccessException {
+    void fileUploadTest() throws FileUploadException {
 
         InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
 
@@ -61,6 +61,7 @@ class FileUploadProcessUnitTest {
 
         assertWithMessage("File uploading failed")
                 .that(fileDao.find(fileId)
+                             .get()
                              .ownerId())
                 .isEqualTo(new RecordId<>("user"));
 
@@ -72,7 +73,7 @@ class FileUploadProcessUnitTest {
         InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
 
         FileUploadCommand command = new FileUploadCommand(new RecordId<>("user1"),
-                                                          rootFolder.parentFolderId(),
+                                                          rootFolder.id(),
                                                           "myFile",
                                                           "txt",
                                                           fileInputStream);
@@ -93,7 +94,7 @@ class FileUploadProcessUnitTest {
                                                           "txt",
                                                           fileInputStream);
 
-        assertThrows(FileUploadException.class,
+        assertThrows(NoSuchElementException.class,
                      () -> fileUploadProcess.handle(command),
                      "File uploading to absent folder not failed");
     }

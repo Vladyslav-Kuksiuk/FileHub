@@ -2,7 +2,6 @@ package com.teamdev.filehub.processes.logout;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 
@@ -40,17 +39,7 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
               .log("[PROCESS STARTED] - User logout - login: %s", command.userId()
                                                                          .value());
 
-        try {
-            authenticationDao.delete(command.userId());
-        } catch (DataAccessException exception) {
-
-            logger.atWarning()
-                  .log("[PROCESS FAILED] - User logout - login: %s - Exception message: %s",
-                       command.userId()
-                              .value(), exception.getMessage());
-
-            throw new UserNotAuthenticatedException(exception.getMessage());
-        }
+        authenticationDao.delete(command.userId());
 
         logger.atInfo()
               .log("[PROCESS FINISHED] - User logout - login: %s", command.userId()

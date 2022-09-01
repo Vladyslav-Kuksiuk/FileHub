@@ -3,7 +3,6 @@ package com.teamdev.filehub.processes.register;
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.FolderDaoFake;
 import com.teamdev.filehub.UserDaoFake;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
 import com.teamdev.util.StringEncryptor;
@@ -24,7 +23,7 @@ class UserRegistrationProcessUnitTest {
     private UserRecord toRegisterUser;
 
     @BeforeEach
-    void setUp() throws DataAccessException {
+    void setUp() {
         userDao = new UserDaoFake();
         folderDao = new FolderDaoFake();
         registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
@@ -44,8 +43,7 @@ class UserRegistrationProcessUnitTest {
     }
 
     @Test
-    void registerTest() throws UserAlreadyRegisteredException,
-                               DataAccessException {
+    void registerTest() throws UserAlreadyRegisteredException {
 
         UserRegistrationCommand command = new UserRegistrationCommand(toRegisterUser.login(),
                                                                       "password2",
@@ -55,21 +53,25 @@ class UserRegistrationProcessUnitTest {
 
         assertWithMessage("Registered user login not match.")
                 .that(userDao.find(toRegisterUser.id())
+                             .get()
                              .login())
                 .matches(toRegisterUser.login());
 
         assertWithMessage("Registered user password cache not match.")
                 .that(userDao.find(toRegisterUser.id())
+                             .get()
                              .password())
                 .matches(toRegisterUser.password());
 
         assertWithMessage("Registered user email not match.")
                 .that(userDao.find(toRegisterUser.id())
+                             .get()
                              .email())
                 .matches(toRegisterUser.email());
 
         assertWithMessage("Registered user root folder not exists.")
                 .that(folderDao.find(new RecordId<>(toRegisterUser.login() + "_root"))
+                               .get()
                                .ownerId())
                 .isEqualTo(toRegisterUser.id());
     }

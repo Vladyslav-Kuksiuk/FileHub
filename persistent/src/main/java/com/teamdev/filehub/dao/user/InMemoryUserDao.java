@@ -1,13 +1,12 @@
 package com.teamdev.filehub.dao.user;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
-import com.teamdev.filehub.dao.DataAccessException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.user.UserData;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * {@link UserDao} implementation which is intended to work with user
@@ -31,26 +30,23 @@ public class InMemoryUserDao implements UserDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public UserRecord find(@Nonnull RecordId<String> id) throws DataAccessException {
+    public Optional<UserRecord> find(@Nonnull RecordId<String> id) {
 
-        UserData userData;
+        Optional<UserData> optionalUserData = database.userTable()
+                                                      .getDataById(id.value());
 
-        try {
-            userData = database.userTable()
-                               .getDataById(id.value());
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        if (optionalUserData.isPresent()) {
+
+            UserData userData = optionalUserData.get();
+
+            return Optional.of(new UserRecord(new RecordId<>(userData.id()),
+                                              userData.login(),
+                                              userData.password(),
+                                              userData.email()));
+
         }
 
-        UserRecord userRecord = new UserRecord(new RecordId<>(userData.id()),
-                                               userData.login(),
-                                               userData.password(),
-                                               userData.email());
-
-        logger.atInfo()
-              .log("[USER FOUND] - login: %s", userData.login());
-
-        return userRecord;
+        return Optional.empty();
     }
 
     /**
@@ -60,14 +56,10 @@ public class InMemoryUserDao implements UserDao {
      *         User record identifier.
      */
     @Override
-    public void delete(@Nonnull RecordId<String> id) throws DataAccessException {
+    public void delete(@Nonnull RecordId<String> id) {
 
-        try {
-            database.userTable()
-                    .deleteData(id.value());
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+        database.userTable()
+                .deleteData(id.value());
 
         logger.atInfo()
               .log("[USER DELETED] - id: %s", id.value());
@@ -81,7 +73,7 @@ public class InMemoryUserDao implements UserDao {
      *         User record to create.
      */
     @Override
-    public void create(@Nonnull UserRecord record) throws DataAccessException {
+    public void create(@Nonnull UserRecord record) {
 
         UserData userData = new UserData(record.id()
                                                .value(),
@@ -89,12 +81,8 @@ public class InMemoryUserDao implements UserDao {
                                          record.password(),
                                          record.email());
 
-        try {
-            database.userTable()
-                    .addData(userData);
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+        database.userTable()
+                .addData(userData);
 
         logger.atInfo()
               .log("[USER CREATED] - login: %s", record.login());
@@ -107,19 +95,16 @@ public class InMemoryUserDao implements UserDao {
      *         User record to update.
      */
     @Override
-    public void update(@Nonnull UserRecord record) throws DataAccessException {
+    public void update(@Nonnull UserRecord record) {
 
         UserData userData = new UserData(record.id()
                                                .value(),
                                          record.login(),
                                          record.password(),
                                          record.email());
-        try {
-            database.userTable()
-                    .updateData(userData);
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
-        }
+
+        database.userTable()
+                .updateData(userData);
 
         logger.atInfo()
               .log("[USER UPDATED] - login: %s", record.login());
@@ -134,22 +119,21 @@ public class InMemoryUserDao implements UserDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public UserRecord findByLogin(@Nonnull String login) throws DataAccessException {
+    public Optional<UserRecord> findByLogin(@Nonnull String login) {
 
-        UserData userData;
+        Optional<UserData> optionalUserData = database.userTable()
+                                                      .getUserByLogin(login);
 
-        try {
-            userData = database.userTable()
-                               .getUserByLogin(login);
-        } catch (DatabaseTransactionException exception) {
-            throw new DataAccessException(exception.getMessage(), exception.getCause());
+        if (optionalUserData.isPresent()) {
+
+            UserData userData = optionalUserData.get();
+
+            return Optional.of(new UserRecord(new RecordId<>(userData.id()),
+                                              userData.login(),
+                                              userData.password(),
+                                              userData.email()));
         }
 
-        UserRecord userRecord = new UserRecord(new RecordId<>(userData.id()),
-                                               userData.login(),
-                                               userData.password(),
-                                               userData.email());
-
-        return userRecord;
+        return Optional.empty();
     }
 }

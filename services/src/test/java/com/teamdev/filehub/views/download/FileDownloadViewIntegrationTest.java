@@ -1,6 +1,5 @@
 package com.teamdev.filehub.views.download;
 
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
@@ -22,7 +21,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileDownloadViewIntegrationTest {
 
     @Test
-    void downloadTest() throws DatabaseTransactionException, IOException,
+    void downloadTest() throws IOException,
                                FileAccessDeniedException, InterruptedException {
 
         InMemoryDatabase database = new InMemoryDatabase();

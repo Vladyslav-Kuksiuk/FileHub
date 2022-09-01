@@ -1,10 +1,10 @@
 package com.teamdev.filehub.authentication;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabaseTable;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * Implementation of {@link InMemoryDatabaseTable} to store {@link AuthenticationData}.
@@ -24,20 +24,12 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
      * @param userId
      *         Authenticated user id.
      * @return {@link AuthenticationData}.
-     * @throws DatabaseTransactionException
-     *         If database connection not working.
      */
 
-    public AuthenticationData getAuthenticationByUserId(@Nonnull String userId) throws
-                                                                                DatabaseTransactionException {
+    public Optional<AuthenticationData> findByUserId(@Nonnull String userId) {
         Preconditions.checkNotNull(userId);
 
-        if (!tableMap().containsKey(userId)) {
-            throw new DatabaseTransactionException(
-                    "Authentication with this id doesn't exist.");
-        }
-
-        return tableMap().get(userId);
+        return Optional.ofNullable(tableMap().get(userId));
 
     }
 

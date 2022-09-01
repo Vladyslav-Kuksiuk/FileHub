@@ -1,6 +1,5 @@
 package com.teamdev.filehub.user;
 
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabaseTable;
 
 import javax.validation.constraints.NotNull;
@@ -24,10 +23,8 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      * @param login
      *         User login.
      * @return {@link UserData}.
-     * @throws DatabaseTransactionException
-     *         If user doesn't exist.
      */
-    public UserData getUserByLogin(@NotNull String login) throws DatabaseTransactionException {
+    public Optional<UserData> getUserByLogin(@NotNull String login) {
 
         Optional<UserData> foundUser = tableMap().values()
                                                  .stream()
@@ -35,11 +32,7 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
                                                                      .equals(login))
                                                  .findFirst();
 
-        if (foundUser.isEmpty()) {
-            throw new DatabaseTransactionException("User with this login doesn't exist.");
-        }
-
-        return foundUser.get();
+        return foundUser;
 
     }
 

@@ -1,6 +1,5 @@
 package com.teamdev.filehub.folder;
 
-import com.teamdev.filehub.DatabaseTransactionException;
 import com.teamdev.filehub.InMemoryDatabaseTable;
 
 import java.util.List;
@@ -17,11 +16,10 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
         super(FILE_NAME, FolderData[].class);
     }
 
-    public List<FolderData> selectWithSameParentId(String parentId) throws
-                                                                    DatabaseTransactionException {
+    public List<FolderData> selectWithSameParentId(String parentId) {
 
         if (!tableMap().containsKey(parentId)) {
-            throw new DatabaseTransactionException("Folder with this id doesn't exist.");
+            throw new RuntimeException("Folder with this id doesn't exist.");
         }
 
         return tableMap().values()
