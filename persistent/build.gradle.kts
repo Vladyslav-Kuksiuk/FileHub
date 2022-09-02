@@ -48,6 +48,8 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
+    testImplementation("org.mockito:mockito-core:4.7.0")
+
     // This dependency is used by the application.
     testImplementation("com.google.guava:guava-testlib:31.1-jre")
     implementation("com.google.guava:guava:31.1-jre")
