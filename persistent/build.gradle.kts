@@ -45,6 +45,8 @@ dependencies {
     implementation(project(":util"))
     implementation(project(":database"))
 
+    implementation("org.postgresql:postgresql:42.5.0")
+
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
