@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Authorization</title>
+    <link href="css/icons.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <header class="page-header">
+        <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
+    </header>
+    <main class="form-container">
+        <h1>Sign in to FileHub</h1>
+        <hr class="horizontal-line">
+        <form action="/register" method="post">
+            <div class="row">
+                <label for="email">Email</label>
+                <input id="email" name="email" placeholder="Email" type="email">
+            </div>
+            <div class="row">
+                <label for="password">Password</label>
+                <input id="password" name="password" placeholder="Password" type="password">
+            </div>
+            <div class="button-container">
+                <button class="button">Sign In</button>
+                <a href="/authorize">Don't have an account yet?</a>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>
