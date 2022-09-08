@@ -17,13 +17,13 @@ body {
 }
 
 a {
-    color: #3399cc;
+    color: #2a90d7;
     text-decoration: none;
 }
 
 a:hover {
-    color: #6699cc;
-    text-decoration: solid;
+    color: #34689b;
+    text-decoration: underline;
 }
 
 input[type="text"] {
@@ -32,12 +32,20 @@ input[type="text"] {
 }
 
 .button {
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px 14px;
-    background: #3385cd;
-    color: #fff;
+    padding: 9px 13px 8px 12px;
+}
 
+.button-primary {
+    border-color: #2e6da4;
+    background: #0085d3;
+    color: #fff;
+}
+
+.button-primary:hover {
+    background: #286090;
+    border-color: #204d74;
 }
 
 .wrapper {
@@ -55,12 +63,12 @@ input[type="text"] {
     padding: 20px;
     background: #ffffff;
     border: 1px solid #ccc;
-    border-radius: 20px;
+    border-radius: 21px;
     box-shadow: 0 0 20px #999;
 }
 
 .form-container h1 {
-    margin: -2px 0 8px;
+    margin: -1px 0 8px;
     font-size: 30px;
     font-weight: 599;
 }
@@ -72,18 +80,18 @@ input[type="text"] {
     margin-bottom: 20px;
 }
 
-.row {
+.form-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
 }
 
-.row label {
+.form-row label {
     font-weight: 900;
 }
 
-.row input {
+.form-row input {
     padding-left: 12px;
     height: 30px;
     width: 321px;
@@ -93,24 +101,35 @@ input[type="text"] {
     font-size: 14px;
 }
 
-.row .error-input{
+.form-row input:focus {
+    border-color: #77bef2;
+    box-shadow: 0 0 5px #77bef2;
+}
+
+.form-row .error-input {
     border-color: #f00;
 }
 
-.button-container {
+.form-row .error-input:focus {
+    border-color: #ff2323;
+    box-shadow: 0 0 5px #ff0000;
+}
+
+.form-button-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 337px;
-    margin: 0 0 4px 183px;
+    margin: 0 0 5px 183px;
 
 }
 
-.button-container a {
+.form-button-container a {
+    margin-top: 2px;
     font-weight: 600;
 }
 
-.form-container .error-label{
+.form-container .error-label-container {
     color: #f00;
     font-weight: 600;
     margin: -8px 0 16px 183px;
