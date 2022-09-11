@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title>Inner</title>
+    <title>Editing</title>
     <link href="css/icons.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
 </head>
@@ -58,7 +58,11 @@
                     <td class="table-data icon-table-column"><span
                             aria-hidden="true"
                             class="glyphicon glyphicon-folder-close"></span></td>
-                    <td class="table-data name-table-column"><a href="">Montenegro2020</a></td>
+                    <td class="table-data name-table-column">
+                        <form action="/edit-name" class="name-edit-form">
+                            <input placeholder="Enter directory name" type="text">
+                        </form>
+                    </td>
                     <td class="table-data type-table-column">Folder</td>
                     <td class="table-data weight-table-column">—</td>
                     <td class="table-data buttons-table-column">
@@ -78,7 +82,11 @@
                     <td class="table-data icon-table-column"><span aria-hidden="true"
                                                                    class="glyphicon glyphicon-book"></span>
                     </td>
-                    <td class="table-data name-table-column">HTML_guidelines.pdf</td>
+                    <td class="table-data name-table-column">
+                        <form action="/edit-name" class="name-edit-form">
+                            <input placeholder="Enter file name" type="text">
+                        </form>
+                    </td>
                     <td class="table-data type-table-column">PDF Document</td>
                     <td class="table-data weight-table-column">100 KB</td>
                     <td class="table-data buttons-table-column">
@@ -99,7 +107,12 @@
                     <td class="table-data icon-table-column"><span
                             aria-hidden="true"
                             class="glyphicon glyphicon-list-alt"></span></td>
-                    <td class="table-data name-table-column">vacation_schedule.xlsx</td>
+                    <td class="table-data name-table-column">
+                        <form action="/edit-name" class="name-edit-form">
+                            <input placeholder="Enter file name" type="text"
+                                   value="vacation_schedule.xlsx">
+                        </form>
+                    </td>
                     <td class="table-data type-table-column">Excel Workbook</td>
                     <td class="table-data weight-table-column">5 KB</td>
                     <td class="table-data buttons-table-column">

@@ -295,7 +295,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .table-data {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #d9d9d9;
     padding: 10px 0;
 }
 
@@ -313,6 +313,11 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 .name-table-column {
     width: 642px;
     padding: 2px 4px;
+}
+
+.name-edit-form input {
+    margin-left: -13px;
+    width: 298px;
 }
 
 .type-table-column {
