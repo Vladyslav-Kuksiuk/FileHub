@@ -238,6 +238,11 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     color: #999999;
 }
 
+.breadcrumb-separator {
+    color: #cccccc;
+    padding: 0 5px;
+}
+
 .horizontal-line {
     height: 1px;
     border: 0;
@@ -278,7 +283,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 
 .table-wrapper {
     height: 450px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .data-table {
@@ -307,7 +312,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 
 .name-table-column {
     width: 642px;
-    padding: 4px;
+    padding: 2px 4px;
 }
 
 .type-table-column {
