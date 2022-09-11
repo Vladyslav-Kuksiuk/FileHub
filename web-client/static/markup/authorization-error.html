@@ -16,20 +16,20 @@
         <h1>Sign in to FileHub</h1>
         <hr class="horizontal-line">
         <form action="./authorization.html" method="post">
-            <div class="form-row">
+            <div class="form-row form-row-error">
                 <label for="email">Email</label>
-                <input class="error-input" id="email" name="email" placeholder="Email" type="email">
+                <div class="form-row-input">
+                    <input id="email" name="email" placeholder="Email" type="email">
+                    <label for="email">Please include an '@' in the email address.</label>
+                </div>
             </div>
-            <div class="error-label-container">
-                <label for="email">Please include an '@' in the email address.</label>
-            </div>
-            <div class="form-row">
+            <div class="form-row form-row-error">
                 <label for="password">Password</label>
-                <input class="error-input" id="password" name="password" placeholder="Password"
-                       type="email">
-            </div>
-            <div class="error-label-container">
-                <label for="password">Password can't be empty.</label>
+                <div class="form-row-input">
+                    <input class="error-input" id="password" name="password" placeholder="Password"
+                           type="password">
+                    <label for="password">Password can't be empty.</label>
+                </div>
             </div>
             <div class="form-button-container">
                 <button class="button button-primary" title="Sign In">Sign In</button>

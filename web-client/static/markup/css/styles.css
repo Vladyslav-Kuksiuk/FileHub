@@ -88,6 +88,7 @@ input[type="text"] {
 }
 
 .form-row label {
+    display: block;
     font-weight: 900;
 }
 
@@ -106,13 +107,25 @@ input[type="text"] {
     box-shadow: 0 0 5px #77bef2;
 }
 
-.form-row .error-input {
+.form-row-error label {
+    margin-top: -24px;
+}
+
+.form-row-error .form-row-input input {
+    color: #f00;
+    margin-bottom: 6px;
     border-color: #f00;
 }
 
-.form-row .error-input:focus {
+.form-row-error .form-row-input input:focus {
     border-color: #ff2323;
     box-shadow: 0 0 5px #ff0000;
+}
+
+.form-row-error .form-row-input label {
+    color: #f00;
+    margin-top: 0;
+    margin-bottom: 2px;
 }
 
 .form-button-container {
@@ -120,18 +133,11 @@ input[type="text"] {
     justify-content: space-between;
     align-items: center;
     width: 337px;
-    margin: 0 0 5px 183px;
+    margin: 0 0 4px 183px;
 
 }
 
 .form-button-container a {
     margin-top: 2px;
     font-weight: 600;
-}
-
-.form-container .error-label-container {
-    color: #f00;
-    font-weight: 600;
-    margin: -8px 0 16px 183px;
-
 }
