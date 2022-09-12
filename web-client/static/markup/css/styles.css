@@ -74,6 +74,15 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     border-color: #ad4c44;
 }
 
+.error-text {
+    color: #f00;
+}
+
+.error-text .glyphicon {
+    color: #f00;
+    font-size: 14px;
+}
+
 .group-left-element {
     margin-right: 0;
     border-bottom-right-radius: 0;
@@ -165,19 +174,18 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .authorized-user-panel {
-    margin: 19px 10px 0 0;
+    margin: 18px 6px 0 0;
 }
 
 .authorized-user-panel .user-info {
     color: #999999;
     padding: 2px 6px;
-    margin-right: 5px;
+    margin-right: 8px;
     border-right: 2px solid #000;
 }
 
 .authorized-user-panel .logout-button {
-    margin-right: -5px;
-    margin-left: 2px;
+    margin-left: -2px;
 }
 
 .form-container {
@@ -332,7 +340,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     color: #aaa;
 }
 
-.centered-in-table .glyphicon {
+.centered-in-table .glyphicon-repeat {
     color: #000;
     font-size: 20px;
 }

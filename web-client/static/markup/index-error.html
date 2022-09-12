@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title>Loading table</title>
+    <title>Error table</title>
     <link href="css/icons.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
 </head>
@@ -12,35 +12,36 @@
     <header class="authorized-page-header">
         <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
         <div class="authorized-user-panel">
-            <span class="user-info">
-                <span class="glyphicon glyphicon-repeat"></span>
-            </span>
-            <a class="logout-button" href="/">Log Out <span aria-hidden="true"
-                                                            class="glyphicon glyphicon-log-out"></span></a>
+            <span class="error-text">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    Can't load user data
+                </span>
         </div>
     </header>
     <main class="form-container table-container">
         <div class="breadcrumb-container">
             <span class="breadcrumb">
-                <span class="glyphicon glyphicon-repeat"></span>
+                <span class="error-text">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    Can't load breadcrumb data
+                </span>
             </span>
         </div>
         <hr class="horizontal-line">
         <div class="table-tool-bar">
             <form action="/search" method="post">
-                <div class="search-line search-line-loading">
+                <div class="search-line">
                     <input class="group-left-element" id="entity-search-input" name="entity-search"
                            placeholder="Enter entity name..." type="text">
-                    <button class="button button-primary group-right-element" disabled
-                            title="Search">
-                        <span class="glyphicon glyphicon-repeat"></span>
+                    <button class="button button-primary group-right-element" title="Search">
                         Search
                     </button>
                 </div>
             </form>
             <div class="button-group">
-                <button class="button button-primary group-left-element" title="Upload file.">
-                    <span class="glyphicon glyphicon-repeat"></span>
+                <button class="button button-primary group-left-element" title="Upload file."><span
+                        aria-hidden="true"
+                        class="glyphicon glyphicon-upload"></span>
                 </button>
                 <button class="button button-primary group-right-element" title="Add folder."><span
                         aria-hidden="true"
@@ -50,7 +51,10 @@
         </div>
         <div class="table-wrapper">
             <div class="centered-in-table">
-                <span class="glyphicon glyphicon-repeat"></span>
+                <span class="error-text">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    Can't load directory data
+                </span>
             </div>
         </div>
     </main>
