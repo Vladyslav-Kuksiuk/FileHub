@@ -122,7 +122,7 @@ input[type="text"] {
     box-shadow: 0 0 5px #ff0000;
 }
 
-.form-row-error .form-row-input label {
+.error-text {
     color: #f00;
     margin-top: 0;
     margin-bottom: 2px;
