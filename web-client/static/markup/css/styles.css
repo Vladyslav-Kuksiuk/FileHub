@@ -29,7 +29,7 @@ a:hover {
 input[type="text"], input[type="email"], input[type="password"] {
     color: #000;
     font: 14px "Roboto", "Times New Roman", Times, serif;
-    padding-left: 12px;
+    padding: 0 12px;
     height: 30px;
     outline: none;
     border-radius: 4px;
@@ -211,7 +211,6 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     align-items: center;
     width: 337px;
     margin: 0 0 5px 183px;
-
 }
 
 .form-button-container a {
@@ -225,7 +224,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .breadcrumb-container {
-    margin: 10px 0 30px 0;
+    margin: 10px 0 29px 0;
 }
 
 .breadcrumb {
@@ -250,16 +249,17 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     margin-bottom: 20px;
 }
 
-.search-line {
-    display: flex;
-    margin-top: -1px;
-}
 
 .table-tool-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: 15px;
+}
+
+.search-line {
+    display: flex;
+    margin-top: -1px;
 }
 
 .search-line .button {
@@ -267,6 +267,15 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     width: 69px;
     border: none;
     padding: 0;
+}
+
+.search-line input {
+    width: 440px;
+    height: 32px;
+    margin-right: 0;
+    border-right: 0;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .button-group {
@@ -300,19 +309,19 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .arrow-table-column {
-    width: 23px;
+    width: 24px;
     text-align: end;
 }
 
 .icon-table-column {
-    width: 63px;
-    text-align: center;
+    width: 41px;
+    text-align: end;
     font-size: 20px;
 }
 
 .name-table-column {
-    width: 642px;
-    padding: 2px 4px;
+    width: 618px;
+    padding: 2px 26px 1px 26px;
 }
 
 .name-edit-form input {
@@ -331,25 +340,17 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 
 .buttons-table-column {
     width: 84px;
-    text-align: center;
-    padding-left: 3px;
+    text-align: end;
     padding-top: 8px;
 }
 
 .data-buttons-container {
+    margin-right: 13px;
     visibility: hidden;
 }
 
 .table-row:hover .data-buttons-container {
     visibility: visible;
-}
-
-#entity-search-input {
-    width: 451px;
-    margin-right: 0;
-    border-right: 0;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
 }
 
 .form-container .error-label-container {
