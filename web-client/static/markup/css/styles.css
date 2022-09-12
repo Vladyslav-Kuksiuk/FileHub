@@ -217,11 +217,11 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     width: 321px;
 }
 
-.form-row .error-input {
+form .error-input {
     border-color: #f00;
 }
 
-.form-row .error-input:focus {
+form .error-input:focus {
     border-color: #ff2323;
     box-shadow: 0 0 5px #ff0000;
 }
@@ -388,6 +388,18 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     margin-right: 5px;
 }
 
+.name-edit-form .error-input {
+    margin-top: 3px;
+    margin-bottom: 6px;
+    height: 32px;
+    width: 286px;
+}
+
+.name-edit-form .error-text {
+    margin-left: -13px;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
 
 .type-table-column {
     width: 130px;
