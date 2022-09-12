@@ -225,11 +225,11 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .breadcrumb-container {
-    margin: 10px 0 30px 10px;
+    margin: 10px 0 30px 0;
 }
 
 .breadcrumb {
-    padding: 5px;
+    padding: 9px 15px;
     border-radius: 5px;
     background: #f5f5f5;
 }
@@ -278,7 +278,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     height: 34px;
     width: 39px;
     padding-top: 5px;
-    padding-left: 13px;
+    padding-left: 12px;
 }
 
 .table-wrapper {
@@ -364,7 +364,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .social-link-container {
-    margin-left: -3px;
+    margin-left: -4px;
     margin-bottom: 8px;
 }
 
