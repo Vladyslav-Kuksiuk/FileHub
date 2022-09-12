@@ -29,7 +29,7 @@ a:hover {
 input[type="text"], input[type="email"], input[type="password"] {
     color: #000;
     font: 14px "Roboto", "Times New Roman", Times, serif;
-    padding-left: 12px;
+    padding: 0 12px;
     height: 30px;
     outline: none;
     border-radius: 4px;
@@ -125,6 +125,19 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     border-top-left-radius: 0;
 }
 
+.glyphicon-repeat {
+    animation: 0.5s ease-in-out infinite running rotate;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .wrapper {
     width: 562px;
     margin: 0 auto;
@@ -211,7 +224,6 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     align-items: center;
     width: 337px;
     margin: 0 0 5px 183px;
-
 }
 
 .form-button-container a {
@@ -234,6 +246,10 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     background: #f5f5f5;
 }
 
+.breadcrumb .glyphicon {
+    margin-top: -1px;
+}
+
 .breadcrumb-item {
     color: #999999;
 }
@@ -250,10 +266,6 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     margin-bottom: 20px;
 }
 
-.search-line {
-    display: flex;
-    margin-top: -1px;
-}
 
 .table-tool-bar {
     display: flex;
@@ -262,11 +274,35 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
     margin-bottom: 14px;
 }
 
+.search-line {
+    display: flex;
+    margin-top: -1px;
+}
+
 .search-line .button {
     height: 34px;
     width: 69px;
     border: none;
     padding: 0;
+}
+
+.search-line input {
+    width: 440px;
+    height: 32px;
+    margin-right: 0;
+    border-right: 0;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.search-line-loading input {
+    width: 425px;
+    height: 32px;
+}
+
+.search-line-loading .button {
+    width: 86px;
+    height: 34px;
 }
 
 .button-group {
@@ -284,6 +320,21 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 .table-wrapper {
     height: 450px;
     overflow-y: auto;
+}
+
+.centered-in-table {
+    border-top: 1px solid #ccc;
+    height: 93%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 13px;
+    color: #aaa;
+}
+
+.centered-in-table .glyphicon {
+    color: #000;
+    font-size: 20px;
 }
 
 .data-table {
@@ -342,14 +393,6 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 
 .table-row:hover .data-buttons-container {
     visibility: visible;
-}
-
-#entity-search-input {
-    width: 451px;
-    margin-right: 0;
-    border-right: 0;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
 }
 
 .form-container .error-label-container {

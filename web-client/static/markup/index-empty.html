@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Empty table</title>
+    <link href="css/icons.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="table-page-wrapper">
+    <header class="authorized-page-header">
+        <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
+        <div class="authorized-user-panel">
+            <span class="user-info">
+                <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
+                <span>John Doe</span>
+            </span>
+            <a class="logout-button" href="/">Log Out <span aria-hidden="true"
+                                                            class="glyphicon glyphicon-log-out"></span></a>
+        </div>
+    </header>
+    <main class="form-container table-container">
+        <div class="breadcrumb-container">
+            <span class="breadcrumb">
+                <span class="breadcrumb-item">Home</span>
+            </span>
+        </div>
+        <hr class="horizontal-line">
+        <div class="table-tool-bar">
+            <form action="/search" method="post">
+                <div class="search-line">
+                    <input class="group-left-element" id="entity-search-input" name="entity-search"
+                           placeholder="Enter entity name..." type="text">
+                    <button class="button button-primary group-right-element" title="Search">
+                        Search
+                    </button>
+                </div>
+            </form>
+            <div class="button-group">
+                <button class="button button-primary group-left-element" title="Upload file."><span
+                        aria-hidden="true"
+                        class="glyphicon glyphicon-upload"></span>
+                </button>
+                <button class="button button-primary group-right-element" title="Add folder."><span
+                        aria-hidden="true"
+                        class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <div class="centered-in-table">
+                <span>There are no files/directories created yet.</span>
+            </div>
+        </div>
+    </main>
+    <footer class="page-footer">
+        <div class="social-link-container">
+            <a class="social-link" href="https://www.linkedin.com/company/teamdev-ltd-/"
+               title="Linked In">
+                <img alt="Linked In" src="images/icon-linkedin.png">
+            </a>
+            <a class="social-link" href="https://www.facebook.com/TeamDev" title="Facebook">
+                <img alt="Facebook" src="images/icon-facebook.png">
+            </a>
+            <a class="social-link" href="https://www.instagram.com/teamdev_ltd/" title="Instagram">
+                <img alt="Instagram" src="images/icon-instagram.png">
+            </a>
+        </div>
+        <span class="copyright">
+            Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
+        </span>
+    </footer>
+</div>
+</body>
+</html>
