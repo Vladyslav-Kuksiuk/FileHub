@@ -61,7 +61,13 @@ input[type="text"], input[type="email"], input[type="password"] {
     color: #fff;
 }
 
-.button-primary:hover {
+.button-primary:disabled {
+    cursor: default;
+    background: #7ab0de;
+    border-color: #80a0c1;
+}
+
+.button-primary:not([disabled]):hover {
     background: #286090;
     border-color: #204d74;
 }
