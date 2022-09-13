@@ -92,34 +92,34 @@ input[type="text"], input[type="email"], input[type="password"] {
     border-top-right-radius: 0;
 }
 
-.inline-button {
+.icon-button {
     border: none;
     background: none;
     padding: 1px 0;
     font-size: 20px;
 }
 
-.inline-button-primary {
+.icon-button .glyphicon-download {
     color: #2e6da4;
 }
 
-.inline-button-primary:hover {
+.icon-button:hover .glyphicon-download {
     color: #115281;
 }
 
-.inline-button-success {
+.icon-button .glyphicon-upload {
     color: #26b926;
 }
 
-.inline-button-success:hover {
+.icon-button:hover .glyphicon-upload {
     color: #097c09;
 }
 
-.inline-button-danger {
+.icon-button .glyphicon-remove-circle {
     color: #cb5c54;
 }
 
-.inline-button-danger:hover {
+.icon-button:hover .glyphicon-remove-circle {
     color: #a81c12;
 }
 
@@ -282,7 +282,7 @@ form .error-input:focus {
 .search-line .button {
     white-space: nowrap;
     border: none;
-    padding: 1px 14px 3px;
+    padding: 2px 14px 2px;
 }
 
 .search-line input {
@@ -310,10 +310,8 @@ form .error-input:focus {
 }
 
 .button-group .button {
-    height: 34px;
-    width: 39px;
-    padding-top: 5px;
-    padding-left: 12px;
+    font-size: 14px;
+    padding: 7px 12px 8px 12px;
 }
 
 .table-wrapper {
@@ -363,7 +361,8 @@ form .error-input:focus {
 .data-table .cell-name {
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
+    overflow-x: hidden;
+    max-width: 620px;
     width: 620px;
     padding: 2px 25px 1px;
 }
