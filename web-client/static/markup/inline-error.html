@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="table-page-wrapper">
-    <header class="authorized-page-header">
+    <header class="page-header">
         <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
         <div class="authorized-user-panel">
             <span class="user-info">
@@ -20,7 +20,7 @@
                                                             class="glyphicon glyphicon-log-out"></span></a>
         </div>
     </header>
-    <main class="form-container table-container">
+    <main class="container table-container">
         <div class="breadcrumb-container">
             <span class="breadcrumb">
                 <span class="breadcrumb-item">Home</span>
@@ -30,7 +30,8 @@
         <div class="table-tool-bar">
             <form action="/search" method="post">
                 <div class="search-line">
-                    <input class="group-left-element" id="entity-search-input" name="entity-search"
+                    <input class="input-text group-left-element" id="entity-search-input"
+                           name="entity-search"
                            placeholder="Enter entity name..." type="text">
                     <button class="button button-primary group-right-element" title="Search">
                         Search
@@ -128,7 +129,7 @@
                             class="glyphicon glyphicon-folder-close"></span></td>
                     <td class="table-data name-table-column">
                         <form action="/edit-name" class="name-edit-form">
-                            <input class="error-input" placeholder="Music" type="text">
+                            <input class="input-text error-input" placeholder="Music" type="text">
                             <div class="error-text">No whitespaces allowed.</div>
                         </form>
                     </td>
