@@ -191,6 +191,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 21px;
     box-shadow: 0 0 20px #999;
+    margin-bottom: 24px;
 }
 
 .container h1 {
@@ -199,10 +200,15 @@ input[type="text"], input[type="email"], input[type="password"] {
     font-weight: 500;
 }
 
-.form-row {
+.form-row,
+.form-button-container,
+.table-tool-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.form-row {
     margin-bottom: 15px;
 }
 
@@ -223,13 +229,6 @@ form .error-input:focus {
     box-shadow: 0 0 5px #ff0000;
 }
 
-.form-button-container,
-.table-tool-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .form-button-container {
     width: 337px;
     margin: 0 0 15px 183px;
@@ -238,11 +237,6 @@ form .error-input:focus {
 .form-button-container a {
     margin-top: 2px;
     font-weight: 600;
-}
-
-.table-container {
-    padding-bottom: 10px;
-    margin-bottom: 24px;
 }
 
 .breadcrumb-container {
@@ -286,8 +280,9 @@ form .error-input:focus {
 }
 
 .search-line .button {
+    white-space: nowrap;
     border: none;
-    padding: 2px 14px 0;
+    padding: 1px 14px 3px;
 }
 
 .search-line input {
@@ -432,24 +427,29 @@ form .error-input:focus {
     text-align: center;
 }
 
-.social-link-container {
-    margin-left: -4px;
+.social-icons {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: -2px;
     margin-bottom: 8px;
 }
 
-.social-link {
-    padding: 5px;
+.social-icons li {
+    padding: 0 7px 0 6px;
 }
 
-.social-link img {
+.social-icons a:hover {
+    text-decoration: none;
+}
+
+.social-icons img {
     width: 20px;
     height: 20px;
 }
 
-.social-link:hover {
-    text-decoration: none;
-}
-
 .copyright {
+    margin-top: 0;
     color: #999999;
 }

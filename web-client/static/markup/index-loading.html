@@ -29,7 +29,8 @@
         <div class="table-tool-bar">
             <form action="/search" method="post">
                 <div class="search-line search-line-loading">
-                    <input class="group-left-element" id="entity-search-input" name="entity-search"
+                    <input class="input-text group-left-element" id="entity-search-input"
+                           name="entity-search"
                            placeholder="Enter entity name..." type="text">
                     <button class="button button-primary group-right-element" disabled
                             title="Search">
@@ -128,7 +129,8 @@
                             class="glyphicon glyphicon-folder-close"></span></td>
                     <td class="cell-name">
                         <form action="/edit-name" class="name-edit-form name-edit-form-loading">
-                            <input placeholder="Enter directory name" type="text">
+                            <input class="input-text" placeholder="Enter directory name"
+                                   type="text">
                             <span class="glyphicon glyphicon-repeat"></span>
                         </form>
                     </td>
@@ -305,21 +307,27 @@
         </div>
     </main>
     <footer class="page-footer">
-        <div class="social-link-container">
-            <a class="social-link" href="https://www.linkedin.com/company/teamdev-ltd-/"
-               title="Linked In">
-                <img alt="Linked In" src="images/icon-linkedin.png">
-            </a>
-            <a class="social-link" href="https://www.facebook.com/TeamDev" title="Facebook">
-                <img alt="Facebook" src="images/icon-facebook.png">
-            </a>
-            <a class="social-link" href="https://www.instagram.com/teamdev_ltd/" title="Instagram">
-                <img alt="Instagram" src="images/icon-instagram.png">
-            </a>
-        </div>
-        <span class="copyright">
+        <ul class="social-icons">
+            <li>
+                <a href="https://www.linkedin.com/company/teamdev-ltd-/"
+                   target="_blank" title="Linked In">
+                    <img alt="Linked In" src="images/icon-linkedin.png">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/TeamDev" target="_blank" title="Facebook">
+                    <img alt="Facebook" src="images/icon-facebook.png">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.instagram.com/teamdev_ltd/" target="_blank" title="Instagram">
+                    <img alt="Instagram" src="images/icon-instagram.png">
+                </a>
+            </li>
+        </ul>
+        <p class="copyright">
             Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
-        </span>
+        </p>
     </footer>
 </div>
 </body>
