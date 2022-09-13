@@ -25,18 +25,16 @@
         </ul>
     </header>
     <main class="container table-container">
-        <div class="breadcrumb-container">
-            <span class="breadcrumb">
-                <span class="breadcrumb-item"><a href="index.html">Home</a></span>
-                <span class="breadcrumb-separator">/</span>
-                <span class="breadcrumb-item">Documents</span>
-            </span>
-        </div>
+        <ul class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li>Documents</li>
+        </ul>
         <hr class="horizontal-line">
         <div class="table-tool-bar">
             <form action="/search" method="post">
                 <div class="search-line">
-                    <input class="group-left-element" id="entity-search-input" name="entity-search"
+                    <input class="input-text group-left-element" id="entity-search-input"
+                           name="entity-search"
                            placeholder="Enter entity name..." type="text">
                     <button class="button button-primary group-right-element" title="Search">
                         Search
