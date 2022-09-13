@@ -170,19 +170,28 @@ input[type="text"], input[type="email"], input[type="password"] {
     margin-bottom: 25px;
 }
 
+.authorized-user-panel,
+.social-icons {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+
 .authorized-user-panel {
     margin: 18px 6px 0 0;
 }
 
-.authorized-user-panel .user-info {
+.authorized-user-panel li {
     color: #999999;
-    padding: 2px 6px;
+    padding: 1px 8px 1px 0;
     margin-right: 8px;
-    border-right: 2px solid #000;
+    border-right: 1px solid #000;
 }
 
-.authorized-user-panel .logout-button {
-    margin-left: -2px;
+.authorized-user-panel li:last-child {
+    padding-right: 0;
+    margin-right: 0;
+    border-right: none;
 }
 
 .container {
@@ -419,7 +428,6 @@ form .error-input:focus {
     color: #f00;
     font-weight: 600;
     margin: -8px 0 16px 183px;
-
 }
 
 .page-footer {
@@ -427,9 +435,6 @@ form .error-input:focus {
 }
 
 .social-icons {
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
     padding-left: 0;
     margin-left: -2px;
     margin-bottom: 8px;

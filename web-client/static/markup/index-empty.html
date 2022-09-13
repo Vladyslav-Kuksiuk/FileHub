@@ -11,14 +11,18 @@
 <div class="table-page-wrapper">
     <header class="page-header">
         <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
-        <div class="authorized-user-panel">
-            <span class="user-info">
+        <ul class="authorized-user-panel">
+            <li>
                 <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
                 <span>John Doe</span>
-            </span>
-            <a class="logout-button" href="/">Log Out <span aria-hidden="true"
-                                                            class="glyphicon glyphicon-log-out"></span></a>
-        </div>
+            </li>
+            <li>
+                <a class="logout-button" href="/">
+                    Log Out
+                    <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
     </header>
     <main class="container table-container">
         <div class="breadcrumb-container">
@@ -30,7 +34,8 @@
         <div class="table-tool-bar">
             <form action="/search" method="post">
                 <div class="search-line">
-                    <input class="group-left-element" id="entity-search-input" name="entity-search"
+                    <input class="input-text group-left-element" id="entity-search-input"
+                           name="entity-search"
                            placeholder="Enter entity name..." type="text">
                     <button class="button button-primary group-right-element" title="Search">
                         Search
