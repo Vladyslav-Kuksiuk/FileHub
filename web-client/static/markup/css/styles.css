@@ -354,18 +354,18 @@ form .error-input:focus {
     padding: 10px 0;
 }
 
-.data-table .arrow-table-column {
+.data-table .cell-arrow {
     width: 24px;
     text-align: end;
 }
 
-.data-table .icon-table-column {
+.data-table .cell-icon {
     width: 41px;
     text-align: end;
     font-size: 20px;
 }
 
-.data-table .name-table-column {
+.data-table .cell-name {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -397,16 +397,16 @@ form .error-input:focus {
     font-size: 12px;
 }
 
-.data-table .type-table-column {
+.data-table .cell-type {
     width: 130px;
 }
 
-.data-table .weight-table-column {
+.data-table .cell-size {
     width: 130px;
     text-align: end;
 }
 
-.data-table .buttons-table-column {
+.data-table .cell-buttons {
     width: 84px;
     text-align: end;
     padding-top: 8px;
