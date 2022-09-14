@@ -51,6 +51,10 @@ input[type="text"], input[type="email"], input[type="password"] {
     background: #fff;
 }
 
+.button:disabled {
+    cursor: default;
+}
+
 .button:hover {
     background: #ccc;
 }
@@ -62,7 +66,6 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .button-primary:disabled {
-    cursor: default;
     background: #7ab0de;
     border-color: #80a0c1;
 }
@@ -78,7 +81,12 @@ input[type="text"], input[type="email"], input[type="password"] {
     color: #fff;
 }
 
-.button-danger:hover {
+.button-danger:disabled {
+    background: #dd9590;
+    border-color: #da8a83;
+}
+
+.button-danger:not([disabled]):hover {
     background: #bb3e35;
     border-color: #ad4c44;
 }
@@ -300,7 +308,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     margin-bottom: 4px;
 }
 
-.modal .form-row-input .error-text{
+.modal .form-row-input .error-text {
     padding-bottom: 1px;
 }
 
@@ -313,11 +321,11 @@ input[type="text"], input[type="email"], input[type="password"] {
     margin-left: 8px;
 }
 
-.modal-buttons .button .glyphicon{
+.modal-buttons .button .glyphicon {
     margin-top: -1px;
 }
 
-.modal-text{
+.modal-text {
     margin: 2px 0;
 }
 
