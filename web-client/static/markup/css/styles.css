@@ -131,11 +131,14 @@ input[type="text"], input[type="email"], input[type="password"] {
     color: #a81c12;
 }
 
-.button-group .button {
+.button-group .button{
     margin-right: 0;
     margin-left: 0;
-    border-left: 0;
     border-radius: 0;
+}
+
+.button-group .button:not(:first-child){
+    border-left: 0;
 }
 
 .button-group .button:first-child {
