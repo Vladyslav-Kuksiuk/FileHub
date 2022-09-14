@@ -12,33 +12,35 @@
     <header class="page-header">
         <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
     </header>
-    <main class="form-container">
+    <main class="container">
         <h1>Sign up to FileHub</h1>
         <hr class="horizontal-line">
         <form action="./registration.html" method="post">
             <div class="form-row">
                 <label for="email">Email</label>
-                <input class="error-input" id="email" name="email" placeholder="Email" type="email">
-            </div>
-            <div class="error-label-container">
-                <label for="email">Please include an '@' in the email address.</label>
+                <div class="form-row-input">
+                    <input class="input-text input-error" id="email" name="email"
+                           placeholder="Email" type="email">
+                    <div class="error-text">Please include an '@' in the email address.</div>
+                </div>
             </div>
             <div class="form-row">
                 <label for="password">Password</label>
-                <input class="error-input" id="password" name="password" placeholder="Password"
-                       type="password">
-            </div>
-            <div class="error-label-container">
-                <label for="password">Password can't be empty.</label>
+                <div class="form-row-input">
+                    <input class="input-text input-error" id="password" name="password"
+                           placeholder="Password"
+                           type="password">
+                    <div class="error-text">Password can't be empty.</div>
+                </div>
             </div>
             <div class="form-row">
                 <label for="confirm-password">Confirm Password</label>
-                <input class="error-input" id="confirm-password" name="confirm-password"
-                       placeholder="Confirm Password"
-                       type="password">
-            </div>
-            <div class="error-label-container">
-                <label for="confirm-password">Passwords don't match.</label>
+                <div class="form-row-input ">
+                    <input class="input-text input-error" id="confirm-password"
+                           name="confirm-password"
+                           placeholder="Confirm Password" type="password">
+                    <div class="error-text">Passwords don't match.</div>
+                </div>
             </div>
             <div class="form-button-container">
                 <button class="button button-primary" title="Sign Up">Sign Up</button>
