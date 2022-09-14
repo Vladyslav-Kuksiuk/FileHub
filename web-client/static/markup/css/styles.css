@@ -292,11 +292,15 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 .modal main {
     margin-top: -1px;
-    margin-bottom: 22px;
+    margin-bottom: 21px;
 }
 
 .modal .form-row-input .input-text {
     width: 422px;
+}
+
+.modal .form-row-input .error-text{
+    padding-bottom: 1px;
 }
 
 .modal footer {
@@ -306,6 +310,10 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 .modal-buttons .button {
     margin-left: 8px;
+}
+
+.modal-buttons .button .glyphicon{
+    margin-top: -1px;
 }
 
 .container h1 {

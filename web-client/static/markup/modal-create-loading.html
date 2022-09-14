@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Table</title>
+    <link href="css/icons.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="table-page-wrapper">
+    <header class="page-header">
+        <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
+        <ul class="authorized-user-panel">
+            <li>
+                <span class="glyphicon glyphicon-repeat"></span>
+            </li>
+            <li>
+                <a class="logout-button" href="/">
+                    Log Out
+                    <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
+    </header>
+    <main class="container table-container">
+        <ul class="breadcrumb">
+            <li><span class="glyphicon glyphicon-repeat"></span></li>
+        </ul>
+        <hr class="horizontal-line">
+        <div class="table-tool-bar">
+            <form action="/search" method="post">
+                <div class="search-line search-line-loading">
+                    <input class="input-text" id="entity-search-input"
+                           name="entity-search"
+                           placeholder="Enter entity name..." type="text">
+                    <button class="button button-primary"
+                            title="Search">
+                        <span class="glyphicon glyphicon-repeat"></span>
+                        Search
+                    </button>
+                </div>
+            </form>
+            <div class="button-group">
+                <button class="button button-primary" disabled title="Upload file.">
+                    <span class="glyphicon glyphicon-repeat"></span>
+                </button>
+                <button class="button button-primary" title="Add folder."><span
+                        aria-hidden="true"
+                        class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <tr>
+                    <td class="cell-arrow"><span
+                            aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+                    </td>
+                    <td class="cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-folder-close"></span></td>
+                    <td class="cell-name"><a href="inner.html">Documents</a></td>
+                    <td class="cell-type">Folder</td>
+                    <td class="cell-size">—</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button"
+                                    title="Upload file.">
+                                <span class="success-text glyphicon glyphicon-repeat"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-chevron-right"></span></td>
+                    <td class="cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-folder-close"></span></td>
+                    <td class="cell-name"><a href="">Images</a></td>
+                    <td class="cell-type">Folder</td>
+                    <td class="cell-size">—</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button"
+                                    title="Upload file.">
+                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-chevron-right"></span></td>
+                    <td class="cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-folder-close"></span></td>
+                    <td class="cell-name"><a href="">Videos</a></td>
+                    <td class="cell-type">Folder</td>
+                    <td class="cell-size">—</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button"
+                                    title="Upload file.">
+                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-chevron-right"></span></td>
+                    <td class="cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-folder-close"></span></td>
+                    <td class="cell-name">
+                        <form action="/edit-name" class="name-edit-form name-edit-form-loading">
+                            <input class="input-text" placeholder="Enter directory name..."
+                                   type="text">
+                            <span class="glyphicon glyphicon-repeat"></span>
+                        </form>
+                    </td>
+                    <td class="cell-type">Folder</td>
+                    <td class="cell-size">—</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button"
+                                    title="Upload file.">
+                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-chevron-right"></span></td>
+                    <td class="cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-folder-close"></span></td>
+                    <td class="cell-name"><a href="">Other</a></td>
+                    <td class="cell-type">Folder</td>
+                    <td class="cell-size">—</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button"
+                                    title="Upload file.">
+                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"></td>
+                    <td class="cell-icon"><span aria-hidden="true"
+                                                class="glyphicon glyphicon-book"></span>
+                    </td>
+                    <td class="cell-name">HTML_guidelines.pdf</td>
+                    <td class="cell-type">PDF Document</td>
+                    <td class="cell-size">100 KB</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button inline-button-primary"
+                                    title="Download file.">
+                                <span class="primary-text glyphicon glyphicon-repeat"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"></td>
+                    <td class="cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-list-alt"></span></td>
+                    <td class="cell-name">vacation_schedule.xlsx</td>
+                    <td class="cell-type">Excel Workbook</td>
+                    <td class="cell-size">5 KB</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button inline-button-primary"
+                                    title="Download file.">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"></td>
+                    <td class="cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-picture"></span></td>
+                    <td class="cell-name">selfie.jpg</td>
+                    <td class="cell-type">JPEG image</td>
+                    <td class="cell-size">4.1 MB</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button inline-button-primary"
+                                    title="Download file.">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"></td>
+                    <td class="cell-icon"><span aria-hidden="true"
+                                                class="glyphicon glyphicon-film"></span>
+                    </td>
+                    <td class="cell-name">summer_party.avi</td>
+                    <td class="cell-type">AVI movie</td>
+                    <td class="cell-size">1.2 GB</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button inline-button-primary"
+                                    title="Download file.">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"></td>
+                    <td class="cell-icon"><span aria-hidden="true"
+                                                class="glyphicon glyphicon-music"></span>
+                    </td>
+                    <td class="cell-name">hello.mp3</td>
+                    <td class="cell-type">MP3 audio</td>
+                    <td class="cell-size">12.5 MB</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button inline-button-primary"
+                                    title="Download file.">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-arrow"></td>
+                    <td class="cell-icon"><span aria-hidden="true"
+                                                class="glyphicon glyphicon-music"></span>
+                    </td>
+                    <td class="cell-name">sing.mp3</td>
+                    <td class="cell-type">MP3 audio</td>
+                    <td class="cell-size">10.3 MB</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button inline-button-primary"
+                                    title="Download file.">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button inline-button-danger" title="Delete">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </main>
+    <footer class="page-footer">
+        <ul class="social-icons">
+            <li>
+                <a href="https://www.linkedin.com/company/teamdev-ltd-/"
+                   target="_blank" title="Linked In">
+                    <img alt="Linked In" src="images/icon-linkedin.png">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/TeamDev" target="_blank" title="Facebook">
+                    <img alt="Facebook" src="images/icon-facebook.png">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.instagram.com/teamdev_ltd/" target="_blank" title="Instagram">
+                    <img alt="Instagram" src="images/icon-instagram.png">
+                </a>
+            </li>
+        </ul>
+        <p class="copyright">
+            Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
+        </p>
+    </footer>
+</div>
+<div class="modal">
+    <div class="modal-container">
+        <header>
+            <h3>Create New Directory</h3>
+            <a href="">×</a>
+        </header>
+        <main>
+            <div class="form-row-input">
+                <input class="input-text" type="text" name="directory-name"
+                       id="directory-name-input" placeholder="Enter directory name..."
+                       value="Music">
+            </div>
+        </main>
+        <footer>
+            <ul class="modal-buttons">
+                <li>
+                    <button class="button">Cancel</button>
+                </li>
+                <li>
+                    <button class="button button-primary" disabled>
+                        <span class="glyphicon glyphicon-repeat"></span>
+                        Create
+                    </button>
+                </li>
+            </ul>
+        </footer>
+    </div>
+</div>
+</body>
+</html>
