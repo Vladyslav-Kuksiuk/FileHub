@@ -13,7 +13,7 @@ body {
     font: 14px "Roboto", "Times New Roman", Times, serif;
     font-weight: 600;
     background: #f2f2f2;
-    min-width: 1000px;
+    min-width: 520px;
 }
 
 a {
@@ -176,7 +176,8 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .wrapper {
-    width: 562px;
+    max-width: 562px;
+    width: 94.5%;
     margin: 0 auto;
 }
 
@@ -339,7 +340,6 @@ input[type="text"], input[type="email"], input[type="password"] {
     border-color: #f00;
 }
 
-.form-row,
 .form-button-container,
 .table-tool-bar {
     display: flex;
@@ -352,17 +352,20 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .form-row label {
+    display: block;
     align-self: start;
-    padding-top: 9px;
+    padding-top: 2px;
+    margin-bottom: 6px;
     font-weight: 900;
 }
 
 .form-row-input .input-text {
-    width: 311px;
+    width: 424px;
 }
 
 .form-row-input .error-text {
-    margin-bottom: 1px;
+    display: block;
+    margin-bottom: 16px;
 }
 
 .form-row-input .input-error {
@@ -375,8 +378,8 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .form-button-container {
-    width: 337px;
-    margin: 0 0 15px 183px;
+    width: 100%;
+    margin: 15px 0 15px 0;
 }
 
 .form-button-container a {
@@ -572,4 +575,46 @@ input[type="text"], input[type="email"], input[type="password"] {
 .copyright {
     margin-top: 0;
     color: #999;
+}
+
+@media screen and (min-width: 521px) {
+    .form-row-input .input-text{
+        width: 95%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+
+    .wrapper{
+        width: 562px;
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .form-row label {
+        padding-top: 9px;
+    }
+
+    .form-row .input-text {
+        width: 311px;
+    }
+
+    .form-button-container {
+        width: 337px;
+        margin: 0 0 15px 183px;
+    }
+
+    .form-row-input .error-text{
+        margin-bottom: 1px;
+    }
+
+    .form-row-input .input-error {
+        margin-bottom: 7px;
+    }
+
 }
