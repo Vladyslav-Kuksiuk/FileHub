@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title>Table</title>
+    <title>Inline error</title>
     <link href="css/icons.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
 </head>
@@ -13,7 +13,8 @@
         <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
         <ul class="authorized-user-panel">
             <li>
-                <span class="glyphicon glyphicon-repeat"></span>
+                <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
+                <span>John Doe</span>
             </li>
             <li>
                 <a class="logout-button" href="/">
@@ -25,25 +26,24 @@
     </header>
     <main class="container table-container">
         <ul class="breadcrumb">
-            <li><span class="glyphicon glyphicon-repeat"></span></li>
+            <li>Home</li>
         </ul>
         <hr class="horizontal-line">
         <div class="table-tool-bar">
             <form action="/search" method="post">
-                <div class="search-line search-line-loading">
+                <div class="search-line">
                     <input class="input-text" id="entity-search-input"
                            name="entity-search"
                            placeholder="Enter entity name..." type="text">
-                    <button class="button button-primary"
-                            title="Search">
-                        <span class="glyphicon glyphicon-repeat"></span>
+                    <button class="button button-primary" title="Search">
                         Search
                     </button>
                 </div>
             </form>
             <div class="button-group">
-                <button class="button button-primary" disabled title="Upload file.">
-                    <span class="glyphicon glyphicon-repeat"></span>
+                <button class="button button-primary" title="Upload file."><span
+                        aria-hidden="true"
+                        class="glyphicon glyphicon-upload"></span>
                 </button>
                 <button class="button button-primary" title="Add folder."><span
                         aria-hidden="true"
@@ -67,9 +67,9 @@
                         <div class="data-buttons-container">
                             <button class="icon-button"
                                     title="Upload file.">
-                                <span class="success-text glyphicon glyphicon-repeat"></span>
+                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -92,7 +92,7 @@
                                     title="Upload file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -115,7 +115,7 @@
                                     title="Upload file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -130,10 +130,9 @@
                             aria-hidden="true"
                             class="glyphicon glyphicon-folder-close"></span></td>
                     <td class="cell-name">
-                        <form action="/edit-name" class="name-edit-form name-edit-form-loading">
-                            <input class="input-text" placeholder="Enter directory name..."
-                                   type="text">
-                            <span class="glyphicon glyphicon-repeat"></span>
+                        <form action="/edit-name" class="name-edit-form">
+                            <input class="input-text input-error" placeholder="Music" type="text">
+                            <div class="error-text">No whitespaces allowed.</div>
                         </form>
                     </td>
                     <td class="cell-type">Folder</td>
@@ -144,7 +143,7 @@
                                     title="Upload file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -167,7 +166,7 @@
                                     title="Upload file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -184,11 +183,12 @@
                     <td class="cell-size">100 KB</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button class="icon-button inline-button-primary"
+                            <button class="icon-button"
                                     title="Download file.">
-                                <span class="primary-text glyphicon glyphicon-repeat"></span>
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -205,12 +205,12 @@
                     <td class="cell-size">5 KB</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button class="icon-button inline-button-primary"
+                            <button class="icon-button"
                                     title="Download file.">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-download"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -227,12 +227,12 @@
                     <td class="cell-size">4.1 MB</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button class="icon-button inline-button-primary"
+                            <button class="icon-button"
                                     title="Download file.">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-download"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -249,12 +249,12 @@
                     <td class="cell-size">1.2 GB</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button class="icon-button inline-button-primary"
+                            <button class="icon-button"
                                     title="Download file.">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-download"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -271,12 +271,12 @@
                     <td class="cell-size">12.5 MB</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button class="icon-button inline-button-primary"
+                            <button class="icon-button"
                                     title="Download file.">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-download"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -293,12 +293,12 @@
                     <td class="cell-size">10.3 MB</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button class="icon-button inline-button-primary"
+                            <button class="icon-button"
                                     title="Download file.">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-download"></span>
                             </button>
-                            <button class="icon-button inline-button-danger" title="Delete">
+                            <button class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -335,15 +335,13 @@
 <div class="modal">
     <div class="modal-container">
         <header>
-            <h3>Create New Directory</h3>
+            <h3>Delete File</h3>
             <a href="">×</a>
         </header>
         <div class="modal-body">
-            <div class="form-row-input">
-                <input class="input-text" id="directory-name-input" name="directory-name"
-                       placeholder="Enter directory name..." type="text"
-                       value="Music">
-            </div>
+            <p class="modal-text">
+                Are you sure you want to delete "name.ext" file?
+            </p>
         </div>
         <footer>
             <ul class="modal-buttons">
@@ -351,10 +349,7 @@
                     <button class="button">Cancel</button>
                 </li>
                 <li>
-                    <button class="button button-primary" disabled>
-                        <span class="glyphicon glyphicon-repeat"></span>
-                        Create
-                    </button>
+                    <button class="button button-danger">Delete</button>
                 </li>
             </ul>
         </footer>

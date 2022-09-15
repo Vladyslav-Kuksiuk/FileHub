@@ -331,33 +331,31 @@
             Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
         </p>
     </footer>
-</div>
-<div class="modal">
-    <div class="modal-container">
-        <header>
-            <h3>Create New Directory</h3>
-            <a href="">×</a>
-        </header>
-        <div class="modal-body">
-            <div class="form-row-input">
-                <input class="input-text" id="directory-name-input" name="directory-name"
-                       placeholder="Enter directory name..." type="text"
-                       value="Music">
+    <div class="modal">
+        <div class="modal-container">
+            <header>
+                <h3>Delete File</h3>
+                <a href="">×</a>
+            </header>
+            <div class="modal-body">
+                <p class="modal-text">
+                    Are you sure you want to delete "name.ext" file?
+                </p>
             </div>
+            <footer>
+                <ul class="modal-buttons">
+                    <li>
+                        <button class="button">Cancel</button>
+                    </li>
+                    <li>
+                        <button class="button button-danger" disabled>
+                            <span class="glyphicon glyphicon-repeat"></span>
+                            Delete
+                        </button>
+                    </li>
+                </ul>
+            </footer>
         </div>
-        <footer>
-            <ul class="modal-buttons">
-                <li>
-                    <button class="button">Cancel</button>
-                </li>
-                <li>
-                    <button class="button button-primary" disabled>
-                        <span class="glyphicon glyphicon-repeat"></span>
-                        Create
-                    </button>
-                </li>
-            </ul>
-        </footer>
     </div>
 </div>
 </body>
