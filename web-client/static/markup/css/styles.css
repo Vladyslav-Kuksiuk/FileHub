@@ -182,8 +182,9 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .table-page-wrapper {
-    width: 1142px;
+    min-width: 400px;
     margin: 0 auto;
+    padding: 0 14px;
 }
 
 .page-header {
@@ -401,6 +402,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 .search-line {
     display: flex;
     margin-top: -1px;
+    width: 64.8%;
 }
 
 .search-line .button {
@@ -413,7 +415,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .search-line .input-text {
-    width: 441px;
+    width: 100%;
     height: 32px;
     border-right: 0;
     border-bottom-right-radius: 0;
@@ -474,28 +476,29 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .data-table .cell-arrow {
-    width: 24px;
+    padding: 0 10px;
     text-align: end;
 }
 
 .data-table .cell-icon {
-    width: 41px;
+    padding: 0 0 0 11px;
     text-align: end;
     font-size: 20px;
 }
 
 .data-table .cell-name {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow-x: hidden;
-    max-width: 620px;
-    width: 620px;
+    width: 100%;
     padding: 2px 25px 1px;
 }
 
+.name-edit-form {
+    white-space: nowrap;
+}
+
 .data-table .name-edit-form .input-text {
+    width: 90%;
+    max-width: 287px;
     margin-left: -13px;
-    width: 287px;
 }
 
 .name-edit-form-loading .input-text {
@@ -518,19 +521,23 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .data-table .cell-type {
+    white-space: nowrap;
+    display: none;
     width: 130px;
     padding-top: 11px;
 }
 
 .data-table .cell-size {
-    width: 130px;
+    white-space: nowrap;
+    display: none;
     text-align: end;
     padding-top: 11px;
 }
 
 .data-table .cell-buttons {
-    width: 84px;
+    white-space: nowrap;
     text-align: end;
+    padding-left: 32px;
     padding-top: 8px;
 }
 
@@ -555,12 +562,12 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 .social-icons {
     padding-left: 0;
-    margin-left: -2px;
+    margin-left: -5px;
     margin-bottom: 8px;
 }
 
 .social-icons li {
-    padding: 0 7px 0 6px;
+    padding: 0 7px;
 }
 
 .social-icons a:hover {
@@ -578,15 +585,32 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 @media screen and (min-width: 521px) {
-    .form-row-input .input-text{
+    .form-row-input .input-text {
         width: 95%;
     }
 }
 
 @media screen and (min-width: 768px) {
 
-    .wrapper{
+    .wrapper {
         width: 562px;
+    }
+
+    .table-page-wrapper {
+        max-width: 722px;
+    }
+
+    .search-line {
+        width: 325px;
+    }
+
+    .data-table .cell-name {
+        width: 700px;
+    }
+
+    .data-table .cell-size {
+        display: table-cell;
+        width: 109px;
     }
 
     .form-row {
@@ -609,7 +633,7 @@ input[type="text"], input[type="email"], input[type="password"] {
         margin: 0 0 15px 183px;
     }
 
-    .form-row-input .error-text{
+    .form-row-input .error-text {
         margin-bottom: 1px;
     }
 
@@ -617,4 +641,44 @@ input[type="text"], input[type="email"], input[type="password"] {
         margin-bottom: 7px;
     }
 
+}
+
+@media screen and (min-width: 992px) {
+
+    .table-page-wrapper {
+        max-width: 942px;
+    }
+
+    .search-line {
+        width: 436px;
+    }
+
+    .data-table .cell-name {
+        width: 421px;
+    }
+
+    .data-table .cell-type {
+        display: table-cell;
+        width: 150px;
+    }
+
+}
+
+@media screen and (min-width: 1200px) {
+
+    .search-line {
+        width: 535px;
+    }
+
+    .table-page-wrapper {
+        max-width: 1142px;
+    }
+
+    .data-table .cell-name {
+        width: 620px;
+    }
+
+    .data-table .cell-type {
+        width: 151px;
+    }
 }
