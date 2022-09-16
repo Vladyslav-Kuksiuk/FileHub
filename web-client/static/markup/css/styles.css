@@ -182,7 +182,6 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .table-page-wrapper {
-    min-width: 400px;
     margin: 0 auto;
     padding: 0 14px;
 }
@@ -255,7 +254,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 2;
+    z-index: 999;
     background: rgba(0, 0, 0, 0.65);
     width: 100%;
     height: 100%;
@@ -396,7 +395,12 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .table-tool-bar {
-    margin-bottom: 15px;
+    position: sticky;
+    z-index: 2;
+    background: #fff;
+    top: 0;
+    margin-top: -10px;
+    padding: 10px 0 15px;
 }
 
 .search-line {
@@ -440,11 +444,6 @@ input[type="text"], input[type="email"], input[type="password"] {
 .button-group .button {
     font-size: 14px;
     padding: 7px 12px 8px 12px;
-}
-
-.table-wrapper {
-    height: 450px;
-    overflow-y: auto;
 }
 
 .centered-in-table {
@@ -535,14 +534,14 @@ input[type="text"], input[type="email"], input[type="password"] {
     white-space: nowrap;
     display: none;
     text-align: end;
-    width: 109px;
+    width: 110px;
     padding-top: 11px;
 }
 
 .data-table .cell-buttons {
     white-space: nowrap;
     text-align: end;
-    width: 50px;
+    width: 56px;
     padding-left: 32px;
     padding-top: 8px;
 }
@@ -600,8 +599,17 @@ input[type="text"], input[type="email"], input[type="password"] {
         max-width: 722px;
     }
 
+    .table-tool-bar {
+        position: relative;
+    }
+
     .search-line {
         width: 325px;
+    }
+
+    .table-wrapper {
+        height: 450px;
+        overflow-y: auto;
     }
 
     .data-table .cell-size {
@@ -630,10 +638,6 @@ input[type="text"], input[type="email"], input[type="password"] {
 
     .form-row-input .error-text {
         margin-bottom: 1px;
-    }
-
-    .form-row-input .input-error {
-        margin-bottom: 7px;
     }
 
 }
@@ -665,6 +669,6 @@ input[type="text"], input[type="email"], input[type="password"] {
     }
 
     .data-table .cell-name {
-        width: 620px;
+        /*width: 620px;*/
     }
 }
