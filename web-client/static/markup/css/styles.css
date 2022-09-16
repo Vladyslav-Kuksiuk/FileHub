@@ -361,7 +361,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .form-row-input .input-text {
-    width: 424px;
+    width: 95%;
 }
 
 .form-row-input .error-text {
@@ -464,6 +464,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 .data-table {
     border-spacing: 0;
+    width: 100%;
 }
 
 .data-table tr:hover {
@@ -476,18 +477,20 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .data-table .cell-arrow {
-    padding: 0 10px;
+    width: 24px;
     text-align: end;
 }
 
 .data-table .cell-icon {
-    padding: 0 0 0 11px;
+    width: 41px;
     text-align: end;
     font-size: 20px;
 }
 
 .data-table .cell-name {
-    width: 100%;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
     padding: 2px 25px 1px;
 }
 
@@ -523,7 +526,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 .data-table .cell-type {
     white-space: nowrap;
     display: none;
-    width: 130px;
+    width: 150px;
     padding-top: 11px;
 }
 
@@ -531,12 +534,14 @@ input[type="text"], input[type="email"], input[type="password"] {
     white-space: nowrap;
     display: none;
     text-align: end;
+    width: 109px;
     padding-top: 11px;
 }
 
 .data-table .cell-buttons {
     white-space: nowrap;
     text-align: end;
+    width: 50px;
     padding-left: 32px;
     padding-top: 8px;
 }
@@ -584,12 +589,6 @@ input[type="text"], input[type="email"], input[type="password"] {
     color: #999;
 }
 
-@media screen and (min-width: 521px) {
-    .form-row-input .input-text {
-        width: 95%;
-    }
-}
-
 @media screen and (min-width: 768px) {
 
     .wrapper {
@@ -604,13 +603,8 @@ input[type="text"], input[type="email"], input[type="password"] {
         width: 325px;
     }
 
-    .data-table .cell-name {
-        width: 700px;
-    }
-
     .data-table .cell-size {
         display: table-cell;
-        width: 109px;
     }
 
     .form-row {
@@ -653,32 +647,23 @@ input[type="text"], input[type="email"], input[type="password"] {
         width: 436px;
     }
 
-    .data-table .cell-name {
-        width: 421px;
-    }
-
     .data-table .cell-type {
         display: table-cell;
-        width: 150px;
     }
 
 }
 
 @media screen and (min-width: 1200px) {
 
-    .search-line {
-        width: 535px;
-    }
-
     .table-page-wrapper {
         max-width: 1142px;
     }
 
-    .data-table .cell-name {
-        width: 620px;
+    .search-line {
+        width: 535px;
     }
 
-    .data-table .cell-type {
-        width: 151px;
+    .data-table .cell-name {
+        width: 620px;
     }
 }
