@@ -51,6 +51,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .button {
+    cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 9px 13px 8px 12px;
@@ -65,6 +66,16 @@ input[type="text"], input[type="email"], input[type="password"] {
 .button-primary:hover {
     background: #286090;
     border-color: #204d74;
+}
+
+.input-text {
+    padding: 0 12px;
+    height: 32px;
+    width: 321px;
+    outline: none;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }
 
 .wrapper {
@@ -104,16 +115,6 @@ input[type="text"], input[type="email"], input[type="password"] {
     align-self: start;
     padding-top: 2px;
     margin-bottom: 6px;
-}
-
-.input-text {
-    padding-left: 12px;
-    height: 32px;
-    width: 321px;
-    outline: none;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
 }
 
 .form-row label {
