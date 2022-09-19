@@ -2,7 +2,7 @@
 @font-face {
     font-family: "Roboto";
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     src: local(''),
     url('../fonts/roboto-regular.woff2') format('woff2')
 }
@@ -10,8 +10,7 @@
 body {
     margin: 0;
     color: #2f2f2f;
-    font: 14px "Roboto", "Times New Roman", Times, serif;
-    font-weight: 600;
+    font: 500 14px "Roboto", "Times New Roman", Times, serif;
     background: #f2f2f2;
     min-width: 520px;
 }
@@ -52,6 +51,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .button {
+    cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 9px 13px 8px 12px;
@@ -98,19 +98,21 @@ input[type="text"], input[type="email"], input[type="password"] {
     border-color: #ad4c44;
 }
 
-.error-text {
+.error-message {
     color: #f00;
 }
 
-.success-text {
+.success-text,
+.icon-button .glyphicon-upload {
     color: #26b926;
 }
 
-.primary-text {
+.primary-text,
+.icon-button .glyphicon-download {
     color: #2e6da4;
 }
 
-.error-text .glyphicon {
+.error-message .glyphicon {
     color: #f00;
     font-size: 14px;
 }
@@ -122,16 +124,8 @@ input[type="text"], input[type="email"], input[type="password"] {
     font-size: 20px;
 }
 
-.icon-button .glyphicon-download {
-    color: #2e6da4;
-}
-
 .icon-button:hover .glyphicon-download {
     color: #115281;
-}
-
-.icon-button .glyphicon-upload {
-    color: #26b926;
 }
 
 .icon-button:hover .glyphicon-upload {
@@ -226,7 +220,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .breadcrumb li {
-    color: #999999;
+    color: #999;
 }
 
 .breadcrumb li::after {
@@ -313,11 +307,10 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 .modal .form-row-input .input-text {
     width: 422px;
-    margin-bottom: 4px;
 }
 
-.modal .form-row-input .error-text {
-    padding-bottom: 1px;
+.modal .form-row-input .error-message {
+    padding-bottom: 5px;
 }
 
 .modal footer {
@@ -363,15 +356,14 @@ input[type="text"], input[type="email"], input[type="password"] {
     align-self: start;
     padding-top: 2px;
     margin-bottom: 6px;
-    font-weight: 900;
 }
 
 .form-row-input .input-text {
     width: 95%;
 }
 
-.form-row-input .error-text {
-    display: block;
+.form-row-input .error-message {
+    margin-top: 0;
     margin-bottom: 16px;
 }
 
@@ -522,9 +514,9 @@ input[type="text"], input[type="email"], input[type="password"] {
     width: 286px;
 }
 
-.name-edit-form .error-text {
-    margin-left: -13px;
-    margin-bottom: 6px;
+.name-edit-form .error-message {
+    white-space: normal;
+    margin: 0 0 6px -13px;
     font-size: 12px;
 }
 
@@ -632,6 +624,10 @@ input[type="text"], input[type="email"], input[type="password"] {
         padding-top: 9px;
     }
 
+    .form-row-input {
+        width: 337px
+    }
+
     .form-row .input-text {
         width: 311px;
     }
@@ -641,8 +637,9 @@ input[type="text"], input[type="email"], input[type="password"] {
         margin: 0 0 15px 183px;
     }
 
-    .form-row-input .error-text {
+    .form-row-input .error-message {
         margin-bottom: 1px;
+
     }
 
 }
@@ -660,7 +657,6 @@ input[type="text"], input[type="email"], input[type="password"] {
     .data-table .cell-type {
         display: table-cell;
     }
-
 }
 
 @media screen and (min-width: 1200px) {
@@ -671,9 +667,5 @@ input[type="text"], input[type="email"], input[type="password"] {
 
     .search-line {
         width: 535px;
-    }
-
-    .data-table .cell-name {
-        /*width: 620px;*/
     }
 }
