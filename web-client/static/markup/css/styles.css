@@ -10,8 +10,7 @@
 body {
     margin: 0;
     color: #2f2f2f;
-    font: 14px "Roboto", "Times New Roman", Times, serif;
-    font-weight: 600;
+    font: 500 14px "Roboto", "Times New Roman", Times, serif;
     background: #f2f2f2;
     min-width: 1000px;
 }
@@ -26,9 +25,29 @@ a:hover {
     text-decoration: underline;
 }
 
-input[type="text"] {
+input[type="text"], input[type="email"], input[type="password"] {
     color: #000;
     font: 14px "Roboto", "Times New Roman", Times, serif;
+}
+
+.input-text {
+    padding: 0 12px;
+    height: 32px;
+    outline: none;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.input-text:focus {
+    border-color: #77bef2;
+    box-shadow: 0 0 5px #77bef2;
+}
+
+.horizontal-line {
+    height: 1px;
+    border: 0;
+    background: #000;
+    margin-bottom: 20px;
 }
 
 .button {
@@ -59,25 +78,18 @@ input[type="text"] {
     margin-bottom: 25px;
 }
 
-.form-container {
-    padding: 20px;
-    background: #ffffff;
+.container {
+    padding: 19px 20px 10px;
+    background: #fff;
     border: 1px solid #ccc;
     border-radius: 21px;
     box-shadow: 0 0 20px #999;
 }
 
-.form-container h1 {
+.container h1 {
     margin: -1px 0 8px;
     font-size: 30px;
     font-weight: 599;
-}
-
-.horizontal-line {
-    height: 1px;
-    border: 0;
-    background: #000;
-    margin-bottom: 20px;
 }
 
 .form-row {
@@ -89,12 +101,14 @@ input[type="text"] {
 
 .form-row label {
     display: block;
-    font-weight: 900;
+    align-self: start;
+    padding-top: 2px;
+    margin-bottom: 6px;
 }
 
-.form-row input {
+.input-text {
     padding-left: 12px;
-    height: 30px;
+    height: 32px;
     width: 321px;
     outline: none;
     border-radius: 4px;
@@ -102,27 +116,40 @@ input[type="text"] {
     font-size: 14px;
 }
 
-.form-row input:focus {
-    border-color: #77bef2;
-    box-shadow: 0 0 5px #77bef2;
-}
-
-.form-row-error label {
-    margin-top: -24px;
-}
-
-.form-row-error .form-row-input input {
-    color: #f00;
+.form-row label {
+    display: block;
+    align-self: start;
+    padding-top: 9px;
     margin-bottom: 6px;
+}
+
+.input-error {
     border-color: #f00;
 }
 
-.form-row-error .form-row-input input:focus {
+.input-error:focus {
     border-color: #ff2323;
-    box-shadow: 0 0 5px #ff0000;
+    box-shadow: 0 0 5px #f00;
 }
 
-.error-text {
+.form-row-input {
+    width: 337px
+}
+
+.form-row-input .input-text {
+    width: 311px;
+}
+
+.form-row-input .error-message {
+    margin-top: 0;
+    margin-bottom: 1px;
+}
+
+.form-row-input .input-error {
+    margin-bottom: 7px;
+}
+
+.error-message {
     color: #f00;
     margin-top: 0;
     margin-bottom: 2px;
@@ -133,7 +160,7 @@ input[type="text"] {
     justify-content: space-between;
     align-items: center;
     width: 337px;
-    margin: 0 0 4px 183px;
+    margin: 0 0 15px 183px;
 
 }
 

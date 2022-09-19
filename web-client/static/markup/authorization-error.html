@@ -10,30 +10,33 @@
 <body>
 <div class="wrapper">
     <header class="page-header">
-        <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
+        <a href="/" title="TeamDev"><img alt="TeamDev" height="37" src="images/logo.png"
+                                         width="200"></a>
     </header>
-    <main class="form-container">
+    <main class="container">
         <h1>Sign in to FileHub</h1>
         <hr class="horizontal-line">
         <form action="./authorization.html" method="post">
-            <div class="form-row form-row-error">
+            <div class="form-row">
                 <label for="email">Email</label>
                 <div class="form-row-input">
-                    <input id="email" name="email" placeholder="Email" type="email">
-                    <div class="error-text">Please include an '@' in the email address.</div>
+                    <input class="input-text input-error" id="email" name="email"
+                           placeholder="Email" type="email">
+                    <p class="error-message">Please include an '@' in the email address.</p>
                 </div>
             </div>
-            <div class="form-row form-row-error">
+            <div class="form-row">
                 <label for="password">Password</label>
                 <div class="form-row-input">
-                    <input class="error-input" id="password" name="password" placeholder="Password"
+                    <input class="input-text input-error" id="password" name="password"
+                           placeholder="Password"
                            type="password">
-                    <div class="error-text">Password can't be empty.</div>
+                    <p class="error-message">Password can't be empty.</p>
                 </div>
             </div>
             <div class="form-button-container">
                 <button class="button button-primary" title="Sign In">Sign In</button>
-                <a href="./registration.html">Don't have an account yet?</a>
+                <a href="./registration.html" title="Sign Up">Don't have an account yet?</a>
             </div>
         </form>
     </main>
