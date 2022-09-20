@@ -17,12 +17,12 @@ body {
 
 a {
     font-weight: 600;
-    color: #2a90d7;
+    color: #379eea;
     text-decoration: none;
 }
 
 a:hover {
-    color: #34689b;
+    color: #427ab0;
     text-decoration: underline;
 }
 
@@ -49,10 +49,15 @@ a:hover {
     border-color: #204d74;
 }
 
-.wrapper {
+.page-wrapper {
     max-width: 562px;
-    width: 94.5%;
+    width: 100%;
+    padding: 0 15px;
     margin: 0 auto;
+}
+
+.table-page-wrapper {
+    max-width: 100%;
 }
 
 .input-error {
@@ -88,6 +93,36 @@ a:hover {
     margin: 0 0 27px 0;
 }
 
+.authorized-user-panel {
+    display: flex;
+    align-self: end;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0 5px -3px 5px;
+}
+
+.authorized-user-panel li {
+    color: #999;
+    padding: 1px 8px 1px 0;
+    margin-right: 8px;
+    border-right: 1px solid #000;
+}
+
+.authorized-user-panel li:last-child {
+    padding-right: 0;
+    margin-right: 0;
+    border-right: none;
+}
+
+.breadcrumb {
+    margin: 3px 0 20px;
+    width: fit-content;
+}
+
+.tool-bar-buttons {
+    text-align: end;
+}
+
 .label-holder {
     padding-top: 2px;
     margin-bottom: 1px;
@@ -109,8 +144,13 @@ a:hover {
 
 @media screen and (min-width: 768px) {
 
-    .wrapper {
-        width: 562px;
+    .page-wrapper {
+        max-width: 562px;
+        width: auto;
+    }
+
+    .table-page-wrapper {
+        max-width: 752px;
     }
 
 }
@@ -118,13 +158,13 @@ a:hover {
 @media screen and (min-width: 992px) {
 
     .table-page-wrapper {
-        max-width: 942px;
+        max-width: 972px;
     }
 }
 
 @media screen and (min-width: 1200px) {
 
     .table-page-wrapper {
-        max-width: 1142px;
+        max-width: 1172px;
     }
 }
