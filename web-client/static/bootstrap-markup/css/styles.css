@@ -1,0 +1,118 @@
+/* Font Face */
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    src: local(''),
+    url('../fonts/roboto-regular.woff2') format('woff2')
+}
+
+body {
+    margin: 0;
+    color: #2f2f2f;
+    font: 500 14px "Roboto", "Times New Roman", Times, serif;
+    background: #f2f2f2;
+    min-width: 520px;
+}
+
+a {
+    color: #2a90d7;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #34689b;
+    text-decoration: underline;
+}
+
+.horizontal-line{
+    height: 1px;
+    border: 0;
+    background: #000;
+    margin: 0 0 20px;
+}
+
+.btn-primary {
+    border-color: #2e6da4;
+    background: #0085d3;
+    color: #fff;
+}
+
+.btn-primary:disabled {
+    background: #7ab0de;
+    border-color: #80a0c1;
+}
+
+.btn-primary:not([disabled]):hover {
+    background: #286090;
+    border-color: #204d74;
+}
+
+.wrapper{
+    max-width: 562px;
+    width: 94.5%;
+    margin: 0 auto;
+}
+
+.container{
+    width: auto;
+    padding: 20px 20px 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 21px;
+    box-shadow: 0 0 20px #999;
+    margin-bottom: 24px;
+}
+
+.container h1{
+    margin: 0 0 10px;
+    font-size: 30px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    padding: 31px 1px 1px;
+    margin:0 0 27px 0;
+}
+
+.form-page .form-group{
+}
+
+.label-holder{
+    padding-top: 2px;
+    margin-bottom: 1px;
+}
+
+.form-row-button{
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-row-button a{
+    margin-top: 10px;
+}
+
+@media screen and (min-width: 768px) {
+
+    .wrapper {
+        width: 562px;
+    }
+
+}
+
+@media screen and (min-width: 992px) {
+
+    .table-page-wrapper {
+        max-width: 942px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .table-page-wrapper {
+        max-width: 1142px;
+    }
+}
