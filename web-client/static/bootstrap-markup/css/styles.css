@@ -265,6 +265,16 @@ a:hover {
     max-width: 313px;
 }
 
+.name-edit-form .input-error{
+    margin-top: 3px;
+    margin-bottom: 6px;
+}
+
+.name-edit-form .help-block{
+    margin: 0 0 7px -13px;
+    font-size: 12px;
+}
+
 .page-footer {
     text-align: center;
     color: #999;
