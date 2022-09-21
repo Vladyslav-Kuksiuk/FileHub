@@ -56,16 +56,23 @@ a:hover {
     font-size: 20px;
 }
 
-.icon-button .glyphicon-download {
+.icon-button .glyphicon-download{
     color: #2e6da4;
+}
+.downloading {
+    color: #6ab0f3;
 }
 
 .icon-button:hover .glyphicon-download {
     color: #115281;
 }
 
-.icon-button .glyphicon-upload {
+.icon-button .glyphicon-upload{
     color: #26b926;
+}
+
+.uploading{
+    color: #6ece6e;
 }
 
 .icon-button:hover .glyphicon-upload {
@@ -78,6 +85,19 @@ a:hover {
 
 .icon-button:hover .glyphicon-remove-circle {
     color: #a81c12;
+}
+
+.glyphicon-repeat {
+    animation: 0.5s ease-in-out infinite running rotate;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .text-danger {
@@ -158,6 +178,10 @@ a:hover {
     width: fit-content;
 }
 
+.breadcrumb .glyphicon{
+    margin-top: -1px ;
+}
+
 .table-tool-bar {
     position: sticky;
     z-index: 2;
@@ -235,14 +259,17 @@ a:hover {
 }
 
 .data-table .cell-buttons {
-    visibility: hidden;
     white-space: nowrap;
     text-align: center;
     width: 85px;
     padding: 0 0 0 10px;
 }
 
-.data-table tr:hover .cell-buttons {
+.data-table .data-buttons-container {
+    visibility: hidden;
+}
+
+.data-table tr:hover .data-buttons-container {
     visibility: visible;
 }
 
@@ -261,7 +288,8 @@ a:hover {
 }
 
 .name-edit-form .form-control {
-    margin: -1px 0 0 -13px;
+    display: inline;
+    margin: -1px 5px 0 -13px;
     max-width: 313px;
 }
 
