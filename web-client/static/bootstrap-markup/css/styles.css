@@ -49,6 +49,37 @@ a:hover {
     border-color: #204d74;
 }
 
+.icon-button {
+    border: none;
+    background: none;
+    padding: 1px 0;
+    font-size: 20px;
+}
+
+.icon-button .glyphicon-download {
+    color: #2e6da4;
+}
+
+.icon-button:hover .glyphicon-download {
+    color: #115281;
+}
+
+.icon-button .glyphicon-upload {
+    color: #26b926;
+}
+
+.icon-button:hover .glyphicon-upload {
+    color: #097c09;
+}
+
+.icon-button .glyphicon-remove-circle {
+    color: #cb5c54;
+}
+
+.icon-button:hover .glyphicon-remove-circle {
+    color: #a81c12;
+}
+
 .text-danger {
     color: #f00;
 }
@@ -127,8 +158,92 @@ a:hover {
     width: fit-content;
 }
 
+.table-tool-bar{
+    position: sticky;
+    z-index: 2;
+    background: #fff;
+    top: 0;
+    margin: -10px 0 0;
+    padding: 10px 0 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-tool-bar > div{
+    padding: 0;
+}
+
+.search-line{
+    margin-right: 15px;
+}
+
 .tool-bar-buttons {
     text-align: end;
+}
+
+.table-wrapper {
+    min-height: 449px;
+}
+
+.data-table {
+    table-layout: fixed;
+    border-spacing: 0;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.table>tbody>tr>td{
+    padding: 10px 2px;
+    vertical-align: inherit;
+    line-height: normal;
+}
+
+.data-table tr:first-child td {
+    border-top: none;
+}
+
+.data-table .cell-arrow {
+    width: 26px;
+    text-align: end;
+}
+
+.data-table .cell-icon {
+    width: 41px;
+    text-align: end;
+    font-size: 20px;
+}
+
+.data-table .cell-name {
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    padding: 2px 23px 0;
+}
+
+.data-table .cell-type {
+    white-space: nowrap;
+    display: none;
+    width: 154px;
+    padding-top: 11px;
+}
+
+.data-table .cell-size {
+    white-space: nowrap;
+    display: none;
+    text-align: end;
+    width: 110px;
+    padding-top: 11px;
+}
+
+.data-table .cell-buttons {
+    visibility: hidden;
+    white-space: nowrap;
+    text-align: center;
+    width: 85px;
+    padding: 0 0 0 10px;
+}
+
+.data-table tr:hover .cell-buttons {
+    visibility: visible;
 }
 
 .label-holder {
@@ -145,6 +260,24 @@ a:hover {
     margin-top: 10px;
 }
 
+.page-footer {
+    text-align: center;
+    color: #999;
+}
+
+.social-icons{
+    margin-bottom: 12px;
+}
+
+.social-icons a:hover {
+    text-decoration: none;
+}
+
+.social-icons img {
+    width: 20px;
+    height: 20px;
+}
+
 @media screen and (min-width: 768px) {
 
     .page-wrapper {
@@ -156,12 +289,25 @@ a:hover {
         max-width: 752px;
     }
 
+    .table-wrapper {
+        height: 449px;
+        overflow-y: auto;
+    }
+
+    .data-table .cell-size {
+        display: table-cell;
+    }
+
 }
 
 @media screen and (min-width: 992px) {
 
     .table-page-wrapper {
         max-width: 972px;
+    }
+
+    .data-table .cell-type {
+        display: table-cell;
     }
 }
 
