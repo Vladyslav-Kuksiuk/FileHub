@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Hub</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper table-page-wrapper">
+    <header class="page-header">
+        <a href="/web-client/static"><img alt="TeamDev" height="37" src="images/logo.png"
+                                          title="TeamDev" width="200"></a>
+        <ul class="authorized-user-panel">
+            <li>
+                <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
+                <span>John Doe</span>
+            </li>
+            <li>
+                <a class="logout-button" title="Log Out" href="/">
+                    Log Out
+                    <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
+    </header>
+    <main class="container">
+        <ul class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Documents</li>
+        </ul>
+        <hr class="horizontal-line">
+        <div class="row table-tool-bar">
+            <div class="col-xs-8 col-sm-6">
+                <div class="input-group search-line">
+                    <input class="form-control" type="text" name="Search" id="search"
+                           placeholder="Enter entity name...">
+                    <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" title="Search">
+                                Search
+                            </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-6 tool-bar-buttons">
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-primary" title="Upload file">
+                        <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                    </button>
+                    <button type="button" class="btn btn-primary" title="Add folder">
+                        <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger" title="Remove folder">
+                        <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table class="table table-hover data-table">
+                <tr>
+                    <td class=" cell-arrow"><span
+                            aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+                    </td>
+                    <td class=" cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-folder-close"></span></td>
+                    <td class=" cell-name">
+                        <form action="/edit-name" class="name-edit-form">
+                            <input class="form-control" placeholder="Enter directory name"
+                                   type="text">
+                        </form>
+                    </td>
+                    <td class="cell-type">Folder</td>
+                    <td class="cell-size">—</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button">
+                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                            </button>
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" cell-arrow"></td>
+                    <td class=" cell-icon"><span aria-hidden="true"
+                                                 class="glyphicon glyphicon-book"></span>
+                    </td>
+                    <td class=" cell-name">
+                        <form action="/edit-name" class="name-edit-form">
+                            <input class="form-control" placeholder="Enter file name" type="text">
+                        </form>
+                    </td>
+                    <td class="cell-type">PDF Document</td>
+                    <td class="cell-size">100 KB</td>
+                    <td class="cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" cell-arrow"></td>
+                    <td class=" cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-list-alt"></span></td>
+                    <td class=" cell-name">
+                        <form action="/edit-name" class="name-edit-form">
+                            <input class="form-control" placeholder="Enter file name" type="text"
+                                   value="vacation_schedule.xlsx">
+                        </form>
+                    </td>
+                    <td class=" cell-type">Excel Workbook</td>
+                    <td class=" cell-size">5 KB</td>
+                    <td class=" cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" cell-arrow"></td>
+                    <td class=" cell-icon"><span
+                            aria-hidden="true"
+                            class="glyphicon glyphicon-picture"></span></td>
+                    <td class=" cell-name">selfie.jpg</td>
+                    <td class=" cell-type">JPEG image</td>
+                    <td class=" cell-size">4.1 MB</td>
+                    <td class=" cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" cell-arrow"></td>
+                    <td class=" cell-icon"><span aria-hidden="true"
+                                                 class="glyphicon glyphicon-film"></span>
+                    </td>
+                    <td class=" cell-name">summer_party.avi</td>
+                    <td class=" cell-type">AVI movie</td>
+                    <td class=" cell-size">1.2 GB</td>
+                    <td class=" cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" cell-arrow"></td>
+                    <td class=" cell-icon"><span aria-hidden="true"
+                                                 class="glyphicon glyphicon-music"></span>
+                    </td>
+                    <td class=" cell-name">hello.mp3</td>
+                    <td class=" cell-type">MP3 audio</td>
+                    <td class=" cell-size">12.5 MB</td>
+                    <td class=" cell-buttons">
+                        <div class="data-buttons-container">
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-download"></span>
+                            </button>
+                            <button class="icon-button">
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </main>
+    <footer class="page-footer">
+        <ul class="list-inline social-icons">
+            <li>
+                <a href="https://www.linkedin.com/company/teamdev-ltd-/"
+                   target="_blank" title="Linked In">
+                    <img alt="Linked In" src="images/icon-linkedin.png">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/TeamDev" target="_blank" title="Facebook">
+                    <img alt="Facebook" src="images/icon-facebook.png">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.instagram.com/teamdev_ltd/" target="_blank" title="Instagram">
+                    <img alt="Instagram" src="images/icon-instagram.png">
+                </a>
+            </li>
+        </ul>
+        <p class="copyright">
+            Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
+        </p>
+    </footer>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
