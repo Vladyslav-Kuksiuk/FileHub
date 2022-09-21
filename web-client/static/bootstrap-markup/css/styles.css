@@ -158,7 +158,7 @@ a:hover {
     width: fit-content;
 }
 
-.table-tool-bar{
+.table-tool-bar {
     position: sticky;
     z-index: 2;
     background: #fff;
@@ -168,11 +168,11 @@ a:hover {
     border-bottom: 1px solid #ddd;
 }
 
-.table-tool-bar > div{
+.table-tool-bar > div {
     padding: 0;
 }
 
-.search-line{
+.search-line {
     margin-right: 15px;
 }
 
@@ -191,7 +191,7 @@ a:hover {
     margin-bottom: 0;
 }
 
-.table>tbody>tr>td{
+.table > tbody > tr > td {
     padding: 10px 2px;
     vertical-align: inherit;
     line-height: normal;
@@ -260,7 +260,7 @@ a:hover {
     margin-top: 10px;
 }
 
-.name-edit-form .form-control{
+.name-edit-form .form-control {
     margin: -1px 0 0 -13px;
     max-width: 313px;
 }
@@ -270,7 +270,7 @@ a:hover {
     color: #999;
 }
 
-.social-icons{
+.social-icons {
     margin-bottom: 12px;
 }
 
