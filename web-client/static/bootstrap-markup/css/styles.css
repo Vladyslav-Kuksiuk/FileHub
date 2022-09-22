@@ -33,6 +33,11 @@ a:hover {
     margin: 0 0 20px;
 }
 
+.btn:active:focus,
+.btn:focus {
+    outline: none;
+}
+
 .btn-primary {
     border-color: #2e6da4;
     background: #0085d3;
@@ -174,12 +179,19 @@ a:hover {
     border-right: none;
 }
 
-.breadcrumb {
+.breadcrumb,
+.breadcrumb-info {
     margin: 3px 0 20px;
     width: fit-content;
 }
 
-.breadcrumb .glyphicon {
+.breadcrumb-info {
+    padding: 8px 15px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.breadcrumb-info .glyphicon {
     margin-top: -1px;
 }
 
@@ -215,6 +227,12 @@ a:hover {
     justify-content: center;
     color: #aaa;
     padding: 202px 0 0 2px;
+}
+
+.centered-in-table .glyphicon {
+    margin-top: -2px;
+    font-size: 20px;
+    color: #000;
 }
 
 .data-table {
