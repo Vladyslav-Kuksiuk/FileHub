@@ -56,9 +56,10 @@ a:hover {
     font-size: 20px;
 }
 
-.icon-button .glyphicon-download{
+.icon-button .glyphicon-download {
     color: #2e6da4;
 }
+
 .downloading {
     color: #6ab0f3;
 }
@@ -67,11 +68,11 @@ a:hover {
     color: #115281;
 }
 
-.icon-button .glyphicon-upload{
+.icon-button .glyphicon-upload {
     color: #26b926;
 }
 
-.uploading{
+.uploading {
     color: #6ece6e;
 }
 
@@ -178,8 +179,8 @@ a:hover {
     width: fit-content;
 }
 
-.breadcrumb .glyphicon{
-    margin-top: -1px ;
+.breadcrumb .glyphicon {
+    margin-top: -1px;
 }
 
 .table-tool-bar {
@@ -208,49 +209,58 @@ a:hover {
     min-height: 449px;
 }
 
+.centered-in-table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    padding: 202px 0 0 2px;
+}
+
 .data-table {
-    table-layout: fixed;
-    border-spacing: 0;
-    width: 100%;
     margin-bottom: 0;
+}
+
+.data-table .glyphicon {
+    margin-bottom: -1px;
 }
 
 .table > tbody > tr > td {
     padding: 10px 2px;
-    vertical-align: inherit;
+    vertical-align: middle;
     line-height: normal;
 }
 
-.data-table tr:first-child td {
+.table tr:first-child td {
     border-top: none;
 }
 
-.data-table .cell-arrow {
+.table .cell-arrow {
     width: 26px;
     text-align: end;
 }
 
-.data-table .cell-icon {
+.table .cell-icon {
     width: 41px;
     text-align: end;
     font-size: 20px;
 }
 
-.data-table .cell-name {
+.table .cell-name {
     white-space: nowrap;
     overflow-x: hidden;
     text-overflow: ellipsis;
     padding: 2px 23px 0;
 }
 
-.data-table .cell-type {
+.table .cell-type {
     white-space: nowrap;
     display: none;
     width: 154px;
     padding-top: 11px;
 }
 
-.data-table .cell-size {
+.table .cell-size {
     white-space: nowrap;
     display: none;
     text-align: end;
@@ -258,18 +268,18 @@ a:hover {
     padding-top: 11px;
 }
 
-.data-table .cell-buttons {
+.table .cell-buttons {
     white-space: nowrap;
     text-align: center;
-    width: 85px;
+    width: 86px;
     padding: 0 0 0 10px;
 }
 
-.data-table .data-buttons-container {
+.data-buttons-container {
     visibility: hidden;
 }
 
-.data-table tr:hover .data-buttons-container {
+.table tr:hover .data-buttons-container {
     visibility: visible;
 }
 
@@ -293,12 +303,12 @@ a:hover {
     max-width: 313px;
 }
 
-.name-edit-form .input-error{
+.name-edit-form .input-error {
     margin-top: 3px;
     margin-bottom: 6px;
 }
 
-.name-edit-form .help-block{
+.name-edit-form .help-block {
     margin: 0 0 7px -13px;
     font-size: 12px;
 }
@@ -337,7 +347,7 @@ a:hover {
         overflow-y: scroll;
     }
 
-    .data-table .cell-size {
+    .table .cell-size {
         display: table-cell;
     }
 
@@ -349,7 +359,7 @@ a:hover {
         max-width: 972px;
     }
 
-    .data-table .cell-type {
+    .table .cell-type {
         display: table-cell;
     }
 }
