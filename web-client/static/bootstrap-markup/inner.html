@@ -18,7 +18,7 @@
                 <span>John Doe</span>
             </li>
             <li>
-                <a class="logout-button" title="Log Out" href="/">
+                <a class="logout-button" href="/" title="Log Out">
                     Log Out
                     <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
                 </a>
@@ -34,25 +34,27 @@
         <div class="row table-tool-bar">
             <div class="col-xs-8 col-sm-6">
                 <div class="input-group search-line">
-                    <input class="form-control" type="text" name="Search" id="search"
-                           placeholder="Enter entity name...">
+                    <input class="form-control" id="search" name="Search" placeholder="Enter entity name..."
+                           type="text">
                     <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" title="Search">
+                            <button class="btn btn-primary" title="Search" type="button">
                                 Search
                             </button>
                     </span>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-6 tool-bar-buttons">
-                <div class="btn-group" role="group" aria-label="...">
-                    <button type="button" class="btn btn-primary" title="Upload file">
+                <div aria-label="..." class="btn-group" role="group">
+                    <button class="btn btn-primary" title="Upload file" type="button">
                         <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                     </button>
-                    <button type="button" class="btn btn-primary" title="Add folder">
+                    <button class="btn btn-primary" data-target="#modal-create-folder" data-toggle="modal"
+                            title="Add folder" type="button">
                         <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
                     </button>
-                    <button type="button" class="btn btn-danger" title="Remove folder">
-                        <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
+                    <button class="btn btn-danger" title="Remove folder" type="button">
+                        <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"
+                              data-target="#modal-delete" data-toggle="modal"></span>
                     </button>
                 </div>
             </div>
@@ -219,6 +221,104 @@
         </p>
     </footer>
 </div>
+
+<div class="modal fade" id="modal-create-folder" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                <h4 class="modal-title">Create New Directory</h4>
+            </div>
+            <div class="modal-body">
+                <input class="form-control input-error" placeholder="Enter directory name..."
+                       type="text">
+                <p class="help-block text-danger">No whitespaces allowed.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" title="Cancel" type="button">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" data-dismiss="modal" data-target="#modal-create-loading"
+                        data-toggle="modal" title="Create" type="button">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-create-loading" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                <h4 class="modal-title">Create New Directory</h4>
+            </div>
+            <div class="modal-body">
+                <input class="form-control" type="text" value="Music">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" title="Cancel" type="button">
+                    Cancel
+                </button>
+                <button class="btn btn-primary disabled" title="Create" type="button">
+                    <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-delete" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                <h4 class="modal-title">Delete File</h4>
+            </div>
+            <div class="modal-body">
+                <p class="modal-message">Are you sure you want to delete "name.ext" file?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" title="Cancel" type="button">
+                    Cancel
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" data-target="#modal-delete-loading"
+                        data-toggle="modal" title="Delete" type="button">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-delete-loading" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                <h4 class="modal-title">Delete File</h4>
+            </div>
+            <div class="modal-body">
+                <p class="modal-message">Are you sure you want to delete "name.ext" file?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" title="Cancel" type="button">
+                    Cancel
+                </button>
+                <button class="btn btn-danger disabled" title="Delete" type="button">
+                    <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script crossorigin="anonymous"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -33,6 +33,10 @@ a:hover {
     margin: 0 0 20px;
 }
 
+.btn {
+    padding: 7px 12px 5px;
+}
+
 .btn:active:focus,
 .btn:focus {
     outline: none;
@@ -134,6 +138,46 @@ a:hover {
     box-shadow: 0 0 5px #f00;
 }
 
+.modal {
+    background: rgba(0, 0, 0, 0.405);
+}
+
+.modal-dialog {
+    width: 480px;
+    margin-top: 31px;
+}
+
+.modal-content {
+    border-radius: 20px;
+}
+
+.modal-header {
+    border: none;
+    padding-bottom: 5px;
+}
+
+.modal-header .modal-title {
+    font-size: 24px;
+}
+
+.modal-body .modal-message {
+    padding: 0;
+    margin: 2px 0 1px;
+}
+
+.modal-body .help-block {
+    margin-bottom: 6px;
+}
+
+.modal-body .form-control {
+    margin-bottom: 5px;
+}
+
+.modal-footer {
+    border: none;
+    padding-top: 15px;
+}
+
 .container {
     width: auto;
     padding: 20px 20px 10px;
@@ -159,12 +203,12 @@ a:hover {
 }
 
 .authorized-user-panel,
-.user-panel-info{
+.user-panel-info {
     align-self: end;
     margin: 0 5px -3px 5px;
 }
 
-.authorized-user-panel{
+.authorized-user-panel {
     display: flex;
     justify-content: center;
     list-style-type: none;
@@ -240,7 +284,7 @@ a:hover {
     color: #000;
 }
 
-.centered-in-table .error-message .glyphicon-exclamation-sign{
+.centered-in-table .error-message .glyphicon-exclamation-sign {
     padding: 0 2px 20px 0;
 }
 

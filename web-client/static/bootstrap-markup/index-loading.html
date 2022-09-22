@@ -10,13 +10,14 @@
 <body>
 <div class="page-wrapper table-page-wrapper">
     <header class="page-header">
-        <a href="/web-client/static"><img alt="TeamDev" height="37" src="images/logo.png" title="TeamDev" width="200"></a>
+        <a href="/web-client/static"><img alt="TeamDev" height="37" src="images/logo.png"
+                                          title="TeamDev" width="200"></a>
         <ul class="authorized-user-panel">
             <li>
                 <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
             </li>
             <li>
-                <a class="logout-button" title="Log Out" href="/">
+                <a class="logout-button" href="/" title="Log Out">
                     Log Out
                     <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
                 </a>
@@ -31,10 +32,10 @@
         <div class="row table-tool-bar">
             <div class="col-xs-8 col-sm-6">
                 <div class="input-group search-line">
-                    <input class="form-control" type="text" name="Search" id="search"
-                           placeholder="Enter entity name...">
+                    <input class="form-control" id="search" name="Search" placeholder="Enter entity name..."
+                           type="text">
                     <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" title="Search">
+                            <button class="btn btn-primary" title="Search" type="button">
                                 <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
                                 Search
                             </button>
@@ -42,11 +43,11 @@
                 </div>
             </div>
             <div class="col-xs-4 col-sm-6 tool-bar-buttons">
-                <div class="btn-group" role="group" aria-label="...">
-                    <button type="button" class="disabled btn btn-primary" title="Upload file">
+                <div aria-label="..." class="btn-group" role="group">
+                    <button class="disabled btn btn-primary" title="Upload file" type="button">
                         <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
                     </button>
-                    <button type="button" class="btn btn-primary" title="Add folder">
+                    <button class="btn btn-primary" title="Add folder" type="button">
                         <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
@@ -66,7 +67,7 @@
                     <td class="cell-size">—</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button disabled class="icon-button uploading"
+                            <button class="icon-button uploading" disabled
                                     title="Upload file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
                             </button>
@@ -185,7 +186,7 @@
                     <td class="cell-size">100 KB</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
-                            <button disabled class="icon-button downloading" title="Download file.">
+                            <button class="icon-button downloading" disabled title="Download file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
                             </button>
                             <button class="icon-button" title="Delete">
@@ -330,6 +331,9 @@
         </p>
     </footer>
 </div>
+<script crossorigin="anonymous"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
