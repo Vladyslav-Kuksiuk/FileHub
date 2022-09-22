@@ -107,7 +107,7 @@ a:hover {
 }
 
 .text-danger {
-    color: #f00;
+    color: #f00 !important;
 }
 
 .help-block {
@@ -158,12 +158,16 @@ a:hover {
     margin: 0 0 27px 0;
 }
 
-.authorized-user-panel {
-    display: flex;
+.authorized-user-panel,
+.user-panel-info{
     align-self: end;
+    margin: 0 5px -3px 5px;
+}
+
+.authorized-user-panel{
+    display: flex;
     justify-content: center;
     list-style-type: none;
-    margin: 0 5px -3px 5px;
 }
 
 .authorized-user-panel li {
@@ -181,7 +185,7 @@ a:hover {
 
 .breadcrumb,
 .breadcrumb-info {
-    margin: 3px 0 20px;
+    margin: 2px 0 21px;
     width: fit-content;
 }
 
@@ -222,17 +226,22 @@ a:hover {
 }
 
 .centered-in-table {
-    display: flex;
+    width: fit-content;
     align-items: center;
     justify-content: center;
     color: #aaa;
+    margin: 0 auto;
     padding: 202px 0 0 2px;
 }
 
-.centered-in-table .glyphicon {
+.centered-in-table .glyphicon-repeat {
     margin-top: -2px;
     font-size: 20px;
     color: #000;
+}
+
+.centered-in-table .error-message .glyphicon-exclamation-sign{
+    padding: 0 2px 20px 0;
 }
 
 .data-table {
