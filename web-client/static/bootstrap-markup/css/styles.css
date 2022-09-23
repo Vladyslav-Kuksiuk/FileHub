@@ -271,8 +271,6 @@ a:hover {
 
 .centered-in-table {
     width: fit-content;
-    align-items: center;
-    justify-content: center;
     color: #aaa;
     margin: 0 auto;
     padding: 202px 0 0 2px;
@@ -288,12 +286,9 @@ a:hover {
     padding: 0 2px 20px 0;
 }
 
-.data-table {
+.table {
     margin-bottom: 0;
-}
-
-.data-table .glyphicon {
-    margin-bottom: -1px;
+    table-layout: fixed;
 }
 
 .table > tbody > tr > td {
