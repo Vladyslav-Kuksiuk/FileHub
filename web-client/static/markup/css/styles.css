@@ -440,7 +440,6 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .centered-in-table {
-    border-top: 1px solid #ccc;
     height: 93%;
     display: flex;
     align-items: center;
