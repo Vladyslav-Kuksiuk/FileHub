@@ -12,7 +12,7 @@
     <header class="page-header">
         <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
         <div class="authorized-user-panel">
-            <span class="error-text">
+            <span class="error-message">
                     <span class="glyphicon glyphicon-exclamation-sign"></span>
                     Can't load user data
                 </span>
@@ -21,7 +21,7 @@
     <main class="container table-container">
         <ul class="breadcrumb">
             <li>
-                    <span class="error-text">
+                    <span class="error-message">
                         <span class="glyphicon glyphicon-exclamation-sign"></span>
                         Can't load breadcrumb data
                     </span>
@@ -29,15 +29,13 @@
         </ul>
         <hr class="horizontal-line">
         <div class="table-tool-bar">
-            <form action="/search" method="post">
-                <div class="search-line">
-                    <input class="input-text" id="entity-search-input"
-                           name="entity-search"
-                           placeholder="Enter entity name..." type="text">
-                    <button class="button button-primary" title="Search">
-                        Search
-                    </button>
-                </div>
+            <form action="/search" class="search-line" method="post">
+                <input class="input-text" id="entity-search-input"
+                       name="entity-search"
+                       placeholder="Enter entity name..." type="text">
+                <button class="button button-primary" title="Search">
+                    Search
+                </button>
             </form>
             <div class="button-group">
                 <button class="button button-primary" title="Upload file."><span
@@ -52,7 +50,7 @@
         </div>
         <div class="table-wrapper">
             <div class="centered-in-table">
-                <span class="error-text">
+                <span class="error-message">
                     <span class="glyphicon glyphicon-exclamation-sign"></span>
                     Can't load directory data
                 </span>

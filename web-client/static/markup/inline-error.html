@@ -30,15 +30,13 @@
         </ul>
         <hr class="horizontal-line">
         <div class="table-tool-bar">
-            <form action="/search" method="post">
-                <div class="search-line">
-                    <input class="input-text" id="entity-search-input"
-                           name="entity-search"
-                           placeholder="Enter entity name..." type="text">
-                    <button class="button button-primary" title="Search">
-                        Search
-                    </button>
-                </div>
+            <form action="/search" class="search-line" method="post">
+                <input class="input-text" id="entity-search-input"
+                       name="entity-search"
+                       placeholder="Enter entity name..." type="text">
+                <button class="button button-primary" title="Search">
+                    Search
+                </button>
             </form>
             <div class="button-group">
                 <button class="button button-primary" title="Upload file."><span
@@ -132,7 +130,7 @@
                     <td class="cell-name">
                         <form action="/edit-name" class="name-edit-form">
                             <input class="input-text input-error" placeholder="Music" type="text">
-                            <div class="error-text">No whitespaces allowed.</div>
+                            <p class="error-message">No whitespaces allowed.</p>
                         </form>
                     </td>
                     <td class="cell-type">Folder</td>

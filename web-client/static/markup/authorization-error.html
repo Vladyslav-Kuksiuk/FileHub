@@ -10,7 +10,8 @@
 <body>
 <div class="wrapper">
     <header class="page-header">
-        <a href="/"><img alt="TeamDev" height="37" src="images/logo.png" width="200"></a>
+        <a href="/" title="TeamDev"><img alt="TeamDev" height="37" src="images/logo.png"
+                                         width="200"></a>
     </header>
     <main class="container">
         <h1>Sign in to FileHub</h1>
@@ -21,7 +22,7 @@
                 <div class="form-row-input">
                     <input class="input-text input-error" id="email" name="email"
                            placeholder="Email" type="email">
-                    <div class="error-text">Please include an '@' in the email address.</div>
+                    <p class="error-message">Please include an '@' in the email address.</p>
                 </div>
             </div>
             <div class="form-row">
@@ -30,12 +31,12 @@
                     <input class="input-text input-error" id="password" name="password"
                            placeholder="Password"
                            type="password">
-                    <div class="error-text">Password can't be empty.</div>
+                    <p class="error-message">Password can't be empty.</p>
                 </div>
             </div>
             <div class="form-button-container">
                 <button class="button button-primary" title="Sign In">Sign In</button>
-                <a href="./registration.html">Don't have an account yet?</a>
+                <a href="./registration.html" title="Sign Up">Don't have an account yet?</a>
             </div>
         </form>
     </main>

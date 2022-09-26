@@ -29,17 +29,15 @@
         </ul>
         <hr class="horizontal-line">
         <div class="table-tool-bar">
-            <form action="/search" method="post">
-                <div class="search-line search-line-loading">
-                    <input class="input-text" id="entity-search-input"
-                           name="entity-search"
-                           placeholder="Enter entity name..." type="text">
-                    <button class="button button-primary"
-                            title="Search">
-                        <span class="glyphicon glyphicon-repeat"></span>
-                        Search
-                    </button>
-                </div>
+            <form action="/search" class="search-line search-line-loading" method="post">
+                <input class="input-text" id="entity-search-input"
+                       name="entity-search"
+                       placeholder="Enter entity name..." type="text">
+                <button class="button button-primary"
+                        title="Search">
+                    <span class="glyphicon glyphicon-repeat"></span>
+                    Search
+                </button>
             </form>
             <div class="button-group">
                 <button class="button button-primary" disabled title="Upload file.">
