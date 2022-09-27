@@ -1,11 +1,10 @@
-const authorization_form = document.getElementById("authorization-form");
+const form = document.getElementsByTagName("form")[0];
 
-console.log(authorization_form)
-
-authorization_form.addEventListener("submit", (event) =>{
+form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    let inputs = authorization_form.getElementsByTagName("input");
+    const inputs = form.getElementsByTagName("input");
 
-    [...inputs].forEach(input => console.log(input.value));
+    [...inputs].forEach(input => console.log(input.id +': '+ input.value));
 })
+
