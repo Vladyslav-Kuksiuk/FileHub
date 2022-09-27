@@ -25,14 +25,12 @@ a:hover {
     text-decoration: underline;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
+.input-text {
     color: #000;
     font: 14px "Roboto", "Times New Roman", Times, serif;
-}
-
-.input-text {
     padding: 0 12px;
-    height: 32px;
+    height: 34px;
+    width: 321px;
     outline: none;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -41,6 +39,15 @@ input[type="text"], input[type="email"], input[type="password"] {
 .input-text:focus {
     border-color: #77bef2;
     box-shadow: 0 0 5px #77bef2;
+}
+
+.input-text.input-error {
+    border-color: #f00;
+}
+
+.input-error:focus {
+    border-color: #ff2323;
+    box-shadow: 0 0 5px #f00;
 }
 
 .horizontal-line {
@@ -66,16 +73,6 @@ input[type="text"], input[type="email"], input[type="password"] {
 .button-primary:hover {
     background: #286090;
     border-color: #204d74;
-}
-
-.input-text {
-    padding: 0 12px;
-    height: 32px;
-    width: 321px;
-    outline: none;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
 }
 
 .wrapper {
@@ -106,31 +103,14 @@ input[type="text"], input[type="email"], input[type="password"] {
 .form-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     margin-bottom: 15px;
 }
 
 .form-row label {
     display: block;
-    align-self: start;
-    padding-top: 2px;
-    margin-bottom: 6px;
-}
-
-.form-row label {
-    display: block;
-    align-self: start;
     padding-top: 9px;
     margin-bottom: 6px;
-}
-
-.input-error {
-    border-color: #f00;
-}
-
-.input-error:focus {
-    border-color: #ff2323;
-    box-shadow: 0 0 5px #f00;
 }
 
 .form-row-input {
@@ -138,34 +118,23 @@ input[type="text"], input[type="email"], input[type="password"] {
 }
 
 .form-row-input .input-text {
-    width: 311px;
-}
-
-.form-row-input .error-message {
-    margin-top: 0;
-    margin-bottom: 1px;
-}
-
-.form-row-input .input-error {
-    margin-bottom: 7px;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .error-message {
     color: #f00;
-    margin-top: 0;
-    margin-bottom: 2px;
+    margin: 7px 0 1px;
 }
 
-.form-button-container {
+.button-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 337px;
     margin: 0 0 15px 183px;
 
 }
 
-.form-button-container a {
+.button-row a {
     margin-top: 2px;
-    font-weight: 600;
 }
