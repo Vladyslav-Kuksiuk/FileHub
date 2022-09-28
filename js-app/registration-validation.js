@@ -13,15 +13,29 @@ const form = document.getElementsByTagName("form")[0];
 form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    if (
-        validateInputLength(EMAIL, EMAIL_MIN_LENGTH) &&
-        validateInputLength(PASSWORD, PASSWORD_MIN_LENGTH) &&
-        validateInputByRegex(EMAIL, EMAIL_VALIDATION_REGEX) &&
+    Promise.allSettled([
+        validateInputLength(EMAIL, EMAIL_MIN_LENGTH),
+        validateInputLength(PASSWORD, PASSWORD_MIN_LENGTH),
+        validateInputByRegex(EMAIL, EMAIL_VALIDATION_REGEX),
         validateSameInputsValue(PASSWORD, CONFIRM_PASSWORD)
-    ) {
-        console.log("Registration passed successfully!")
-    } else {
-        console.log("Registration failed :(")
-    }
+    ]).then((results) => {
+
+        let hasError = false;
+
+        results.forEach(result =>{
+            if(result.status === "fulfilled"){
+                console.log(result.value);
+            }else {
+                console.log(result.reason);
+                hasError = true;
+            }
+        })
+
+        if(hasError){
+            console.log("Registration failed!");
+        }else{
+            console.log("Registration passed successfully!");
+        }
+    })
 
 })
