@@ -1,10 +1,10 @@
-const form = document.getElementsByTagName("form")[0];
+const form = document.getElementsByTagName('form')[0];
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault();
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-    const inputs = form.getElementsByTagName("input");
-
-    [...inputs].forEach(input => console.log(input.id +': '+ input.value));
-})
+  const inputs = form.getElementsByTagName('input');
+  // eslint-disable-next-line no-console
+  [...inputs].forEach((input) => console.log(input.id + ': ' + input.value));
+});
 
