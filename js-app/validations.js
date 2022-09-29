@@ -1,3 +1,10 @@
+/**
+ * Validates the minimum length of an input value.
+ *
+ * @param {string} inputId
+ * @param {int} minLength
+ * @returns {Promise<string>}
+ */
 export function validateInputLength(inputId, minLength) {
   return new Promise((resolve, reject) => {
     const input = document.getElementById(inputId);
@@ -10,6 +17,13 @@ export function validateInputLength(inputId, minLength) {
   });
 }
 
+/**
+ * Validates an input value by matching regex pattern.
+ *
+ * @param {string} inputId
+ * @param {regex} regex
+ * @returns {Promise<string>}
+ */
 export function validateInputByRegex(inputId, regex) {
   return new Promise((resolve, reject) => {
     const input = document.getElementById(inputId);
@@ -22,6 +36,13 @@ export function validateInputByRegex(inputId, regex) {
   });
 }
 
+/**
+ * Validates the consistency of input values.
+ *
+ * @param {string} firstInputId
+ * @param {string} secondInputId
+ * @returns {Promise<string>}
+ */
 export function validateSameInputsValue(firstInputId, secondInputId) {
   return new Promise((resolve, reject) => {
     const firstInput = document.getElementById(firstInputId);
