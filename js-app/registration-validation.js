@@ -1,4 +1,4 @@
-import {validateInputByRegex, validateInputLength, validateSameInputsValue} from './validations.js';
+import {validateByRegex, validateLength, validateSameValues} from './validations.js';
 import {
   CONFIRM_PASSWORD,
   EMAIL,
@@ -13,26 +13,19 @@ const form = document.getElementsByTagName('form')[0];
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
+  const formData = new FormData(event.target);
+
   Promise.allSettled([
-    validateInputLength(EMAIL, EMAIL_MIN_LENGTH),
-    validateInputLength(PASSWORD, PASSWORD_MIN_LENGTH),
-    validateInputByRegex(EMAIL, EMAIL_VALIDATION_REGEX),
-    validateSameInputsValue(PASSWORD, CONFIRM_PASSWORD),
+    validateLength(formData.get(EMAIL), EMAIL_MIN_LENGTH),
+    validateLength(formData.get(PASSWORD), PASSWORD_MIN_LENGTH),
+    validateByRegex(formData.get(EMAIL), EMAIL_VALIDATION_REGEX),
+    validateSameValues(formData.get(PASSWORD), formData.get(CONFIRM_PASSWORD)),
   ]).then((results) => {
-    let hasError = false;
+    const errors = results.filter((result) => result.status === 'rejected');
 
-    results.forEach((result) => {
-      if (result.status === 'fulfilled') {
-        // eslint-disable-next-line no-console
-        console.log(result.value);
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(result.reason);
-        hasError = true;
-      }
-    });
-
-    if (hasError) {
+    if (errors.length > 0) {
+      // eslint-disable-next-line no-console
+      errors.forEach((error) => console.log(error.reason));
       // eslint-disable-next-line no-console
       console.log('Registration failed!');
     } else {

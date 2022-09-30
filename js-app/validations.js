@@ -1,37 +1,33 @@
 /**
- * Validates the minimum length of an input value.
+ * Validates the minimum length of value.
  *
- * @param {string} inputId
+ * @param {string} value
  * @param {int} minLength
  * @returns {Promise<string>}
  */
-export function validateInputLength(inputId, minLength) {
+export function validateLength(value, minLength) {
   return new Promise((resolve, reject) => {
-    const input = document.getElementById(inputId);
-
-    if (input.value.length >= minLength) {
-      resolve(`Input ${inputId} length validated successfully!`);
+    if (value.length >= minLength) {
+      resolve(`'${value}' length validated successfully!`);
     } else {
-      reject(new Error(`Input ${inputId} length validation failed!`));
+      reject(new Error(`'${value}' length validation failed!`));
     }
   });
 }
 
 /**
- * Validates an input value by matching regex pattern.
+ * Validates value by matching regex pattern.
  *
- * @param {string} inputId
- * @param {regex} regex
+ * @param {string} value
+ * @param {RegExp} regex
  * @returns {Promise<string>}
  */
-export function validateInputByRegex(inputId, regex) {
+export function validateByRegex(value, regex) {
   return new Promise((resolve, reject) => {
-    const input = document.getElementById(inputId);
-
-    if (input.value.match(regex)) {
-      resolve(`Input ${inputId} regex validated successfully!`);
+    if (value.match(regex)) {
+      resolve(`Input ${value} regex validated successfully!`);
     } else {
-      reject(new Error(`Input ${inputId} regex validation failed!`));
+      reject(new Error(`Input ${value} regex validation failed!`));
     }
   });
 }
@@ -39,19 +35,15 @@ export function validateInputByRegex(inputId, regex) {
 /**
  * Validates the consistency of input values.
  *
- * @param {string} firstInputId
- * @param {string} secondInputId
+ * @param {unknown} values
  * @returns {Promise<string>}
  */
-export function validateSameInputsValue(firstInputId, secondInputId) {
+export function validateSameValues(...values) {
   return new Promise((resolve, reject) => {
-    const firstInput = document.getElementById(firstInputId);
-    const secondInput = document.getElementById(secondInputId);
-
-    if (firstInput.value === secondInput.value) {
-      resolve(`Inputs '${firstInputId}' and '${secondInputId} are same!`);
+    if (values.some((e) => e !== values[0])) {
+      reject(new Error(`Values not match!`));
     } else {
-      reject(new Error(`Inputs '${firstInputId}' and '${secondInputId} not match!`));
+      resolve(`Values are same!`);
     }
   });
 }

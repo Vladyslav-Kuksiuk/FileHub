@@ -6,24 +6,17 @@ const form = document.getElementsByTagName('form')[0];
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
+  const formData = new FormData(event.target);
+
   Promise.allSettled([
-    validateInputLength(EMAIL, EMAIL_MIN_LENGTH),
-    validateInputLength(PASSWORD, PASSWORD_MIN_LENGTH),
+    validateInputLength(formData.get(EMAIL), EMAIL_MIN_LENGTH),
+    validateInputLength(formData.get(PASSWORD), PASSWORD_MIN_LENGTH),
   ]).then((results) => {
-    let hasError = false;
+    const errors = results.filter((result) => result.status === 'rejected');
 
-    results.forEach((result) => {
-      if (result.status === 'fulfilled') {
-        // eslint-disable-next-line no-console
-        console.log(result.value);
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(result.reason);
-        hasError = true;
-      }
-    });
-
-    if (hasError) {
+    if (errors.length > 0) {
+      // eslint-disable-next-line no-console
+      errors.forEach((error) => console.log(error.reason));
       // eslint-disable-next-line no-console
       console.log('Authorization failed!');
     } else {
