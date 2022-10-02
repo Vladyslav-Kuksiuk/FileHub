@@ -1,4 +1,4 @@
-import {validateByRegex, validateLength, validateSameValues} from './validations.js';
+import {validateByRegex, validateLength, validateSameValues} from './value-validations.js';
 import {
   CONFIRM_PASSWORD,
   EMAIL,
@@ -6,7 +6,7 @@ import {
   EMAIL_VALIDATION_REGEX,
   PASSWORD,
   PASSWORD_MIN_LENGTH,
-} from './constants.js';
+} from '../constants.js';
 
 const form = document.getElementsByTagName('form')[0];
 
