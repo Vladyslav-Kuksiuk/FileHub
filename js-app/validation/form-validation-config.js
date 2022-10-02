@@ -1,20 +1,43 @@
+/**
+ * Class to configure form inputs validation.
+ */
 export class FormValidationConfig {
   fieldValidators = [];
 
+  /**
+   * FormValidationConfig constructor
+   *
+   * @param {function}fieldValidators
+   */
   constructor(fieldValidators) {
     this.fieldValidators = fieldValidators;
   }
 
-  forEachField(func) {
+  /**
+   * Apply function to all fields.
+   *
+   * @param {function} applyingFunction
+   */
+  forEachField(applyingFunction) {
     this.fieldValidators.forEach((fieldValidators) => {
-      func(fieldValidators.fieldName, fieldValidators.validators);
+      applyingFunction(fieldValidators.fieldName, fieldValidators.validators);
     });
   }
 }
 
+/**
+ * Builder for {@link FormValidationConfig}.
+ */
 export class FormValidationConfigBuilder {
   fieldValidators = [];
 
+  /**
+   * Add validators to field.
+   *
+   * @param {string} fieldName
+   * @param {function} validators
+   * @returns {FormValidationConfigBuilder}
+   */
   addField(fieldName, ...validators) {
     this.fieldValidators.push({
       fieldName: fieldName,
@@ -23,6 +46,11 @@ export class FormValidationConfigBuilder {
     return this;
   }
 
+  /**
+   * Build FormValidationConfig.
+   *
+   * @returns {FormValidationConfig}
+   */
   build() {
     return new FormValidationConfig(this.fieldValidators);
   }

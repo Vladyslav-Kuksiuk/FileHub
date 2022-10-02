@@ -20,7 +20,7 @@ export function validateLength(minLength) {
  * Validates value by matching regex pattern.
  *
  * @param {RegExp} regex
- * @returns {function(*): Promise<unknown>}
+ * @returns {function(*): Promise<string>}
  */
 export function validateByRegex(regex) {
   return (value) => {
@@ -36,9 +36,8 @@ export function validateByRegex(regex) {
 
 /**
  * Validates the consistency of input values.
- *
- * @param {unknown} values
- * @returns {function(*): Promise<unknown>}
+ * @param {HTMLInputElement} input
+ * @returns {function(*): Promise<string>}
  */
 export function validateSameInput(input) {
   return (value) => {

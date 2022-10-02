@@ -1,7 +1,17 @@
 import {ValidationError} from './validation-error.js';
 import {ValidationErrorResult} from './validation-error-result.js';
 
+/**
+ * Service for form validation.
+ */
 export class ValidationService {
+  /**
+   * Validates form by given {@link FormValidationConfig}
+   *
+   * @param {FormData} formData
+   * @param {FormValidationConfig}config
+   * @returns {Promise<string>}
+   */
   validate(formData, config) {
     return new Promise((resolve, reject) => {
       const validationPromises = [];
