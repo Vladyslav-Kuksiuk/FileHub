@@ -1,27 +1,29 @@
-import {validateInputLength} from './validations.js';
-import {EMAIL, EMAIL_MIN_LENGTH, PASSWORD, PASSWORD_MIN_LENGTH} from './constants.js';
+import {
+  clearError,
+  FormValidationConfigBuilder,
+  renderError,
+  validateByRegex,
+  validateLength,
+  ValidationService,
+} from './validations.js';
+import {EMAIL, EMAIL_MIN_LENGTH, EMAIL_VALIDATION_REGEX, PASSWORD, PASSWORD_MIN_LENGTH} from './constants.js';
 
 const form = document.getElementsByTagName('form')[0];
+const authorizationValidationConfig = new FormValidationConfigBuilder()
+    .addField(EMAIL, validateLength(EMAIL_MIN_LENGTH), validateByRegex(EMAIL_VALIDATION_REGEX))
+    .addField(PASSWORD, validateLength(PASSWORD_MIN_LENGTH))
+    .build();
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  clearError()
 
   const formData = new FormData(event.target);
 
-  Promise.allSettled([
-    validateInputLength(formData.get(EMAIL), EMAIL_MIN_LENGTH),
-    validateInputLength(formData.get(PASSWORD), PASSWORD_MIN_LENGTH),
-  ]).then((results) => {
-    const errors = results.filter((result) => result.status === 'rejected');
-
-    if (errors.length > 0) {
-      // eslint-disable-next-line no-console
-      errors.forEach((error) => console.log(error.reason));
-      // eslint-disable-next-line no-console
-      console.log('Authorization failed!');
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('Authorization passed successfully!');
-    }
-  });
+  new ValidationService()
+      .validate(formData, authorizationValidationConfig)
+      .then(()=> console.log('success'))
+      .catch((result) =>{
+        result.errors.forEach((error)=> renderError(error.name, error.message));
+      });
 });
