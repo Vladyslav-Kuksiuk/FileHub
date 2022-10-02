@@ -1,4 +1,4 @@
-import {validateByRegex, validateLength, validateSameValues} from './value-validations.js';
+import {validateByRegex, validateLength, validateSameInput} from './value-validations.js';
 import {
   CONFIRM_PASSWORD,
   EMAIL,
@@ -7,30 +7,27 @@ import {
   PASSWORD,
   PASSWORD_MIN_LENGTH,
 } from '../constants.js';
+import {FormValidationConfigBuilder} from './form-validation-config.js';
+import {ValidationService} from './validation-service.js';
+import {clearError, renderError} from './render.js';
 
 const form = document.getElementsByTagName('form')[0];
+const registrationValidationConfig = new FormValidationConfigBuilder()
+    .addField(EMAIL, validateLength(EMAIL_MIN_LENGTH), validateByRegex(EMAIL_VALIDATION_REGEX))
+    .addField(PASSWORD, validateLength(PASSWORD_MIN_LENGTH))
+    .addField(CONFIRM_PASSWORD, validateSameInput(document.getElementsByName(PASSWORD)[0]))
+    .build();
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
+  clearError();
+
   const formData = new FormData(event.target);
 
-  Promise.allSettled([
-    validateLength(formData.get(EMAIL), EMAIL_MIN_LENGTH),
-    validateLength(formData.get(PASSWORD), PASSWORD_MIN_LENGTH),
-    validateByRegex(formData.get(EMAIL), EMAIL_VALIDATION_REGEX),
-    validateSameValues(formData.get(PASSWORD), formData.get(CONFIRM_PASSWORD)),
-  ]).then((results) => {
-    const errors = results.filter((result) => result.status === 'rejected');
-
-    if (errors.length > 0) {
-      // eslint-disable-next-line no-console
-      errors.forEach((error) => console.log(error.reason));
-      // eslint-disable-next-line no-console
-      console.log('Registration failed!');
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('Registration passed successfully!');
-    }
-  });
+  new ValidationService()
+      .validate(formData, registrationValidationConfig)
+      .catch((result) => {
+        result.errors.forEach((error) => renderError(error.name, error.message));
+      });
 });

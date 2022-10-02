@@ -9,31 +9,31 @@ export class ValidationService {
       config.forEachField((field, validators) => {
         const inputValue = formData.get(field);
         validators
-          .map((validator) => validator(inputValue))
-          .forEach((promise) => {
-            validationPromises.push({
-              promise: promise,
-              field: field,
+            .map((validator) => validator(inputValue))
+            .forEach((promise) => {
+              validationPromises.push({
+                promise: promise,
+                field: field,
+              });
             });
-          });
       });
 
       Promise.allSettled(validationPromises.map((fieldPromise) => fieldPromise.promise))
-        .then((results) => {
-          for (let i = 0; i < validationPromises.length; i++) {
-            validationPromises[i].result = results[i];
-          }
+          .then((results) => {
+            for (let i = 0; i < validationPromises.length; i++) {
+              validationPromises[i].result = results[i];
+            }
 
-          const errors = validationPromises
-            .filter((promise) => promise.result.status === 'rejected')
-            .map((promise) => new ValidationError(promise.field, promise.result.reason.message));
+            const errors = validationPromises
+                .filter((promise) => promise.result.status === 'rejected')
+                .map((promise) => new ValidationError(promise.field, promise.result.reason.message));
 
-          if (errors.length > 0) {
-            reject(new ValidationErrorResult(errors));
-          } else {
-            resolve();
-          }
-        });
+            if (errors.length > 0) {
+              reject(new ValidationErrorResult(errors));
+            } else {
+              resolve();
+            }
+          });
     });
   }
 }

@@ -12,7 +12,7 @@ export function clearError() {
   inputs.forEach((input) => {
     input.classList.remove('input-error');
     [...input.parentElement
-      .getElementsByClassName('help-block')]
-      .forEach((helpBlock) => helpBlock.remove());
+        .getElementsByClassName('help-block')]
+        .forEach((helpBlock) => helpBlock.remove());
   });
 }

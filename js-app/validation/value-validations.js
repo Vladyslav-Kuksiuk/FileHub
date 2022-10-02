@@ -38,14 +38,16 @@ export function validateByRegex(regex) {
  * Validates the consistency of input values.
  *
  * @param {unknown} values
- * @returns {Promise<string>}
+ * @returns {function(*): Promise<unknown>}
  */
-export function validateSameValues(...values) {
-  return new Promise((resolve, reject) => {
-    if (values.some((e) => e !== values[0])) {
-      reject(new Error(`Values not match!`));
-    } else {
-      resolve(`Values are same!`);
-    }
-  });
+export function validateSameInput(input) {
+  return (value) => {
+    return new Promise((resolve, reject) => {
+      if (value !== input.value) {
+        reject(new Error(`Values not match!`));
+      } else {
+        resolve(`Values are same!`);
+      }
+    });
+  };
 }
