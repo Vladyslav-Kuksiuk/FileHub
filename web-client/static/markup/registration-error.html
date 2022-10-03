@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Registration Error</title>
+    <link href="css/icons.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <header class="page-header">
+        <a href="/" title="TeamDev"><img alt="TeamDev" height="37" src="images/logo.png"
+                                         width="200"></a>
+    </header>
+    <main class="container">
+        <h1>Sign up to FileHub</h1>
+        <hr class="horizontal-line">
+        <form action="./registration.html" method="post">
+            <div class="form-row">
+                <label for="email">Email</label>
+                <div class="form-row-input">
+                    <input class="input-text input-error" id="email" name="email"
+                           placeholder="Email" type="email">
+                    <p class="error-message">Please include an '@' in the email address.</p>
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="password">Password</label>
+                <div class="form-row-input">
+                    <input class="input-text input-error" id="password" name="password"
+                           placeholder="Password"
+                           type="password">
+                    <p class="error-message">Password can't be empty.</p>
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="confirm-password">Confirm Password</label>
+                <div class="form-row-input">
+                    <input class="input-text input-error" id="confirm-password"
+                           name="confirm-password"
+                           placeholder="Confirm Password" type="password">
+                    <p class="error-message">Passwords don't match.</p>
+                </div>
+            </div>
+            <div class="button-row">
+                <button class="button button-primary" title="Sign Up">Sign Up</button>
+                <a href="./authorization.html" title="Already have an account?">Already have an account?</a>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

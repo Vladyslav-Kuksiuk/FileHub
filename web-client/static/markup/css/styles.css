@@ -6,3 +6,127 @@
     src: local(''),
     url('../fonts/roboto-regular.woff2') format('woff2')
 }
+
+body {
+    margin: 0;
+    color: #2f2f2f;
+    font: 500 14px "Roboto", "Times New Roman", Times, serif;
+    background: #f2f2f2;
+    min-width: 1000px;
+}
+
+a {
+    color: #2a90d7;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #34689b;
+    text-decoration: underline;
+}
+
+.input-text {
+    box-sizing: border-box;
+    color: #000;
+    font: 14px "Roboto", "Times New Roman", Times, serif;
+    padding: 0 12px;
+    height: 34px;
+    width: 100%;
+    outline: none;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.input-text:focus {
+    border-color: #77bef2;
+    box-shadow: 0 0 5px #77bef2;
+}
+
+.input-text.input-error {
+    border-color: #f00;
+}
+
+.input-error:focus {
+    border-color: #ff2323;
+    box-shadow: 0 0 5px #f00;
+}
+
+.horizontal-line {
+    height: 1px;
+    border: 0;
+    background: #000;
+    margin-bottom: 20px;
+}
+
+.button {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 9px 13px 8px 12px;
+}
+
+.button-primary {
+    border-color: #2e6da4;
+    background: #0085d3;
+    color: #fff;
+}
+
+.button-primary:hover {
+    background: #286090;
+    border-color: #204d74;
+}
+
+.wrapper {
+    width: 562px;
+    margin: 0 auto;
+}
+
+.page-header {
+    padding: 31px 0 0 1px;
+    margin-bottom: 25px;
+}
+
+.container {
+    padding: 19px 20px 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 21px;
+    box-shadow: 0 0 20px #999;
+}
+
+.container h1 {
+    margin: -1px 0 8px;
+    font-size: 30px;
+    font-weight: 599;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    margin-top: 9px;
+    max-width: 170px;
+}
+
+.form-row-input {
+    width: 337px
+}
+
+.error-message {
+    color: #f00;
+    margin: 7px 0 1px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 15px 183px;
+}
+
+.button-row a {
+    margin-top: 2px;
+}
