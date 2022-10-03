@@ -2,15 +2,16 @@
  * Validates the minimum length of value.
  *
  * @param {int} minLength
+ * @param {string} errorMessage
  * @returns {function(*): Promise<string>}
  */
-export function validateLength(minLength) {
+export function validateLength(minLength, errorMessage) {
   return (value) => {
     return new Promise((resolve, reject) => {
       if (value.length >= minLength) {
-        resolve(`Length validated successfully!`);
+        resolve();
       } else {
-        reject(new Error(`Length validation failed!`));
+        reject(new Error(errorMessage));
       }
     });
   };
@@ -20,15 +21,16 @@ export function validateLength(minLength) {
  * Validates value by matching regex pattern.
  *
  * @param {RegExp} regex
+ * @param {string} errorMessage
  * @returns {function(*): Promise<string>}
  */
-export function validateByRegex(regex) {
+export function validateByRegex(regex, errorMessage) {
   return (value) => {
     return new Promise((resolve, reject) => {
       if (value.match(regex)) {
-        resolve(`Regex validated successfully!`);
+        resolve();
       } else {
-        reject(new Error(`Regex validation failed!`));
+        reject(new Error(errorMessage));
       }
     });
   };
@@ -36,16 +38,17 @@ export function validateByRegex(regex) {
 
 /**
  * Validates the consistency of input values.
- * @param {HTMLInputElement} input
+ * @param {any} referencedValue
+ * @param {string} errorMessage
  * @returns {function(*): Promise<string>}
  */
-export function validateSameInput(input) {
+export function validateSameInput(referencedValue, errorMessage) {
   return (value) => {
     return new Promise((resolve, reject) => {
-      if (value !== input.value) {
-        reject(new Error(`Values not match!`));
+      if (value === referencedValue) {
+        resolve();
       } else {
-        resolve(`Values are same!`);
+        reject(new Error(errorMessage));
       }
     });
   };

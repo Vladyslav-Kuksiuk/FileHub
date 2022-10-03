@@ -8,13 +8,32 @@ import {
   PASSWORD_MIN_LENGTH,
 } from '../constants.js';
 import {FormValidationConfigBuilder} from './form-validation-config.js';
-import {formOnsubmitValidation} from './form-onsubmit-validation.js';
+import {FormValidator} from './form-validator.js';
+
+/**
+ * Class to add configured validation on registration form.
+ */
+class RegistrationValidator extends FormValidator {
+  /**
+   *  Creates {@link FormValidationConfig} for registration form.
+   *
+   * @param {FormData} formData
+   * @returns {FormValidationConfig}
+   */
+  createValidationConfig(formData) {
+    return new FormValidationConfigBuilder()
+        .addField(EMAIL,
+            validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`),
+            validateByRegex(EMAIL_VALIDATION_REGEX, 'Prohibited characters used.'))
+        .addField(PASSWORD,
+            validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
+        .addField(CONFIRM_PASSWORD,
+            validateSameInput(formData.get(PASSWORD), 'Passwords don\'t match.'))
+        .build();
+  }
+}
 
 const form = document.getElementsByTagName('form')[0];
-const registrationValidationConfig = new FormValidationConfigBuilder()
-    .addField(EMAIL, validateLength(EMAIL_MIN_LENGTH), validateByRegex(EMAIL_VALIDATION_REGEX))
-    .addField(PASSWORD, validateLength(PASSWORD_MIN_LENGTH))
-    .addField(CONFIRM_PASSWORD, validateSameInput(document.getElementsByName(PASSWORD)[0]))
-    .build();
+const formValidator = new RegistrationValidator();
 
-formOnsubmitValidation(form, registrationValidationConfig);
+formValidator.addValidationToForm(form);
