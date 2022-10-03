@@ -26,11 +26,12 @@ a:hover {
 }
 
 .input-text {
+    box-sizing: border-box;
     color: #000;
     font: 14px "Roboto", "Times New Roman", Times, serif;
     padding: 0 12px;
     height: 34px;
-    width: 321px;
+    width: 100%;
     outline: none;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -81,8 +82,7 @@ a:hover {
 }
 
 .page-header {
-    padding-left: 1px;
-    padding-top: 31px;
+    padding: 31px 0 0 1px;
     margin-bottom: 25px;
 }
 
@@ -103,23 +103,16 @@ a:hover {
 .form-row {
     display: flex;
     justify-content: space-between;
-    align-items: start;
     margin-bottom: 15px;
 }
 
 .form-row label {
-    display: block;
-    padding-top: 9px;
-    margin-bottom: 6px;
+    margin-top: 9px;
+    max-width: 170px;
 }
 
 .form-row-input {
     width: 337px
-}
-
-.form-row-input .input-text {
-    box-sizing: border-box;
-    width: 100%;
 }
 
 .error-message {
@@ -132,7 +125,6 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 15px 183px;
-
 }
 
 .button-row a {
