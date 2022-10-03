@@ -6,7 +6,6 @@ export class ValidationError {
   message;
 
   /**
-   * ValidationError constructor
    * @param {string} name
    * @param {string} message
    */

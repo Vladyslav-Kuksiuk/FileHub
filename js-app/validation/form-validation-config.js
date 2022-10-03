@@ -2,12 +2,10 @@
  * Class to configure form inputs validation.
  */
 export class FormValidationConfig {
-  fieldValidators = [];
+  fieldValidators;
 
   /**
-   * FormValidationConfig constructor
-   *
-   * @param {function}fieldValidators
+   * @param {*[]}fieldValidators
    */
   constructor(fieldValidators) {
     this.fieldValidators = fieldValidators;
@@ -29,17 +27,17 @@ export class FormValidationConfig {
  * Builder for {@link FormValidationConfig}.
  */
 export class FormValidationConfigBuilder {
-  fieldValidators = [];
+  #fieldValidators = [];
 
   /**
    * Add validators to field.
    *
    * @param {string} fieldName
-   * @param {function} validators
+   * @param {...function} validators
    * @returns {FormValidationConfigBuilder}
    */
   addField(fieldName, ...validators) {
-    this.fieldValidators.push({
+    this.#fieldValidators.push({
       fieldName: fieldName,
       validators: validators,
     });
@@ -52,6 +50,6 @@ export class FormValidationConfigBuilder {
    * @returns {FormValidationConfig}
    */
   build() {
-    return new FormValidationConfig(this.fieldValidators);
+    return new FormValidationConfig(this.#fieldValidators);
   }
 }

@@ -6,44 +6,29 @@ import {ValidationErrorResult} from './validation-error-result.js';
  */
 export class ValidationService {
   /**
-   * Validates form by given {@link FormValidationConfig}
-   *
    * @param {FormData} formData
-   * @param {FormValidationConfig}config
-   * @returns {Promise<string>}
+   * @param {FormValidationConfig} config
+   * @returns {Promise<void>}
    */
-  validate(formData, config) {
-    return new Promise((resolve, reject) => {
-      const validationPromises = [];
+  async validate(formData, config) {
+    const validationErrors = [];
 
-      config.forEachField((field, validators) => {
-        const inputValue = formData.get(field);
-        validators
-            .map((validator) => validator(inputValue))
-            .forEach((promise) => {
-              validationPromises.push({
-                promise: promise,
-                field: field,
-              });
-            });
-      });
+    for (let i = 0; i < config.fieldValidators.length; i++) {
+      const {fieldName, validators} = config.fieldValidators[i];
 
-      Promise.allSettled(validationPromises.map((fieldPromise) => fieldPromise.promise))
-          .then((results) => {
-            for (let i = 0; i < validationPromises.length; i++) {
-              validationPromises[i].result = results[i];
-            }
+      const value = formData.get(fieldName);
 
-            const errors = validationPromises
-                .filter((promise) => promise.result.status === 'rejected')
-                .map((promise) => new ValidationError(promise.field, promise.result.reason.message));
+      for (let j = 0; j < validators.length; j++) {
+        try {
+          await validators[j](value);
+        } catch (error) {
+          validationErrors.push(new ValidationError(fieldName, error.message));
+        }
+      }
+    }
 
-            if (errors.length > 0) {
-              reject(new ValidationErrorResult(errors));
-            } else {
-              resolve();
-            }
-          });
-    });
+    if (validationErrors.length) {
+      throw new ValidationErrorResult(validationErrors);
+    }
   }
 }
