@@ -24,7 +24,7 @@ export function validateLength(minLength, errorMessage) {
  * @param {string} errorMessage
  * @returns {function(*): Promise<string>}
  */
-export function validateByRegex(regex, errorMessage) {
+export function validateByRegexp(regex, errorMessage) {
   return (value) => {
     return new Promise((resolve, reject) => {
       if (value.match(regex)) {
@@ -42,7 +42,7 @@ export function validateByRegex(regex, errorMessage) {
  * @param {string} errorMessage
  * @returns {function(*): Promise<string>}
  */
-export function validateSameInput(referencedValue, errorMessage) {
+export function validateSameValue(referencedValue, errorMessage) {
   return (value) => {
     return new Promise((resolve, reject) => {
       if (value === referencedValue) {

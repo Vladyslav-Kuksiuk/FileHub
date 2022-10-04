@@ -1,4 +1,4 @@
-import {validateByRegex, validateLength, validateSameInput} from './value-validations.js';
+import {validateByRegexp, validateLength, validateSameValue} from './value-validations.js';
 import {
   CONFIRM_PASSWORD,
   EMAIL,
@@ -24,11 +24,11 @@ class RegistrationValidator extends FormValidator {
     return new FormValidationConfigBuilder()
         .addField(EMAIL,
             validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`),
-            validateByRegex(EMAIL_VALIDATION_REGEX, 'Allowed only a-Z and +.-_@ .'))
+            validateByRegexp(EMAIL_VALIDATION_REGEX, 'Allowed only a-Z and +.-_@ .'))
         .addField(PASSWORD,
             validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
         .addField(CONFIRM_PASSWORD,
-            validateSameInput(formData.get(PASSWORD), 'Passwords don\'t match.'))
+            validateSameValue(formData.get(PASSWORD), 'Passwords don\'t match.'))
         .build();
   }
 }
