@@ -24,7 +24,7 @@ class RegistrationValidator extends FormValidator {
     return new FormValidationConfigBuilder()
         .addField(EMAIL,
             validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`),
-            validateByRegex(EMAIL_VALIDATION_REGEX, 'Prohibited characters used.'))
+            validateByRegex(EMAIL_VALIDATION_REGEX, 'Allowed only a-Z and +.-_@ .'))
         .addField(PASSWORD,
             validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
         .addField(CONFIRM_PASSWORD,

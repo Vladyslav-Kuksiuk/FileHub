@@ -1,7 +1,7 @@
 /**
  * Input validation error holder.
  */
-export class ValidationError {
+export class ValidationError extends Error{
   name;
   message;
 
@@ -10,6 +10,7 @@ export class ValidationError {
    * @param {string} message
    */
   constructor(name, message) {
+    super();
     this.name = name;
     this.message = message;
   }
