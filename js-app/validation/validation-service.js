@@ -11,20 +11,19 @@ export class ValidationService {
    * @returns {Promise<void>}
    */
   async validate(formData, config) {
-
     const validationPromises = config.fieldValidators.map(({fieldName, validators}) =>{
       const value = formData.get(fieldName);
-      return validators.map(validator => {
+      return validators.map((validator) => {
         return validator(value)
-          .catch(error => {
-            throw new ValidationError(fieldName, error.message)
-          })
-      })
+            .catch((error) => {
+              throw new ValidationError(fieldName, error.message);
+            });
+      });
     }).flat();
 
     const validationErrors = (await Promise.allSettled(validationPromises))
-      .filter(result => result.status === 'rejected')
-      .map(error => error.reason);
+        .filter((result) => result.status === 'rejected')
+        .map((error) => error.reason);
 
     if (validationErrors.length) {
       throw new ValidationErrorResult(validationErrors);

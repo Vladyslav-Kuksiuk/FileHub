@@ -10,17 +10,6 @@ export class FormValidationConfig {
   constructor(fieldValidators) {
     this.fieldValidators = fieldValidators;
   }
-
-  /**
-   * Apply function to all fields.
-   *
-   * @param {function} applyingFunction
-   */
-  forEachField(applyingFunction) {
-    this.fieldValidators.forEach((fieldValidators) => {
-      applyingFunction(fieldValidators.fieldName, fieldValidators.validators);
-    });
-  }
 }
 
 /**

@@ -1,7 +1,7 @@
 /**
  * Input validation error holder.
  */
-export class ValidationError extends Error{
+export class ValidationError extends Error {
   name;
   message;
 

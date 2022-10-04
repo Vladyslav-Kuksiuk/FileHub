@@ -9,6 +9,9 @@ module.exports = {
     'ecmaVersion': 'latest',
     'sourceType': 'module',
   },
+  'plugins': [
+    'eslint-plugin-qunit',
+  ],
   'rules': {
     'valid-jsdoc': ['error', {
       requireParamDescription: false,
