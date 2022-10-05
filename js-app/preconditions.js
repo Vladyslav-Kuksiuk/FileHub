@@ -15,18 +15,6 @@ export class Preconditions {
   }
 
   /**
-   * Checks if an object is an instance of a class.
-   *
-   * @param {Object} object
-   * @param {Class} clazz
-   */
-  static checkClassInstance(object, clazz) {
-    if (!object instanceof clazz) {
-      throw new Error(`Illegal argument, expected: ${clazz}.`);
-    }
-  }
-
-  /**
    *  Checks if the state is true.
    *
    * @param {boolean} state

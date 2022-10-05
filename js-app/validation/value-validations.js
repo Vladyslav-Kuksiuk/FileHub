@@ -1,3 +1,5 @@
+import {Preconditions} from '../preconditions.js';
+
 /**
  * Validates the minimum length of value.
  *
@@ -6,7 +8,13 @@
  * @returns {function(*): Promise<string>}
  */
 export function validateLength(minLength, errorMessage) {
+  Preconditions.checkState(Number.isInteger(minLength));
+  Preconditions.checkState(minLength >= 0);
+  Preconditions.checkType(errorMessage, 'string');
+
   return (value) => {
+    Preconditions.checkType(value, 'string');
+
     return new Promise((resolve, reject) => {
       if (value.length >= minLength) {
         resolve();
@@ -25,7 +33,12 @@ export function validateLength(minLength, errorMessage) {
  * @returns {function(*): Promise<string>}
  */
 export function validateByRegexp(regex, errorMessage) {
+  Preconditions.checkType(errorMessage, 'string');
+  Preconditions.checkState(regex instanceof RegExp);
+
   return (value) => {
+    Preconditions.checkType(value, 'string');
+
     return new Promise((resolve, reject) => {
       if (value.match(regex)) {
         resolve();
@@ -43,6 +56,8 @@ export function validateByRegexp(regex, errorMessage) {
  * @returns {function(*): Promise<string>}
  */
 export function validateSameValue(referencedValue, errorMessage) {
+  Preconditions.checkType(errorMessage, 'string');
+
   return (value) => {
     return new Promise((resolve, reject) => {
       if (value === referencedValue) {

@@ -19,7 +19,7 @@ class AuthorizationValidation extends FormValidator {
         .addField(EMAIL,
             validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`))
         .addField(PASSWORD,
-            validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD} symbols.`))
+            validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
         .build();
   }
 }
