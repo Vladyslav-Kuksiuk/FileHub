@@ -7,7 +7,7 @@ import {FormValidator} from './form-validator.js';
 /**
  * Class to add configured validation on authorization form.
  */
-class AuthorizationValidation extends FormValidator {
+export class AuthorizationValidator extends FormValidator {
   /**
    *  Creates {@link FormValidationConfig} for authorization form.
    *
@@ -23,8 +23,3 @@ class AuthorizationValidation extends FormValidator {
         .build();
   }
 }
-
-const form = document.getElementsByTagName('form')[0];
-const formValidator = new AuthorizationValidation();
-
-formValidator.addValidationToForm(form);

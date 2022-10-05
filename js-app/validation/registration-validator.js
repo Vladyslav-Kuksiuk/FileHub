@@ -13,7 +13,7 @@ import {FormValidator} from './form-validator.js';
 /**
  * Class to add configured validation on registration form.
  */
-class RegistrationValidator extends FormValidator {
+export class RegistrationValidator extends FormValidator {
   /**
    *  Creates {@link FormValidationConfig} for registration form.
    *
@@ -32,8 +32,3 @@ class RegistrationValidator extends FormValidator {
         .build();
   }
 }
-
-const form = document.getElementsByTagName('form')[0];
-const formValidator = new RegistrationValidator();
-
-formValidator.addValidationToForm(form);
