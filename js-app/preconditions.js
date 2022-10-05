@@ -10,7 +10,7 @@ export class Preconditions {
    */
   static checkType(value, type) {
     if (typeof value !== type) {
-      throw new Error(`Illegal argument, expected: ${type}, provided: ${typeof value}.`);
+      throw new Error(`Illegal argument, expected: '${type}'.`);
     }
   }
 
@@ -21,7 +21,7 @@ export class Preconditions {
    */
   static checkState(state) {
     if (typeof state !== 'boolean') {
-      throw new Error(`Illegal argument, expected: 'boolean', provided: ${typeof state}.`);
+      throw new Error(`Illegal argument, expected: 'boolean'.`);
     }
     if (!state) {
       throw new Error('Illegal state.');

@@ -34,4 +34,13 @@ export class FormValidator {
           });
     });
   }
+
+  /**
+   * @param {FormData} formData
+   * @abstract
+   * @returns {FormValidationConfig}
+   */
+  createValidationConfig(formData) {
+    throw new Error('Method of Abstract Class cannot be called');
+  }
 }
