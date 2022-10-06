@@ -1,5 +1,5 @@
-import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations.js';
-import {EMAIL_VALIDATION_REGEX} from '../../constants.js';
+import {validateByRegexp, validateLength, validateSameValue} from '../../src/validation/value-validations.js';
+import {EMAIL_VALIDATION_REGEX} from '../../src/constants.js';
 
 const {module, test} = QUnit;
 

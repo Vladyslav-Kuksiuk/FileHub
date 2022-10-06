@@ -1,3 +1,3 @@
 import './validation/value-validations.js';
-import './validation/authorization-validation.js';
-import './validation/registration-validation.js';
+import './authorization/authorization-validation.js';
+import './registration/registration-validation.js';

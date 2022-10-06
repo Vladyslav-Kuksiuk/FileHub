@@ -1,6 +1,6 @@
-import {FormValidationTester} from './form-validation-tester.js';
-import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../constants.js';
-import {RegistrationValidator} from '../../validation/registration-validator.js';
+import {FormValidationTester} from '../validation/form-validation-tester.js';
+import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../src/constants.js';
+import {RegistrationValidator} from '../../src/registration/registration-validator.js';
 
 const emailLengthErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
 const emailRegexpErrorMessage = 'Allowed only a-Z and +.-_@ .';

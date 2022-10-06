@@ -1,4 +1,4 @@
-import {validateByRegexp, validateLength, validateSameValue} from './value-validations.js';
+import {validateByRegexp, validateLength, validateSameValue} from '../validation/value-validations.js';
 import {
   CONFIRM_PASSWORD,
   EMAIL,
@@ -7,8 +7,8 @@ import {
   PASSWORD,
   PASSWORD_MIN_LENGTH,
 } from '../constants.js';
-import {FormValidationConfigBuilder} from './form-validation-config.js';
-import {FormValidator} from './form-validator.js';
+import {FormValidationConfigBuilder} from '../validation/form-validation-config.js';
+import {FormValidator} from '../validation/form-validator.js';
 
 /**
  * Class to add configured validation on registration form.

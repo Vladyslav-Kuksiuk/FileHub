@@ -1,6 +1,6 @@
-import {FormValidationTester} from './form-validation-tester.js';
-import {AuthorizationValidator} from '../../validation/authorization-validator.js';
-import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../constants.js';
+import {FormValidationTester} from '../validation/form-validation-tester.js';
+import {AuthorizationValidator} from '../../src/authorization/authorization-validator.js';
+import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../src/constants.js';
 
 const emailLengthErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
 const passwordLengthErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
