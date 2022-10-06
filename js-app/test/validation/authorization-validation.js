@@ -5,12 +5,12 @@ import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../constants.js';
 const {module, test} = QUnit;
 
 module('validateAuthorization', (hooks) => {
-  const emailErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
-  const passwordErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
+  const emailLengthErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
+  const passwordLengthErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 
   let form;
 
-  hooks.before(()=>{
+  hooks.beforeEach(()=>{
     const fixture = document.getElementById('qunit-fixture');
 
     fixture.innerHTML = `
@@ -45,55 +45,37 @@ module('validateAuthorization', (hooks) => {
     new AuthorizationValidator().addValidationToForm(form);
   });
 
-  [['ema', 'pass'],
-    ['http', '1cq']]
-      .forEach(([emailValue, passwordValue]) =>{
-        test(`Email: ${emailValue}, Password: ${passwordValue}`, function(assert) {
-          assert.expect(2);
+  [
+    ['email', 'password',
+      []],
+
+    ['1', 'password',
+      [emailLengthErrorMessage]],
+
+    ['1%', 'pass',
+      [emailLengthErrorMessage, passwordLengthErrorMessage]],
+
+    ['email', 'pass',
+      [passwordLengthErrorMessage]],
+  ]
+      .forEach(([email, pass, errorMessages])=>{
+        test(`Email: ${email}, Password:  ${pass}`, async function(assert) {
+          assert.expect(errorMessages.length+1);
           const done = assert.async();
 
-          const emailInput = form.querySelector('input#email');
-          emailInput.value = emailValue;
+          form.querySelector('input#email').value = email;
+          form.querySelector('input#password').value = pass;
 
-          const passwordInput = form.querySelector('input#password');
-          passwordInput.value = passwordValue;
+          form.querySelector('button').click();
 
-          const button = form.querySelector('button');
-          button.click();
-
-          setTimeout(()=>{
+          setTimeout(() => {
             const errors = [...form.querySelectorAll('.help-block')];
+            assert.strictEqual(errors.length, errorMessages.length, 'Should have same amount of errors');
 
-            assert.strictEqual(errors[0].innerText,
-                emailErrorMessage,
-                `Should show error 'Length must be at least ${EMAIL_MIN_LENGTH} symbols.'`);
-            assert.strictEqual(errors[1].innerText,
-                passwordErrorMessage,
-                `Should show error 'Length must be at least ${PASSWORD_MIN_LENGTH} symbols.'`);
-
-            done();
-          });
-        });
-      });
-
-  [['email', 'password'],
-    ['Vladyslav', 'strong-password']]
-      .forEach(([emailValue, passwordValue]) =>{
-        test(`Email: ${emailValue}, Password: ${passwordValue}`, async function(assert) {
-          assert.expect(1);
-          const done = assert.async();
-
-          const emailInput = form.querySelector('input#email');
-          emailInput.value = emailValue;
-
-          const passwordInput = form.querySelector('input#password');
-          passwordInput.value = passwordValue;
-
-          const button = form.querySelector('button');
-          button.click();
-          setTimeout(()=>{
-            const errors = [...form.querySelectorAll('.help-block')];
-            assert.strictEqual(errors.length, 0, 'Should pass without errors.');
+            for (let i=0; i < errorMessages.length; i++) {
+              assert.strictEqual(errors[i].innerText, errorMessages[i],
+                  `Should show error '${errorMessages[i]}'`);
+            }
             done();
           });
         });

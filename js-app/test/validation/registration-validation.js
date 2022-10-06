@@ -12,7 +12,7 @@ module('validateRegistration', (hooks) => {
 
   let form;
 
-  hooks.before(() => {
+  hooks.beforeEach(() => {
     const fixture = document.getElementById('qunit-fixture');
 
     fixture.innerHTML = `
@@ -62,13 +62,25 @@ module('validateRegistration', (hooks) => {
     ['1', 'password', 'password',
       [emailLengthErrorMessage]],
 
+    ['1%%%%%!', 'password', 'password',
+      [emailRegexpErrorMessage]],
+
+    ['email', 'pass', 'pass',
+      [passwordLengthErrorMessage]],
+
+    ['email', 'password', 'notPassword',
+      [passwordMatchErrorMessage]],
+
+    ['1', 'password', 'notPassword',
+      [emailLengthErrorMessage, passwordMatchErrorMessage]],
+
     ['1%', 'password', 'password',
       [emailLengthErrorMessage, emailRegexpErrorMessage]],
 
     ['1%', 'pass', 'pass',
       [emailLengthErrorMessage, emailRegexpErrorMessage, passwordLengthErrorMessage]],
 
-    ['1%', 'pass', 'passs',
+    ['1%', 'pass', 'notPassword',
       [emailLengthErrorMessage, emailRegexpErrorMessage, passwordLengthErrorMessage, passwordMatchErrorMessage]],
   ]
       .forEach(([email, pass, confirm, errorMessages])=>{
@@ -87,8 +99,8 @@ module('validateRegistration', (hooks) => {
             assert.strictEqual(errors.length, errorMessages.length, 'Should have same amount of errors');
 
             for (let i=0; i < errorMessages.length; i++) {
-              assert.strictEqual(errors[i].innerText, emailLengthErrorMessage,
-                  `Should show error '${emailLengthErrorMessage}'`);
+              assert.strictEqual(errors[i].innerText, errorMessages[i],
+                  `Should show error '${errorMessages[i]}'`);
             }
             done();
           });
