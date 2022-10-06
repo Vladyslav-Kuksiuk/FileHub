@@ -1,19 +1,21 @@
+import {FormValidationTester} from './form-validation-tester.js';
 import {AuthorizationValidator} from '../../validation/authorization-validator.js';
 import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../constants.js';
 
+const emailLengthErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
+const passwordLengthErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 
-const {module, test} = QUnit;
-
-module('validateAuthorization', (hooks) => {
-  const emailLengthErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
-  const passwordLengthErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
-
-  let form;
-
-  hooks.beforeEach(()=>{
-    const fixture = document.getElementById('qunit-fixture');
-
-    fixture.innerHTML = `
+/**
+ * {@link FormValidationTester} implementation for authorization.
+ */
+class AuthorizationValidationTester extends FormValidationTester {
+  /**
+   * Returns authorization form as HTML in string.
+   *
+   * @returns {string}
+   */
+  getFormHTML() {
+    return `
         <form action="" class="form-horizontal form-page">
             <div class="form-group">
                 <div class="col-sm-4 label-holder">
@@ -40,44 +42,52 @@ module('validateAuthorization', (hooks) => {
                 </div>
             </div>
         </form>`;
-    form = fixture.firstElementChild;
+  }
 
+  /**
+   * Fills email and password inputs in authorization form.
+   *
+   * @param {HTMLFormElement}  form
+   * @param {[string]} values
+   */
+  fillInputs(form, values) {
+    form.querySelector('input#email').value = values[0];
+    form.querySelector('input#password').value = values[1];
+  }
+
+  /**
+   * Add authorization validator to form.
+   *
+   * @param {HTMLFormElement} form
+   */
+  addValidator(form) {
     new AuthorizationValidator().addValidationToForm(form);
-  });
+  }
+}
 
-  [
-    ['email', 'password',
-      []],
+const tester = new AuthorizationValidationTester();
 
-    ['1', 'password',
-      [emailLengthErrorMessage]],
+tester.addParametrizedErrorShowTest(
+    'validateAuthorization',
+    [
+      ['email', 'password',
+        []],
 
-    ['1%', 'pass',
-      [emailLengthErrorMessage, passwordLengthErrorMessage]],
+      ['1', 'password',
+        [emailLengthErrorMessage]],
 
-    ['email', 'pass',
-      [passwordLengthErrorMessage]],
-  ]
-      .forEach(([email, pass, errorMessages])=>{
-        test(`Email: ${email}, Password:  ${pass}`, async function(assert) {
-          assert.expect(errorMessages.length+1);
-          const done = assert.async();
+      ['1%', 'pass',
+        [emailLengthErrorMessage, passwordLengthErrorMessage]],
 
-          form.querySelector('input#email').value = email;
-          form.querySelector('input#password').value = pass;
+      ['email', 'pass',
+        [passwordLengthErrorMessage]],
+    ],
+);
 
-          form.querySelector('button').click();
-
-          setTimeout(() => {
-            const errors = [...form.querySelectorAll('.help-block')];
-            assert.strictEqual(errors.length, errorMessages.length, 'Should have same amount of errors');
-
-            for (let i=0; i < errorMessages.length; i++) {
-              assert.strictEqual(errors[i].innerText, errorMessages[i],
-                  `Should show error '${errorMessages[i]}'`);
-            }
-            done();
-          });
-        });
-      });
-});
+tester.addClearErrorTest(
+    'clearValidateAuthorization',
+    [
+      ['ema', 'pass'],
+      ['email', 'password'],
+    ],
+);

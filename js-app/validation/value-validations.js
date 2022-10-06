@@ -8,8 +8,8 @@ import {Preconditions} from '../preconditions.js';
  * @returns {function(*): Promise<string>}
  */
 export function validateLength(minLength, errorMessage) {
-  Preconditions.checkState(Number.isInteger(minLength));
-  Preconditions.checkState(minLength >= 0);
+  Preconditions.checkTrue(Number.isInteger(minLength));
+  Preconditions.checkTrue(minLength >= 0);
   Preconditions.checkType(errorMessage, 'string');
 
   return (value) => {
@@ -34,7 +34,7 @@ export function validateLength(minLength, errorMessage) {
  */
 export function validateByRegexp(regex, errorMessage) {
   Preconditions.checkType(errorMessage, 'string');
-  Preconditions.checkState(regex instanceof RegExp);
+  Preconditions.checkTrue(regex instanceof RegExp);
 
   return (value) => {
     Preconditions.checkType(value, 'string');

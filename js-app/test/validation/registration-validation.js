@@ -1,21 +1,23 @@
+import {FormValidationTester} from './form-validation-tester.js';
 import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../constants.js';
 import {RegistrationValidator} from '../../validation/registration-validator.js';
 
+const emailLengthErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
+const emailRegexpErrorMessage = 'Allowed only a-Z and +.-_@ .';
+const passwordLengthErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
+const passwordMatchErrorMessage = 'Passwords don\'t match.';
 
-const {module, test} = QUnit;
-
-module('validateRegistration', (hooks) => {
-  const emailLengthErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
-  const emailRegexpErrorMessage = 'Allowed only a-Z and +.-_@ .';
-  const passwordLengthErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
-  const passwordMatchErrorMessage = 'Passwords don\'t match.';
-
-  let form;
-
-  hooks.beforeEach(() => {
-    const fixture = document.getElementById('qunit-fixture');
-
-    fixture.innerHTML = `
+/**
+ * {@link FormValidationTester} implementation for registration.
+ */
+class AuthorizationValidationTester extends FormValidationTester {
+  /**
+   * Returns registration form as HTML in string.
+   *
+   * @returns {string}
+   */
+  getFormHTML() {
+    return `
         <form action="" class="form-horizontal form-page">
             <div class="form-group">
                 <div class="col-sm-4 label-holder">
@@ -50,60 +52,68 @@ module('validateRegistration', (hooks) => {
                 </div>
             </div>
         </form>`;
-    form = fixture.firstElementChild;
+  }
 
+  /**
+   * Fills email and password inputs in registration form.
+   *
+   * @param {HTMLFormElement} form
+   * @param {[string]} values
+   */
+  fillInputs(form, values) {
+    form.querySelector('input#email').value = values[0];
+    form.querySelector('input#password').value = values[1];
+    form.querySelector('input#confirm-password').value = values[2];
+  }
+
+  /**
+   * Add registration validator to form.
+   *
+   * @param {HTMLFormElement} form
+   */
+  addValidator(form) {
     new RegistrationValidator().addValidationToForm(form);
-  });
+  }
+}
 
-  [
-    ['email', 'password', 'password',
-      []],
+const tester = new AuthorizationValidationTester();
 
-    ['1', 'password', 'password',
-      [emailLengthErrorMessage]],
+tester.addParametrizedErrorShowTest(
+    'validateRegistration',
+    [
+      ['email', 'password', 'password',
+        []],
 
-    ['1%%%%%!', 'password', 'password',
-      [emailRegexpErrorMessage]],
+      ['1', 'password', 'password',
+        [emailLengthErrorMessage]],
 
-    ['email', 'pass', 'pass',
-      [passwordLengthErrorMessage]],
+      ['1%%%%%!', 'password', 'password',
+        [emailRegexpErrorMessage]],
 
-    ['email', 'password', 'notPassword',
-      [passwordMatchErrorMessage]],
+      ['email', 'pass', 'pass',
+        [passwordLengthErrorMessage]],
 
-    ['1', 'password', 'notPassword',
-      [emailLengthErrorMessage, passwordMatchErrorMessage]],
+      ['email', 'password', 'notPassword',
+        [passwordMatchErrorMessage]],
 
-    ['1%', 'password', 'password',
-      [emailLengthErrorMessage, emailRegexpErrorMessage]],
+      ['1', 'password', 'notPassword',
+        [emailLengthErrorMessage, passwordMatchErrorMessage]],
 
-    ['1%', 'pass', 'pass',
-      [emailLengthErrorMessage, emailRegexpErrorMessage, passwordLengthErrorMessage]],
+      ['1%', 'password', 'password',
+        [emailLengthErrorMessage, emailRegexpErrorMessage]],
 
-    ['1%', 'pass', 'notPassword',
-      [emailLengthErrorMessage, emailRegexpErrorMessage, passwordLengthErrorMessage, passwordMatchErrorMessage]],
-  ]
-      .forEach(([email, pass, confirm, errorMessages])=>{
-        test(`Email: ${email}, Password:  ${pass}, Confirm password:  ${confirm}`, async function(assert) {
-          assert.expect(errorMessages.length+1);
-          const done = assert.async();
+      ['1%', 'pass', 'pass',
+        [emailLengthErrorMessage, emailRegexpErrorMessage, passwordLengthErrorMessage]],
 
-          form.querySelector('input#email').value = email;
-          form.querySelector('input#password').value = pass;
-          form.querySelector('input#confirm-password').value = confirm;
+      ['1%', 'pass', 'notPassword',
+        [emailLengthErrorMessage, emailRegexpErrorMessage, passwordLengthErrorMessage, passwordMatchErrorMessage]],
+    ],
+);
 
-          form.querySelector('button').click();
-
-          setTimeout(() => {
-            const errors = [...form.querySelectorAll('.help-block')];
-            assert.strictEqual(errors.length, errorMessages.length, 'Should have same amount of errors');
-
-            for (let i=0; i < errorMessages.length; i++) {
-              assert.strictEqual(errors[i].innerText, errorMessages[i],
-                  `Should show error '${errorMessages[i]}'`);
-            }
-            done();
-          });
-        });
-      });
-});
+tester.addClearErrorTest(
+    'clearValidateRegistration',
+    [
+      ['ema', 'pass', 'password'],
+      ['email', 'password', 'password'],
+    ],
+);

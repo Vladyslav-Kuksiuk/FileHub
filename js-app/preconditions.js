@@ -19,10 +19,8 @@ export class Preconditions {
    *
    * @param {boolean} state
    */
-  static checkState(state) {
-    if (typeof state !== 'boolean') {
-      throw new Error(`Illegal argument, expected: 'boolean'.`);
-    }
+  static checkTrue(state) {
+    Preconditions.checkType(state, 'boolean');
     if (!state) {
       throw new Error('Illegal state.');
     }
