@@ -5,9 +5,8 @@ import {EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH} from '../../constants.js';
 const {module, test} = QUnit;
 
 module('validateAuthorization', (hooks) => {
-
   const emailErrorMessage = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
-  const passwordErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`
+  const passwordErrorMessage = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 
   let form;
 
@@ -48,56 +47,55 @@ module('validateAuthorization', (hooks) => {
 
   [['ema', 'pass'],
     ['http', '1cq']]
-    .forEach(([emailValue, passwordValue]) =>{
-    test(`Email: ${emailValue}, Password: ${passwordValue}`, async function(assert) {
-      assert.expect(2);
-      const done = assert.async();
+      .forEach(([emailValue, passwordValue]) =>{
+        test(`Email: ${emailValue}, Password: ${passwordValue}`, function(assert) {
+          assert.expect(2);
+          const done = assert.async();
 
-      const emailInput = form.querySelector('input#email')
-      emailInput.value = emailValue;
+          const emailInput = form.querySelector('input#email');
+          emailInput.value = emailValue;
 
-      const passwordInput = form.querySelector('input#password')
-      passwordInput.value = passwordValue;
+          const passwordInput = form.querySelector('input#password');
+          passwordInput.value = passwordValue;
 
-      const button = form.querySelector('button');
-      button.click();
+          const button = form.querySelector('button');
+          button.click();
 
-      setTimeout(()=>{
-        const errors = [...form.querySelectorAll('.help-block')];
+          setTimeout(()=>{
+            const errors = [...form.querySelectorAll('.help-block')];
 
-        assert.strictEqual(errors[0].innerText,
-          emailErrorMessage ,
-          `Should show error 'Length must be at least ${EMAIL_MIN_LENGTH} symbols.'`);
-        assert.strictEqual(errors[1].innerText,
-          passwordErrorMessage ,
-          `Should show error 'Length must be at least ${PASSWORD_MIN_LENGTH} symbols.'`);
+            assert.strictEqual(errors[0].innerText,
+                emailErrorMessage,
+                `Should show error 'Length must be at least ${EMAIL_MIN_LENGTH} symbols.'`);
+            assert.strictEqual(errors[1].innerText,
+                passwordErrorMessage,
+                `Should show error 'Length must be at least ${PASSWORD_MIN_LENGTH} symbols.'`);
 
-        done();
-      })
-    });
-  });
+            done();
+          });
+        });
+      });
 
   [['email', 'password'],
     ['Vladyslav', 'strong-password']]
-    .forEach(([emailValue, passwordValue]) =>{
-      test(`Email: ${emailValue}, Password: ${passwordValue}`, async function(assert) {
-        assert.expect(1);
-        const done = assert.async();
+      .forEach(([emailValue, passwordValue]) =>{
+        test(`Email: ${emailValue}, Password: ${passwordValue}`, async function(assert) {
+          assert.expect(1);
+          const done = assert.async();
 
-        const emailInput = form.querySelector('input#email')
-        emailInput.value = emailValue;
+          const emailInput = form.querySelector('input#email');
+          emailInput.value = emailValue;
 
-        const passwordInput = form.querySelector('input#password')
-        passwordInput.value = passwordValue;
+          const passwordInput = form.querySelector('input#password');
+          passwordInput.value = passwordValue;
 
-        const button = form.querySelector('button');
-        button.click();
-        setTimeout(()=>{
-          const errors = [...form.querySelectorAll('.help-block')];
-          assert.strictEqual(errors.length, 0, "Should pass without errors.")
-          done();
-        })
+          const button = form.querySelector('button');
+          button.click();
+          setTimeout(()=>{
+            const errors = [...form.querySelectorAll('.help-block')];
+            assert.strictEqual(errors.length, 0, 'Should pass without errors.');
+            done();
+          });
+        });
       });
-    });
-
 });
