@@ -4,12 +4,14 @@ import {Component} from '../component.js';
  * Button component.
  */
 export class Button extends Component {
+  _title;
+
   /**
    * @param {string} text
    */
   set title(text) {
-    this.rootElement.innerText = text;
-    this.rootElement.title = text;
+    this._title = text;
+    this.render();
   }
 
   /**
@@ -17,9 +19,9 @@ export class Button extends Component {
    *
    * @returns {string}
    */
-  mockup() {
+  markup() {
     return `
-    <button class="btn btn-primary" title="Button">Button</button>
+    <button class="btn btn-primary" title="${this._title}">${this._title}</button>
     `;
   }
 }

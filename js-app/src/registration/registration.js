@@ -12,19 +12,19 @@ const formControlHolder = form.getElementsByClassName('form-control-holder')[0];
 const emailFormControl = new FormControl(formControlHolder);
 emailFormControl.inputId = EMAIL;
 emailFormControl.inputType = 'text';
-emailFormControl.inputPlaceholder = 'Email';
+emailFormControl.placeholder = 'Email';
 emailFormControl.labelText = 'Email';
 
 const passwordFormControl = new FormControl(formControlHolder);
 passwordFormControl.inputId = PASSWORD;
 passwordFormControl.inputType = 'password';
-passwordFormControl.inputPlaceholder = 'Password';
+passwordFormControl.placeholder = 'Password';
 passwordFormControl.labelText = 'Password';
 
 const confirmFormControl = new FormControl(formControlHolder);
 confirmFormControl.inputId = 'confirm-password';
 confirmFormControl.inputType = 'password';
-confirmFormControl.inputPlaceholder = 'Confirm Password';
+confirmFormControl.placeholder = 'Confirm Password';
 confirmFormControl.labelText = 'Confirm Password';
 
 const buttonPlace = document.getElementsByClassName('button-place')[0];

@@ -10,19 +10,52 @@ export class Component {
    */
   constructor(parent) {
     this.parentElement = parent;
+
+    this.beforeRender();
     this.render();
+    this.afterRender();
+  }
+
+  beforeRender() {
+
+  }
+
+  afterRender() {
+
+  }
+
+  addSlot(name) {
+    return `<slot data-td="${name}"></slot>`;
+  }
+
+  getSlot(name) {
+    return this.rootElement.querySelector(`[data-td="${name}"]`);
   }
 
   /**
    * Create element from mockup and set it into HTML document.
    */
   render() {
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = this.mockup();
-    const rootElement = tempElement.firstElementChild;
+    this.#createDomTree();
+  }
 
-    this.rootElement = rootElement;
-    this.parentElement.appendChild(rootElement);
+  #createDomTree() {
+    const isFirstRendering = !this.rootElement;
+    const newElement = this.#createNewElement();
+
+    if (isFirstRendering) {
+      this.parentElement.appendChild(newElement);
+    } else {
+      this.rootElement.replaceWith(newElement);
+    }
+
+    this.rootElement = newElement;
+  }
+
+  #createNewElement() {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = this.markup();
+    return tempElement.firstElementChild;
   }
 
   /**
@@ -31,7 +64,7 @@ export class Component {
    * @abstract
    * @returns {string}
    */
-  mockup() {
+  markup() {
     throw new Error('Method of Abstract Class cannot be called');
   }
 }

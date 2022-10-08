@@ -4,34 +4,47 @@ import {Component} from '../component.js';
  * Form control component.
  */
 export class FormControl extends Component {
-  /**
-   * @param {string} id
-   */
-  set inputId(id) {
-    this.rootElement.getElementsByTagName('input')[0].id = id;
-    this.rootElement.getElementsByTagName('input')[0].name = id;
-    this.rootElement.getElementsByTagName('label')[0].htmlFor = id;
-  }
+  _errorMessages;
+  _labelText;
+  _type = 'text';
+  _name;
+  _placeHolder;
+  _id = crypto.randomUUID();
 
   /**
-   * @param {string} type
+   * @param {[string]} errorMessages
    */
-  set inputType(type) {
-    this.rootElement.getElementsByTagName('input')[0].type = type;
-  }
-
-  /**
-   * @param {string} text
-   */
-  set inputPlaceholder(text) {
-    this.rootElement.getElementsByTagName('input')[0].placeholder = text;
+  set errorMessages(errorMessages) {
+    this._errorMessages = errorMessages;
   }
 
   /**
    * @param {string} text
    */
   set labelText(text) {
-    this.rootElement.getElementsByTagName('label')[0].innerText = text;
+    this._labelText = text;
+    this.render();
+  }
+
+  /**
+   * @param {string} type
+   */
+  set inputType(type) {
+    this._type = type;
+    this.render();
+  }
+
+  /**
+   * @param {string} text
+   */
+  set placeholder(text) {
+    this._placeHolder = text;
+    this.render();
+  }
+
+  set name(name) {
+    this._name = name;
+    this.render();
   }
 
   /**
@@ -39,16 +52,22 @@ export class FormControl extends Component {
    *
    * @returns {string}
    */
-  mockup() {
+  markup() {
+    const errors = this._errorMessages?.map((error)=>{
+      return `<p class="help-block error-message">${error}</p>`;
+    }).join(' ');
+
     return `
     <div class="form-group">
                 <div class="col-sm-4 label-holder">
-                    <label class="control-label">LabelText</label>
+                    <label for="${this._id}" class="control-label">${this._labelText}</label>
                 </div>
                 <div class="col-sm-8">
-                    <input class="form-control" placeholder="InputPlaceholder" type="text" name="InputName">
+                    <input id="${this._id}" class="form-control" placeholder="${this._placeHolder}"
+                     type="${this._type}" name="${this._name}">
                 </div>
             </div>
+            ${errors ?? ''}
     `;
   }
 }
