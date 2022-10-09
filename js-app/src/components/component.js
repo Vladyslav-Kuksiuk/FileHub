@@ -1,5 +1,5 @@
 /**
- * Javascript component.
+ * Virtual DOM of the element.
  */
 export class Component {
   parentElement;
@@ -47,14 +47,14 @@ export class Component {
   }
 
   /**
-   * Create element from mockup and set it into HTML document.
+   * Render component in DOM.
    */
   render() {
     this.#createDomTree();
   }
 
   /**
-   *
+   * Create element from markup and set it into HTML document.
    */
   #createDomTree() {
     const isFirstRendering = !this.rootElement;

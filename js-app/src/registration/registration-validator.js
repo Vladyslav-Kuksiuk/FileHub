@@ -17,10 +17,10 @@ export class RegistrationValidator extends FormValidator {
   /**
    *  Creates {@link FormValidationConfig} for registration form.
    *
-   * @param {FormData} formData
+   * @param {[FormControl]} formControls
    * @returns {FormValidationConfig}
    */
-  createValidationConfig(formData) {
+  createValidationConfig(formControls) {
     return new FormValidationConfigBuilder()
         .addField(EMAIL,
             validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`),
@@ -28,7 +28,8 @@ export class RegistrationValidator extends FormValidator {
         .addField(PASSWORD,
             validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
         .addField(CONFIRM_PASSWORD,
-            validateSameValue(formData.get(PASSWORD), 'Passwords don\'t match.'))
+            validateSameValue(formControls.find((formControl) => formControl.name === PASSWORD).value,
+                'Passwords don\'t match.'))
         .build();
   }
 }

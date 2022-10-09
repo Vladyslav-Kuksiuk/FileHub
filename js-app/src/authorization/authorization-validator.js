@@ -11,10 +11,10 @@ export class AuthorizationValidator extends FormValidator {
   /**
    *  Creates {@link FormValidationConfig} for authorization form.
    *
-   * @param {FormData} formData
+   * @param {[FormControl]} formControls
    * @returns {FormValidationConfig}
    */
-  createValidationConfig(formData) {
+  createValidationConfig(formControls) {
     return new FormValidationConfigBuilder()
         .addField(EMAIL,
             validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`))

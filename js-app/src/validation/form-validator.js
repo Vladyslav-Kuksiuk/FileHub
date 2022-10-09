@@ -28,7 +28,7 @@ export class FormValidator {
       });
 
       new ValidationService()
-          .validate(formControls, this.createValidationConfig())
+          .validate(formControls, this.createValidationConfig(formControls))
           .catch((result) => {
             result.errors.forEach((error) =>{
               formControls.find((formControl) => formControl.name===error.name)
@@ -39,11 +39,11 @@ export class FormValidator {
   }
 
   /**
-   * @param {FormData} formData
+   * @param {[FormControl]} formControls
    * @abstract
    * @returns {FormValidationConfig}
    */
-  createValidationConfig(formData) {
+  createValidationConfig(formControls) {
     throw new Error('Method of Abstract Class cannot be called');
   }
 }
