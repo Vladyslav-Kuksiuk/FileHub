@@ -4,7 +4,13 @@ import {FormControl} from '../formcontrol';
 import {EMAIL, PASSWORD} from '../../constants.js';
 import {AuthorizationValidator} from '../../authorization/authorization-validator.js';
 
+/**
+ * Authorization page component.
+ */
 export class AuthorizationPage extends Component {
+  /**
+   * Adds form controls and button to form.
+   */
   afterRender() {
     const buttonSlot = this.getSlot('button');
     const button = new Button(buttonSlot);
@@ -22,9 +28,7 @@ export class AuthorizationPage extends Component {
     passwordInput.labelText = 'Password';
     passwordInput.placeholder = 'Password';
 
-    const authorizationForm = document.getElementsByTagName('form')[0];
-    const authorizationValidator = new AuthorizationValidator();
-    authorizationValidator.addValidationToForm(authorizationForm);
+    new AuthorizationValidator().addValidationToForm(button, [emailInput, passwordInput]);
   }
 
   /**

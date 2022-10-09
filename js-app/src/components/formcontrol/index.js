@@ -4,18 +4,29 @@ import {Component} from '../component.js';
  * Form control component.
  */
 export class FormControl extends Component {
-  _errorMessages;
+  _errorMessages = [];
   _labelText;
   _type = 'text';
   _name;
   _placeHolder;
   _id = crypto.randomUUID();
+  _value = '';
 
   /**
-   * @param {[string]} errorMessages
+   *  Adds error message to input.
+   * @param {string} errorMessage
    */
-  set errorMessages(errorMessages) {
-    this._errorMessages = errorMessages;
+  addErrorMessage(errorMessage) {
+    this._errorMessages.push(errorMessage);
+    this.render();
+  }
+
+  /**
+   * Clear all error messages from input.
+   */
+  clearErrorMessages() {
+    this._errorMessages = [];
+    this.render();
   }
 
   /**
@@ -42,8 +53,40 @@ export class FormControl extends Component {
     this.render();
   }
 
+  /**
+   * @returns {string}
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * @param {string} name
+   */
   set name(name) {
     this._name = name;
+    this.render();
+  }
+
+  /**
+   * Saves value from user input.
+   */
+  saveValue() {
+    this._value = document.getElementById(this._id).value;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get value() {
+    return this._value;
+  }
+
+  /**
+   * @param {string} value
+   */
+  set value(value) {
+    this._value = value;
     this.render();
   }
 
@@ -53,8 +96,8 @@ export class FormControl extends Component {
    * @returns {string}
    */
   markup() {
-    const errors = this._errorMessages?.map((error)=>{
-      return `<p class="help-block error-message">${error}</p>`;
+    const errors = this._errorMessages?.map((error) => {
+      return `<p class="help-block text-danger">${error}</p>`;
     }).join(' ');
 
     return `
@@ -63,11 +106,12 @@ export class FormControl extends Component {
                     <label for="${this._id}" class="control-label">${this._labelText}</label>
                 </div>
                 <div class="col-sm-8">
-                    <input id="${this._id}" class="form-control" placeholder="${this._placeHolder}"
-                     type="${this._type}" name="${this._name}">
+                    <input id="${this._id}" class="form-control ${errors ? 'input-error' : ''}"
+                     placeholder="${this._placeHolder}" type="${this._type}"
+                     name="${this._name}" value="${this._value}">
+                     ${errors ?? ''}
                 </div>
             </div>
-            ${errors ?? ''}
     `;
   }
 }

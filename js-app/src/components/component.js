@@ -16,18 +16,32 @@ export class Component {
     this.afterRender();
   }
 
+  /**
+   * Method calls before first render
+   */
   beforeRender() {
 
   }
 
+  /**
+   * Method calls after first render
+   */
   afterRender() {
 
   }
 
+  /**
+   * @param {string} name
+   * @returns {string}
+   */
   addSlot(name) {
     return `<slot data-td="${name}"></slot>`;
   }
 
+  /**
+   * @param {string} name
+   * @returns {HTMLElement}
+   */
   getSlot(name) {
     return this.rootElement.querySelector(`[data-td="${name}"]`);
   }
@@ -39,6 +53,9 @@ export class Component {
     this.#createDomTree();
   }
 
+  /**
+   *
+   */
   #createDomTree() {
     const isFirstRendering = !this.rootElement;
     const newElement = this.#createNewElement();
@@ -52,6 +69,11 @@ export class Component {
     this.rootElement = newElement;
   }
 
+  /**
+   * Creates new {HTMLElement} by markup.
+   *
+   * @returns {HTMLElement}
+   */
   #createNewElement() {
     const tempElement = document.createElement('div');
     tempElement.innerHTML = this.markup();

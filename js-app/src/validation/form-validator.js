@@ -1,4 +1,3 @@
-import {clearFormErrors, renderError} from './render.js';
 import {ValidationService} from './validation-service.js';
 
 /**
@@ -16,21 +15,25 @@ export class FormValidator {
 
   /**
    * Adds configured validation to form.
-   * @param {HTMLFormElement} form
+   * @param {Button} button
+   * @param {[FormControl]} formControls
    */
-  addValidationToForm(form) {
-    form.addEventListener('submit', (event) => {
+  addValidationToForm(button, formControls) {
+    button.rootElement.addEventListener('click', (event) => {
       event.preventDefault();
 
-      clearFormErrors();
-
-      const formData = new FormData(event.target);
-      const validationConfig = this.createValidationConfig(formData);
+      formControls.forEach((formControl) =>{
+        formControl.saveValue();
+        formControl.clearErrorMessages();
+      });
 
       new ValidationService()
-          .validate(formData, validationConfig)
+          .validate(formControls, this.createValidationConfig())
           .catch((result) => {
-            result.errors.forEach((error) => renderError(error.name, error.message));
+            result.errors.forEach((error) =>{
+              formControls.find((formControl) => formControl.name===error.name)
+                  .addErrorMessage(error.message);
+            });
           });
     });
   }
