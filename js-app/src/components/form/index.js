@@ -13,8 +13,8 @@ export class Form extends Component {
   _eventTarget = new EventTarget();
 
   /**
-     * Adds form controls and button.
-     */
+   * Adds form controls and button.
+   */
   afterRender() {
     const buttonSlot = this.getSlot('button');
     const button = new Button(buttonSlot);
@@ -27,39 +27,55 @@ export class Form extends Component {
       creator(slot);
     });
 
-    this.rootElement.addEventListener('submit', (event) =>{
+    this.rootElement.addEventListener('submit', (event) => {
       event.preventDefault();
       this._eventTarget.dispatchEvent(new Event(FORM_SUBMIT_EVENT));
     });
   }
 
+  /**
+   * @param {string} text
+   */
   set buttonText(text) {
     this._buttonText = text;
     this.render();
   }
 
+  /**
+   * @param {string} text
+   */
   set linkText(text) {
     this._linkText = text;
     this.render();
   }
 
-  addInput(inputCreator) {
+  /**
+   * Adds form control to form.
+   *
+   * @param {function(HTMLElement)} inputCreator
+   */
+  addFormControl(inputCreator) {
     this._inputCreators.push(inputCreator);
     this.render();
   }
 
+  /**
+   * Adds onSubmit event to form.
+   *
+   * @param {function(FormData)} listener
+   */
   onSubmit(listener) {
-    this._eventTarget.addEventListener(FORM_SUBMIT_EVENT, (event)=>{
+    this._eventTarget.addEventListener(FORM_SUBMIT_EVENT, (event) => {
       const formData = new FormData(this.rootElement);
       listener(formData);
     });
   }
 
   /**
-     * Returns button's HTML as string.
-     *
-     * @returns {string}
-     */
+   * Returns button's HTML as string.
+   *
+   * @returns {string}
+   */
   markup() {
     return `
         <form action="" class="form-horizontal form-page">

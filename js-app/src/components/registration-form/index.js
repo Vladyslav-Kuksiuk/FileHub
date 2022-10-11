@@ -22,7 +22,7 @@ export class RegistrationForm extends Component {
     const form = new Form(this.parentElement);
     this._formControls = {};
 
-    form.addInput((slot) => {
+    form.addFormControl((slot) => {
       const input = new FormControl(slot);
       input.name = EMAIL;
       input.labelText = 'Email';
@@ -30,7 +30,7 @@ export class RegistrationForm extends Component {
       this._formControls[EMAIL] = input;
     });
 
-    form.addInput((slot) => {
+    form.addFormControl((slot) => {
       const input = new FormControl(slot);
       input.name = PASSWORD;
       input.labelText = 'Password';
@@ -39,7 +39,7 @@ export class RegistrationForm extends Component {
       this._formControls[PASSWORD] = input;
     });
 
-    form.addInput((slot) => {
+    form.addFormControl((slot) => {
       const input = new FormControl(slot);
       input.name = CONFIRM_PASSWORD;
       input.labelText = 'Confirm Password';
@@ -69,6 +69,12 @@ export class RegistrationForm extends Component {
     });
   }
 
+  /**
+   * Validates forms inputs and render errors.
+   *
+   * @param {FormData} formData
+   * @param {function(FormData)} configCreator
+   */
   #validateForm(formData, configCreator) {
     Object.entries(this._formControls).forEach(([name, formControl]) => {
       formControl.saveValue();
