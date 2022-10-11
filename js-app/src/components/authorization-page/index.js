@@ -1,5 +1,5 @@
 import {Component} from '../component.js';
-import {AuthorizationForm} from '../authorizationform';
+import {AuthorizationForm} from '../authorization-form';
 
 /**
  * Authorization page component.

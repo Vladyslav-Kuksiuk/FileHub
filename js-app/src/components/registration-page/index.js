@@ -1,5 +1,5 @@
 import {Component} from '../component.js';
-import {RegistrationForm} from '../registrationform';
+import {RegistrationForm} from '../registration-form';
 
 /**
  * Authorization page component.

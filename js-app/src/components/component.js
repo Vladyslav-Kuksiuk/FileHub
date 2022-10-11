@@ -10,10 +10,9 @@ export class Component {
    */
   constructor(parent) {
     this.parentElement = parent;
-
     this.beforeRender();
     this.render();
-    this.afterRender();
+
   }
 
   /**
@@ -51,6 +50,7 @@ export class Component {
    */
   render() {
     this.#createDomTree();
+    this.afterRender();
   }
 
   /**
