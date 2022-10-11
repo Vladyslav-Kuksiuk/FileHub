@@ -12,7 +12,6 @@ export class Component {
     this.parentElement = parent;
     this.beforeRender();
     this.render();
-
   }
 
   /**

@@ -6,13 +6,13 @@ import {ValidationErrorResult} from './validation-error-result.js';
  */
 export class ValidationService {
   /**
-   * @param {FormControl[]} formControls
+   * @param {FormData} formData
    * @param {FormValidationConfig} config
    * @returns {Promise<void>}
    */
-  async validate(formControls, config) {
+  async validate(formData, config) {
     const validationPromises = config.fieldValidators.map(({fieldName, validators}) =>{
-      const value = formControls.find((formControl)=>formControl.name === fieldName).value;
+      const value = formData.get(fieldName);
 
       return validators.map((validator) => {
         return validator(value)
