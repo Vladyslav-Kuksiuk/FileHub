@@ -5,11 +5,13 @@ import {Component} from '../component.js';
  */
 export class FormPage extends Component {
   _headerText;
+  _formCreator;
 
   /**
    * Adds authorization form to page.
    */
   afterRender() {
+    this._formCreator ? this._formCreator(this.getSlot('form')) : '';
   }
 
   /**
@@ -18,7 +20,8 @@ export class FormPage extends Component {
    * @param {function(HTMLElement)} formCreator
    */
   addForm(formCreator) {
-    formCreator(this.getSlot('form'));
+    this._formCreator = formCreator;
+    this.render();
   }
 
   /**
