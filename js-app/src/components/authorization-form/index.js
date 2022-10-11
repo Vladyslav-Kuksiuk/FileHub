@@ -34,6 +34,7 @@ export class AuthorizationForm extends Component {
       input.name = PASSWORD;
       input.labelText = 'Password';
       input.placeholder = 'Password';
+      input.inputType = 'password';
       this._formControls[PASSWORD] = input;
     });
 
@@ -42,12 +43,12 @@ export class AuthorizationForm extends Component {
 
     const configCreator = (formData) =>{
       return new FormValidationConfigBuilder()
-        .addField(EMAIL,
-          validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`))
-        .addField(PASSWORD,
-          validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
-        .build();
-    }
+          .addField(EMAIL,
+              validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`))
+          .addField(PASSWORD,
+              validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
+          .build();
+    };
 
     form.onSubmit((formData) => {
       this.#validateForm(formData, configCreator);

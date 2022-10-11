@@ -1,60 +1,96 @@
 import {Component} from '../component.js';
-import {Button} from '../button';
 import {FormControl} from '../formcontrol';
-import {CONFIRM_PASSWORD, EMAIL, PASSWORD} from '../../constants.js';
-import {RegistrationValidator} from '../../registration/registration-validator.js';
+import {Form} from '../form';
+import {FormValidationConfigBuilder} from '../../validation/form-validation-config.js';
+import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations.js';
+import {ValidationService} from '../../validation/validation-service.js';
 
+const EMAIL = 'email';
+const PASSWORD = 'password';
+const EMAIL_MIN_LENGTH = 5;
+const PASSWORD_MIN_LENGTH = 6;
+const CONFIRM_PASSWORD = 'confirm-password';
+const EMAIL_VALIDATION_REGEX = /^[a-zA-Z\d+.\-_@]+$/;
 /**
  * Authorization page component.
  */
 export class RegistrationForm extends Component {
   /**
-   * Adds form controls and button to form.
+   * Adds form controls and button.
    */
   afterRender() {
-    const buttonSlot = this.getSlot('button');
-    const button = new Button(buttonSlot);
-    button.title = 'Sign Up';
+    const form = new Form(this.parentElement);
+    this._formControls = {};
 
-    const emailSlot = this.getSlot('email');
-    const emailInput = new FormControl(emailSlot);
-    emailInput.name = EMAIL;
-    emailInput.labelText = 'Email';
-    emailInput.placeholder = 'Email';
+    form.addInput((slot) => {
+      const input = new FormControl(slot);
+      input.name = EMAIL;
+      input.labelText = 'Email';
+      input.placeholder = 'Email';
+      this._formControls[EMAIL] = input;
+    });
 
-    const passwordSlot = this.getSlot('password');
-    const passwordInput = new FormControl(passwordSlot);
-    passwordInput.name = PASSWORD;
-    passwordInput.labelText = 'Password';
-    passwordInput.placeholder = 'Password';
+    form.addInput((slot) => {
+      const input = new FormControl(slot);
+      input.name = PASSWORD;
+      input.labelText = 'Password';
+      input.placeholder = 'Password';
+      input.inputType = 'password';
+      this._formControls[PASSWORD] = input;
+    });
 
-    const confirmSlot = this.getSlot('confirm-password');
-    const confirmInput = new FormControl(confirmSlot);
-    confirmInput.name = CONFIRM_PASSWORD;
-    confirmInput.labelText = 'Confirm Password';
-    confirmInput.placeholder = 'Confirm Password';
+    form.addInput((slot) => {
+      const input = new FormControl(slot);
+      input.name = CONFIRM_PASSWORD;
+      input.labelText = 'Confirm Password';
+      input.placeholder = 'Confirm Password';
+      input.inputType = 'password';
+      this._formControls[CONFIRM_PASSWORD] = input;
+    });
 
-    new RegistrationValidator().addValidationToForm(button, [emailInput, passwordInput, confirmInput]);
+    form.buttonText = 'Sign Up';
+    form.linkText = 'Already have an account?';
+
+    const configCreator = (formData) =>{
+      return new FormValidationConfigBuilder()
+          .addField(EMAIL,
+              validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`),
+              validateByRegexp(EMAIL_VALIDATION_REGEX, 'Allowed only a-Z and +.-_@ .'))
+          .addField(PASSWORD,
+              validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
+          .addField(CONFIRM_PASSWORD,
+              validateSameValue(formData.get(PASSWORD),
+                  'Passwords don\'t match.'))
+          .build();
+    };
+
+    form.onSubmit((formData) => {
+      this.#validateForm(formData, configCreator);
+    });
+  }
+
+  #validateForm(formData, configCreator) {
+    Object.entries(this._formControls).forEach(([name, formControl]) => {
+      formControl.saveValue();
+      formControl.clearErrorMessages();
+    });
+
+    new ValidationService()
+        .validate(formData, configCreator(formData))
+        .catch((result) => {
+          result.errors.forEach((error) => {
+            this._formControls[error.name].addErrorMessage(error.message);
+          });
+        });
   }
 
   /**
-   * Returns registration form's HTML as string.
+   * Returns authorization form's HTML as string.
    *
    * @returns {string}
    */
   markup() {
-    return `
-        <form action="" class="form-horizontal form-page">
-            ${this.addSlot('email')}
-            ${this.addSlot('password')}
-            ${this.addSlot('confirm-password')}
-            <div class="form-group">
-                <div class="col-sm-8 col-sm-offset-4 form-row-button">
-                    ${this.addSlot('button')}
-                     <a class="form-link" href="" title="Sign In">Already have an account?</a>
-                </div>
-            </div>
-        </form>
-    `;
+    return this.addSlot('form');
   }
 }
+
