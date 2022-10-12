@@ -77,9 +77,7 @@ export class AuthorizationForm extends Component {
   }
 
   /**
-   * Returns authorization form's HTML as string.
-   *
-   * @returns {string}
+   * @inheritDoc
    */
   markup() {
     return this.addSlot('form');

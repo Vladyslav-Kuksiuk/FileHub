@@ -1,9 +1,4 @@
-import {FormPage} from '../components/form-page';
-import {RegistrationForm} from '../components/registration-form';
+import {RegistrationPage} from '../components/registration-page';
 
 const body = document.getElementsByTagName('body')[0];
-const formPage = new FormPage(body);
-formPage.headerText = 'Sign up to FileHub';
-formPage.addForm((slot) => {
-  new RegistrationForm(slot);
-});
+new RegistrationPage(body);
