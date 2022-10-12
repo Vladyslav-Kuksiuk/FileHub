@@ -43,7 +43,7 @@ export class Component {
   }
 
   /**
-   * Render component in DOM.
+   * Render component in parent.
    */
   render() {
     this.#createDomTree();

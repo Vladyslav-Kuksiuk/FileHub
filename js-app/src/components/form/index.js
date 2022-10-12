@@ -78,7 +78,7 @@ export class Form extends Component {
    */
   markup() {
     return `
-        <form ${this.markElement('form')} action="" class="form-horizontal form-page">
+        <form ${this.markElement('form-component')} action="" class="form-horizontal form-page">
             ${this.addSlot('inputs')}
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4 form-row-button">

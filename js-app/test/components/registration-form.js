@@ -28,11 +28,11 @@ module('RegistrationForm Component', () => {
     ['ema', 'Password', 'Password', [EMAIL_LENGTH_ERROR], [], []],
     ['email%', 'Password', 'Password', [EMAIL_VALIDATION_ERROR], [], []],
     ['em%', 'Password', 'Password', [EMAIL_LENGTH_ERROR, EMAIL_VALIDATION_ERROR], [], []],
-    ['Email', 'pass','pass', [], [PASSWORD_LENGTH_ERROR], []],
+    ['Email', 'pass', 'pass', [], [PASSWORD_LENGTH_ERROR], []],
     ['em%', 'pass', 'password',
       [EMAIL_LENGTH_ERROR, EMAIL_VALIDATION_ERROR],
       [PASSWORD_LENGTH_ERROR],
-      [PASSWORD_MATCH_ERROR]
+      [PASSWORD_MATCH_ERROR],
     ],
   ].forEach(([email, password, confirm, emailErrors, passwordErrors, confirmErrors])=>{
     test(`AuthorizationForm validation, email: ${email}, password: ${password}`, function(assert) {
@@ -60,7 +60,7 @@ module('RegistrationForm Component', () => {
         for (let i=0; i < confirmErrors.length; i++ ) {
           assert.strictEqual( fixture.querySelectorAll('[data-td="form-control"]')[2]
               .querySelectorAll('[data-td="error-message"]')[i].innerText,
-            confirmErrors[i], `Should return error message : ${confirmErrors[i]}.`);
+          confirmErrors[i], `Should return error message : ${confirmErrors[i]}.`);
         }
 
         assert.ok(true, 'Should pass.');

@@ -31,7 +31,7 @@ export class AuthorizationPage extends Component {
         <a href="" title="TeamDev"><img alt="TeamDev" height="37" src="static/images/logo.png" width="200"></a>
     </header>
     <main class="container">
-        <h1>Sign in to FileFub</h1>
+        <h1>Sign in to FileHub</h1>
         <hr class="horizontal-line">
         ${this.addSlot('form')}
     </main>

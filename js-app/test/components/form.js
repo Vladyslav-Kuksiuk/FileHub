@@ -8,18 +8,18 @@ module('Form Component', () => {
     assert.expect(4);
     const fixture = document.getElementById('qunit-fixture');
 
-    assert.strictEqual(fixture.querySelectorAll('[data-td="form"]').length, 0,
+    assert.strictEqual(fixture.querySelectorAll('[data-td="form-component"]').length, 0,
         'Should return number of forms before creating.');
 
     const buttonText = 'myButton';
     const linkText = 'myLink';
     new Form(fixture, {buttonText: buttonText, linkText: linkText});
 
-    assert.strictEqual(fixture.querySelectorAll('[data-td="form"]').length, 1,
+    assert.strictEqual(fixture.querySelectorAll('[data-td="form-component"]').length, 1,
         'Should return number of forms after creating.');
-    assert.strictEqual(fixture.querySelector('[data-td="form"] button').innerText, buttonText,
+    assert.strictEqual(fixture.querySelector('[data-td="form-component"] button').innerText, buttonText,
         `Should return button innerText: ${buttonText}.`);
-    assert.strictEqual(fixture.querySelector('[data-td="form"] a').innerText, linkText,
+    assert.strictEqual(fixture.querySelector('[data-td="form-component"] a').innerText, linkText,
         `Should return link innerText: ${linkText}.`);
   });
 
