@@ -11,6 +11,10 @@ const EMAIL_MIN_LENGTH = 5;
 const PASSWORD_MIN_LENGTH = 6;
 const CONFIRM_PASSWORD = 'confirm-password';
 const EMAIL_VALIDATION_REGEX = /^[a-zA-Z\d+.\-_@]+$/;
+export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
+export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
+export const EMAIL_VALIDATION_ERROR = 'Allowed only a-Z and +.-_@ .';
+export const PASSWORD_MATCH_ERROR = 'Passwords don\'t match.';
 /**
  * Authorization page component.
  */

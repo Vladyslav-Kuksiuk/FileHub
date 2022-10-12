@@ -48,7 +48,7 @@ module('AuthorizationForm Component', () => {
 
         assert.ok(true, 'Should pass.');
         done();
-      }, 100);
+      });
     });
   });
 });
