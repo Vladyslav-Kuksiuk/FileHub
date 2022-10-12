@@ -57,21 +57,6 @@ export class FormControl extends Component {
   }
 
   /**
-   * @returns {string}
-   */
-  get name() {
-    return this.#name;
-  }
-
-  /**
-   * @param {string} name
-   */
-  set name(name) {
-    this.#name = name;
-    this.render();
-  }
-
-  /**
    * Saves value from user input.
    */
   saveValue() {
@@ -83,7 +68,7 @@ export class FormControl extends Component {
    */
   markup() {
     const errors = this.#errorMessages?.map((error) => {
-      return `<p class="help-block text-danger">${error}</p>`;
+      return `<p class="help-block text-danger" ${this.markElement('error-message')}>${error}</p>`;
     }).join(' ');
 
     return `

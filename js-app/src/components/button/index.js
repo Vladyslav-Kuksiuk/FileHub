@@ -21,7 +21,8 @@ export class Button extends Component {
    */
   markup() {
     return `
-    <button class="btn btn-primary" title="${this.#title}" ${this.markElement('button-component')}>${this.#title}</button>
+    <button class="btn btn-primary" title="${this.#title}"
+            ${this.markElement('button-component')}>${this.#title}</button>
     `;
   }
 }
