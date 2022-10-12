@@ -1,2 +1,3 @@
-import './validation/value-validations.js';
+// import './validation/value-validations.js';
 import './components/button.js';
+import './components/form.js';

@@ -87,7 +87,7 @@ export class FormControl extends Component {
     }).join(' ');
 
     return `
-    <div class="form-group">
+    <div class="form-group" ${this.markElement('form-control')}>
                 <div class="col-sm-4 label-holder">
                     <label for="${this.#id}" class="control-label">${this.#labelText}</label>
                 </div>
