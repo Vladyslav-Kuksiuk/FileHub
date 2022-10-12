@@ -9,6 +9,8 @@ const EMAIL = 'email';
 const PASSWORD = 'password';
 const EMAIL_MIN_LENGTH = 5;
 const PASSWORD_MIN_LENGTH = 6;
+export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
+export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 
 /**
  * Authorization page component.
