@@ -17,14 +17,6 @@ export class Button extends Component {
   }
 
   /**
-   * @param {string} text
-   */
-  set title(text) {
-    this.#title = text;
-    this.render();
-  }
-
-  /**
    * @inheritDoc
    */
   markup() {

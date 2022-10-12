@@ -6,17 +6,36 @@ import {Component} from '../component.js';
 export class FormControl extends Component {
   #errorMessages = [];
   #labelText;
-  #type = 'text';
+  #type;
   #name;
-  #placeHolder;
+  #placeholder;
   #id = crypto.randomUUID();
   #value = '';
 
   /**
-   * @param {HTMLElement} parent
+   * @typedef {Object} FormControlConfig
+   * @property {string} name
+   * @property {string} labelText
+   * @property {string} [placeholder = ]
+   * @property {string} [type = text]
    */
-  constructor(parent) {
+
+  /**
+   * @param {HTMLElement} parent
+   * @param {FormControlConfig} config
+   */
+  constructor(parent,
+      {
+        name,
+        labelText,
+        placeholder = '',
+        type = 'text',
+      }) {
     super(parent);
+    this.#name = name;
+    this.#labelText = labelText;
+    this.#placeholder = placeholder;
+    this.#type = type;
     this.init();
   }
 
@@ -34,30 +53,6 @@ export class FormControl extends Component {
    */
   clearErrorMessages() {
     this.#errorMessages = [];
-    this.render();
-  }
-
-  /**
-   * @param {string} text
-   */
-  set labelText(text) {
-    this.#labelText = text;
-    this.render();
-  }
-
-  /**
-   * @param {string} type
-   */
-  set inputType(type) {
-    this.#type = type;
-    this.render();
-  }
-
-  /**
-   * @param {string} text
-   */
-  set placeholder(text) {
-    this.#placeHolder = text;
     this.render();
   }
 
@@ -84,21 +79,6 @@ export class FormControl extends Component {
   }
 
   /**
-   * @returns {string}
-   */
-  get value() {
-    return this.#value;
-  }
-
-  /**
-   * @param {string} value
-   */
-  set value(value) {
-    this.#value = value;
-    this.render();
-  }
-
-  /**
    * @inheritDoc
    */
   markup() {
@@ -113,7 +93,7 @@ export class FormControl extends Component {
                 </div>
                 <div class="col-sm-8">
                     <input id="${this.#id}" class="form-control ${errors ? 'input-error' : ''}"
-                     placeholder="${this.#placeHolder}" type="${this.#type}"
+                     placeholder="${this.#placeholder}" type="${this.#type}"
                      name="${this.#name}" value="${this.#value}">
                      ${errors ?? ''}
                 </div>

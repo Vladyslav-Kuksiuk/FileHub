@@ -1,5 +1,5 @@
 import {Component} from '../component.js';
-import {FormControl} from '../formcontrol';
+import {FormControl} from '../form-control';
 import {Form} from '../form';
 import {FormValidationConfigBuilder} from '../../validation/form-validation-config.js';
 import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations.js';
@@ -29,36 +29,39 @@ export class RegistrationForm extends Component {
    * Adds form controls and button.
    */
   afterRender() {
-    const form = new Form(this.parentElement);
+    const form = new Form(this.parentElement, {
+      buttonText: 'Sign Up',
+      linkText: 'Already have an account?',
+    });
 
     form.addFormControl((slot) => {
-      const input = new FormControl(slot);
-      input.name = EMAIL;
-      input.labelText = 'Email';
-      input.placeholder = 'Email';
+      const input = new FormControl(slot, {
+        name: EMAIL,
+        labelText: 'Email',
+        placeholder: 'Email',
+      });
       this.#formControls[EMAIL] = input;
     });
 
     form.addFormControl((slot) => {
-      const input = new FormControl(slot);
-      input.name = PASSWORD;
-      input.labelText = 'Password';
-      input.placeholder = 'Password';
-      input.inputType = 'password';
+      const input = new FormControl(slot, {
+        name: PASSWORD,
+        labelText: 'Password',
+        placeholder: 'Password',
+        type: 'password',
+      });
       this.#formControls[PASSWORD] = input;
     });
 
     form.addFormControl((slot) => {
-      const input = new FormControl(slot);
-      input.name = CONFIRM_PASSWORD;
-      input.labelText = 'Confirm Password';
-      input.placeholder = 'Confirm Password';
-      input.inputType = 'password';
+      const input = new FormControl(slot, {
+        name: CONFIRM_PASSWORD,
+        labelText: 'Confirm Password',
+        placeholder: 'Confirm Password',
+        type: 'password',
+      });
       this.#formControls[CONFIRM_PASSWORD] = input;
     });
-
-    form.buttonText = 'Sign Up';
-    form.linkText = 'Already have an account?';
 
     const configCreator = (formData) =>{
       return new FormValidationConfigBuilder()

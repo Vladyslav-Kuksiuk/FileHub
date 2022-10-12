@@ -13,10 +13,22 @@ export class Form extends Component {
   #eventTarget = new EventTarget();
 
   /**
-   * @param {HTMLElement} parent
+   * @typedef {Object} FormConfig
+   * @property {string} buttonText
+   * @property {string} linkText
    */
-  constructor(parent) {
+
+  /**
+   * @param {HTMLElement} parent
+   * @param {FormConfig} config
+   */
+  constructor(parent, {
+    buttonText,
+    linkText,
+  }) {
     super(parent);
+    this.#buttonText = buttonText;
+    this.#linkText = linkText;
     this.init();
   }
 
@@ -25,11 +37,9 @@ export class Form extends Component {
    */
   afterRender() {
     const buttonSlot = this.getSlot('button');
-    const button = new Button(buttonSlot);
-    button.title = this.#buttonText;
+    new Button(buttonSlot, this.#buttonText);
 
     const these = this;
-    this.#inputCreators = this.#inputCreators ?? [];
     this.#inputCreators.forEach((creator) => {
       const slot = these.getSlot('inputs');
       creator(slot);
@@ -39,22 +49,6 @@ export class Form extends Component {
       event.preventDefault();
       this.#eventTarget.dispatchEvent(new Event(FORM_SUBMIT_EVENT));
     });
-  }
-
-  /**
-   * @param {string} text
-   */
-  set buttonText(text) {
-    this.#buttonText = text;
-    this.render();
-  }
-
-  /**
-   * @param {string} text
-   */
-  set linkText(text) {
-    this.#linkText = text;
-    this.render();
   }
 
   /**
