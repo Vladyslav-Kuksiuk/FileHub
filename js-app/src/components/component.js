@@ -67,6 +67,16 @@ export class Component {
   }
 
   /**
+   * Returns html attribute to mark element.
+   *
+   * @param {string} name
+   * @returns {string}
+   */
+  markElement(name) {
+    return `data-td="${name}"`;
+  }
+
+  /**
    * Creates new {HTMLElement} by markup.
    *
    * @returns {HTMLElement}
