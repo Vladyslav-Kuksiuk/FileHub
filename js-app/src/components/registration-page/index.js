@@ -6,6 +6,14 @@ import {RegistrationForm} from '../registration-form';
  */
 export class RegistrationPage extends Component {
   /**
+   * @param {HTMLElement} parent
+   */
+  constructor(parent) {
+    super(parent);
+    this.init();
+  }
+
+  /**
    * Adds form controls and button to form.
    */
   afterRender() {
@@ -23,7 +31,7 @@ export class RegistrationPage extends Component {
         <a href="" title="TeamDev"><img alt="TeamDev" height="37" src="static/images/logo.png" width="200"></a>
     </header>
     <main class="container">
-        <h1>Sign in to FileHub</h1>
+        <h1>Sign up to FileHub</h1>
         <hr class="horizontal-line">
         ${this.addSlot('form')}
     </main>

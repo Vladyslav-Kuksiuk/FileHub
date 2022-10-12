@@ -14,19 +14,28 @@ const PASSWORD_MIN_LENGTH = 6;
  * Authorization page component.
  */
 export class AuthorizationForm extends Component {
+  #formControls = {};
+
+  /**
+   * @param {HTMLElement} parent
+   */
+  constructor(parent) {
+    super(parent);
+    this.init();
+  }
+
   /**
    * Adds form controls and button.
    */
   afterRender() {
     const form = new Form(this.parentElement);
-    this._formControls = {};
 
     form.addFormControl((slot) => {
       const input = new FormControl(slot);
       input.name = EMAIL;
       input.labelText = 'Email';
       input.placeholder = 'Email';
-      this._formControls[EMAIL] = input;
+      this.#formControls[EMAIL] = input;
     });
 
     form.addFormControl((slot) => {
@@ -35,7 +44,7 @@ export class AuthorizationForm extends Component {
       input.labelText = 'Password';
       input.placeholder = 'Password';
       input.inputType = 'password';
-      this._formControls[PASSWORD] = input;
+      this.#formControls[PASSWORD] = input;
     });
 
     form.buttonText = 'Sign In';
@@ -62,7 +71,7 @@ export class AuthorizationForm extends Component {
    * @param {function(FormData)} configCreator
    */
   #validateForm(formData, configCreator) {
-    Object.entries(this._formControls).forEach(([name, formControl]) => {
+    Object.entries(this.#formControls).forEach(([name, formControl]) => {
       formControl.saveValue();
       formControl.clearErrorMessages();
     });
@@ -71,7 +80,7 @@ export class AuthorizationForm extends Component {
         .validate(formData, configCreator(formData))
         .catch((result) => {
           result.errors.forEach((error) => {
-            this._formControls[error.name].addErrorMessage(error.message);
+            this.#formControls[error.name].addErrorMessage(error.message);
           });
         });
   }

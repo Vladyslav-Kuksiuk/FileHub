@@ -4,24 +4,32 @@ import {Component} from '../component.js';
  * Button component.
  */
 export class Button extends Component {
-  _title;
+  #title;
+
+  /**
+   * @param {HTMLElement} parent
+   * @param {string} title
+   */
+  constructor(parent, title) {
+    super(parent);
+    this.#title = title;
+    this.init();
+  }
 
   /**
    * @param {string} text
    */
   set title(text) {
-    this._title = text;
+    this.#title = text;
     this.render();
   }
 
   /**
-   * Returns button's HTML as string.
-   *
-   * @returns {string}
+   * @inheritDoc
    */
   markup() {
     return `
-    <button class="btn btn-primary" title="${this._title}">${this._title}</button>
+    <button class="btn btn-primary" title="${this.#title}">${this.#title}</button>
     `;
   }
 }

@@ -10,15 +10,13 @@ export class Component {
    */
   constructor(parent) {
     this.parentElement = parent;
-    this.beforeRender();
-    this.render();
   }
 
   /**
    * Method calls before first render
    */
-  beforeRender() {
-
+  init() {
+    this.render();
   }
 
   /**

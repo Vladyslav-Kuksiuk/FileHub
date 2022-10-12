@@ -6,6 +6,14 @@ import {AuthorizationForm} from '../authorization-form';
  */
 export class AuthorizationPage extends Component {
   /**
+   * @param {HTMLElement} parent
+   */
+  constructor(parent) {
+    super(parent);
+    this.init();
+  }
+
+  /**
    * Adds authorization form to page.
    */
   afterRender() {
@@ -23,7 +31,7 @@ export class AuthorizationPage extends Component {
         <a href="" title="TeamDev"><img alt="TeamDev" height="37" src="static/images/logo.png" width="200"></a>
     </header>
     <main class="container">
-        <h1>Sign up to FileFub</h1>
+        <h1>Sign in to FileFub</h1>
         <hr class="horizontal-line">
         ${this.addSlot('form')}
     </main>
