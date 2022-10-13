@@ -4,6 +4,7 @@ import {Form} from '../form';
 import {FormValidationConfigBuilder} from '../../validation/form-validation-config.js';
 import {validateLength} from '../../validation/value-validations.js';
 import {ValidationService} from '../../validation/validation-service.js';
+import {Link} from '../link';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
@@ -30,9 +31,13 @@ export class AuthorizationForm extends Component {
    * Adds form controls and button.
    */
   afterRender() {
+    const footerCreator = (slot) => {
+      new Link(slot, 'Don\'t have an account yet?');
+    };
+
     const form = new Form(this.parentElement, {
       buttonText: 'Sign In',
-      linkText: 'Don\'t have an account yet?',
+      footerCreator: footerCreator,
     });
 
     form.addFormControl((slot) => {

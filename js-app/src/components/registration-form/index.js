@@ -4,6 +4,7 @@ import {Form} from '../form';
 import {FormValidationConfigBuilder} from '../../validation/form-validation-config.js';
 import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations.js';
 import {ValidationService} from '../../validation/validation-service.js';
+import {Link} from '../link';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
@@ -33,9 +34,13 @@ export class RegistrationForm extends Component {
    * Adds form controls and button.
    */
   afterRender() {
+    const footerCreator = (slot) => {
+      new Link(slot, 'Already have an account?');
+    };
+
     const form = new Form(this.parentElement, {
       buttonText: 'Sign Up',
-      linkText: 'Already have an account?',
+      footerCreator: footerCreator,
     });
 
     form.addFormControl((slot) => {

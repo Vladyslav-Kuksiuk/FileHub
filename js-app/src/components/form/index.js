@@ -8,7 +8,7 @@ const FORM_SUBMIT_EVENT = 'formSubmitEvent';
  */
 export class Form extends Component {
   #buttonText;
-  #linkText;
+  #footerCreator;
   #inputCreators = [];
   #eventTarget = new EventTarget();
 
@@ -24,11 +24,11 @@ export class Form extends Component {
    */
   constructor(parent, {
     buttonText,
-    linkText,
+    footerCreator,
   }) {
     super(parent);
     this.#buttonText = buttonText;
-    this.#linkText = linkText;
+    this.#footerCreator = footerCreator;
     this.init();
   }
 
@@ -38,6 +38,9 @@ export class Form extends Component {
   afterRender() {
     const buttonSlot = this.getSlot('button');
     new Button(buttonSlot, this.#buttonText);
+
+    const footerSlot = this.getSlot('footer');
+    this.#footerCreator?.(footerSlot);
 
     const these = this;
     this.#inputCreators.forEach((creator) => {
@@ -83,7 +86,7 @@ export class Form extends Component {
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4 form-row-button">
                     ${this.addSlot('button')}
-                    <a class="form-link" href="" title="${this.#linkText}">${this.#linkText}</a>
+                    ${this.addSlot('footer')}
                 </div>
             </div>
         </form>
