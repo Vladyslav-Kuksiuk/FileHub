@@ -13,11 +13,14 @@ const PASSWORD_MIN_LENGTH = 6;
 export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
 export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 
+const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+
 /**
  * Authorization page component.
  */
 export class AuthorizationForm extends Component {
   #formControls = {};
+  #eventTarget = new EventTarget();
 
   /**
    * @param {HTMLElement} parent
@@ -28,16 +31,19 @@ export class AuthorizationForm extends Component {
   }
 
   /**
-   * Adds form controls and button.
+   * @inheritDoc
    */
   afterRender() {
-    const footerCreator = (slot) => {
-      new Link(slot, 'Don\'t have an account yet?');
+    const linkCreator = (slot) => {
+      const link = new Link(slot, 'Don\'t have an account yet?');
+      link.onClick(()=>{
+        this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+      });
     };
 
     const form = new Form(this.parentElement, {
       buttonText: 'Sign In',
-      footerCreator: footerCreator,
+      linkCreator: linkCreator,
     });
 
     form.addFormControl((slot) => {
@@ -71,6 +77,14 @@ export class AuthorizationForm extends Component {
     form.onSubmit((formData) => {
       this.#validateForm(formData, configCreator);
     });
+  }
+
+  /**
+   * Adds event listener on navigate to registration.
+   * @param {function} listener
+   */
+  onNavigateToRegistration(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
   }
 
   /**

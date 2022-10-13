@@ -43,7 +43,7 @@ export class Link extends Component {
   markup() {
     return `
      <a class="form-link" ${this.markElement('link-component')}
-      href="" title="${this.#text}">${this.#text}</a>
+      href="#" title="${this.#text}">${this.#text}</a>
     `;
   }
 }

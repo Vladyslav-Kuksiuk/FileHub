@@ -33,9 +33,15 @@ export class Application extends Component {
     const hash = window.location.hash;
     this.rootElement.innerHTML = '';
     if (hash === '#login') {
-      new AuthorizationPage(this.rootElement);
+      const page = new AuthorizationPage(this.rootElement);
+      page.onNavigateToRegistration(()=>{
+        window.location.hash = '#registration';
+      });
     } else if (hash === '#registration') {
-      new RegistrationPage(this.rootElement);
+      const page = new RegistrationPage(this.rootElement);
+      page.onNavigateToAuthorization(()=>{
+        window.location.hash = '#login';
+      });
     }
   }
 

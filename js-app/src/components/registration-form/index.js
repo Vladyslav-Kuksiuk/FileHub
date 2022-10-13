@@ -16,11 +16,15 @@ export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} s
 export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 export const EMAIL_VALIDATION_ERROR = 'Allowed only a-Z and +.-_@ .';
 export const PASSWORD_MATCH_ERROR = 'Passwords don\'t match.';
+
+const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+
 /**
  * Authorization page component.
  */
 export class RegistrationForm extends Component {
   #formControls = {};
+  #eventTarget = new EventTarget();
 
   /**
    * @param {HTMLElement} parent
@@ -34,13 +38,16 @@ export class RegistrationForm extends Component {
    * Adds form controls and button.
    */
   afterRender() {
-    const footerCreator = (slot) => {
-      new Link(slot, 'Already have an account?');
+    const linkCreator = (slot) => {
+      const link = new Link(slot, 'Already have an account?');
+      link.onClick(() => {
+        this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+      });
     };
 
     const form = new Form(this.parentElement, {
       buttonText: 'Sign Up',
-      footerCreator: footerCreator,
+      linkCreator: linkCreator,
     });
 
     form.addFormControl((slot) => {
@@ -72,7 +79,7 @@ export class RegistrationForm extends Component {
       this.#formControls[CONFIRM_PASSWORD] = input;
     });
 
-    const configCreator = (formData) =>{
+    const configCreator = (formData) => {
       return new FormValidationConfigBuilder()
           .addField(EMAIL,
               validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`),
@@ -88,6 +95,14 @@ export class RegistrationForm extends Component {
     form.onSubmit((formData) => {
       this.#validateForm(formData, configCreator);
     });
+  }
+
+  /**
+   * Adds event listener on navigate to authorization.
+   * @param {function} listener
+   */
+  onNavigateToAuthorization(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
   }
 
   /**

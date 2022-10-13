@@ -1,10 +1,14 @@
 import {Component} from '../component.js';
 import {RegistrationForm} from '../registration-form';
 
+const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+
 /**
  * Authorization page component.
  */
 export class RegistrationPage extends Component {
+  #eventTarget = new EventTarget();
+
   /**
    * @param {HTMLElement} parent
    */
@@ -18,7 +22,18 @@ export class RegistrationPage extends Component {
    */
   afterRender() {
     const formSlot = this.getSlot('form');
-    new RegistrationForm(formSlot);
+    const form = new RegistrationForm(formSlot);
+    form.onNavigateToAuthorization(()=>{
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+    });
+  }
+
+  /**
+   * Adds event listener on navigate to authorization.
+   * @param {function} listener
+   */
+  onNavigateToAuthorization(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
   }
 
   /**

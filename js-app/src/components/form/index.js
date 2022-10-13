@@ -1,21 +1,21 @@
 import {Component} from '../component.js';
 import {Button} from '../button';
 
-const FORM_SUBMIT_EVENT = 'formSubmitEvent';
-
+const FORM_SUBMIT_EVENT = 'FORM_SUBMIT_EVENT';
 /**
  * Authorization page component.
  */
 export class Form extends Component {
   #buttonText;
-  #footerCreator;
+  #linkCreator;
   #inputCreators = [];
+
   #eventTarget = new EventTarget();
 
   /**
    * @typedef {Object} FormConfig
    * @property {string} buttonText
-   * @property {string} linkText
+   * @property {function(HTMLElement)} linkCreator
    */
 
   /**
@@ -24,11 +24,11 @@ export class Form extends Component {
    */
   constructor(parent, {
     buttonText,
-    footerCreator,
+    linkCreator,
   }) {
     super(parent);
     this.#buttonText = buttonText;
-    this.#footerCreator = footerCreator;
+    this.#linkCreator = linkCreator;
     this.init();
   }
 
@@ -39,8 +39,8 @@ export class Form extends Component {
     const buttonSlot = this.getSlot('button');
     new Button(buttonSlot, this.#buttonText);
 
-    const footerSlot = this.getSlot('footer');
-    this.#footerCreator?.(footerSlot);
+    const linkSlot = this.getSlot('link');
+    this.#linkCreator?.(linkSlot);
 
     const these = this;
     this.#inputCreators.forEach((creator) => {
@@ -86,7 +86,7 @@ export class Form extends Component {
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4 form-row-button">
                     ${this.addSlot('button')}
-                    ${this.addSlot('footer')}
+                    ${this.addSlot('link')}
                 </div>
             </div>
         </form>
