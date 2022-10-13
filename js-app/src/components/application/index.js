@@ -2,12 +2,12 @@ import {Component} from '../component.js';
 import {AuthorizationPage} from '../authorization-page';
 import {RegistrationPage} from '../registration-page';
 import {Router} from '../../router.js';
+import {Error404Page} from '../error-404-page';
 
 /**
  * Authorization page component.
  */
 export class Application extends Component {
-  #page;
   #router;
 
   /**
@@ -26,20 +26,26 @@ export class Application extends Component {
    */
   #configureRouter(router) {
     router.defaultPage = (slot) => {
-      const form = new AuthorizationPage(slot);
-      form.onNavigateToRegistration(() => {
+      const page = new AuthorizationPage(slot);
+      page.onNavigateToRegistration(() => {
         window.location.hash = '#registration';
       });
     };
+    router.error404Page = (slot) => {
+      const page = new Error404Page(slot);
+      page.onNavigateToHome(() => {
+        window.location.hash = '';
+      });
+    };
     router.addPage('#login', (slot) => {
-      const form = new AuthorizationPage(slot);
-      form.onNavigateToRegistration(() => {
+      const page = new AuthorizationPage(slot);
+      page.onNavigateToRegistration(() => {
         window.location.hash = '#registration';
       });
     });
     router.addPage('#registration', (slot) => {
-      const form = new RegistrationPage(slot);
-      form.onNavigateToAuthorization(() => {
+      const page = new RegistrationPage(slot);
+      page.onNavigateToAuthorization(() => {
         window.location.hash = '#login';
       });
     });

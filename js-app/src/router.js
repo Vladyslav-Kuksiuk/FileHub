@@ -17,7 +17,7 @@ export class Router {
    * @param {function(HTMLElement)} pageCreator
    */
   set error404Page(pageCreator) {
-    this.#defaultPageCreator = pageCreator;
+    this.#error404PageCreator = pageCreator;
   }
 
   /**
@@ -38,7 +38,7 @@ export class Router {
     } else if (pageName === '') {
       return this.#defaultPageCreator;
     } else {
-      this.#error404PageCreator;
+      return this.#error404PageCreator;
     }
   }
 }
