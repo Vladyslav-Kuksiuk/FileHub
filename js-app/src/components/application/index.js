@@ -8,66 +8,35 @@ import {Error404Page} from '../error-404-page';
  * Authorization page component.
  */
 export class Application extends Component {
-  #router;
-
   /**
    * @param {HTMLElement} parent
    */
   constructor(parent) {
     super(parent);
-    this.#router = new Router();
-    this.#configureRouter(this.#router);
     this.init();
-  }
 
-  /**
-   * @private
-   * @param {Router} router
-   */
-  #configureRouter(router) {
-    router.defaultPage = (slot) => {
-      const page = new AuthorizationPage(slot);
-      page.onNavigateToRegistration(() => {
-        window.location.hash = '#registration';
-      });
-    };
-    router.error404Page = (slot) => {
-      const page = new Error404Page(slot);
-      page.onNavigateToHome(() => {
-        window.location.hash = '';
-      });
-    };
-    router.addPage('#login', (slot) => {
-      const page = new AuthorizationPage(slot);
-      page.onNavigateToRegistration(() => {
-        window.location.hash = '#registration';
-      });
-    });
-    router.addPage('#registration', (slot) => {
-      const page = new RegistrationPage(slot);
-      page.onNavigateToAuthorization(() => {
-        window.location.hash = '#login';
-      });
-    });
-  }
-
-  /**
-   * Adds form controls and button to form.
-   */
-  afterRender() {
-    this.#renderPage();
-    window.addEventListener('hashchange', () => {
-      this.#renderPage();
-    });
-  }
-
-  /**
-   * @private
-   */
-  #renderPage() {
-    const hash = window.location.hash;
-    this.rootElement.innerHTML = '';
-    this.#router.getPage(hash)(this.rootElement);
+    const router = Router.getBuilder()
+        .addRootElement(this.rootElement)
+        .addHomePageName('login')
+        .addErrorPage((slot) => {
+          const page = new Error404Page(slot);
+          page.onNavigateToHome(() => {
+            router.redirect('');
+          });
+        })
+        .addPage('login', (slot) => {
+          const page = new AuthorizationPage(slot);
+          page.onNavigateToRegistration(() => {
+            router.redirect('registration');
+          });
+        })
+        .addPage('registration', (slot) => {
+          const page = new RegistrationPage(slot);
+          page.onNavigateToAuthorization(() => {
+            router.redirect('login');
+          });
+        })
+        .build();
   }
 
   /**
