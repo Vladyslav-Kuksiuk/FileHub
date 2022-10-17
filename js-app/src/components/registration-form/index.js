@@ -23,7 +23,13 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  * Authorization page component.
  */
 export class RegistrationForm extends Component {
-  #formControls = {};
+  #emailValue = '';
+  #passwordValue = '';
+  #confirmValue = '';
+  #formErrors = {
+    [EMAIL]: [],
+    [PASSWORD]: [],
+  };
   #eventTarget = new EventTarget();
 
   /**
@@ -45,38 +51,41 @@ export class RegistrationForm extends Component {
       });
     };
 
-    const form = new Form(this.parentElement, {
+    const form = new Form(this.rootElement, {
       buttonText: 'Sign Up',
       linkCreator: linkCreator,
     });
 
     form.addFormControl((slot) => {
-      const input = new FormControl(slot, {
+      new FormControl(slot, {
         name: EMAIL,
         labelText: 'Email',
         placeholder: 'Email',
+        value: this.#emailValue,
+        errorMessages: this.#formErrors[EMAIL],
       });
-      this.#formControls[EMAIL] = input;
     });
 
     form.addFormControl((slot) => {
-      const input = new FormControl(slot, {
+      new FormControl(slot, {
         name: PASSWORD,
         labelText: 'Password',
         placeholder: 'Password',
         type: 'password',
+        value: this.#passwordValue,
+        errorMessages: this.#formErrors[PASSWORD],
       });
-      this.#formControls[PASSWORD] = input;
     });
 
     form.addFormControl((slot) => {
-      const input = new FormControl(slot, {
+      new FormControl(slot, {
         name: CONFIRM_PASSWORD,
         labelText: 'Confirm Password',
         placeholder: 'Confirm Password',
         type: 'password',
+        value: this.#confirmValue,
+        errorMessages: this.#formErrors[CONFIRM_PASSWORD],
       });
-      this.#formControls[CONFIRM_PASSWORD] = input;
     });
 
     const configCreator = (formData) => {
@@ -93,8 +102,19 @@ export class RegistrationForm extends Component {
     };
 
     form.onSubmit((formData) => {
+      this.#emailValue = formData.get(EMAIL);
+      this.#passwordValue = formData.get(PASSWORD);
+      this.#confirmValue = formData.get(CONFIRM_PASSWORD);
       this.#validateForm(formData, configCreator);
     });
+  }
+
+  /**
+   * @param {object} errors
+   */
+  set formErrors(errors) {
+    this.#formErrors = errors;
+    this.render();
   }
 
   /**
@@ -112,17 +132,16 @@ export class RegistrationForm extends Component {
    * @param {function(FormData)} configCreator
    */
   #validateForm(formData, configCreator) {
-    Object.entries(this.#formControls).forEach(([name, formControl]) => {
-      formControl.saveValue();
-      formControl.clearErrorMessages();
-    });
-
     new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
-          result.errors.forEach((error) => {
-            this.#formControls[error.name].addErrorMessage(error.message);
-          });
+          const errorsByField = result.errors.reduce((tempErrors, error)=>{
+            const fieldName = error.name;
+            const prevErrors = tempErrors[fieldName] || [];
+            tempErrors[fieldName] = [...prevErrors, error.message];
+            return tempErrors;
+          }, {});
+          this.formErrors = errorsByField;
         });
   }
 

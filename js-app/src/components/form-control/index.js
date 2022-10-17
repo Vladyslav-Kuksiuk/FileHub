@@ -18,6 +18,8 @@ export class FormControl extends Component {
    * @property {string} labelText
    * @property {string} [placeholder = ]
    * @property {string} [type = text]
+   * @property {string} [value = ]
+   * @property {[string]} [errorMessages = []]
    */
 
   /**
@@ -30,37 +32,17 @@ export class FormControl extends Component {
         labelText,
         placeholder = '',
         type = 'text',
+        value = '',
+        errorMessages = [],
       }) {
     super(parent);
     this.#name = name;
     this.#labelText = labelText;
     this.#placeholder = placeholder;
     this.#type = type;
+    this.#value = value;
+    this.#errorMessages = errorMessages;
     this.init();
-  }
-
-  /**
-   *  Adds error message to input.
-   * @param {string} errorMessage
-   */
-  addErrorMessage(errorMessage) {
-    this.#errorMessages.push(errorMessage);
-    this.render();
-  }
-
-  /**
-   * Clear all error messages from input.
-   */
-  clearErrorMessages() {
-    this.#errorMessages = [];
-    this.render();
-  }
-
-  /**
-   * Saves value from user input.
-   */
-  saveValue() {
-    this.#value = document.getElementById(this.#id).value;
   }
 
   /**
