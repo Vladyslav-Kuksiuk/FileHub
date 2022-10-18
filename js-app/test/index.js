@@ -1,4 +1,5 @@
 import './validation/value-validations.js';
+import './router/router.js';
 import './components/component.js';
 import './components/button.js';
 import './components/link.js';

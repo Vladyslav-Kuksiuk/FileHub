@@ -1,8 +1,8 @@
+import {Preconditions} from './preconditions.js';
+
 /**
  * Class to provide routing.
  */
-import {Preconditions} from './preconditions.js';
-
 export class Router {
   #rootElement;
   #pages = {};
@@ -16,14 +16,14 @@ export class Router {
    * @param {function(HTMLElement)} errorPageCreator
    */
   constructor(rootElement, pages, homePageName, errorPageCreator) {
-    Preconditions.checkType(rootElement, 'object')
-    Preconditions.checkType(pages, 'object')
+    Preconditions.checkType(rootElement, 'object');
+    Preconditions.checkType(pages, 'object');
     Object.entries(pages).forEach(([key, value])=>{
       Preconditions.checkType(key, 'string');
       Preconditions.checkType(value, 'function');
-    })
+    });
     Preconditions.checkType(homePageName, 'string');
-    Preconditions.checkType(errorPageCreator, 'function')
+    Preconditions.checkType(errorPageCreator, 'function');
     this.#rootElement = rootElement;
     this.#pages = pages;
     this.#homePageName = homePageName;
