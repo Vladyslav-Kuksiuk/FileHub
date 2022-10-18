@@ -1,7 +1,7 @@
 /**
- * Entity to transfer authorization form data.
+ * Entity to transfer user data.
  */
-export class AuthorizationFormData {
+export class UserData {
   #login;
   #password;
 

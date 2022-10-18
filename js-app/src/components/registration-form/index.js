@@ -5,6 +5,7 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations.js';
 import {ValidationService} from '../../validation/validation-service.js';
 import {Link} from '../link';
+import {UserData} from '../../user-data.js';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
@@ -133,7 +134,12 @@ export class RegistrationForm extends Component {
    * @param {function} listener
    */
   onSubmit(listener) {
-    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, ()=>{
+      listener(new UserData(
+          this.#emailValue,
+          this.#passwordValue,
+      ));
+    });
   }
 
   /**

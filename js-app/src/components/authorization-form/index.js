@@ -5,7 +5,7 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateLength} from '../../validation/value-validations.js';
 import {ValidationService} from '../../validation/validation-service.js';
 import {Link} from '../link';
-import {AuthorizationFormData} from './authorization-form-data.js';
+import {UserData} from '../../user-data.js';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
@@ -108,11 +108,11 @@ export class AuthorizationForm extends Component {
   /**
    * Adds event listener on form submit after validation.
    *
-   * @param {function(AuthorizationFormData)} listener
+   * @param {function(UserData)} listener
    */
   onSubmit(listener) {
     this.#eventTarget.addEventListener(SUBMIT_EVENT, () =>{
-      listener(new AuthorizationFormData(
+      listener(new UserData(
           this.#emailValue,
           this.#passwordValue,
       ));

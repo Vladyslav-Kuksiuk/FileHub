@@ -43,7 +43,7 @@ export class Application extends Component {
           page.onNavigateToAuthorization(() => {
             router.redirect('login');
           });
-          page.onFormSubmit(()=>{
+          page.onFormSubmit((data)=>{
             router.redirect('login');
           });
         })

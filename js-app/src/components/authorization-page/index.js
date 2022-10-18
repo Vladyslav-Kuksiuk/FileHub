@@ -47,7 +47,7 @@ export class AuthorizationPage extends Component {
   /**
    * Adds event listener on form submit.
    *
-   * @param {function(AuthorizationFormData)} listener
+   * @param {function(UserData)} listener
    */
   onFormSubmit(listener) {
     this.#form.onSubmit(listener);

@@ -9,6 +9,7 @@ const SUBMIT_EVENT = 'SUBMIT_EVENT';
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
+  #form;
 
   /**
    * @param {HTMLElement} parent
@@ -32,6 +33,7 @@ export class RegistrationPage extends Component {
     form.onSubmit(()=>{
       this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
     });
+    this.#form = form;
   }
 
   /**
@@ -45,10 +47,10 @@ export class RegistrationPage extends Component {
   /**
    * Adds event listener on form submit.
    *
-   * @param {function} listener
+   * @param {function(UserData)} listener
    */
   onFormSubmit(listener) {
-    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
+    this.#form.onSubmit(listener);
   }
 
   /**
