@@ -9,6 +9,7 @@ const SUBMIT_EVENT = 'SUBMIT_EVENT';
  */
 export class AuthorizationPage extends Component {
   #eventTarget = new EventTarget();
+  #form;
 
   /**
    * @param {HTMLElement} parent
@@ -26,13 +27,13 @@ export class AuthorizationPage extends Component {
   afterRender() {
     const formSlot = this.getSlot('form');
     const form = new AuthorizationForm(formSlot);
-
     form.onNavigateToRegistration(()=>{
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
     form.onSubmit(()=>{
       this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
     });
+    this.#form = form;
   }
 
   /**
@@ -46,10 +47,10 @@ export class AuthorizationPage extends Component {
   /**
    * Adds event listener on form submit.
    *
-   * @param {function} listener
+   * @param {function(AuthorizationFormData)} listener
    */
   onFormSubmit(listener) {
-    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
+    this.#form.onSubmit(listener);
   }
 
   /**
