@@ -26,17 +26,17 @@ export class Router {
     this.#errorRoute = errorPageCreator;
 
     window.addEventListener('hashchange', () => {
-      this.#routeHandler(window.location.hash.replace('#', ''));
+      this.#handleRoute(window.location.hash.replace('#', ''));
     });
 
-    this.#routeHandler(window.location.hash.replace('#', ''));
+    this.#handleRoute(window.location.hash.replace('#', ''));
   }
 
   /**
    * Renders page in root element.
    * @param {string} routeName
    */
-  #routeHandler(routeName) {
+  #handleRoute(routeName) {
     if (routeName === '') {
       this.#routes[this.#homeRouteName]();
     } else if (this.#routes[routeName]) {

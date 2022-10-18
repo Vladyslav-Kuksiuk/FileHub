@@ -10,16 +10,15 @@ module('Router', () => {
     window.location.hash = '';
 
     const router = Router.getBuilder()
-        .addRootElement(fixture)
-        .addHomePageName('login')
-        .addErrorRoute((slot) => {
-          slot.innerHTML = 'error';
+        .addHomeRouteName('login')
+        .addErrorRoute(() => {
+          fixture.innerHTML = 'error';
         })
-        .addRoute('register', (slot) => {
-          slot.innerHTML = 'register';
+        .addRoute('register', () => {
+          fixture.innerHTML = 'register';
         })
-        .addRoute('login', (slot) => {
-          slot.innerHTML = 'login';
+        .addRoute('login', () => {
+          fixture.innerHTML = 'login';
         }).build();
 
     assert.strictEqual(fixture.innerHTML, 'login',
