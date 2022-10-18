@@ -137,7 +137,7 @@ export class RegistrationForm extends Component {
       [EMAIL]: [],
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
-    }
+    };
     new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
