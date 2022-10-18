@@ -1,5 +1,6 @@
 import {Component} from '../component.js';
 import {RegistrationForm} from '../registration-form';
+import {TitleService} from '../../title-service.js';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 const SUBMIT_EVENT = 'SUBMIT_EVENT';
@@ -36,7 +37,7 @@ export class RegistrationPage extends Component {
 
   /**
    * Adds event listener on navigate to authorization.
-   * @param {function} listener
+   * @param {Function} listener
    */
   onNavigateToAuthorization(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
@@ -45,7 +46,7 @@ export class RegistrationPage extends Component {
   /**
    * Adds event listener on form submit.
    *
-   * @param {function} listener
+   * @param {Function} listener
    */
   onFormSubmit(listener) {
     this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);

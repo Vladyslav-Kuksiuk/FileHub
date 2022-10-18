@@ -3,7 +3,7 @@ import {Preconditions} from '../preconditions.js';
 /**
  * Validates the minimum length of value.
  *
- * @param {int} minLength
+ * @param {number} minLength
  * @param {string} errorMessage
  * @returns {function(*): Promise<string>}
  */

@@ -1,11 +1,14 @@
 import {ValidationError} from './validation-error.js';
 import {ValidationErrorResult} from './validation-error-result.js';
+import {FormValidationConfig} from './form-validation-config.js';
 
 /**
  * Service for form validation.
  */
 export class ValidationService {
   /**
+   * Validates formData inputs by given config.
+   *
    * @param {FormData} formData
    * @param {FormValidationConfig} config
    * @returns {Promise<void>}

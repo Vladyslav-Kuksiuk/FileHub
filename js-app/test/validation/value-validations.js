@@ -163,7 +163,7 @@ module('validateSameValues', function() {
     [123, 456],
     [[123], [123, 123]]]
       .forEach(([expectedValue, testingValue]) => {
-        test(`Expected value : '${expectedValue}, testing value: '${testingValue}'`, (assert) => {
+        test(`Expected value : '${expectedValue}, testing value: '${testingValue}'`, function(assert) {
           assert.expect(1);
           const validatingFunction = validateSameValue(expectedValue, 'Regexp validation error.');
           validatingFunction(testingValue).catch((error) => {

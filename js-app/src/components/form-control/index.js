@@ -13,13 +13,13 @@ export class FormControl extends Component {
   #value = '';
 
   /**
-   * @typedef {Object} FormControlConfig
+   * @typedef {object} FormControlConfig
    * @property {string} name
    * @property {string} labelText
-   * @property {string} [placeholder = ]
-   * @property {string} [type = text]
-   * @property {string} [value = ]
-   * @property {[string]} [errorMessages = []]
+   * @property {string} placeholder
+   * @property {string} type
+   * @property {string} value
+   * @property {string[]} errorMessages
    */
 
   /**

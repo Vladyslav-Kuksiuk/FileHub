@@ -12,6 +12,7 @@
   "devDependencies": {
     "eslint": "^8.22.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jsdoc": "^39.3.13",
     "eslint-plugin-qunit": "^7.3.1",
     "qunit": "^2.19.1"
   }

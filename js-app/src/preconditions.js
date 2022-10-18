@@ -7,6 +7,7 @@ export class Preconditions {
    *
    * @param {any} value
    * @param {string} type
+   * @throws {Error} If type not match.
    */
   static checkType(value, type) {
     if (typeof value !== type) {
@@ -18,6 +19,7 @@ export class Preconditions {
    *  Checks if the state is true.
    *
    * @param {boolean} state
+   * @throws {Error} If state is false.
    */
   static checkTrue(state) {
     Preconditions.checkType(state, 'boolean');

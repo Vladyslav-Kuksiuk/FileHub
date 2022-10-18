@@ -1,5 +1,6 @@
 import {Component} from '../component.js';
 import {Link} from '../link';
+import {TitleService} from '../../title-service.js';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -33,7 +34,7 @@ export class Error404Page extends Component {
 
   /**
    * Adds event listener on navigate to registration.
-   * @param {function} listener
+   * @param {Function} listener
    */
   onNavigateToHome(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);

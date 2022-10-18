@@ -121,7 +121,7 @@ export class RegistrationForm extends Component {
 
   /**
    * Adds event listener on navigate to authorization.
-   * @param {function} listener
+   * @param {Function} listener
    */
   onNavigateToAuthorization(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
@@ -130,7 +130,7 @@ export class RegistrationForm extends Component {
   /**
    * Adds event listener on form submit after validation.
    *
-   * @param {function} listener
+   * @param {Function} listener
    */
   onSubmit(listener) {
     this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);

@@ -9,7 +9,7 @@ export class Router {
   #errorRoute;
 
   /**
-   * @param {Object} pages
+   * @param {object} pages
    * @param {string} homePageName
    * @param {function(HTMLElement)} errorPageCreator
    */
@@ -34,6 +34,7 @@ export class Router {
 
   /**
    * Renders page in root element.
+   *
    * @param {string} routeName
    */
   #routeHandler(routeName) {
@@ -47,6 +48,7 @@ export class Router {
   }
 
   /**
+   * Creates {@link RouterBuilder}.
    *
    * @returns {RouterBuilder}
    */
@@ -108,6 +110,8 @@ class RouterBuilder {
   }
 
   /**
+   * Creates {@link Router}.
+   *
    * @returns {Router}
    */
   build() {

@@ -13,20 +13,22 @@ export class Component {
   }
 
   /**
-   * Method calls before first render
+   * Method calls before first render.
    */
   init() {
     this.render();
   }
 
   /**
-   * Method calls after first render
+   * Method calls after first render.
    */
   afterRender() {
 
   }
 
   /**
+   * Creates html slot with mark.
+   *
    * @param {string} name
    * @returns {string}
    */
@@ -35,6 +37,8 @@ export class Component {
   }
 
   /**
+   * Finds html slot by mark.
+   *
    * @param {string} name
    * @returns {HTMLElement}
    */

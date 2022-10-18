@@ -13,7 +13,7 @@ export class Form extends Component {
   #eventTarget = new EventTarget();
 
   /**
-   * @typedef {Object} FormConfig
+   * @typedef {object} FormConfig
    * @property {string} buttonText
    * @property {function(HTMLElement)} linkCreator
    */

@@ -15,7 +15,7 @@ export class TitleService {
   }
 
   /**
-   * @param {[string]} titles
+   * @param {string[]} titles
    */
   set titles(titles) {
     const allTitles = [this.#mainTitle, ...titles];
