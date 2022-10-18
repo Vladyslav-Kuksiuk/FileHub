@@ -11,9 +11,11 @@ export class Error404Page extends Component {
 
   /**
    * @param {HTMLElement} parent
+   * @param {TitleService} titleService
    */
-  constructor(parent) {
+  constructor(parent, titleService) {
     super(parent);
+    titleService.titles = ['404'];
     this.init();
   }
 
