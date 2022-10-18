@@ -33,6 +33,9 @@ export class Application extends Component {
           page.onNavigateToRegistration(() => {
             router.redirect('registration');
           });
+          page.onFormSubmit(()=>{
+            router.redirect('table');
+          });
         })
         .addRoute('registration', () => {
           this.rootElement.innerHTML = '';

@@ -2,6 +2,7 @@ import {Component} from '../component.js';
 import {AuthorizationForm} from '../authorization-form';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+const SUBMIT_EVENT = 'SUBMIT_EVENT';
 
 /**
  * Authorization page component.
@@ -29,6 +30,10 @@ export class AuthorizationPage extends Component {
     form.onNavigateToRegistration(()=>{
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
+
+    form.onSubmit(()=>{
+      this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+    });
   }
 
   /**
@@ -37,6 +42,15 @@ export class AuthorizationPage extends Component {
    */
   onNavigateToRegistration(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
+  }
+
+  /**
+   * Adds event listener on form submit.
+   *
+   * @param {function} listener
+   */
+  onFormSubmit(listener) {
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
   }
 
   /**

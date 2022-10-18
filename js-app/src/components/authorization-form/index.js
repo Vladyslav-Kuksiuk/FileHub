@@ -14,6 +14,7 @@ export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} s
 export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+const SUBMIT_EVENT = 'SUBMIT_EVENT';
 
 /**
  * Authorization page component.
@@ -104,6 +105,15 @@ export class AuthorizationForm extends Component {
   }
 
   /**
+   * Adds event listener on form submit after validation.
+   *
+   * @param {function} listener
+   */
+  onSubmit(listener) {
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
+  }
+
+  /**
    * Validates forms inputs and render errors.
    *
    * @param {FormData} formData
@@ -116,6 +126,9 @@ export class AuthorizationForm extends Component {
     };
     new ValidationService()
         .validate(formData, configCreator(formData))
+        .then(() => {
+          this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+        })
         .catch((result) => {
           const errorsByField = result.errors.reduce((tempErrors, error) => {
             const fieldName = error.name;
