@@ -30,7 +30,6 @@ export class AuthorizationPage extends Component {
     form.onNavigateToRegistration(()=>{
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
-
     form.onSubmit(()=>{
       this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
     });
