@@ -4,19 +4,16 @@ import {Preconditions} from './preconditions.js';
  * Class to provide routing.
  */
 export class Router {
-  #rootElement;
-  #pages = {};
-  #homePageName;
-  #errorPageCreator;
+  #routes = {};
+  #homeRouteName;
+  #errorRoute;
 
   /**
-   * @param {HTMLElement} rootElement
    * @param {Object} pages
    * @param {string} homePageName
    * @param {function(HTMLElement)} errorPageCreator
    */
-  constructor(rootElement, pages, homePageName, errorPageCreator) {
-    Preconditions.checkType(rootElement, 'object');
+  constructor(pages, homePageName, errorPageCreator) {
     Preconditions.checkType(pages, 'object');
     Object.entries(pages).forEach(([key, value])=>{
       Preconditions.checkType(key, 'string');
@@ -24,30 +21,28 @@ export class Router {
     });
     Preconditions.checkType(homePageName, 'string');
     Preconditions.checkType(errorPageCreator, 'function');
-    this.#rootElement = rootElement;
-    this.#pages = pages;
-    this.#homePageName = homePageName;
-    this.#errorPageCreator = errorPageCreator;
+    this.#routes = pages;
+    this.#homeRouteName = homePageName;
+    this.#errorRoute = errorPageCreator;
 
     window.addEventListener('hashchange', () => {
-      this.#renderPage(window.location.hash.replace('#', ''));
+      this.#routeHandler(window.location.hash.replace('#', ''));
     });
 
-    this.#renderPage(window.location.hash.replace('#', ''));
+    this.#routeHandler(window.location.hash.replace('#', ''));
   }
 
   /**
    * Renders page in root element.
-   * @param {string} pageName
+   * @param {string} routeName
    */
-  #renderPage(pageName) {
-    this.#rootElement.innerHTML = '';
-    if (pageName === '') {
-      this.#pages[this.#homePageName](this.#rootElement);
-    } else if (this.#pages[pageName]) {
-      this.#pages[pageName](this.#rootElement);
+  #routeHandler(routeName) {
+    if (routeName === '') {
+      this.#routes[this.#homeRouteName]();
+    } else if (this.#routes[routeName]) {
+      this.#routes[routeName]();
     } else {
-      this.#errorPageCreator(this.#rootElement);
+      this.#errorRoute();
     }
   }
 
@@ -62,10 +57,10 @@ export class Router {
   /**
    * Redirects to given page.
    *
-   * @param {string} pageName
+   * @param {string} routeName
    */
-  redirect(pageName) {
-    window.location.hash = pageName;
+  redirect(routeName) {
+    window.location.hash = routeName;
   }
 }
 
@@ -73,42 +68,31 @@ export class Router {
  * Builder for {@link Router}.
  */
 class RouterBuilder {
-  #rootElement;
-  #pages = {};
-  #errorPageCreator;
-  #homePageName;
+  #routes = {};
+  #errorRoute;
+  #homeRouteName;
 
-  /**
-   * Adds root element to render components in it.
-   *
-   * @param {HTMLElement} element
-   * @returns {RouterBuilder}
-   */
-  addRootElement(element) {
-    this.#rootElement = element;
-    return this;
-  }
 
   /**
    * Adds page to router.
    *
    * @param {string} name
-   * @param {function(HTMLElement)} creator
+   * @param {function(HTMLElement)} route
    * @returns {RouterBuilder}
    */
-  addPage(name, creator) {
-    this.#pages[name] = creator;
+  addRoute(name, route) {
+    this.#routes[name] = route;
     return this;
   }
 
   /**
    * Adds error404 page to router.
    *
-   * @param {function(HTMLElement)} creator
+   * @param {function(HTMLElement)} route
    * @returns {RouterBuilder}
    */
-  addErrorPage(creator) {
-    this.#errorPageCreator = creator;
+  addErrorRoute(route) {
+    this.#errorRoute = route;
     return this;
   }
 
@@ -118,8 +102,8 @@ class RouterBuilder {
    * @param {string} name
    * @returns {RouterBuilder}
    */
-  addHomePageName(name) {
-    this.#homePageName = name;
+  addHomeRouteName(name) {
+    this.#homeRouteName = name;
     return this;
   }
 
@@ -127,9 +111,9 @@ class RouterBuilder {
    * @returns {Router}
    */
   build() {
-    return new Router(this.#rootElement,
-        this.#pages,
-        this.#homePageName,
-        this.#errorPageCreator);
+    return new Router(
+        this.#routes,
+        this.#homeRouteName,
+        this.#errorRoute);
   }
 }

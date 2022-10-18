@@ -16,22 +16,24 @@ export class Application extends Component {
     this.init();
 
     const router = Router.getBuilder()
-        .addRootElement(this.rootElement)
-        .addHomePageName('login')
-        .addErrorPage((slot) => {
-          const page = new Error404Page(slot);
+        .addHomeRouteName('login')
+        .addErrorRoute(() => {
+          this.rootElement.innerHTML = '';
+          const page = new Error404Page(this.rootElement);
           page.onNavigateToHome(() => {
             router.redirect('');
           });
         })
-        .addPage('login', (slot) => {
-          const page = new AuthorizationPage(slot);
+        .addRoute('login', () => {
+          this.rootElement.innerHTML = '';
+          const page = new AuthorizationPage(this.rootElement);
           page.onNavigateToRegistration(() => {
             router.redirect('registration');
           });
         })
-        .addPage('registration', (slot) => {
-          const page = new RegistrationPage(slot);
+        .addRoute('registration', () => {
+          this.rootElement.innerHTML = '';
+          const page = new RegistrationPage(this.rootElement);
           page.onNavigateToAuthorization(() => {
             router.redirect('login');
           });

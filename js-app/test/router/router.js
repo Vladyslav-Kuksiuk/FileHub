@@ -12,13 +12,13 @@ module('Router', () => {
     const router = Router.getBuilder()
         .addRootElement(fixture)
         .addHomePageName('login')
-        .addErrorPage((slot) => {
+        .addErrorRoute((slot) => {
           slot.innerHTML = 'error';
         })
-        .addPage('register', (slot) => {
+        .addRoute('register', (slot) => {
           slot.innerHTML = 'register';
         })
-        .addPage('login', (slot) => {
+        .addRoute('login', (slot) => {
           slot.innerHTML = 'login';
         }).build();
 

@@ -29,6 +29,7 @@ export class RegistrationForm extends Component {
   #formErrors = {
     [EMAIL]: [],
     [PASSWORD]: [],
+    [CONFIRM_PASSWORD]: [],
   };
   #eventTarget = new EventTarget();
 
@@ -132,6 +133,11 @@ export class RegistrationForm extends Component {
    * @param {function(FormData)} configCreator
    */
   #validateForm(formData, configCreator) {
+    this.formErrors = {
+      [EMAIL]: [],
+      [PASSWORD]: [],
+      [CONFIRM_PASSWORD]: [],
+    }
     new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
