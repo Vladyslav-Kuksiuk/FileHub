@@ -1,9 +1,8 @@
 import {Component} from '../component.js';
 import {AuthorizationForm} from '../authorization-form';
 
-const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
-const SUBMIT_EVENT = 'SUBMIT_EVENT';
-
+const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
+const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
 /**
  * Authorization page component.
  */
@@ -28,12 +27,11 @@ export class AuthorizationPage extends Component {
     const formSlot = this.getSlot('form');
     const form = new AuthorizationForm(formSlot);
     form.onNavigateToRegistration(()=>{
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_REGISTRATION));
     });
-    form.onSubmit(()=>{
-      this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+    form.onSubmit((data)=>{
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
     });
-    this.#form = form;
   }
 
   /**
@@ -41,16 +39,16 @@ export class AuthorizationPage extends Component {
    * @param {function} listener
    */
   onNavigateToRegistration(listener) {
-    this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_REGISTRATION, listener);
   }
 
   /**
-   * Adds event listener on form submit.
+   * Adds event listener on navigate to table.
    *
-   * @param {function(UserData)} listener
+   * @param {function} listener
    */
-  onFormSubmit(listener) {
-    this.#form.onSubmit(listener);
+  onNavigateToTable(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_TABLE, listener);
   }
 
   /**

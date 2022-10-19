@@ -33,7 +33,7 @@ export class Application extends Component {
           page.onNavigateToRegistration(() => {
             router.redirect('registration');
           });
-          page.onFormSubmit((data)=>{
+          page.onNavigateToTable(()=>{
             router.redirect('table');
           });
         })
@@ -41,9 +41,6 @@ export class Application extends Component {
           this.rootElement.innerHTML = '';
           const page = new RegistrationPage(this.rootElement, titleService);
           page.onNavigateToAuthorization(() => {
-            router.redirect('login');
-          });
-          page.onFormSubmit((data)=>{
             router.redirect('login');
           });
         })
