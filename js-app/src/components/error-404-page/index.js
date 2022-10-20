@@ -1,4 +1,4 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 import {Link} from '../link';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';

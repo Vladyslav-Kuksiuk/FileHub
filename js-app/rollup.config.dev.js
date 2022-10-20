@@ -3,14 +3,12 @@ import htmlTemplate from 'rollup-plugin-generate-html-template';
 import copy from 'rollup-plugin-copy';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
-import hashedMapping from '@trendyminds/rollup-plugin-hashed-mapping';
-
 
 export default {
   input: 'src/index.js',
   output: {
     dir: 'dist',
-    entryFileNames: '[name]-[hash].js',
+    entryFileNames: 'app-[hash].js',
   },
   plugins: [
     nodeResolve(),
@@ -31,6 +29,5 @@ export default {
       contentBase: 'dist',
     }),
     livereload(),
-    hashedMapping(),
   ],
 };

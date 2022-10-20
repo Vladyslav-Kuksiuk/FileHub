@@ -1,4 +1,4 @@
-import {Preconditions} from '../preconditions.js';
+import {Preconditions} from '../preconditions';
 
 /**
  * Validates the minimum length of value.

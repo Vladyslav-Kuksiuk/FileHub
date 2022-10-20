@@ -2,14 +2,12 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import {terser} from 'rollup-plugin-terser';
 import htmlTemplate from 'rollup-plugin-generate-html-template';
 import copy from 'rollup-plugin-copy';
-import serve from 'rollup-plugin-serve';
-import hashedMapping from '@trendyminds/rollup-plugin-hashed-mapping';
 
 export default {
   input: 'src/index.js',
   output: {
     dir: 'dist',
-    entryFileNames: '[name]-[hash].js',
+    entryFileNames: 'app-[hash].js',
     manualChunks(id) {
       if (id.includes('node_modules')) {
         return 'vendor';
@@ -29,12 +27,6 @@ export default {
         {src: 'static/images', dest: 'dist/static'},
         {src: 'static/fonts', dest: 'dist/static'},
       ],
-    }),
-    serve({
-      open: true,
-      port: 3000,
-      contentBase: 'dist',
-    }),
-    hashedMapping(),
+    })
   ],
 };
