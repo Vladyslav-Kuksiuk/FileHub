@@ -20,7 +20,7 @@ export class AuthorizationPage extends Component {
   }
 
   /**
-   * Adds authorization form to page.
+   * @inheritDoc
    */
   afterRender() {
     const formSlot = this.getSlot('form');
@@ -33,6 +33,7 @@ export class AuthorizationPage extends Component {
 
   /**
    * Adds event listener on navigate to registration.
+   *
    * @param {function} listener
    */
   onNavigateToRegistration(listener) {
