@@ -1,4 +1,5 @@
-import {Router} from '../../src/router.js';
+import {Router} from '../../src/router/router.js';
+import {RouterConfigBuilder} from '../../src/router/router-config.js';
 
 const {module, test} = QUnit;
 
@@ -9,18 +10,19 @@ module('Router', () => {
     const fixture = document.getElementById('qunit-fixture');
     window.location.hash = '';
 
-    const router = Router.getBuilder()
-        .addRootElement(fixture)
-        .addHomePageName('login')
-        .addErrorRoute((slot) => {
-          slot.innerHTML = 'error';
-        })
-        .addRoute('register', (slot) => {
-          slot.innerHTML = 'register';
-        })
-        .addRoute('login', (slot) => {
-          slot.innerHTML = 'login';
-        }).build();
+    const routerConfig = new RouterConfigBuilder()
+      .addHomeRoutePath('login')
+      .addErrorRoute(() => {
+        fixture.innerHTML = 'error';
+      })
+      .addRoute('register', () => {
+        fixture.innerHTML = 'register';
+      })
+      .addRoute('login', () => {
+        fixture.innerHTML = 'login';
+      }).build()
+
+    const router = new Router(routerConfig)
 
     assert.strictEqual(fixture.innerHTML, 'login',
         'Should return page innerHTML, after router creation');

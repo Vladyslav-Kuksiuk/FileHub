@@ -31,6 +31,7 @@ export class Link extends Component {
 
   /**
    * Adds onClick event listener.
+   *
    * @param {function} listener
    */
   onClick(listener) {

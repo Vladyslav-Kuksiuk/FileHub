@@ -33,7 +33,7 @@ export class Form extends Component {
   }
 
   /**
-   * Adds form controls and button.
+   * @inheritDoc
    */
   afterRender() {
     const buttonSlot = this.getSlot('button');

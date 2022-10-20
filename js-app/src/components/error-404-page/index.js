@@ -33,6 +33,7 @@ export class Error404Page extends Component {
 
   /**
    * Adds event listener on navigate to registration.
+   *
    * @param {function} listener
    */
   onNavigateToHome(listener) {

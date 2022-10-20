@@ -44,7 +44,7 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * Adds form controls and button.
+   * @inheritDoc.
    */
   afterRender() {
     const linkCreator = (slot) => {
@@ -113,15 +113,17 @@ export class RegistrationForm extends Component {
   }
 
   /**
+   * @private
    * @param {object} errors
    */
-  set formErrors(errors) {
+  #setFormErrors(errors) {
     this.#formErrors = errors;
     this.render();
   }
 
   /**
    * Adds event listener on navigate to authorization.
+   *
    * @param {function} listener
    */
   onNavigateToAuthorization(listener) {
@@ -143,17 +145,16 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * Validates forms inputs and render errors.
-   *
+   * @private
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
    */
   #validateForm(formData, configCreator) {
-    this.formErrors = {
+    this.#setFormErrors({
       [EMAIL]: [],
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
-    };
+    });
     new ValidationService()
         .validate(formData, configCreator(formData))
         .then(() => {
@@ -166,7 +167,7 @@ export class RegistrationForm extends Component {
             tempErrors[fieldName] = [...prevErrors, error.message];
             return tempErrors;
           }, {});
-          this.formErrors = errorsByField;
+          this.#setFormErrors(errorsByField);
         });
   }
 
