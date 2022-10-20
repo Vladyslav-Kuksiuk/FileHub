@@ -1,4 +1,5 @@
 import {Router} from '../../src/router';
+import {RouterConfigBuilder} from '../../src/router/router-config.js';
 
 describe('Router', () => {
   test(`redirect`, function(done) {
@@ -6,17 +7,19 @@ describe('Router', () => {
 
     window.location.hash = '';
 
-    const router = Router.getBuilder()
-        .addHomeRouteName('login')
-        .addErrorRoute((slot) => {
-          document.body.textContent = 'error';
-        })
-        .addRoute('register', (slot) => {
-          document.body.textContent = 'register';
-        })
-        .addRoute('login', (slot) => {
-          document.body.textContent = 'login';
-        }).build();
+    const routerConfig = new RouterConfigBuilder()
+    addHomeRouteName('login')
+      .addErrorRoute((slot) => {
+        document.body.textContent = 'error';
+      })
+      .addRoute('register', (slot) => {
+        document.body.textContent = 'register';
+      })
+      .addRoute('login', (slot) => {
+        document.body.textContent = 'login';
+      }).build();
+
+    const router = new Router(routerConfig)
 
     expect(document.body.textContent).toBe('login');
 
