@@ -1,8 +1,12 @@
 import {Component} from '../component.js';
 import {AuthorizationPage} from '../authorization-page';
 import {RegistrationPage} from '../registration-page';
-import {Router} from '../../router.js';
+import {Router} from '../../router/router.js';
 import {Error404Page} from '../error-404-page';
+import {RouterConfig} from '../../router/router-config.js';
+
+const LOGIN_PATH = 'login';
+const REGISTRATION_PATH = 'registration';
 
 /**
  * Authorization page component.
@@ -15,8 +19,7 @@ export class Application extends Component {
     super(parent);
     this.init();
 
-    const router = Router.getBuilder()
-        .addHomeRouteName('login')
+    const routerConfig = RouterConfig.getBuilder()
         .addErrorRoute(() => {
           this.rootElement.innerHTML = '';
           const page = new Error404Page(this.rootElement);
@@ -24,21 +27,24 @@ export class Application extends Component {
             router.redirect('');
           });
         })
-        .addRoute('login', () => {
+        .addRoute(LOGIN_PATH, () => {
           this.rootElement.innerHTML = '';
           const page = new AuthorizationPage(this.rootElement);
           page.onNavigateToRegistration(() => {
-            router.redirect('registration');
+            router.redirect(REGISTRATION_PATH);
           });
         })
-        .addRoute('registration', () => {
+        .addRoute(REGISTRATION_PATH, () => {
           this.rootElement.innerHTML = '';
           const page = new RegistrationPage(this.rootElement);
           page.onNavigateToAuthorization(() => {
-            router.redirect('login');
+            router.redirect(LOGIN_PATH);
           });
         })
+        .addHomeRoutePath(LOGIN_PATH)
         .build();
+
+    const router = new Router(routerConfig);
   }
 
   /**
