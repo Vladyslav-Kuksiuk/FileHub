@@ -2,10 +2,10 @@ module.exports = {
   'env': {
     'browser': true,
     'es2021': true,
+    "jest/globals": true
   },
   'extends': [
-    'google',
-    'plugin:qunit/recommended',
+    'google'
   ],
   'overrides': [],
   'parserOptions': {
@@ -13,7 +13,7 @@ module.exports = {
     'sourceType': 'module',
   },
   'plugins': [
-    'eslint-plugin-qunit',
+    'jest',
     'jsdoc',
   ],
   'rules': {

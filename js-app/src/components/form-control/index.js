@@ -9,7 +9,7 @@ export class FormControl extends Component {
   #type;
   #name;
   #placeholder;
-  #id = crypto.randomUUID();
+  #id = Date.now();
   #value = '';
 
   /**
