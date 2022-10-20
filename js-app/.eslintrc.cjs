@@ -43,6 +43,7 @@ module.exports = {
     'jsdoc/require-description': [
       'error',
       {
+        exemptedBy: ['inheritDoc', 'private'],
         checkConstructors: false,
         checkGetters: false,
         checkSetters: false,

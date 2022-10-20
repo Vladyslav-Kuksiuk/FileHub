@@ -5,6 +5,7 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateLength} from '../../validation/value-validations.js';
 import {ValidationService} from '../../validation/validation-service.js';
 import {Link} from '../link';
+import {UserData} from '../../user-data.js';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
@@ -90,14 +91,16 @@ export class AuthorizationForm extends Component {
 
   /**
    * @param {object} errors
+   * @private
    */
-  set formErrors(errors) {
+  #setFormErrors(errors) {
     this.#formErrors = errors;
     this.render();
   }
 
   /**
    * Adds event listener on navigate to registration.
+   *
    * @param {Function} listener
    */
   onNavigateToRegistration(listener) {
@@ -107,23 +110,27 @@ export class AuthorizationForm extends Component {
   /**
    * Adds event listener on form submit after validation.
    *
-   * @param {Function} listener
+   * @param {function(UserData)} listener
    */
   onSubmit(listener) {
-    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, () =>{
+      listener(new UserData(
+          this.#emailValue,
+          this.#passwordValue,
+      ));
+    });
   }
 
   /**
-   * Validates forms inputs and render errors.
-   *
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
+   * @private
    */
   #validateForm(formData, configCreator) {
-    this.formErrors = {
+    this.#setFormErrors({
       [EMAIL]: [],
       [PASSWORD]: [],
-    };
+    });
     new ValidationService()
         .validate(formData, configCreator(formData))
         .then(() => {
@@ -136,7 +143,7 @@ export class AuthorizationForm extends Component {
             tempErrors[fieldName] = [...prevErrors, error.message];
             return tempErrors;
           }, {});
-          this.formErrors = errorsByField;
+          this.#setFormErrors(errorsByField);
         });
   }
 

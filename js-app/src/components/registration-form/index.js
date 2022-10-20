@@ -5,6 +5,7 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations.js';
 import {ValidationService} from '../../validation/validation-service.js';
 import {Link} from '../link';
+import {UserData} from '../../user-data.js';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
@@ -43,7 +44,7 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * Adds form controls and button.
+   * @inheritDoc
    */
   afterRender() {
     const linkCreator = (slot) => {
@@ -113,14 +114,16 @@ export class RegistrationForm extends Component {
 
   /**
    * @param {object} errors
+   * @private
    */
-  set formErrors(errors) {
+  #setFormErrors(errors) {
     this.#formErrors = errors;
     this.render();
   }
 
   /**
    * Adds event listener on navigate to authorization.
+   *
    * @param {Function} listener
    */
   onNavigateToAuthorization(listener) {
@@ -133,21 +136,25 @@ export class RegistrationForm extends Component {
    * @param {Function} listener
    */
   onSubmit(listener) {
-    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, ()=>{
+      listener(new UserData(
+          this.#emailValue,
+          this.#passwordValue,
+      ));
+    });
   }
 
   /**
-   * Validates forms inputs and render errors.
-   *
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
+   * @private
    */
   #validateForm(formData, configCreator) {
-    this.formErrors = {
+    this.#setFormErrors({
       [EMAIL]: [],
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
-    };
+    });
     new ValidationService()
         .validate(formData, configCreator(formData))
         .then(() => {
@@ -160,7 +167,7 @@ export class RegistrationForm extends Component {
             tempErrors[fieldName] = [...prevErrors, error.message];
             return tempErrors;
           }, {});
-          this.formErrors = errorsByField;
+          this.#setFormErrors(errorsByField);
         });
   }
 

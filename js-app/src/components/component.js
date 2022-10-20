@@ -14,6 +14,8 @@ export class Component {
 
   /**
    * Method calls before first render.
+   *
+   * @protected
    */
   init() {
     this.render();
@@ -21,26 +23,30 @@ export class Component {
 
   /**
    * Method calls after first render.
+   *
+   * @protected
    */
   afterRender() {
 
   }
 
   /**
-   * Creates html slot with mark.
+   * Creates slot with name.
    *
    * @param {string} name
    * @returns {string}
+   * @protected
    */
   addSlot(name) {
     return `<slot data-td="${name}"></slot>`;
   }
 
   /**
-   * Finds html slot by mark.
+   * Returns slot by name.
    *
    * @param {string} name
    * @returns {HTMLElement}
+   * @protected
    */
   getSlot(name) {
     return this.rootElement.querySelector(`[data-td="${name}"]`);
@@ -48,6 +54,8 @@ export class Component {
 
   /**
    * Render component in parent.
+   *
+   * @protected
    */
   render() {
     this.#createDomTree();
@@ -55,7 +63,7 @@ export class Component {
   }
 
   /**
-   * Create element from markup and set it into HTML document.
+   * @private
    */
   #createDomTree() {
     const isFirstRendering = !this.rootElement;
@@ -75,15 +83,15 @@ export class Component {
    *
    * @param {string} name
    * @returns {string}
+   * @protected
    */
   markElement(name) {
     return `data-td="${name}"`;
   }
 
   /**
-   * Creates new {HTMLElement} by markup.
-   *
    * @returns {HTMLElement}
+   * @private
    */
   #createNewElement() {
     const tempElement = document.createElement('div');
