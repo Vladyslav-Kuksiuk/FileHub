@@ -3,7 +3,7 @@ import {AuthorizationPage} from '../authorization-page';
 import {RegistrationPage} from '../registration-page';
 import {Router} from '../../router/router.js';
 import {Error404Page} from '../error-404-page';
-import {RouterConfig} from '../../router/router-config.js';
+import {RouterConfigBuilder} from '../../router/router-config.js';
 
 const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';
@@ -19,7 +19,7 @@ export class Application extends Component {
     super(parent);
     this.init();
 
-    const routerConfig = RouterConfig.getBuilder()
+    const routerConfig = new RouterConfigBuilder()
         .addErrorRoute(() => {
           this.rootElement.innerHTML = '';
           const page = new Error404Page(this.rootElement);

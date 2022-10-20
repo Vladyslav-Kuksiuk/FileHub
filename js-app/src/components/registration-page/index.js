@@ -4,7 +4,7 @@ import {RegistrationForm} from '../registration-form';
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
 /**
- * Authorization page component.
+ * Registration page component.
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
@@ -18,7 +18,7 @@ export class RegistrationPage extends Component {
   }
 
   /**
-   * Adds form controls and button to form.
+   * @inheritDoc.
    */
   afterRender() {
     const formSlot = this.getSlot('form');

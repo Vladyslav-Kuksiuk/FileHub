@@ -3,7 +3,7 @@ import {Preconditions} from '../preconditions.js';
 /**
  * Config for {@link Router}
  */
-export class RouterConfig {
+class RouterConfig {
   #pathToRouteMap;
   #errorRoute;
   #homeRoutePath;
@@ -47,20 +47,12 @@ export class RouterConfig {
   get homeRoutePath() {
     return this.#homeRoutePath;
   }
-
-  /**
-   * Creates builder for {@link RouterConfig}
-   * @returns {RouterConfigBuilder}
-   */
-  static getBuilder() {
-    return new RouterConfigBuilder();
-  }
 }
 
 /**
  * Builder for {@link RouterConfig}.
  */
-class RouterConfigBuilder {
+export class RouterConfigBuilder {
   #pathToRouteMap = {};
   #errorRoute;
   #homeRoutePath;

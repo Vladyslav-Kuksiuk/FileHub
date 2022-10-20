@@ -1,5 +1,5 @@
 import {Router} from '../../src/router/router.js';
-import {RouterConfig} from '../../src/router/router-config.js';
+import {RouterConfigBuilder} from '../../src/router/router-config.js';
 
 const {module, test} = QUnit;
 
@@ -10,7 +10,7 @@ module('Router', () => {
     const fixture = document.getElementById('qunit-fixture');
     window.location.hash = '';
 
-    const routerConfig = RouterConfig.getBuilder()
+    const routerConfig = new RouterConfigBuilder()
       .addHomeRoutePath('login')
       .addErrorRoute(() => {
         fixture.innerHTML = 'error';

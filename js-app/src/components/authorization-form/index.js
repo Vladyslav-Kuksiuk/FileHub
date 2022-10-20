@@ -88,15 +88,17 @@ export class AuthorizationForm extends Component {
   }
 
   /**
+   * @private
    * @param {object} errors
    */
-  set formErrors(errors) {
+  #setFormErrors(errors) {
     this.#formErrors = errors;
     this.render();
   }
 
   /**
    * Adds event listener on navigate to registration.
+   *
    * @param {function} listener
    */
   onNavigateToRegistration(listener) {
@@ -104,16 +106,15 @@ export class AuthorizationForm extends Component {
   }
 
   /**
-   * Validates forms inputs and render errors.
-   *
+   * @private
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
    */
   #validateForm(formData, configCreator) {
-    this.formErrors = {
+    this.#setFormErrors({
       [EMAIL]: [],
       [PASSWORD]: [],
-    };
+    });
     new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
@@ -123,7 +124,7 @@ export class AuthorizationForm extends Component {
             tempErrors[fieldName] = [...prevErrors, error.message];
             return tempErrors;
           }, {});
-          this.formErrors = errorsByField;
+          this.#setFormErrors(errorsByField);
         });
   }
 
