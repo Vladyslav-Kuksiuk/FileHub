@@ -1,16 +1,16 @@
 import {Preconditions} from '../preconditions.js';
 
 /**
- * Config for {@link Router}
+ * Config for {@link Router}.
  */
-class RouterConfig {
+export class RouterConfig {
   #pathToRouteMap;
   #errorRoute;
   #homeRoutePath;
 
   /**
-   * @param {object} pathToRouteMap - {string} path : {function} route
-   * @param {function} errorRoute
+   * @param {object} pathToRouteMap - Object structure: {string} path : {Function} route.
+   * @param {Function} errorRoute
    * @param {string} homeRoutePath
    */
   constructor(pathToRouteMap, errorRoute, homeRoutePath) {
@@ -28,14 +28,14 @@ class RouterConfig {
   }
 
   /**
-   * @returns {object} - {string} path : {function} route
+   * @returns {object} - Object structure: {string} path : {function} route.
    */
   get routesMap() {
     return this.#pathToRouteMap;
   }
 
   /**
-   * @returns {function}
+   * @returns {Function}
    */
   get errorRoute() {
     return this.#errorRoute;
@@ -61,7 +61,7 @@ export class RouterConfigBuilder {
    * Adds page to router config.
    *
    * @param {string} path
-   * @param {function} route
+   * @param {Function} route
    * @returns {RouterConfigBuilder}
    */
   addRoute(path, route) {
@@ -72,7 +72,7 @@ export class RouterConfigBuilder {
   /**
    * Adds error404 page to router config.
    *
-   * @param {function} route
+   * @param {Function} route
    * @returns {RouterConfigBuilder}
    */
   addErrorRoute(route) {
@@ -92,6 +92,8 @@ export class RouterConfigBuilder {
   }
 
   /**
+   * Creates {@link RouterConfig}.
+   *
    * @returns {RouterConfig}
    */
   build() {

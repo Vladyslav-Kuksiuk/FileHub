@@ -1,4 +1,4 @@
-
+import {RouterConfig} from './router-config';
 /**
  * Class to provide routing.
  */

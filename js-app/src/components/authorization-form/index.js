@@ -90,8 +90,8 @@ export class AuthorizationForm extends Component {
   }
 
   /**
-   * @private
    * @param {object} errors
+   * @private
    */
   #setFormErrors(errors) {
     this.#formErrors = errors;
@@ -110,7 +110,7 @@ export class AuthorizationForm extends Component {
   /**
    * Adds event listener on form submit after validation.
    *
-   * @param {Function(UserData)} listener
+   * @param {function(UserData)} listener
    */
   onSubmit(listener) {
     this.#eventTarget.addEventListener(SUBMIT_EVENT, () =>{
@@ -122,9 +122,9 @@ export class AuthorizationForm extends Component {
   }
 
   /**
-   * @private
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
+   * @private
    */
   #validateForm(formData, configCreator) {
     this.#setFormErrors({

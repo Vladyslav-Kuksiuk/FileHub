@@ -44,7 +44,7 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * @inheritDoc.
+   * @inheritDoc
    */
   afterRender() {
     const linkCreator = (slot) => {
@@ -113,8 +113,8 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * @private
    * @param {object} errors
+   * @private
    */
   #setFormErrors(errors) {
     this.#formErrors = errors;
@@ -145,9 +145,9 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * @private
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
+   * @private
    */
   #validateForm(formData, configCreator) {
     this.#setFormErrors({

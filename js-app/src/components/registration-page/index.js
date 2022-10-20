@@ -21,7 +21,7 @@ export class RegistrationPage extends Component {
   }
 
   /**
-   * @inheritDoc.
+   * @inheritDoc
    */
   afterRender() {
     const formSlot = this.getSlot('form');
