@@ -3,10 +3,9 @@ import {RegistrationForm} from '../registration-form';
 import {TitleService} from '../../title-service.js';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
-const SUBMIT_EVENT = 'SUBMIT_EVENT';
 
 /**
- * Authorization page component.
+ * Registration page component.
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
@@ -22,7 +21,7 @@ export class RegistrationPage extends Component {
   }
 
   /**
-   * Adds form controls and button to form.
+   * @inheritDoc.
    */
   afterRender() {
     const formSlot = this.getSlot('form');
@@ -30,8 +29,8 @@ export class RegistrationPage extends Component {
     form.onNavigateToAuthorization(()=>{
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
-    form.onSubmit(()=>{
-      this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+    form.onSubmit((data)=>{
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
   }
 

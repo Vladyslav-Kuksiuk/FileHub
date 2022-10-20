@@ -2,9 +2,8 @@ import {Component} from '../component.js';
 import {AuthorizationForm} from '../authorization-form';
 import {TitleService} from '../../title-service.js';
 
-const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
-const SUBMIT_EVENT = 'SUBMIT_EVENT';
-
+const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
+const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
 /**
  * Authorization page component.
  */
@@ -22,35 +21,35 @@ export class AuthorizationPage extends Component {
   }
 
   /**
-   * Adds authorization form to page.
+   * @inheritDoc
    */
   afterRender() {
     const formSlot = this.getSlot('form');
     const form = new AuthorizationForm(formSlot);
-
     form.onNavigateToRegistration(()=>{
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_REGISTRATION));
     });
-    form.onSubmit(()=>{
-      this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+    form.onSubmit((data)=>{
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
     });
   }
 
   /**
    * Adds event listener on navigate to registration.
-   * @param {Function} listener
-   */
-  onNavigateToRegistration(listener) {
-    this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
-  }
-
-  /**
-   * Adds event listener on form submit.
    *
    * @param {Function} listener
    */
-  onFormSubmit(listener) {
-    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
+  onNavigateToRegistration(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_REGISTRATION, listener);
+  }
+
+  /**
+   * Adds event listener on navigate to table.
+   *
+   * @param {Function} listener
+   */
+  onNavigateToTable(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_TABLE, listener);
   }
 
   /**
