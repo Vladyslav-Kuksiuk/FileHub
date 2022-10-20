@@ -1,4 +1,4 @@
-import {RouterConfig} from './router-config';
+import {RouterConfig} from './router-config.js';
 /**
  * Class to provide routing.
  */
