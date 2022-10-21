@@ -43,15 +43,6 @@ export class RegistrationPage extends Component {
   }
 
   /**
-   * Adds event listener on form submit.
-   *
-   * @param {Function} listener
-   */
-  onFormSubmit(listener) {
-    this.#eventTarget.addEventListener(SUBMIT_EVENT, listener);
-  }
-
-  /**
    * @inheritDoc
    */
   markup() {

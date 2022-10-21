@@ -1,5 +1,5 @@
-import {RouterConfigBuilder} from '../../src/router/router-config.js';
-import {Router} from '../../src/router/router.js';
+import {RouterConfigBuilder} from '../../src/router/router-config';
+import {Router} from '../../src/router/router';
 
 describe('Router', () => {
   test(`redirect`, function(done) {
