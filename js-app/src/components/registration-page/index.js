@@ -35,7 +35,8 @@ export class RegistrationPage extends Component {
   }
 
   /**
-   * Adds event listener on navigate to authorization.
+   * Adds listener on navigate to authorization event.
+   *
    * @param {Function} listener
    */
   onNavigateToAuthorization(listener) {

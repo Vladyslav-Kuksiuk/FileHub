@@ -35,7 +35,7 @@ export class AuthorizationPage extends Component {
   }
 
   /**
-   * Adds event listener on navigate to registration.
+   * Adds listener on navigate to registration event.
    *
    * @param {Function} listener
    */
@@ -44,7 +44,7 @@ export class AuthorizationPage extends Component {
   }
 
   /**
-   * Adds event listener on navigate to table.
+   * Adds listener on navigate to table event.
    *
    * @param {Function} listener
    */

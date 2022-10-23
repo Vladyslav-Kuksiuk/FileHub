@@ -81,7 +81,7 @@ export class RouterConfigBuilder {
   }
 
   /**
-   * Adds home page name to router  config.
+   * Adds home page path to router config.
    *
    * @param {string} path
    * @returns {RouterConfigBuilder}

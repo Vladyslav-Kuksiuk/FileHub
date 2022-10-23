@@ -13,7 +13,7 @@ export class Component {
   }
 
   /**
-   * Method calls before first render.
+   * Initiates component.
    *
    * @protected
    */
@@ -22,7 +22,7 @@ export class Component {
   }
 
   /**
-   * Method calls after first render.
+   * Called after each render.
    *
    * @protected
    */
