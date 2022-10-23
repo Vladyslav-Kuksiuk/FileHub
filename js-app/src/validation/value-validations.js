@@ -51,6 +51,7 @@ export function validateByRegexp(regex, errorMessage) {
 
 /**
  * Validates the consistency of input values.
+ *
  * @param {any} referencedValue
  * @param {string} errorMessage
  * @returns {function(*): Promise<string>}

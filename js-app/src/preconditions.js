@@ -16,7 +16,7 @@ export class Preconditions {
   }
 
   /**
-   *  Checks if the state is true.
+   * Checks if the state is true.
    *
    * @param {boolean} state
    * @throws {Error} If state is false.

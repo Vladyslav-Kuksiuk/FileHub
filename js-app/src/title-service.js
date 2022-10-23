@@ -1,5 +1,5 @@
 /**
- * Service to work with titles.
+ * Service to work with page title.
  */
 export class TitleService {
   #mainTitle;

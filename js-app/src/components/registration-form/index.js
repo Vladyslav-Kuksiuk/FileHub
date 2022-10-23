@@ -22,7 +22,7 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 const SUBMIT_EVENT = 'SUBMIT_EVENT';
 
 /**
- * Authorization page component.
+ * Registration form component.
  */
 export class RegistrationForm extends Component {
   #emailValue = '';
@@ -122,7 +122,7 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * Adds event listener on navigate to authorization.
+   * Adds listener on navigate to authorization event.
    *
    * @param {Function} listener
    */
@@ -131,7 +131,7 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * Adds event listener on form submit after validation.
+   * Adds listener on form submit event.
    *
    * @param {Function} listener
    */

@@ -3,7 +3,7 @@ import {Button} from '../button';
 
 const FORM_SUBMIT_EVENT = 'FORM_SUBMIT_EVENT';
 /**
- * Authorization page component.
+ * Form component.
  */
 export class Form extends Component {
   #buttonText;
@@ -65,7 +65,7 @@ export class Form extends Component {
   }
 
   /**
-   * Adds onSubmit event to form.
+   * Adds listener on form submit event.
    *
    * @param {function(FormData)} listener
    */
