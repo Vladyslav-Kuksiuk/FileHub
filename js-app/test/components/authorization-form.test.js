@@ -6,7 +6,11 @@ import {
 } from '../../src/components/authorization-form';
 
 describe('AuthorizationForm', () => {
-  test(`Should create and render AuthorizationPage component`, function() {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test(`Should create and render AuthorizationForm component`, function() {
     expect.assertions(4);
 
     new AuthorizationForm(document.body);
@@ -34,14 +38,14 @@ describe('AuthorizationForm', () => {
       setTimeout( () => {
         emailErrors.forEach((error, index)=>{
           expect(document.body.querySelectorAll('[data-td="form-control"]')[0]
-            .querySelectorAll('[data-td="error-message"]')[index].textContent)
-            .toBe(error);
-        })
+              .querySelectorAll('[data-td="error-message"]')[index].textContent)
+              .toBe(error);
+        });
         passwordErrors.forEach((error, index)=>{
           expect(document.body.querySelectorAll('[data-td="form-control"]')[1]
-            .querySelectorAll('[data-td="error-message"]')[index].textContent)
-            .toBe(error);
-        })
+              .querySelectorAll('[data-td="error-message"]')[index].textContent)
+              .toBe(error);
+        });
         done();
       });
     });

@@ -1,12 +1,12 @@
 import {AuthorizationPage} from '../../src/components/authorization-page';
 import {TitleService} from '../../src/title-service';
 
-describe('AuthorizationPage Component', () => {
+describe('AuthorizationPage', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });
 
-  test(`AuthorizationPage constructor`, function() {
+  test(`Should create and render AuthorizationPage component`, function() {
     expect.assertions(3);
 
     new AuthorizationPage(document.body, new TitleService('FileHub', ' - '));
@@ -15,37 +15,29 @@ describe('AuthorizationPage Component', () => {
     expect(document.title).toBe('FileHub - Sign In');
   });
 
-  test(`onNavigateToRegistration`, function() {
-    expect.assertions(2);
+  test(`Should trigger onNavigateToRegistration event`, function(done) {
+    expect.assertions(1);
 
     const page = new AuthorizationPage(document.body, new TitleService('FileHub', ' - '));
 
-    let isNavigated = false;
     page.onNavigateToRegistration(() => {
-      isNavigated = true;
+      expect(true).toBeTruthy();
+      done();
     });
-    expect(isNavigated).toBeFalsy();
     document.body.querySelector('[data-td="link-component"]').click();
-    expect(isNavigated).toBeTruthy();
   });
 
-  test(`onNavigateToTable`, function(done) {
-    expect.assertions(2);
+  test(`Should trigger onNavigateToTable event`, function(done) {
+    expect.assertions(1);
 
     const page = new AuthorizationPage(document.body, new TitleService('FileHub', ' - '));
 
-    let isNavigated = false;
     page.onNavigateToTable(() => {
-      isNavigated = true;
+      expect(true).toBeTruthy();
+      done();
     });
-    expect(isNavigated).toBeFalsy();
     document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
     document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
     document.body.querySelector('[data-td="form-component"]').submit();
-
-    setTimeout(()=>{
-      expect(isNavigated).toBeTruthy();
-      done();
-    });
   });
 });
