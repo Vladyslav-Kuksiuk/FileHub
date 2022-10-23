@@ -1,7 +1,11 @@
 import {FormControl} from '../../src/components/form-control';
 
-describe('FormControl Component', () => {
-  test(`FormControl constructor`, function() {
+describe('FormControl', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test(`Should create and render FormControl component`, function() {
     expect.assertions(7);
 
     const name = 'myName';

@@ -1,12 +1,12 @@
 import {RegistrationPage} from '../../src/components/registration-page';
 import {TitleService} from '../../src/title-service';
 
-describe('RegistrationPage Component', () => {
+describe('RegistrationPage', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });
 
-  test(`RegistrationPage constructor`, function() {
+  test('Should create and render RegistrationPage component', function() {
     expect.assertions(3);
 
     new RegistrationPage(document.body, new TitleService('FileHub', ' - '));
@@ -15,38 +15,30 @@ describe('RegistrationPage Component', () => {
     expect(document.title).toBe('FileHub - Sign Up');
   });
 
-  test(`onNavigateToAuthorization(by link)`, function() {
-    expect.assertions(2);
+  test('Should trigger navigate to authorization event by clicking on link', function(done) {
+    expect.assertions(1);
 
     const page = new RegistrationPage(document.body, new TitleService('FileHub', ' - '));
 
-    let isNavigated = false;
     page.onNavigateToAuthorization(() => {
-      isNavigated = true;
+      expect(true).toBeTruthy();
+      done();
     });
-    expect(isNavigated).toBeFalsy();
     document.body.querySelector('[data-td="link-component"]').click();
-    expect(isNavigated).toBeTruthy();
   });
 
-  test(`onNavigateToAuthorization(by success form submit)`, function(done) {
-    expect.assertions(2);
+  test('Should trigger navigate to authorization event by form submitting', function(done) {
+    expect.assertions(1);
 
     const page = new RegistrationPage(document.body, new TitleService('FileHub', ' - '));
 
-    let isNavigated = false;
     page.onNavigateToAuthorization(() => {
-      isNavigated = true;
+      expect(true).toBeTruthy();
+      done();
     });
-    expect(isNavigated).toBeFalsy();
     document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
     document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
     document.body.querySelectorAll('[data-td="form-control"] input')[2].value = 'password';
     document.body.querySelector('[data-td="form-component"]').submit();
-
-    setTimeout(()=>{
-      expect(isNavigated).toBeTruthy();
-      done();
-    });
   });
 });

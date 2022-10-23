@@ -2,12 +2,12 @@ import {Form} from '../../src/components/form';
 import {FormControl} from '../../src/components/form-control';
 import {Link} from '../../src/components/link';
 
-describe('Form Component', () => {
+describe('Form', () => {
   beforeEach(()=>{
     document.body.innerHTML = '';
   });
 
-  test(`Form constructor`, function() {
+  test('Should create and render Form component', function() {
     expect.assertions(3);
 
     const buttonText = 'myButton';
@@ -22,7 +22,7 @@ describe('Form Component', () => {
     expect(document.body.querySelector('[data-td="form-component"] a').textContent).toBe(linkText);
   });
 
-  test(`addFormControl`, function() {
+  test(`Should create and render Form component with FormControl components`, function() {
     expect.assertions(3);
 
     const form = new Form(document.body, {buttonText: 'myButton',
@@ -51,21 +51,19 @@ describe('Form Component', () => {
     expect(document.body.querySelectorAll('[data-td="form-control"]').length).toBe(2);
   });
 
-  test(`onSubmit`, function() {
-    expect.assertions(2);
+  test(`Should trigger form submit event`, function(done) {
+    expect.assertions(1);
 
     const form = new Form(document.body, {buttonText: 'myButton',
       linkCreator: (slot)=>{
         new Link(slot, 'myLink');
       }});
 
-    let isSubmitted = false;
     form.onSubmit((formData) => {
-      isSubmitted = !!formData;
+      expect(!!formData).toBeTruthy();
+      done();
     });
 
-    expect(isSubmitted).toBe(false);
     document.body.querySelector('[data-td="button-component"]').click();
-    expect(isSubmitted).toBe(true);
   });
 });

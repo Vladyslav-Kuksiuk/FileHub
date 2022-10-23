@@ -6,7 +6,7 @@ describe('AuthorizationPage', () => {
     document.body.innerHTML = '';
   });
 
-  test(`Should create and render AuthorizationPage component`, function() {
+  test('Should create and render AuthorizationPage component', function() {
     expect.assertions(3);
 
     new AuthorizationPage(document.body, new TitleService('FileHub', ' - '));
@@ -15,7 +15,7 @@ describe('AuthorizationPage', () => {
     expect(document.title).toBe('FileHub - Sign In');
   });
 
-  test(`Should trigger onNavigateToRegistration event`, function(done) {
+  test('Should trigger navigate to registration event', function(done) {
     expect.assertions(1);
 
     const page = new AuthorizationPage(document.body, new TitleService('FileHub', ' - '));
@@ -27,7 +27,7 @@ describe('AuthorizationPage', () => {
     document.body.querySelector('[data-td="link-component"]').click();
   });
 
-  test(`Should trigger onNavigateToTable event`, function(done) {
+  test('Should trigger navigate to table event', function(done) {
     expect.assertions(1);
 
     const page = new AuthorizationPage(document.body, new TitleService('FileHub', ' - '));

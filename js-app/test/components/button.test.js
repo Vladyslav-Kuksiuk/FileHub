@@ -1,7 +1,11 @@
 import {Button} from '../../src/components/button';
 
-describe('Button Component', () => {
-  test(`Button constructor`, function() {
+describe('Button', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test(`Should create and render Button component`, function() {
     expect.assertions(2);
 
     const buttonText = 'myButton';

@@ -1,11 +1,11 @@
 import {Link} from '../../src/components/link';
 
-describe('Link Component', () => {
+describe('Link', () => {
   beforeEach(()=>{
     document.body.innerHTML = '';
   });
 
-  test(`Link constructor`, function() {
+  test(`Should create and render Link component`, function() {
     expect.assertions(2);
 
     const linkText = 'myLink';
@@ -15,18 +15,16 @@ describe('Link Component', () => {
     expect(document.body.querySelector('[data-td="link-component"]').textContent).toBe(linkText);
   });
 
-  test('onClick', function() {
-    expect.assertions(2);
+  test('Should trigger click event', function(done) {
+    expect.assertions(1);
 
     const link = new Link(document.body, 'myLink');
 
-    let isClicked = false;
     link.onClick(()=>{
-      isClicked = true;
+      expect(true).toBeTruthy();
+      done();
     });
 
-    expect(isClicked).toBe(false);
     document.body.querySelector('[data-td="link-component"]').click();
-    expect(isClicked).toBe(true);
   });
 });
