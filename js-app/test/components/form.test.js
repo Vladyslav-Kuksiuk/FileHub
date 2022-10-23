@@ -8,9 +8,7 @@ describe('Form Component', () => {
   });
 
   test(`Form constructor`, function() {
-    expect.assertions(4);
-
-    expect(document.body.querySelectorAll('[data-td="form-component"]').length).toBe(0);
+    expect.assertions(3);
 
     const buttonText = 'myButton';
     const linkText = 'myLink';

@@ -67,9 +67,7 @@ describe('Component', () => {
   });
 
   test(`Markup insertion`, function() {
-    expect.assertions(3);
-
-    expect(document.body.querySelectorAll('p').length).toBe(0);
+    expect.assertions(2);
 
     new TestComponent(document.body);
 

@@ -2,8 +2,7 @@ import {Button} from '../../src/components/button';
 
 describe('Button Component', () => {
   test(`Button constructor`, function() {
-    expect.assertions(3);
-    expect(document.body.querySelectorAll('[data-td="button-component"]').length).toBe(0);
+    expect.assertions(2);
 
     const buttonText = 'myButton';
     new Button(document.body, buttonText);

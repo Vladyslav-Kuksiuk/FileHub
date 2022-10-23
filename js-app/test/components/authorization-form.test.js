@@ -2,9 +2,7 @@ import {AuthorizationForm, EMAIL_LENGTH_ERROR, PASSWORD_LENGTH_ERROR} from '../.
 
 describe('AuthorizationForm Component', () => {
   test(`AuthorizationForm constructor`, function() {
-    expect.assertions(3);
-
-    expect(document.body.querySelectorAll('[data-td="form"]').length).toBe(0);
+    expect.assertions(2);
 
     new AuthorizationForm(document.body);
 

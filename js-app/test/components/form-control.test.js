@@ -2,9 +2,7 @@ import {FormControl} from '../../src/components/form-control';
 
 describe('FormControl Component', () => {
   test(`FormControl constructor`, function() {
-    expect.assertions(8);
-
-    expect(document.body.querySelectorAll('[data-td="form-control"]').length).toBe(0);
+    expect.assertions(7);
 
     const name = 'myName';
     const labelText = 'myLabel';

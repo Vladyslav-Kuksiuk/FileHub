@@ -6,9 +6,7 @@ describe('Link Component', () => {
   });
 
   test(`Link constructor`, function() {
-    expect.assertions(3);
-
-    expect(document.body.querySelectorAll('[data-td="link-component"]').length).toBe(0);
+    expect.assertions(2);
 
     const linkText = 'myLink';
     new Link(document.body, linkText);

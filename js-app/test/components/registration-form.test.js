@@ -11,10 +11,7 @@ describe('RegistrationForm Component', () => {
   });
 
   test(`RegistrationForm constructor`, function() {
-    expect.assertions(3);
-
-
-    expect(document.body.querySelectorAll('[data-td="form"]').length).toBe(0);
+    expect.assertions(2);
 
     new RegistrationForm(document.body);
 
