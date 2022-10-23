@@ -7,8 +7,8 @@ import {ValidationService} from '../../validation/validation-service.js';
 import {Link} from '../link';
 import {UserData} from '../../user-data.js';
 
-const EMAIL = 'email';
-const PASSWORD = 'password';
+export const EMAIL = 'email';
+export const PASSWORD = 'password';
 const EMAIL_MIN_LENGTH = 5;
 const PASSWORD_MIN_LENGTH = 6;
 export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
