@@ -10,7 +10,7 @@ describe('validateLength', () => {
           expect.assertions(1);
           const validatingFunction = validateLength(minLength, 'Length validation error.');
           validatingFunction(testingText).then(() => {
-            expect(true).toBe(true);
+            expect(true).toBeTruthy();
           });
         });
       });
@@ -31,7 +31,7 @@ describe('validateLength', () => {
 
   [null, NaN, undefined, [], {}, -1, 'hello']
       .forEach((minLength) => {
-        test('Test illegal values of minLength', function() {
+        test('Should return error text', function() {
           expect.assertions(1);
           try {
             validateLength(minLength, 'Length validation error.');
@@ -43,7 +43,7 @@ describe('validateLength', () => {
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((errorMessage) => {
-        test('Test illegal values of errorMessage', function() {
+        test('Should return error text', function() {
           expect.assertions(1);
           try {
             validateLength(1, errorMessage);
@@ -55,7 +55,7 @@ describe('validateLength', () => {
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((value) => {
-        test('Test illegal values to validate', function() {
+        test('Should return error text', function() {
           expect.assertions(1);
           try {
             const validatingFunction = validateLength(1, 'Length validation error.');
@@ -76,7 +76,7 @@ describe('validateRegex', function() {
           expect.assertions(1);
           const validatingFunction = validateByRegexp(EMAIL_VALIDATION_REGEX, 'Regexp validation error.');
           validatingFunction(testingText).then(() => {
-            expect(true).toBe(true);
+            expect(true).toBeTruthy();
           });
         });
       });
@@ -97,7 +97,7 @@ describe('validateRegex', function() {
 
   [null, NaN, undefined, [], {}, -1, 'hello']
       .forEach((regexp) => {
-        test('Test illegal values of regexp', function() {
+        test('Should return error text', function() {
           expect.assertions(1);
           try {
             validateByRegexp(regexp, 'RegExp validation error.');
@@ -109,7 +109,7 @@ describe('validateRegex', function() {
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((errorMessage) => {
-        test('Test illegal values of errorMessage', function() {
+        test('Should return error text', function() {
           expect.assertions(1);
           try {
             validateByRegexp(EMAIL_VALIDATION_REGEX, errorMessage);
@@ -121,7 +121,7 @@ describe('validateRegex', function() {
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((value) => {
-        test('Test illegal values to validate', function() {
+        test('Should return error text', function() {
           expect.assertions(1);
           try {
             const validatingFunction = validateByRegexp(EMAIL_VALIDATION_REGEX, 'Length validation error.');
@@ -142,7 +142,7 @@ describe('validateSameValues', function() {
           expect.assertions(1);
           const validatingFunction = validateSameValue(value, 'Same values validation error.');
           validatingFunction(value).then(() => {
-            expect(true).toBe(true);
+            expect(true).toBeTruthy();
           });
         });
       });
@@ -163,7 +163,7 @@ describe('validateSameValues', function() {
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((errorMessage) => {
-        test('Test illegal values of errorMessage', function() {
+        test('Should return error text', function() {
           expect.assertions(1);
           try {
             validateSameValue(EMAIL_VALIDATION_REGEX, errorMessage);

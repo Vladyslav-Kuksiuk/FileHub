@@ -2,7 +2,7 @@ import {RouterConfigBuilder} from '../../src/router/router-config';
 import {Router} from '../../src/router/router';
 
 describe('Router', () => {
-  test(`redirect`, function(done) {
+  test(`Should redirect to login->register->error`, function(done) {
     expect.assertions(3);
 
     window.location.hash = '';

@@ -53,7 +53,7 @@ describe('Component', () => {
     document.body.innerHTML = '';
   });
 
-  test(`Lifecycle`, function() {
+  test(`Should return lifecycle sequence`, function() {
     expect.assertions(2);
 
     const testComponent = new TestComponent(document.body);
@@ -66,7 +66,7 @@ describe('Component', () => {
         .toBe(['constructor', 'init', 'render', 'afterRender', 'render', 'afterRender'].join());
   });
 
-  test(`Markup insertion`, function() {
+  test(`Should insert markup in parent`, function() {
     expect.assertions(2);
 
     new TestComponent(document.body);
