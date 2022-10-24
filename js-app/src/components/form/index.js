@@ -1,4 +1,4 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 import {Button} from '../button';
 
 const FORM_SUBMIT_EVENT = 'FORM_SUBMIT_EVENT';

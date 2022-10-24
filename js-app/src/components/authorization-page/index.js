@@ -1,4 +1,4 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 import {AuthorizationForm} from '../authorization-form';
 import {TitleService} from '../../title-service.js';
 

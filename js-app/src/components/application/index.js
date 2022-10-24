@@ -1,10 +1,10 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 import {AuthorizationPage} from '../authorization-page';
 import {RegistrationPage} from '../registration-page';
-import {Router} from '../../router/router.js';
+import {Router} from '../../router/router';
 import {Error404Page} from '../error-404-page';
-import {TitleService} from '../../title-service.js';
-import {RouterConfigBuilder} from '../../router/router-config.js';
+import {TitleService} from '../../title-service';
+import {RouterConfigBuilder} from '../../router/router-config';
 
 const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';

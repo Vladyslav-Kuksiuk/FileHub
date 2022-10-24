@@ -1,5 +1,5 @@
-import {Component} from '../component.js';
-import {IndexService} from '../../index-service.js';
+import {Component} from '../component';
+import {IndexService} from '../../index-service';
 
 /**
  * Form control component.
