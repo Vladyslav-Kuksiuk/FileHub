@@ -1,6 +1,6 @@
 import {Component} from '../component';
 import {RegistrationForm} from '../registration-form';
-import {TitleService} from '../../title-service.js';
+import {TitleService} from '../../title-service';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -9,14 +9,17 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
+  #apiService;
+  #error;
 
   /**
    * @param {HTMLElement} parent
    * @param {TitleService} titleService
    */
-  constructor(parent, titleService) {
+  constructor(parent, titleService, apiService) {
     super(parent);
     titleService.titles = ['Sign Up'];
+    this.#apiService = apiService;
     this.init();
   }
 
@@ -30,8 +33,19 @@ export class RegistrationPage extends Component {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
     form.onSubmit((data)=>{
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+      this.#apiService.register(data)
+        .then(()=>{
+          this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+        })
+        .catch((error)=>{
+          error.errors ? form.formErrors = error?.errors :this.#setError(error.message);
+        })
     });
+  }
+
+  #setError(error){
+    this.#error = error;
+    this.render();
   }
 
   /**
@@ -47,6 +61,7 @@ export class RegistrationPage extends Component {
    * @inheritDoc
    */
   markup() {
+    const error = this.#error ? `<p class="text-danger">${this.#error}</p><br>` : ''
     return `
     <div class="page-wrapper">
     <header class="page-header">
@@ -55,6 +70,7 @@ export class RegistrationPage extends Component {
     <main class="container">
         <h1>Sign up to FileHub</h1>
         <hr class="horizontal-line">
+        ${error}
         ${this.addSlot('form')}
     </main>
 </div>

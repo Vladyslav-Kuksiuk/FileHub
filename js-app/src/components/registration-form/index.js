@@ -114,9 +114,8 @@ export class RegistrationForm extends Component {
 
   /**
    * @param {object} errors
-   * @private
    */
-  #setFormErrors(errors) {
+  set formErrors(errors) {
     this.#formErrors = errors;
     this.render();
   }
@@ -150,11 +149,11 @@ export class RegistrationForm extends Component {
    * @private
    */
   #validateForm(formData, configCreator) {
-    this.#setFormErrors({
+    this.formErrors ={
       [EMAIL]: [],
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
-    });
+    };
     new ValidationService()
         .validate(formData, configCreator(formData))
         .then(() => {
@@ -167,7 +166,7 @@ export class RegistrationForm extends Component {
             tempErrors[fieldName] = [...prevErrors, error.message];
             return tempErrors;
           }, {});
-          this.#setFormErrors(errorsByField);
+          this.formErrors = errorsByField;
         });
   }
 

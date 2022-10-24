@@ -45,7 +45,7 @@ export class Application extends Component {
         })
         .addRoute(REGISTRATION_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new RegistrationPage(this.rootElement, titleService);
+          const page = new RegistrationPage(this.rootElement, titleService, apiService);
           page.onNavigateToAuthorization(() => {
             router.redirect(LOGIN_PATH);
           });
