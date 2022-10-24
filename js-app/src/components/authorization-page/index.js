@@ -1,22 +1,28 @@
 import {Component} from '../component';
 import {AuthorizationForm} from '../authorization-form';
-import {TitleService} from '../../title-service.js';
+import {TitleService} from '../../title-service';
+import {ApiService} from '../../server-connection/api-service';
 
 const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
 const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
+
 /**
  * Authorization page component.
  */
 export class AuthorizationPage extends Component {
   #eventTarget = new EventTarget();
+  #apiService;
+  #error;
 
   /**
    * @param {HTMLElement} parent
    * @param {TitleService} titleService
+   * @param {ApiService} apiService
    */
-  constructor(parent, titleService) {
+  constructor(parent, titleService, apiService) {
     super(parent);
     titleService.titles = ['Sign In'];
+    this.#apiService = apiService;
     this.init();
   }
 
@@ -26,11 +32,19 @@ export class AuthorizationPage extends Component {
   afterRender() {
     const formSlot = this.getSlot('form');
     const form = new AuthorizationForm(formSlot);
-    form.onNavigateToRegistration(()=>{
+    form.onNavigateToRegistration(() => {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_REGISTRATION));
     });
-    form.onSubmit((data)=>{
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
+    form.onSubmit((data) => {
+      this.#error = null;
+      this.#apiService.login(data)
+          .then(() => {
+            this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
+          })
+          .catch((error) => {
+            this.#error = error.message;
+            this.render()
+          });
     });
   }
 
@@ -56,6 +70,7 @@ export class AuthorizationPage extends Component {
    * @inheritDoc
    */
   markup() {
+    const error = this.#error ? `<p class="text-danger">${this.#error}</p><br>` : ''
     return `
     <div class="page-wrapper">
     <header class="page-header">
@@ -64,6 +79,7 @@ export class AuthorizationPage extends Component {
     <main class="container">
         <h1>Sign in to FileHub</h1>
         <hr class="horizontal-line">
+        ${error}
         ${this.addSlot('form')}
     </main>
 </div>

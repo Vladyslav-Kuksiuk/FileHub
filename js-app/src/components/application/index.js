@@ -5,6 +5,8 @@ import {Router} from '../../router/router';
 import {Error404Page} from '../error-404-page';
 import {TitleService} from '../../title-service';
 import {RouterConfigBuilder} from '../../router/router-config';
+import {ApiService} from '../../server-connection/api-service';
+import {RequestService} from '../../server-connection/request-service';
 
 const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';
@@ -21,6 +23,7 @@ export class Application extends Component {
     this.init();
 
     const titleService = new TitleService('FileHub', ' - ');
+    const apiService = new ApiService(new RequestService());
 
     const routerConfig = new RouterConfigBuilder()
         .addErrorRoute(() => {
@@ -32,7 +35,7 @@ export class Application extends Component {
         })
         .addRoute(LOGIN_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new AuthorizationPage(this.rootElement, titleService);
+          const page = new AuthorizationPage(this.rootElement, titleService, apiService);
           page.onNavigateToRegistration(() => {
             router.redirect(REGISTRATION_PATH);
           });
