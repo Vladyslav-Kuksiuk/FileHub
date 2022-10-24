@@ -1,5 +1,6 @@
 import {Form} from '../../src/components/form';
 import {FormControl} from '../../src/components/form-control';
+import {Link} from '../../src/components/link';
 
 const {module, test} = QUnit;
 
@@ -13,7 +14,10 @@ module('Form Component', () => {
 
     const buttonText = 'myButton';
     const linkText = 'myLink';
-    new Form(fixture, {buttonText: buttonText, linkText: linkText});
+    new Form(fixture, {buttonText: buttonText,
+      linkCreator: (slot)=>{
+        new Link(slot, linkText);
+      }});
 
     assert.strictEqual(fixture.querySelectorAll('[data-td="form-component"]').length, 1,
         'Should return number of forms after creating.');
@@ -26,7 +30,10 @@ module('Form Component', () => {
   test(`addFormControl`, function(assert) {
     assert.expect(3);
     const fixture = document.getElementById('qunit-fixture');
-    const form = new Form(fixture, {buttonText: 'myButton', linkText: 'myLink'});
+    const form = new Form(fixture, {buttonText: 'myButton',
+      linkCreator: (slot)=>{
+        new Link(slot, 'myLink');
+      }});
 
     assert.strictEqual(fixture.querySelectorAll('[data-td="form-control"]').length, 0,
         'Should return number of form controls before adding.');
@@ -55,7 +62,10 @@ module('Form Component', () => {
   test(`onSubmit`, function(assert) {
     assert.expect(2);
     const fixture = document.getElementById('qunit-fixture');
-    const form = new Form(fixture, {buttonText: 'myButton', linkText: 'myLink'});
+    const form = new Form(fixture, {buttonText: 'myButton',
+      linkCreator: (slot)=>{
+        new Link(slot, 'myLink');
+      }});
 
     let isSubmitted = false;
     form.onSubmit((formData) => {

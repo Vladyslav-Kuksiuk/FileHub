@@ -14,6 +14,8 @@ export class Component {
 
   /**
    * Method calls before first render
+   *
+   * @protected
    */
   init() {
     this.render();
@@ -21,12 +23,15 @@ export class Component {
 
   /**
    * Method calls after first render
+   *
+   * @protected
    */
   afterRender() {
 
   }
 
   /**
+   * @protected
    * @param {string} name
    * @returns {string}
    */
@@ -35,6 +40,7 @@ export class Component {
   }
 
   /**
+   * @protected
    * @param {string} name
    * @returns {HTMLElement}
    */
@@ -44,6 +50,8 @@ export class Component {
 
   /**
    * Render component in parent.
+   *
+   * @protect
    */
   render() {
     this.#createDomTree();
@@ -51,7 +59,7 @@ export class Component {
   }
 
   /**
-   * Create element from markup and set it into HTML document.
+   * @private
    */
   #createDomTree() {
     const isFirstRendering = !this.rootElement;
@@ -69,6 +77,7 @@ export class Component {
   /**
    * Returns html attribute to mark element.
    *
+   * @protected
    * @param {string} name
    * @returns {string}
    */
@@ -79,6 +88,7 @@ export class Component {
   /**
    * Creates new {HTMLElement} by markup.
    *
+   * @private
    * @returns {HTMLElement}
    */
   #createNewElement() {

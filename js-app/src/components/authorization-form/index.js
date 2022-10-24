@@ -19,7 +19,12 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  * Authorization page component.
  */
 export class AuthorizationForm extends Component {
-  #formControls = {};
+  #emailValue = '';
+  #passwordValue = '';
+  #formErrors = {
+    [EMAIL]: [],
+    [PASSWORD]: [],
+  };
   #eventTarget = new EventTarget();
 
   /**
@@ -36,36 +41,37 @@ export class AuthorizationForm extends Component {
   afterRender() {
     const linkCreator = (slot) => {
       const link = new Link(slot, 'Don\'t have an account yet?');
-      link.onClick(()=>{
+      link.onClick(() => {
         this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
       });
     };
 
-    const form = new Form(this.parentElement, {
+    const form = new Form(this.rootElement, {
       buttonText: 'Sign In',
       linkCreator: linkCreator,
     });
-
     form.addFormControl((slot) => {
-      const input = new FormControl(slot, {
+      new FormControl(slot, {
         name: EMAIL,
         labelText: 'Email',
         placeholder: 'Email',
+        value: this.#emailValue,
+        errorMessages: this.#formErrors[EMAIL],
       });
-      this.#formControls[EMAIL] = input;
     });
 
     form.addFormControl((slot) => {
-      const input = new FormControl(slot, {
+      new FormControl(slot, {
         name: PASSWORD,
         labelText: 'Password',
         placeholder: 'Password',
         type: 'password',
+        value: this.#passwordValue,
+        errorMessages: this.#formErrors[PASSWORD],
       });
-      this.#formControls[PASSWORD] = input;
     });
 
-    const configCreator = (formData) =>{
+    const configCreator = (formData) => {
       return new FormValidationConfigBuilder()
           .addField(EMAIL,
               validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`))
@@ -75,12 +81,24 @@ export class AuthorizationForm extends Component {
     };
 
     form.onSubmit((formData) => {
+      this.#emailValue = formData.get(EMAIL);
+      this.#passwordValue = formData.get(PASSWORD);
       this.#validateForm(formData, configCreator);
     });
   }
 
   /**
+   * @private
+   * @param {object} errors
+   */
+  #setFormErrors(errors) {
+    this.#formErrors = errors;
+    this.render();
+  }
+
+  /**
    * Adds event listener on navigate to registration.
+   *
    * @param {function} listener
    */
   onNavigateToRegistration(listener) {
@@ -88,23 +106,25 @@ export class AuthorizationForm extends Component {
   }
 
   /**
-   * Validates forms inputs and render errors.
-   *
+   * @private
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
    */
   #validateForm(formData, configCreator) {
-    Object.entries(this.#formControls).forEach(([name, formControl]) => {
-      formControl.saveValue();
-      formControl.clearErrorMessages();
+    this.#setFormErrors({
+      [EMAIL]: [],
+      [PASSWORD]: [],
     });
-
     new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
-          result.errors.forEach((error) => {
-            this.#formControls[error.name].addErrorMessage(error.message);
-          });
+          const errorsByField = result.errors.reduce((tempErrors, error) => {
+            const fieldName = error.name;
+            const prevErrors = tempErrors[fieldName] || [];
+            tempErrors[fieldName] = [...prevErrors, error.message];
+            return tempErrors;
+          }, {});
+          this.#setFormErrors(errorsByField);
         });
   }
 
@@ -112,6 +132,6 @@ export class AuthorizationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    return this.addSlot('form');
+    return this.addSlot('auth-form');
   }
 }
