@@ -1,4 +1,4 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 import {AuthorizationPage} from '../authorization-page';
 import {RegistrationPage} from '../registration-page';
 import {Router} from '../../router/router.js';
