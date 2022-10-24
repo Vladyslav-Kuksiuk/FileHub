@@ -11,18 +11,18 @@ module('Router', () => {
     window.location.hash = '';
 
     const routerConfig = new RouterConfigBuilder()
-      .addHomeRoutePath('login')
-      .addErrorRoute(() => {
-        fixture.innerHTML = 'error';
-      })
-      .addRoute('register', () => {
-        fixture.innerHTML = 'register';
-      })
-      .addRoute('login', () => {
-        fixture.innerHTML = 'login';
-      }).build()
+        .addHomeRoutePath('login')
+        .addErrorRoute(() => {
+          fixture.innerHTML = 'error';
+        })
+        .addRoute('register', () => {
+          fixture.innerHTML = 'register';
+        })
+        .addRoute('login', () => {
+          fixture.innerHTML = 'login';
+        }).build();
 
-    const router = new Router(routerConfig)
+    const router = new Router(routerConfig);
 
     assert.strictEqual(fixture.innerHTML, 'login',
         'Should return page innerHTML, after router creation');

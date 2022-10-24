@@ -27,6 +27,6 @@ export default {
         {src: 'static/images', dest: 'dist/static'},
         {src: 'static/fonts', dest: 'dist/static'},
       ],
-    })
+    }),
   ],
 };

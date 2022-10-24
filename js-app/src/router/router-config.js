@@ -1,4 +1,4 @@
-import {Preconditions} from '../preconditions.js';
+import {Preconditions} from '../preconditions';
 
 /**
  * Config for {@link Router}
