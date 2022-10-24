@@ -5,7 +5,7 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateLength} from '../../validation/value-validations';
 import {ValidationService} from '../../validation/validation-service';
 import {Link} from '../link';
-import {UserData} from '../../user-data.js';
+import {UserData} from '../../user-data';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
