@@ -1,9 +1,9 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 import {FormControl} from '../form-control';
 import {Form} from '../form';
-import {FormValidationConfigBuilder} from '../../validation/form-validation-config.js';
-import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations.js';
-import {ValidationService} from '../../validation/validation-service.js';
+import {FormValidationConfigBuilder} from '../../validation/form-validation-config';
+import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations';
+import {ValidationService} from '../../validation/validation-service';
 import {Link} from '../link';
 import {UserData} from '../../user-data.js';
 

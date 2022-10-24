@@ -1,4 +1,4 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 import {RegistrationForm} from '../registration-form';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
