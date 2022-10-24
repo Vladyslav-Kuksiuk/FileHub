@@ -34,6 +34,7 @@ export class RegistrationForm extends Component {
     [CONFIRM_PASSWORD]: [],
   };
   #eventTarget = new EventTarget();
+  #headError;
 
   /**
    * @param {HTMLElement} parent
@@ -143,6 +144,11 @@ export class RegistrationForm extends Component {
     });
   }
 
+  set headError(error){
+    this.#headError = error;
+    this.render();
+  }
+
   /**
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
@@ -174,7 +180,12 @@ export class RegistrationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    return this.addSlot('form');
+    const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : ''
+
+    return `
+    ${error}
+    ${this.addSlot('form')}
+    `
   }
 }
 

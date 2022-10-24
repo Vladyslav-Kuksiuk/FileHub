@@ -27,6 +27,7 @@ export class AuthorizationForm extends Component {
     [EMAIL]: [],
     [PASSWORD]: [],
   };
+  #headError;
   #eventTarget = new EventTarget();
 
   /**
@@ -98,6 +99,11 @@ export class AuthorizationForm extends Component {
     this.render();
   }
 
+  set headError(error){
+    this.#headError = error;
+    this.render();
+  }
+
   /**
    * Adds listener on navigate to registration event.
    *
@@ -151,6 +157,11 @@ export class AuthorizationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    return this.addSlot('auth-form');
+    const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : ''
+
+    return `
+    ${error}
+    ${this.addSlot('auth-form')}
+    `
   }
 }

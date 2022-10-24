@@ -12,7 +12,6 @@ const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
 export class AuthorizationPage extends Component {
   #eventTarget = new EventTarget();
   #apiService;
-  #error;
 
   /**
    * @param {HTMLElement} parent
@@ -42,8 +41,7 @@ export class AuthorizationPage extends Component {
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
           })
           .catch((error) => {
-            this.#error = error.message;
-            this.render()
+            form.headError = error.message;
           });
     });
   }
@@ -70,7 +68,6 @@ export class AuthorizationPage extends Component {
    * @inheritDoc
    */
   markup() {
-    const error = this.#error ? `<p class="text-danger">${this.#error}</p><br>` : ''
     return `
     <div class="page-wrapper">
     <header class="page-header">
@@ -79,7 +76,6 @@ export class AuthorizationPage extends Component {
     <main class="container">
         <h1>Sign in to FileHub</h1>
         <hr class="horizontal-line">
-        ${error}
         ${this.addSlot('form')}
     </main>
 </div>
