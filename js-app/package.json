@@ -5,14 +5,25 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint **/**.js"
+    "lint": "eslint **/**.js",
+    "prebuild": "rimraf dist",
+    "prestart": "rimraf dist",
+    "start": "rollup --config rollup.config.dev.js --watch",
+    "build": "rollup --config rollup.config.js"
   },
   "author": "Vladyslav Kuksiuk",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.0",
     "eslint": "^8.22.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-qunit": "^7.3.1",
-    "qunit": "^2.19.1"
+    "qunit": "^2.19.1",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-generate-html-template": "^1.7.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^2.0.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup": "^2.78.0"
   }
 }

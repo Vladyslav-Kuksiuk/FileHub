@@ -1,5 +1,5 @@
-import {ValidationError} from './validation-error.js';
-import {ValidationErrorResult} from './validation-error-result.js';
+import {ValidationError} from './validation-error';
+import {ValidationErrorResult} from './validation-error-result';
 
 /**
  * Service for form validation.

@@ -1,4 +1,4 @@
-import {Component} from '../component.js';
+import {Component} from '../component';
 
 const CLICK_EVENT = 'CLICK_EVENT';
 
