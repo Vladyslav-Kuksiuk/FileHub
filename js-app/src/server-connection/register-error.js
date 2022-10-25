@@ -1,5 +1,5 @@
-export class RegisterError extends Error{
-  errors = []
+export class RegisterError extends Error {
+  errors = [];
 
   constructor(errors) {
     super();

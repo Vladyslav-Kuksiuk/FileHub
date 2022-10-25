@@ -99,7 +99,7 @@ export class AuthorizationForm extends Component {
     this.render();
   }
 
-  set headError(error){
+  set headError(error) {
     this.#headError = error;
     this.render();
   }
@@ -157,11 +157,11 @@ export class AuthorizationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : ''
+    const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : '';
 
     return `
     ${error}
     ${this.addSlot('auth-form')}
-    `
+    `;
   }
 }

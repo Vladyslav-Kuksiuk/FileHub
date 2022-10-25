@@ -34,12 +34,12 @@ export class RegistrationPage extends Component {
     });
     form.onSubmit((data)=>{
       this.#apiService.register(data)
-        .then(()=>{
-          this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
-        })
-        .catch((error)=>{
+          .then(()=>{
+            this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+          })
+          .catch((error)=>{
           error.errors ? form.formErrors = error.errors :form.headError = error.message;
-        })
+          });
     });
   }
 

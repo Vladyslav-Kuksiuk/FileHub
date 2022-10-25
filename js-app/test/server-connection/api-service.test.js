@@ -1,8 +1,14 @@
 import {RequestService} from '../../src/server-connection/request-service';
-import {ApiService, DEFAULT_ERROR, LOGIN_401_ERROR} from '../../src/server-connection/api-service';
+import {Response} from '../../src/server-connection/response';
+import {
+  ApiService,
+  DEFAULT_ERROR,
+  LOGIN_401_ERROR,
+  LOGIN_PATH,
+  REGISTER_PATH,
+} from '../../src/server-connection/api-service';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
-import 'isomorphic-fetch';
 
 describe('ApiService', () => {
   beforeEach(() => {
@@ -10,84 +16,138 @@ describe('ApiService', () => {
   });
 
   test(`Should successfully log in`, function(done) {
-    expect.assertions(1);
+    expect.assertions(4);
+
+    const login = 'login';
+    const password = 'password';
 
     const requestServiceMock = jest
-      .spyOn(RequestService.prototype, 'post')
-      .mockImplementation(() => {
-        return new Promise(((resolve) => {
-          resolve(
-            new Response(JSON.stringify({
-              token: 'testToken',
-            }), {
-              status: 200,
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }));
-        }));
-      });
+        .spyOn(RequestService.prototype, 'postJson')
+        .mockImplementation((url, body) => {
+          expect(url).toBe(LOGIN_PATH);
+          expect(body.username).toBe(login);
+          expect(body.password).toBe(password);
+          return new Promise(((resolve) => {
+            resolve(new Response(200, {token: 'myToken'}));
+          }));
+        });
+
+    const apiService = new ApiService(new RequestService());
+    apiService.logIn(new UserData(login, password))
+        .then(() => {
+          expect(requestServiceMock).toBeCalledTimes(1)
+          done();
+        });
+  });
+
+  test(`Should fail login with error message ${DEFAULT_ERROR}`, function(done) {
+    expect.assertions(2);
+
+    const requestServiceMock = jest
+        .spyOn(RequestService.prototype, 'postJson')
+        .mockImplementation(() => {
+          return new Promise(((resolve) => {
+            resolve(new Response(400, {}));
+          }));
+        });
 
     const apiService = new ApiService(new RequestService());
     apiService.logIn(new UserData('login', 'password'))
-      .then(() => {
-        expect(true).toBeTruthy();
-        done();
-      });
+        .catch((error) => {
+          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(error.message).toBe(DEFAULT_ERROR);
+          done();
+        });
   });
 
-  test(`Should fail log in with error message ${DEFAULT_ERROR}`, function(done) {
-    expect.assertions(1);
+  test(`Should fail login with error message ${LOGIN_401_ERROR}`, function(done) {
+    expect.assertions(2);
 
     const requestServiceMock = jest
-      .spyOn(RequestService.prototype, 'post')
-      .mockImplementation(() => {
-        return new Promise(((resolve) => {
-          resolve(
-            new Response(JSON.stringify({
-              token: 'testToken',
-            }), {
-              status: 400,
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }));
-        }));
-      });
+        .spyOn(RequestService.prototype, 'postJson')
+        .mockImplementation(() => {
+          return new Promise(((resolve) => {
+            resolve(new Response(401, {}));
+          }));
+        });
 
     const apiService = new ApiService(new RequestService());
     apiService.logIn(new UserData('login', 'password'))
-      .catch((error) => {
-        expect(error.message).toBe(DEFAULT_ERROR);
-        done()
-      });
+        .catch((error) => {
+          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(error.message).toBe(LOGIN_401_ERROR);
+          done();
+        });
   });
 
-  test(`Should fail log in with error message ${LOGIN_401_ERROR}`, function(done) {
-    expect.assertions(1);
+  test(`Should successfully register`, function(done) {
+    expect.assertions(4);
+
+    const login = 'login';
+    const password = 'password';
 
     const requestServiceMock = jest
-      .spyOn(RequestService.prototype, 'post')
-      .mockImplementation(() => {
-        return new Promise(((resolve) => {
-          resolve(
-            new Response(JSON.stringify({
-              token: 'testToken',
-            }), {
-              status: 401,
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }));
-        }));
-      });
+        .spyOn(RequestService.prototype, 'postJson')
+        .mockImplementation((url, body) => {
+          expect(url).toBe(REGISTER_PATH);
+          expect(body.username).toBe(login);
+          expect(body.password).toBe(password);
+          return new Promise(((resolve) => {
+            resolve(new Response(200, {token: 'myToken'}));
+          }));
+        });
 
     const apiService = new ApiService(new RequestService());
-    apiService.logIn(new UserData('login', 'password'))
-      .catch((error) => {
-        expect(error.message).toBe(LOGIN_401_ERROR);
-        done()
-      });
+    apiService.register(new UserData(login, password))
+        .then(() => {
+          expect(requestServiceMock).toBeCalledTimes(1)
+          done();
+        });
   });
 
+  test(`Should fail registration with error message ${DEFAULT_ERROR}`, function(done) {
+    expect.assertions(2);
+
+    const requestServiceMock = jest
+        .spyOn(RequestService.prototype, 'postJson')
+        .mockImplementation(() => {
+          return new Promise(((resolve) => {
+            resolve(
+                new Response(400, {}),
+            );
+          }));
+        });
+
+    const apiService = new ApiService(new RequestService());
+    apiService.register(new UserData('login', 'password'))
+        .catch((error) => {
+          expect(error.message).toBe(DEFAULT_ERROR);
+          expect(requestServiceMock).toBeCalledTimes(1)
+          done();
+        });
+  });
+
+  test(`Should fail registration with errors in response body`, function(done) {
+    expect.assertions(2);
+    const errors = {
+      email: 'Email error',
+      password: 'Password error',
+    };
+
+    const requestServiceMock = jest
+        .spyOn(RequestService.prototype, 'postJson')
+        .mockImplementation(() => {
+          return new Promise(((resolve) => {
+            resolve(new Response(422, {errors: errors}));
+          }));
+        });
+
+    const apiService = new ApiService(new RequestService());
+    apiService.register(new UserData('login', 'password'))
+        .catch((error) => {
+          expect(error.errors).toBe(errors);
+          expect(requestServiceMock).toBeCalledTimes(1)
+          done();
+        });
+  });
 });
