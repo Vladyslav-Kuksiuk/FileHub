@@ -1,5 +1,7 @@
 import {RequestService} from './request-service';
 import {RegisterError} from './register-error';
+export const LOGIN_401_ERROR =  'Invalid login or password';
+export const DEFAULT_ERROR = 'An error occurred. Please try again.';
 
 export class ApiService {
   #requestService;
@@ -17,16 +19,16 @@ export class ApiService {
    * @param {UserData} data
    * @returns {Promise<string, Error>}
    */
-  async login(data) {
+  async logIn(data) {
     return await this.#requestService.post('api/login', {
       username: data.login,
       password: data.password,
     }).then((response) => {
       if (response.status === 401) {
-        throw new Error('Invalid login or password');
+        throw new Error(LOGIN_401_ERROR);
       }
       if (!response.ok) {
-        throw new Error('An error occurred. Please try again.');
+        throw new Error(DEFAULT_ERROR);
       }
       response.json().then((jsonData) => {
         this.#userToken = jsonData.token;
@@ -52,7 +54,7 @@ export class ApiService {
         throw new RegisterError(jsonData.errors);
       }
       if (!response.ok) {
-        throw new Error('An error occurred. Please try again.');
+        throw new Error(DEFAULT_ERROR);
       }
     });
   }
