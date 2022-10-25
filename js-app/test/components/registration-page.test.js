@@ -42,7 +42,6 @@ describe('RegistrationPage', () => {
     const apiServiceMock = jest
         .spyOn(ApiService.prototype, 'register')
         .mockImplementation(async () => {
-          console.log('in mock')
           return await new Promise((resolve) => {
             resolve();
           });
@@ -65,16 +64,16 @@ describe('RegistrationPage', () => {
     expect.assertions(4);
 
     const apiServiceMock = jest
-      .spyOn(ApiService.prototype, 'register')
-      .mockImplementation( () => {
-        return new Promise((resolve, reject) => {
-          reject(new Error('Error message'));
+        .spyOn(ApiService.prototype, 'register')
+        .mockImplementation( () => {
+          return new Promise((resolve, reject) => {
+            reject(new Error('Error message'));
+          });
         });
-      });
 
     const regFormMock = jest
-      .spyOn(RegistrationForm.prototype, 'setHeadError')
-      .mockImplementation(()=>{})
+        .spyOn(RegistrationForm.prototype, 'setHeadError')
+        .mockImplementation(()=>{});
 
     new RegistrationPage(document.body, new TitleService(), new ApiService());
 
@@ -89,7 +88,6 @@ describe('RegistrationPage', () => {
       expect(regFormMock).toBeCalledTimes(1);
       expect(regFormMock).toBeCalledWith('Error message');
       done();
-    })
+    });
   });
-
 });

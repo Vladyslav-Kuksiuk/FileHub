@@ -63,16 +63,16 @@ describe('AuthorizationPage', () => {
     expect.assertions(4);
 
     const apiServiceMock = jest
-      .spyOn(ApiService.prototype, 'logIn')
-      .mockImplementation(() => {
-        return new Promise((resolve, reject) => {
-          reject(new Error('Error message'));
+        .spyOn(ApiService.prototype, 'logIn')
+        .mockImplementation(() => {
+          return new Promise((resolve, reject) => {
+            reject(new Error('Error message'));
+          });
         });
-      });
 
     const authFormMock = jest
-      .spyOn(AuthorizationForm.prototype, 'setHeadError')
-      .mockImplementation(()=>{})
+        .spyOn(AuthorizationForm.prototype, 'setHeadError')
+        .mockImplementation(()=>{});
 
     new AuthorizationPage(document.body, new TitleService(), new ApiService());
 
@@ -86,6 +86,6 @@ describe('AuthorizationPage', () => {
       expect(authFormMock).toBeCalledTimes(1);
       expect(authFormMock).toBeCalledWith('Error message');
       done();
-    })
+    });
   });
 });

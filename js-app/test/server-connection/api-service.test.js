@@ -11,10 +11,6 @@ import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
 
 describe('ApiService', () => {
-  beforeEach(() => {
-    document.body.innerHTML = '';
-  });
-
   test(`Should successfully log in`, function(done) {
     expect.assertions(4);
 

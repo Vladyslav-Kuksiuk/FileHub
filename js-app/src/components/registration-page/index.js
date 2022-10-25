@@ -1,6 +1,7 @@
 import {Component} from '../component';
 import {RegistrationForm} from '../registration-form';
 import {TitleService} from '../../title-service';
+import {ApiService} from '../../server-connection/api-service';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
