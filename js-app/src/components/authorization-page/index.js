@@ -40,7 +40,7 @@ export class AuthorizationPage extends Component {
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
           })
           .catch((error) => {
-            form.headError = error.message;
+            form.setHeadError(error.message);
           });
     });
   }

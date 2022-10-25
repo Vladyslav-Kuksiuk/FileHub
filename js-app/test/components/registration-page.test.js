@@ -3,6 +3,7 @@ import {TitleService} from '../../src/title-service';
 import {jest} from '@jest/globals';
 import {ApiService} from '../../src/server-connection/api-service';
 import {UserData} from '../../src/user-data';
+import {RegistrationForm} from '../../src/components/registration-form/index';
 
 describe('RegistrationPage', () => {
   beforeEach(() => {
@@ -41,6 +42,7 @@ describe('RegistrationPage', () => {
     const apiServiceMock = jest
         .spyOn(ApiService.prototype, 'register')
         .mockImplementation(async () => {
+          console.log('in mock')
           return await new Promise((resolve) => {
             resolve();
           });
@@ -58,4 +60,36 @@ describe('RegistrationPage', () => {
     document.body.querySelectorAll('[data-td="form-control"] input')[2].value = 'password';
     document.body.querySelector('[data-td="form-component"]').submit();
   });
+
+  test('Should set headError ', function(done) {
+    expect.assertions(4);
+
+    const apiServiceMock = jest
+      .spyOn(ApiService.prototype, 'register')
+      .mockImplementation( () => {
+        return new Promise((resolve, reject) => {
+          reject(new Error('Error message'));
+        });
+      });
+
+    const regFormMock = jest
+      .spyOn(RegistrationForm.prototype, 'setHeadError')
+      .mockImplementation(()=>{})
+
+    new RegistrationPage(document.body, new TitleService(), new ApiService());
+
+    document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
+    document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
+    document.body.querySelectorAll('[data-td="form-control"] input')[2].value = 'password';
+    document.body.querySelector('[data-td="form-component"]').submit();
+
+    setTimeout(()=>{
+      expect(apiServiceMock).toBeCalledTimes(1);
+      expect(apiServiceMock).toBeCalledWith(new UserData('email', 'password'));
+      expect(regFormMock).toBeCalledTimes(1);
+      expect(regFormMock).toBeCalledWith('Error message');
+      done();
+    })
+  });
+
 });

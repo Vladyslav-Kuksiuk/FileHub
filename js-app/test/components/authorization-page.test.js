@@ -3,6 +3,7 @@ import {TitleService} from '../../src/title-service';
 import {ApiService} from '../../src/server-connection/api-service';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
+import {AuthorizationForm} from '../../src/components/authorization-form/index';
 
 describe('AuthorizationPage', () => {
   beforeEach(() => {
@@ -56,5 +57,35 @@ describe('AuthorizationPage', () => {
     document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
     document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
     document.body.querySelector('[data-td="form-component"]').submit();
+  });
+
+  test('Should set headError ', function(done) {
+    expect.assertions(4);
+
+    const apiServiceMock = jest
+      .spyOn(ApiService.prototype, 'logIn')
+      .mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          reject(new Error('Error message'));
+        });
+      });
+
+    const authFormMock = jest
+      .spyOn(AuthorizationForm.prototype, 'setHeadError')
+      .mockImplementation(()=>{})
+
+    new AuthorizationPage(document.body, new TitleService(), new ApiService());
+
+    document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
+    document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
+    document.body.querySelector('[data-td="form-component"]').submit();
+
+    setTimeout(()=>{
+      expect(apiServiceMock).toBeCalledTimes(1);
+      expect(apiServiceMock).toBeCalledWith(new UserData('email', 'password'));
+      expect(authFormMock).toBeCalledTimes(1);
+      expect(authFormMock).toBeCalledWith('Error message');
+      done();
+    })
   });
 });

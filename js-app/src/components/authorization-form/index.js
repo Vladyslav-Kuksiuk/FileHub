@@ -99,7 +99,7 @@ export class AuthorizationForm extends Component {
     this.render();
   }
 
-  set headError(error) {
+  setHeadError(error) {
     this.#headError = error;
     this.render();
   }

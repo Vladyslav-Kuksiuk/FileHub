@@ -38,7 +38,7 @@ export class RegistrationPage extends Component {
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
           })
           .catch((error)=>{
-          error.errors ? form.formErrors = error.errors :form.headError = error.message;
+          error.errors ? form.formErrors = error.errors : form.setHeadError(error.message);
           });
     });
   }
