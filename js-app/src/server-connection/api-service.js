@@ -1,6 +1,7 @@
 import {RequestService} from './request-service';
 import {RegisterError} from './register-error';
 import {Response} from './response';
+import {UserData} from '../user-data';
 
 export const LOGIN_PATH = 'api/login';
 export const REGISTER_PATH = 'api/register';

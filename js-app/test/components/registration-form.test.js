@@ -13,6 +13,7 @@ describe('RegistrationForm', () => {
     document.body.innerHTML = '';
   });
 
+
   test('Should create and render RegistrationForm component', function() {
     expect.assertions(5);
 

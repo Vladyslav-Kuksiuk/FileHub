@@ -20,7 +20,7 @@ export class AuthorizationPage extends Component {
    */
   constructor(parent, titleService, apiService) {
     super(parent);
-    titleService.titles = ['Sign In'];
+    titleService.setTitles(['Sign In']);
     this.#apiService = apiService;
     this.init();
   }
@@ -35,8 +35,7 @@ export class AuthorizationPage extends Component {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_REGISTRATION));
     });
     form.onSubmit((data) => {
-      this.#error = null;
-      this.#apiService.login(data)
+      this.#apiService.logIn(data)
           .then(() => {
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
           })

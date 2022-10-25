@@ -35,7 +35,7 @@ describe('ApiService', () => {
     const apiService = new ApiService(new RequestService());
     apiService.logIn(new UserData(login, password))
         .then(() => {
-          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(requestServiceMock).toBeCalledTimes(1);
           done();
         });
   });
@@ -54,7 +54,7 @@ describe('ApiService', () => {
     const apiService = new ApiService(new RequestService());
     apiService.logIn(new UserData('login', 'password'))
         .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(requestServiceMock).toBeCalledTimes(1);
           expect(error.message).toBe(DEFAULT_ERROR);
           done();
         });
@@ -74,7 +74,7 @@ describe('ApiService', () => {
     const apiService = new ApiService(new RequestService());
     apiService.logIn(new UserData('login', 'password'))
         .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(requestServiceMock).toBeCalledTimes(1);
           expect(error.message).toBe(LOGIN_401_ERROR);
           done();
         });
@@ -100,7 +100,7 @@ describe('ApiService', () => {
     const apiService = new ApiService(new RequestService());
     apiService.register(new UserData(login, password))
         .then(() => {
-          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(requestServiceMock).toBeCalledTimes(1);
           done();
         });
   });
@@ -122,7 +122,7 @@ describe('ApiService', () => {
     apiService.register(new UserData('login', 'password'))
         .catch((error) => {
           expect(error.message).toBe(DEFAULT_ERROR);
-          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(requestServiceMock).toBeCalledTimes(1);
           done();
         });
   });
@@ -146,7 +146,7 @@ describe('ApiService', () => {
     apiService.register(new UserData('login', 'password'))
         .catch((error) => {
           expect(error.errors).toBe(errors);
-          expect(requestServiceMock).toBeCalledTimes(1)
+          expect(requestServiceMock).toBeCalledTimes(1);
           done();
         });
   });
