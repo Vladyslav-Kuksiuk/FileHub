@@ -1,7 +1,11 @@
 import {Response} from './response';
 
+/**
+ * Service to send server request and convert response.
+ */
 export class RequestService {
   /**
+   * Sends POST request with JSON body and converts server response.
    *
    * @param {string} url
    * @param {object} body

@@ -9,6 +9,9 @@ export const REGISTER_PATH = 'api/register';
 export const LOGIN_401_ERROR = 'Invalid login or password';
 export const DEFAULT_ERROR = 'An error occurred. Please try again.';
 
+/**
+ * Service to handle server request and response.
+ */
 export class ApiService {
   #requestService;
   #userToken;
@@ -21,6 +24,7 @@ export class ApiService {
   }
 
   /**
+   * Log in user.
    *
    * @param {UserData} data
    * @returns {Promise<Response>}
@@ -41,9 +45,10 @@ export class ApiService {
   }
 
   /**
+   * Registers user.
    *
    * @param {UserData} data
-   * @returns {Promise<*>}
+   * @returns {Promise<Error | RegisterError>}
    */
   async register(data) {
     return await this.#requestService.postJson(REGISTER_PATH, {

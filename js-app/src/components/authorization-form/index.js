@@ -99,6 +99,11 @@ export class AuthorizationForm extends Component {
     this.render();
   }
 
+  /**
+   * Sets head error.
+   *
+   * @param {string} error
+   */
   setHeadError(error) {
     this.#headError = error;
     this.render();

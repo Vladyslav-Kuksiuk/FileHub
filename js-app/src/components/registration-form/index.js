@@ -144,6 +144,11 @@ export class RegistrationForm extends Component {
     });
   }
 
+  /**
+   * Sets head error.
+   *
+   * @param {string} error
+   */
   setHeadError(error) {
     this.#headError = error;
     this.render();
