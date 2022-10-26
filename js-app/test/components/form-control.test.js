@@ -6,7 +6,7 @@ describe('FormControl', () => {
   });
 
   test(`Should create and render FormControl component`, function() {
-    expect.assertions(7);
+    expect.assertions(8);
 
     const name = 'myName';
     const labelText = 'myLabel';
@@ -14,6 +14,7 @@ describe('FormControl', () => {
     const type = 'email';
     const placeholderDefault = '';
     const typeDefault = 'text';
+    const errorMessages = ['Error Message']
     new FormControl(document.body, {
       name: name,
       labelText: labelText,
@@ -31,9 +32,11 @@ describe('FormControl', () => {
       labelText: labelText,
       placeholder: placeholder,
       type: type,
+      errorMessages: errorMessages,
     });
 
     expect(document.body.querySelector('[data-td="form-control"] input').type).toBe(type);
     expect(document.body.querySelector('[data-td="form-control"] input').placeholder).toBe(placeholder);
+    expect(document.body.querySelector('[data-td="form-control"] p').textContent).toBe(errorMessages[0]);
   });
 });
