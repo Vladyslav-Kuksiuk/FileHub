@@ -2,7 +2,7 @@
  * Error with register errors.
  */
 export class RegisterError extends Error {
-  errors = [];
+  errors;
 
   /**
    * @param {object} errors - Object structure {fieldName - errorText}.

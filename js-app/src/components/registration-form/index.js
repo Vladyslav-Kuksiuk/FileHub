@@ -185,10 +185,9 @@ export class RegistrationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : '';
-
+    const error = this.#headError ? `<p class="text-danger"> ${this.#headError} </p>` : '';
     return `
-    ${error}
+    <slot>${error}</slot>
     ${this.addSlot('form')}
     `;
   }

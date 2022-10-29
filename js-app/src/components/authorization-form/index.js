@@ -163,9 +163,8 @@ export class AuthorizationForm extends Component {
    */
   markup() {
     const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : '';
-
     return `
-    ${error}
+    <slot>${error}</slot>
     ${this.addSlot('auth-form')}
     `;
   }
