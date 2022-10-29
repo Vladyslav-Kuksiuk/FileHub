@@ -109,6 +109,8 @@ export class RegistrationForm extends Component {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
       this.#confirmValue = formData.get(CONFIRM_PASSWORD);
+      this.#headError = null;
+
       this.#validateForm(formData, configCreator)
           .then(() => {
             this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));

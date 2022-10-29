@@ -86,6 +86,8 @@ export class AuthorizationForm extends Component {
     form.onSubmit((formData) => {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
+      this.#headError = null;
+      
       this.#validateForm(formData, configCreator)
           .then(()=>{
             this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
