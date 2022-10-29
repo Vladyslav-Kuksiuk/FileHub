@@ -160,8 +160,7 @@ export class RegistrationForm extends Component {
 
   /**
    * @param {FormData} formData
-   * @param {function(FormData)} configCreator
-   * @returns {*|Promise<void | Promise>}
+   * @param {object} configCreator
    * @private
    */
   #validateForm(formData, configCreator) {
@@ -170,7 +169,7 @@ export class RegistrationForm extends Component {
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
     };
-    new ValidationService()
+    return new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
           const errorsByField = result.errors.reduce((tempErrors, error)=>{
