@@ -108,7 +108,9 @@ export class RegistrationForm extends Component {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
       this.#confirmValue = formData.get(CONFIRM_PASSWORD);
-      this.#validateForm(formData, configCreator);
+      this.#validateForm(formData, configCreator).then(() => {
+        this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+      });
     });
   }
 
@@ -147,6 +149,7 @@ export class RegistrationForm extends Component {
   /**
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
+   * @returns {*|Promise<void | Promise>}
    * @private
    */
   #validateForm(formData, configCreator) {
@@ -155,11 +158,8 @@ export class RegistrationForm extends Component {
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
     });
-    new ValidationService()
+    return new ValidationService()
         .validate(formData, configCreator(formData))
-        .then(() => {
-          this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
-        })
         .catch((result) => {
           const errorsByField = result.errors.reduce((tempErrors, error)=>{
             const fieldName = error.name;
@@ -168,6 +168,7 @@ export class RegistrationForm extends Component {
             return tempErrors;
           }, {});
           this.#setFormErrors(errorsByField);
+          return Promise.reject(new Error());
         });
   }
 
