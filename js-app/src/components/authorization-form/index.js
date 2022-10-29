@@ -88,7 +88,8 @@ export class AuthorizationForm extends Component {
       this.#validateForm(formData, configCreator)
           .then(()=>{
             this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
-          });
+          })
+          .catch(()=>{});
     });
   }
 

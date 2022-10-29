@@ -14,7 +14,7 @@ describe('FormControl', () => {
     const type = 'email';
     const placeholderDefault = '';
     const typeDefault = 'text';
-    const errorMessages = ['Error Message']
+    const errorMessages = ['Error Message'];
     new FormControl(document.body, {
       name: name,
       labelText: labelText,
