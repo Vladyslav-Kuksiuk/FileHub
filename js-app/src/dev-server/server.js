@@ -4,7 +4,7 @@ const app = express();
 const port = 3001;
 
 app.post('/login', (req, res) => {
-  res.status(400);
+  res.status(200);
   res.send({token: 'testToken'});
 });
 

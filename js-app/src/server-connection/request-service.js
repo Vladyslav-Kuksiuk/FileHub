@@ -28,4 +28,28 @@ export class RequestService {
 
     return new Response(fetchResponse.status, responseBody);
   }
+
+  /**
+   * Sends GET request with parameters and converts server response.
+   *
+   * @param {string} url
+   * @param {object} params
+   * @returns {Promise<Response>}
+   */
+  async get(url, params) {
+    const fetchResponse = await fetch(url+'?'+ new URLSearchParams(params), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    let responseBody;
+    await fetchResponse.json()
+      .then((json) => {
+        responseBody = json;
+      });
+
+    return new Response(fetchResponse.status, responseBody);
+  }
 }

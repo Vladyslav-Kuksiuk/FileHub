@@ -1,4 +1,4 @@
-class StateManagementService {
+export class StateManagementService {
   #eventTarget;
   #mutators;
   #state;

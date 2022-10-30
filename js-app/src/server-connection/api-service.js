@@ -5,6 +5,7 @@ import {UserData} from '../user-data';
 
 export const LOGIN_PATH = 'api/login';
 export const REGISTER_PATH = 'api/register';
+export const LOAD_USER_PATH = 'api/load-user';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
 export const DEFAULT_ERROR = 'An error occurred. Please try again.';
@@ -62,5 +63,16 @@ export class ApiService {
         throw new Error(DEFAULT_ERROR);
       }
     });
+  }
+
+  async loadUser(userId) {
+    return await this.#requestService.get(LOAD_USER_PATH,{
+      userId: userId
+    }).then(async (response) => {
+      if(response.status !== 200){
+        throw new Error(DEFAULT_ERROR);
+      }
+      return response.body;
+    })
   }
 }
