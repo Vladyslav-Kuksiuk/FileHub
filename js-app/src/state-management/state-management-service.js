@@ -1,9 +1,20 @@
+import {Action} from './action';
+import {ApiService} from '../server-connection/api-service';
+
+/**
+ * Service to provide state management.
+ */
 export class StateManagementService {
   #eventTarget;
   #mutators;
   #state;
   #apiService;
 
+  /**
+   * @param {object} mutators
+   * @param {object} state
+   * @param {ApiService} apiService
+   */
   constructor(mutators, state, apiService) {
     this.#eventTarget = new EventTarget();
     this.#apiService = apiService;
@@ -23,29 +34,29 @@ export class StateManagementService {
   }
 
   /**
-   * @param mutatorKey
-   * @param payload
-   * @private
+   * Runs action.
+   *
+   * @param {Action} action
    */
-  #mutate(mutatorKey, payload) {
-    if (typeof this.#mutators[mutatorKey] !== 'function') {
-      return false;
-    }
-    this.#mutators[mutatorKey](this.#state, payload);
-
-    return true;
-  }
-
   dispatch(action) {
-    return action.execute((mutatorKey, payload) => {
-      this.#mutate(mutatorKey, payload);
+    action.execute((mutatorKey, payload) => {
+      this.#mutators[mutatorKey](this.#state, payload);
     }, this.#apiService);
   }
 
+  /**
+   * @returns {object} Immutable state.
+   */
   get state() {
     return Object.freeze(Object.assign({}, this.#state));
   }
 
+  /**
+   * Adds listener to some field in state changes event.
+   *
+   * @param {string} fieldName
+   * @param {Function} listener
+   */
   addStateListener(fieldName, listener) {
     this.#eventTarget.addEventListener(`STATE_CHANGED.${fieldName}`,
         (event) => listener(event.detail));

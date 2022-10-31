@@ -163,6 +163,7 @@ export class RegistrationForm extends Component {
   /**
    * @param {FormData} formData
    * @param {object} configCreator
+   * @returns {Promise<void>}
    * @private
    */
   #validateForm(formData, configCreator) {

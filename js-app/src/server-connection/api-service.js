@@ -66,6 +66,11 @@ export class ApiService {
     });
   }
 
+  /**
+   * Loads user data.
+   *
+   * @returns {Promise<object | Error>}
+   */
   async loadUser() {
     return await this.#requestService.get(LOAD_USER_PATH, this.#userToken)
         .then(async (response) => {
@@ -76,6 +81,11 @@ export class ApiService {
         });
   }
 
+  /**
+   * Log out user.
+   *
+   * @returns {Promise<object | Error>}
+   */
   async logOut() {
     return await this.#requestService.get(LOG_OUT_USER_PATH, this.#userToken)
         .then(async (response) => {

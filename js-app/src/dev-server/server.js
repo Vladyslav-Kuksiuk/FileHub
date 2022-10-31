@@ -10,17 +10,19 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
   res.status(422);
-  res.send({errors: {
-    email: ['User with this email already registered'],
-    password: ['Some server password error'],
-  }});
+  res.send({
+    errors: {
+      email: ['User with this email already registered'],
+      password: ['Some server password error'],
+    },
+  });
 });
 
 app.get('/load-user', (req, res) => {
-  setTimeout(()=>{
+  setTimeout(() => {
     res.status(200);
     res.send({username: 'test user name'});
-  }, 1000)
+  }, 1000);
 });
 
 app.get('/log-out-user', (req, res) => {

@@ -1,7 +1,13 @@
 import {Action} from '../action';
 import {MUTATOR_NAMES} from '../mutators.js';
 
+/**
+ * Action to perform user loading.
+ */
 export class LoadUserAction extends Action {
+  /**
+   * @inheritDoc
+   */
   execute(executor, apiService) {
     executor(MUTATOR_NAMES.SET_IS_USER_LOADING, true);
 
@@ -13,7 +19,7 @@ export class LoadUserAction extends Action {
         .catch((error)=>{
           executor(MUTATOR_NAMES.SET_USER_ERROR, error.message);
         })
-        .then(()=>{
+        .finally(()=>{
           executor(MUTATOR_NAMES.SET_IS_USER_LOADING, false);
         });
   }

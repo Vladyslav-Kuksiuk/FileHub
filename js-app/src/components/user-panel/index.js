@@ -41,7 +41,7 @@ export class UserPanel extends Component {
   }
 
   /**
-   * @param username
+   * @param {string} username
    * @private
    */
   #setUsername(username) {
@@ -50,7 +50,7 @@ export class UserPanel extends Component {
   }
 
   /**
-   * @param isLoading
+   * @param {boolean} isLoading
    * @private
    */
   #setIsLoading(isLoading) {
