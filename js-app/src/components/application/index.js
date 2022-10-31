@@ -9,7 +9,7 @@ import {ApiService} from '../../server-connection/api-service';
 import {RequestService} from '../../server-connection/request-service';
 import {TablePage} from '../table-page';
 import {StateManagementService} from '../../state-management/state-management-service';
-import {USER_MUTATORS} from '../../state-management/user/user-mutator.js';
+import {MUTATORS} from '../../state-management/mutators.js';
 
 const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';
@@ -28,13 +28,12 @@ export class Application extends Component {
 
     const titleService = new TitleService('FileHub', ' - ');
     const apiService = new ApiService(new RequestService());
-    const userState = {
-      isAuthorized: false,
+    const state = {
       isLoading: false,
-      userId: null,
       username: null,
-    }
-    const userManagementService = new StateManagementService(USER_MUTATORS, userState)
+      userError: null,
+    };
+    const stateManagementService = new StateManagementService(MUTATORS, state, apiService);
 
     const routerConfig = new RouterConfigBuilder()
         .addErrorRoute(() => {
@@ -61,13 +60,13 @@ export class Application extends Component {
             router.redirect(LOGIN_PATH);
           });
         })
-      .addRoute(TABLE_PATH, () => {
-        this.rootElement.innerHTML = '';
-        const page = new TablePage(this.rootElement, titleService, apiService, userManagementService);
-        page.onNavigateToAuthorization(() => {
-          router.redirect(LOGIN_PATH);
-        });
-      })
+        .addRoute(TABLE_PATH, () => {
+          this.rootElement.innerHTML = '';
+          const page = new TablePage(this.rootElement, titleService, stateManagementService);
+          page.onNavigateToAuthorization(() => {
+            router.redirect(LOGIN_PATH);
+          });
+        })
         .addHomeRoutePath(TABLE_PATH)
         .build();
 

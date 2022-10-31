@@ -3,9 +3,10 @@ import {RegisterError} from './register-error';
 import {Response} from './response';
 import {UserData} from '../user-data';
 
-export const LOGIN_PATH = 'api/login';
-export const REGISTER_PATH = 'api/register';
+export const LOG_IN_USER_PATH = 'api/login';
+export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/load-user';
+export const LOG_OUT_USER_PATH = 'api/log-out-user';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
 export const DEFAULT_ERROR = 'An error occurred. Please try again.';
@@ -31,7 +32,7 @@ export class ApiService {
    * @returns {Promise<Response>}
    */
   async logIn(data) {
-    return await this.#requestService.postJson(LOGIN_PATH, {
+    return await this.#requestService.postJson(LOG_IN_USER_PATH, {
       username: data.login,
       password: data.password,
     }).then((response) => {
@@ -52,7 +53,7 @@ export class ApiService {
    * @returns {Promise<Error | RegisterError>}
    */
   async register(data) {
-    return await this.#requestService.postJson(REGISTER_PATH, {
+    return await this.#requestService.postJson(REGISTER_USER_PATH, {
       username: data.login,
       password: data.password,
     }).then(async (response) => {
@@ -65,14 +66,23 @@ export class ApiService {
     });
   }
 
-  async loadUser(userId) {
-    return await this.#requestService.get(LOAD_USER_PATH,{
-      userId: userId
-    }).then(async (response) => {
-      if(response.status !== 200){
-        throw new Error(DEFAULT_ERROR);
-      }
-      return response.body;
-    })
+  async loadUser() {
+    return await this.#requestService.get(LOAD_USER_PATH, this.#userToken)
+        .then(async (response) => {
+          if (response.status !== 200) {
+            throw new Error(DEFAULT_ERROR);
+          }
+          return response.body;
+        });
+  }
+
+  async logOut() {
+    return await this.#requestService.get(LOG_OUT_USER_PATH, this.#userToken)
+        .then(async (response) => {
+          if (response.status !== 200) {
+            throw new Error(DEFAULT_ERROR);
+          }
+          return response.body;
+        });
   }
 }

@@ -1,7 +1,8 @@
 import {Component} from '../component';
 import {TitleService} from '../../title-service';
 import {StateManagementService} from '../../state-management/state-management-service';
-import {LoadUserAction} from '../../state-management/user/load-user-action.js';
+import {LoadUserAction} from '../../state-management/user/load-user-action';
+import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 
@@ -10,24 +11,22 @@ const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
  */
 export class TablePage extends Component {
   #eventTarget = new EventTarget();
-  #apiService;
   #stateManagementService;
 
   /**
    * @param {HTMLElement} parent
    * @param {TitleService} titleService
-   * @param {ApiService} apiService
    * @param {StateManagementService} userManagementService
    */
-  constructor(parent, titleService,apiService, userManagementService) {
+  constructor(parent, titleService, userManagementService) {
     super(parent);
     titleService.setTitles(['Table']);
-    this.#apiService = apiService;
     this.#stateManagementService = userManagementService;
-    userManagementService.dispatch(new LoadUserAction(apiService,
-      {
-        userId: userManagementService.state.userId,
-      }))
+    userManagementService.addStateListener('username', ()=>{
+      this.rootElement.querySelector('[data-td="username-place"]').innerText =
+        this.#stateManagementService.state.username;
+    });
+    userManagementService.dispatch(new LoadUserAction({}));
     this.init();
   }
 
@@ -35,10 +34,12 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    this.rootElement.querySelector('[data-td="log-out-link"]').addEventListener('click',(event)=>{
+    this.rootElement.querySelector('[data-td="log-out-link"]').addEventListener('click', (event) => {
       event.preventDefault();
+      this.#stateManagementService.dispatch(
+          new LogOutUserAction({}));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
-    })
+    });
   }
 
   /**
@@ -62,7 +63,7 @@ export class TablePage extends Component {
         <ul class="authorized-user-panel">
             <li>
                 <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
-                <span>John Doe</span>
+                <span ${this.markElement('username-place')}>${this.#stateManagementService.state.username}</span>
             </li>
             <li>
                 <a ${this.markElement('log-out-link')} class="logout-button" href="/" title="Log Out">

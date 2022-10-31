@@ -1,12 +1,11 @@
 export class Action {
-  _title;
   _payload;
 
-  execute(executor) {
-
+  constructor(payload) {
+    this._payload = payload;
   }
 
-  get title() {
-    return this._title;
+  execute(executor, apiService) {
+
   }
 }

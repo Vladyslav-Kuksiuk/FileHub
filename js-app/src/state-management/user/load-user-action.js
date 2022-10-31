@@ -1,34 +1,22 @@
 import {Action} from '../action';
-import {USER_MUTATOR_NAMES} from './user-mutator.js';
-
-export const LOAD_USER_ACTION = 'LOAD_USER_ACTION';
+import {MUTATOR_NAMES} from '../mutators.js';
 
 export class LoadUserAction extends Action {
-  #apiService;
+  execute(executor, apiService) {
+    executor(MUTATOR_NAMES.SET_IS_USER_LOADING, true);
 
-  constructor(apiService, payload) {
-    super();
-
-    this.#apiService = apiService;
-    this._title = LOAD_USER_ACTION;
-    this._payload = payload;
-  }
-
-  execute(executor) {
-    const {userId} = this._payload;
-
-    executor(USER_MUTATOR_NAMES.SET_IS_LOADING, true);
-
-    return this.#apiService
-        .loadUser(userId)
-        .then((username) => {
-          executor(USER_MUTATOR_NAMES.SET_USERNAME, username);
+    return apiService
+        .loadUser()
+        .then((body) => {
+          executor(MUTATOR_NAMES.SET_USERNAME, body.username);
+          executor(MUTATOR_NAMES.SET_USER_ERROR, null);
         })
         .catch((error)=>{
-          executor(USER_MUTATOR_NAMES.SET_ERROR, error);
+          executor(MUTATOR_NAMES.SET_USER_ERROR, error.message);
+          executor(MUTATOR_NAMES.SET_USERNAME, null);
         })
-        .finally(()=>{
-          executor(USER_MUTATOR_NAMES.SET_IS_LOADING, false);
+        .then(()=>{
+          executor(MUTATOR_NAMES.SET_IS_USER_LOADING, false);
         });
   }
 }

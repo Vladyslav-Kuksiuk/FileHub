@@ -2,9 +2,11 @@ export class StateManagementService {
   #eventTarget;
   #mutators;
   #state;
+  #apiService;
 
-  constructor(mutators, state) {
+  constructor(mutators, state, apiService) {
     this.#eventTarget = new EventTarget();
+    this.#apiService = apiService;
     this.#mutators = mutators || {};
 
     this.#state = new Proxy((state || {}), {
@@ -21,15 +23,15 @@ export class StateManagementService {
   }
 
   /**
+   * @param mutatorKey
+   * @param payload
    * @private
    */
   #mutate(mutatorKey, payload) {
     if (typeof this.#mutators[mutatorKey] !== 'function') {
       return false;
     }
-
-    const newState = this.#mutators[mutatorKey](this.#state, payload);
-    this.#state = Object.assign(this.#state, newState);
+    this.#mutators[mutatorKey](this.#state, payload);
 
     return true;
   }
@@ -37,7 +39,7 @@ export class StateManagementService {
   dispatch(action) {
     return action.execute((mutatorKey, payload) => {
       this.#mutate(mutatorKey, payload);
-    });
+    }, this.#apiService);
   }
 
   get state() {

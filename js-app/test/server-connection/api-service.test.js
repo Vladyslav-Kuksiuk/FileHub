@@ -4,8 +4,8 @@ import {
   ApiService,
   DEFAULT_ERROR,
   LOGIN_401_ERROR,
-  LOGIN_PATH,
-  REGISTER_PATH,
+  LOG_IN_USER_PATH,
+  REGISTER_USER_PATH,
 } from '../../src/server-connection/api-service';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
@@ -20,7 +20,7 @@ describe('ApiService', () => {
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
         .mockImplementation((url, body) => {
-          expect(url).toBe(LOGIN_PATH);
+          expect(url).toBe(LOG_IN_USER_PATH);
           expect(body.username).toBe(login);
           expect(body.password).toBe(password);
           return new Promise(((resolve) => {
@@ -85,7 +85,7 @@ describe('ApiService', () => {
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
         .mockImplementation((url, body) => {
-          expect(url).toBe(REGISTER_PATH);
+          expect(url).toBe(REGISTER_USER_PATH);
           expect(body.username).toBe(login);
           expect(body.password).toBe(password);
           return new Promise(((resolve) => {

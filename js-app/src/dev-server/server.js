@@ -16,4 +16,14 @@ app.post('/register', (req, res) => {
   }});
 });
 
+app.get('/load-user', (req, res) => {
+  res.status(200);
+  res.send({username: 'Hellamb'});
+});
+
+app.get('/log-out-user', (req, res) => {
+  res.status(200);
+  res.send({});
+});
+
 app.listen(port);

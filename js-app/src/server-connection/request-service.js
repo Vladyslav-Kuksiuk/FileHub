@@ -9,12 +9,14 @@ export class RequestService {
    *
    * @param {string} url
    * @param {object} body
+   * @param {string} token
    * @returns {Promise<Response>}
    */
-  async postJson(url, body) {
+  async postJson(url, body, token) {
     const fetchResponse = await fetch(url, {
       method: 'POST',
       headers: {
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
@@ -33,22 +35,23 @@ export class RequestService {
    * Sends GET request with parameters and converts server response.
    *
    * @param {string} url
-   * @param {object} params
+   * @param {string} token
    * @returns {Promise<Response>}
    */
-  async get(url, params) {
-    const fetchResponse = await fetch(url+'?'+ new URLSearchParams(params), {
+  async get(url, token) {
+    const fetchResponse = await fetch(url, {
       method: 'GET',
       headers: {
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
     });
 
     let responseBody;
     await fetchResponse.json()
-      .then((json) => {
-        responseBody = json;
-      });
+        .then((json) => {
+          responseBody = json;
+        });
 
     return new Response(fetchResponse.status, responseBody);
   }
