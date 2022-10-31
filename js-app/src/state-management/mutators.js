@@ -6,7 +6,7 @@ export const MUTATOR_NAMES = {
 
 export const MUTATORS = {
   [MUTATOR_NAMES.SET_IS_USER_LOADING]: (state, isLoading) =>{
-    state.isLoading = isLoading;
+    state.isUserLoading = isLoading;
   },
   [MUTATOR_NAMES.SET_USERNAME]: (state, username) =>{
     state.username = username;

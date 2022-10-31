@@ -1,8 +1,8 @@
 import {Component} from '../component';
 import {TitleService} from '../../title-service';
 import {StateManagementService} from '../../state-management/state-management-service';
-import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
+import {UserPanel} from '../user-panel';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 
@@ -16,17 +16,12 @@ export class TablePage extends Component {
   /**
    * @param {HTMLElement} parent
    * @param {TitleService} titleService
-   * @param {StateManagementService} userManagementService
+   * @param {StateManagementService} stateManagementService
    */
-  constructor(parent, titleService, userManagementService) {
+  constructor(parent, titleService, stateManagementService) {
     super(parent);
     titleService.setTitles(['Table']);
-    this.#stateManagementService = userManagementService;
-    userManagementService.addStateListener('username', ()=>{
-      this.rootElement.querySelector('[data-td="username-place"]').innerText =
-        this.#stateManagementService.state.username;
-    });
-    userManagementService.dispatch(new LoadUserAction({}));
+    this.#stateManagementService = stateManagementService;
     this.init();
   }
 
@@ -34,10 +29,10 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    this.rootElement.querySelector('[data-td="log-out-link"]').addEventListener('click', (event) => {
-      event.preventDefault();
-      this.#stateManagementService.dispatch(
-          new LogOutUserAction({}));
+    const userPanelSlot = this.getSlot('user-panel');
+    const userPanel = new UserPanel(userPanelSlot, this.#stateManagementService);
+    userPanel.onLinkClick(()=>{
+      this.#stateManagementService.dispatch(new LogOutUserAction({}));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
   }
@@ -60,18 +55,7 @@ export class TablePage extends Component {
     <header class="page-header">
         <a href="/web-client/static"><img alt="TeamDev" height="37" src="static/images/logo.png"
                                           title="TeamDev" width="200"></a>
-        <ul class="authorized-user-panel">
-            <li>
-                <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
-                <span ${this.markElement('username-place')}>${this.#stateManagementService.state.username}</span>
-            </li>
-            <li>
-                <a ${this.markElement('log-out-link')} class="logout-button" href="/" title="Log Out">
-                    Log Out
-                    <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
-                </a>
-            </li>
-        </ul>
+        ${this.addSlot('user-panel')}
     </header>
     <main class="container">
         <ul class="breadcrumb">

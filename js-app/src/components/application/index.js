@@ -29,7 +29,7 @@ export class Application extends Component {
     const titleService = new TitleService('FileHub', ' - ');
     const apiService = new ApiService(new RequestService());
     const state = {
-      isLoading: false,
+      isUserLoading: false,
       username: null,
       userError: null,
     };

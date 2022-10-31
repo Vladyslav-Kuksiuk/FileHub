@@ -17,8 +17,10 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/load-user', (req, res) => {
-  res.status(200);
-  res.send({username: 'Hellamb'});
+  setTimeout(()=>{
+    res.status(200);
+    res.send({username: 'test user name'});
+  }, 1000)
 });
 
 app.get('/log-out-user', (req, res) => {
