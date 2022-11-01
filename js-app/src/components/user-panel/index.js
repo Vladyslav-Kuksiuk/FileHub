@@ -1,6 +1,6 @@
 import {Component} from '../component';
-import {StateManagementService} from '../../state-management/state-management-service';
 import {LoadUserAction} from '../../state-management/user/load-user-action';
+import {ApplicationContext} from '../../application-context';
 
 const LINK_CLICK_EVENT = 'LINK_CLICK_EVENT';
 
@@ -15,18 +15,18 @@ export class UserPanel extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {StateManagementService} stateManagementService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, stateManagementService) {
+  constructor(parent, applicationContext) {
     super(parent);
-    this.#stateManagementService = stateManagementService;
-    stateManagementService.addStateListener('username', ()=>{
+    this.#stateManagementService = applicationContext.stateManagementService;
+    this.#stateManagementService.addStateListener('username', ()=>{
       this.#setUsername(this.#stateManagementService.state.username);
     });
-    stateManagementService.addStateListener('isUserLoading', ()=>{
+    this.#stateManagementService.addStateListener('isUserLoading', ()=>{
       this.#setIsLoading(this.#stateManagementService.state.isUserLoading);
     });
-    stateManagementService.dispatch(new LoadUserAction({}));
+    this.#stateManagementService.dispatch(new LoadUserAction({}, applicationContext.apiService));
     this.init();
   }
 

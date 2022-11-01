@@ -10,6 +10,8 @@ const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
  */
 export class TablePage extends Component {
   #eventTarget = new EventTarget();
+  #applicationContext;
+  #apiService;
   #stateManagementService;
 
   /**
@@ -19,7 +21,9 @@ export class TablePage extends Component {
   constructor(parent, applicationContext) {
     super(parent);
     applicationContext.titleService.setTitles(['Table']);
+    this.#applicationContext = applicationContext;
     this.#stateManagementService = applicationContext.stateManagementService;
+    this.#apiService = applicationContext.apiService;
     this.init();
   }
 
@@ -28,9 +32,9 @@ export class TablePage extends Component {
    */
   afterRender() {
     const userPanelSlot = this.getSlot('user-panel');
-    const userPanel = new UserPanel(userPanelSlot, this.#stateManagementService);
+    const userPanel = new UserPanel(userPanelSlot, this.#applicationContext);
     userPanel.onLinkClick(()=>{
-      this.#stateManagementService.dispatch(new LogOutUserAction({}));
+      this.#stateManagementService.dispatch(new LogOutUserAction({}, this.#apiService));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
   }
