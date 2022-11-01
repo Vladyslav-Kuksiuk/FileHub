@@ -1,4 +1,3 @@
-import {ApiService} from '../server-connection/api-service';
 /**
  *  Base Action class.
  */
@@ -17,9 +16,8 @@ export class Action {
    *
    * @abstract
    * @param {Function} executor
-   * @param {ApiService} apiService
    */
-  execute(executor, apiService) {
+  execute(executor) {
 
   }
 }

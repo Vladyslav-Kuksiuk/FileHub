@@ -1,6 +1,6 @@
 import {Component} from '../component';
 import {Link} from '../link';
-import {TitleService} from '../../title-service.js';
+import {ApplicationContext} from '../../application-context';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -12,11 +12,11 @@ export class Error404Page extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {TitleService} titleService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, titleService) {
+  constructor(parent, applicationContext) {
     super(parent);
-    titleService.titles = ['404'];
+    applicationContext.titleService.titles = ['404'];
     this.init();
   }
 

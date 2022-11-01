@@ -2,7 +2,7 @@ import {RequestService} from '../../src/server-connection/request-service';
 import {jest} from '@jest/globals';
 
 describe('RequestService', () => {
-  test(`Should create and render Button component`, function(done) {
+  test(`Should correctly send request and handle response`, function(done) {
     expect.assertions(4);
     const url = 'MyUrl';
     const requestBody = {text: 'myText'};
@@ -24,11 +24,13 @@ describe('RequestService', () => {
     });
 
     const requestService = new RequestService();
-    const responsePromise = requestService.postJson(url, requestBody);
+    const token = 'myToken';
+    const responsePromise = requestService.postJson(url, requestBody, token);
     expect(fetch).toBeCalledTimes(1);
     expect(fetch).toBeCalledWith(url, {
       method: 'POST',
       headers: {
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestBody),

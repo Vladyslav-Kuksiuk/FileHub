@@ -1,7 +1,6 @@
 import {Component} from '../component';
-import {TitleService} from '../../title-service';
-import {StateManagementService} from '../../state-management/state-management-service';
 import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
+import {ApplicationContext} from '../../application-context';
 import {UserPanel} from '../user-panel';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
@@ -15,13 +14,12 @@ export class TablePage extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {TitleService} titleService
-   * @param {StateManagementService} stateManagementService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, titleService, stateManagementService) {
+  constructor(parent, applicationContext) {
     super(parent);
-    titleService.setTitles(['Table']);
-    this.#stateManagementService = stateManagementService;
+    applicationContext.titleService.setTitles(['Table']);
+    this.#stateManagementService = applicationContext.stateManagementService;
     this.init();
   }
 

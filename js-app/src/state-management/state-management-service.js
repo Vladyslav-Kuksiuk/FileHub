@@ -1,5 +1,4 @@
 import {Action} from './action';
-import {ApiService} from '../server-connection/api-service';
 
 /**
  * Service to provide state management.
@@ -8,16 +7,13 @@ export class StateManagementService {
   #eventTarget;
   #mutators;
   #state;
-  #apiService;
 
   /**
    * @param {object} mutators
    * @param {object} state
-   * @param {ApiService} apiService
    */
-  constructor(mutators, state, apiService) {
+  constructor(mutators, state) {
     this.#eventTarget = new EventTarget();
-    this.#apiService = apiService;
     this.#mutators = mutators || {};
 
     this.#state = new Proxy((state || {}), {
@@ -41,7 +37,7 @@ export class StateManagementService {
   dispatch(action) {
     action.execute((mutatorKey, payload) => {
       this.#mutators[mutatorKey](this.#state, payload);
-    }, this.#apiService);
+    });
   }
 
   /**

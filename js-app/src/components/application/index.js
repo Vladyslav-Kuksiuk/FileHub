@@ -3,13 +3,9 @@ import {AuthorizationPage} from '../authorization-page';
 import {RegistrationPage} from '../registration-page';
 import {Router} from '../../router/router';
 import {Error404Page} from '../error-404-page';
-import {TitleService} from '../../title-service';
 import {RouterConfigBuilder} from '../../router/router-config';
-import {ApiService} from '../../server-connection/api-service';
-import {RequestService} from '../../server-connection/request-service';
 import {TablePage} from '../table-page';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {MUTATORS} from '../../state-management/mutators.js';
+import {ApplicationContext} from '../../application-context';
 
 const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';
@@ -26,26 +22,19 @@ export class Application extends Component {
     super(parent);
     this.init();
 
-    const titleService = new TitleService('FileHub', ' - ');
-    const apiService = new ApiService(new RequestService());
-    const state = {
-      isUserLoading: false,
-      username: null,
-      userError: null,
-    };
-    const stateManagementService = new StateManagementService(MUTATORS, state, apiService);
+    const applicationContext = new ApplicationContext();
 
     const routerConfig = new RouterConfigBuilder()
         .addErrorRoute(() => {
           this.rootElement.innerHTML = '';
-          const page = new Error404Page(this.rootElement, titleService);
+          const page = new Error404Page(this.rootElement, applicationContext);
           page.onNavigateToHome(() => {
             router.redirect('');
           });
         })
         .addRoute(LOGIN_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new AuthorizationPage(this.rootElement, titleService, apiService);
+          const page = new AuthorizationPage(this.rootElement, applicationContext);
           page.onNavigateToRegistration(() => {
             router.redirect(REGISTRATION_PATH);
           });
@@ -55,14 +44,14 @@ export class Application extends Component {
         })
         .addRoute(REGISTRATION_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new RegistrationPage(this.rootElement, titleService, apiService);
+          const page = new RegistrationPage(this.rootElement, applicationContext);
           page.onNavigateToAuthorization(() => {
             router.redirect(LOGIN_PATH);
           });
         })
         .addRoute(TABLE_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new TablePage(this.rootElement, titleService, stateManagementService);
+          const page = new TablePage(this.rootElement, applicationContext);
           page.onNavigateToAuthorization(() => {
             router.redirect(LOGIN_PATH);
           });
