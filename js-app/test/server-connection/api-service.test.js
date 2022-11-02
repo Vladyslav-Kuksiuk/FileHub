@@ -2,11 +2,11 @@ import {RequestService} from '../../src/server-connection/request-service';
 import {Response} from '../../src/server-connection/response';
 import {
   ApiService,
-  DEFAULT_ERROR,
   LOGIN_401_ERROR,
   LOGIN_PATH,
   REGISTER_PATH,
 } from '../../src/server-connection/api-service';
+import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
 
@@ -36,7 +36,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should fail login with error message ${DEFAULT_ERROR}`, function(done) {
+  test(`Should fail login with error message`, function(done) {
     expect.assertions(2);
 
     const requestServiceMock = jest
@@ -101,17 +101,13 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should fail registration with error message ${DEFAULT_ERROR}`, function(done) {
+  test(`Should fail registration with error message`, function(done) {
     expect.assertions(2);
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(
-                new Response(400, {}),
-            );
-          }));
+        .mockImplementation(async () => {
+          return new Response(400, {});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -132,17 +128,15 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(new Response(422, {errors: errors}));
-          }));
+        .mockImplementation(async () => {
+          return new Response(422, {errors: errors});
         });
 
     const apiService = new ApiService(new RequestService());
     apiService.register(new UserData('login', 'password'))
         .catch((error) => {
-          expect(error.errors).toBe(errors);
           expect(requestServiceMock).toBeCalledTimes(1);
+          expect(error.fieldErrors).toBe(errors);
           done();
         });
   });

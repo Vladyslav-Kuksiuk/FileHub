@@ -9,18 +9,12 @@ describe('RequestService', () => {
     const responseBody = {answer: 'answer'};
 
     global.fetch = jest.fn(async () => {
-      return await new Promise(((resolve) => {
-        resolve(
-            {
-              status: 200,
-              json: () => {
-                return new Promise((resolve) => {
-                  resolve(responseBody);
-                });
-              },
-            },
-        );
-      }));
+      return {
+        status: 200,
+        json: async () => {
+          return responseBody;
+        },
+      };
     });
 
     const requestService = new RequestService();
@@ -34,7 +28,7 @@ describe('RequestService', () => {
       body: JSON.stringify(requestBody),
     });
 
-    responsePromise.then((response)=>{
+    responsePromise.then((response) => {
       expect(response.status).toBe(200);
       expect(response.body).toBe(responseBody);
       done();

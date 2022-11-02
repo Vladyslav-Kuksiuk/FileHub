@@ -2,6 +2,7 @@ import {Component} from '../component';
 import {RegistrationForm} from '../registration-form';
 import {TitleService} from '../../title-service';
 import {ApiService} from '../../server-connection/api-service';
+import {FieldValidationError} from '../../server-connection/field-validation-error';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -39,7 +40,16 @@ export class RegistrationPage extends Component {
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
           })
           .catch((error)=>{
-          error.errors ? form.formErrors = error.errors : form.setHeadError(error.message);
+            if (error instanceof FieldValidationError) {
+              const errors = {};
+              error.fieldErrors.forEach((fieldError) =>{
+                const prevErrors = errors[fieldError.fieldName] || [];
+                errors[fieldError.fieldName] = [...prevErrors, fieldError.errorText];
+              });
+              form.formErrors = error.fieldErrors;
+            } else {
+              form.setHeadError(error.message);
+            }
           });
     });
   }

@@ -12,20 +12,20 @@ export class RequestService {
    * @returns {Promise<Response>}
    */
   async postJson(url, body) {
-    const fetchResponse = await fetch(url, {
+    return fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
+    }).then(async (fetchResponse) => {
+      let responseBody = {};
+      if (fetchResponse.status === 200 || fetchResponse.status === 422) {
+        responseBody = await fetchResponse.json();
+      }
+      return new Response(fetchResponse.status, responseBody);
+    }).catch(()=>{
+      return new Response(522, {});
     });
-
-    let responseBody;
-    await fetchResponse.json()
-        .then((json) => {
-          responseBody = json;
-        });
-
-    return new Response(fetchResponse.status, responseBody);
   }
 }
