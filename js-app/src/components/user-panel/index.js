@@ -20,11 +20,11 @@ export class UserPanel extends Component {
   constructor(parent, applicationContext) {
     super(parent);
     this.#stateManagementService = applicationContext.stateManagementService;
-    this.#stateManagementService.addStateListener('username', ()=>{
-      this.#setUsername(this.#stateManagementService.state.username);
+    this.#stateManagementService.addStateListener('username', (state)=>{
+      this.#setUsername(state.username);
     });
-    this.#stateManagementService.addStateListener('isUserLoading', ()=>{
-      this.#setIsLoading(this.#stateManagementService.state.isUserLoading);
+    this.#stateManagementService.addStateListener('isUserLoading', (state)=>{
+      this.#setIsLoading(state.isUserLoading);
     });
     this.#stateManagementService.dispatch(new LoadUserAction({}, applicationContext.apiService));
     this.init();

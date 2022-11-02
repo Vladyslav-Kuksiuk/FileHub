@@ -16,17 +16,7 @@ export class StateManagementService {
     this.#eventTarget = new EventTarget();
     this.#mutators = mutators || {};
 
-    this.#state = new Proxy((state || {}), {
-      set: (state, field, value) => {
-        const changed = Reflect.set(state, field, value);
-        if (changed) {
-          this.#eventTarget.dispatchEvent(new CustomEvent(`STATE_CHANGED.${field}`, {
-            detail: state,
-          }));
-        }
-        return changed;
-      },
-    });
+    this.#state = state;
   }
 
   /**
@@ -36,7 +26,15 @@ export class StateManagementService {
    */
   dispatch(action) {
     action.execute((mutatorKey, payload) => {
-      this.#mutators[mutatorKey](this.#state, payload);
+      const newState = this.#mutators[mutatorKey](this.#state, payload);
+      Object.entries(newState).forEach(([field]) => {
+        if (this.#state[field] !== newState[field]) {
+          this.#state = newState;
+          this.#eventTarget.dispatchEvent(new CustomEvent(`STATE_CHANGED.${field}`, {
+            detail: newState,
+          }));
+        }
+      });
     });
   }
 
