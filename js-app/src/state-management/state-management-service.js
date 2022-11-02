@@ -46,7 +46,7 @@ export class StateManagementService {
   }
 
   /**
-   * Adds listener to some field in state changes event.
+   * Adds listener to some field in state changes' event.
    *
    * @param {string} fieldName
    * @param {Function} listener

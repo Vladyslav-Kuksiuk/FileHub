@@ -1,7 +1,7 @@
 import {Component} from '../component';
 import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
 import {ApplicationContext} from '../../application-context';
-import {UserPanel} from '../user-panel';
+import {UserInfo} from '../user-info';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 
@@ -31,9 +31,11 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    const userPanelSlot = this.getSlot('user-panel');
-    const userPanel = new UserPanel(userPanelSlot, this.#applicationContext);
-    userPanel.onLinkClick(()=>{
+    const userInfoSlot = this.getSlot('user-info');
+    new UserInfo(userInfoSlot, this.#applicationContext);
+
+    this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
+      event.preventDefault();
       this.#stateManagementService.dispatch(new LogOutUserAction({}, this.#apiService));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
@@ -57,7 +59,17 @@ export class TablePage extends Component {
     <header class="page-header">
         <a href="/web-client/static"><img alt="TeamDev" height="37" src="static/images/logo.png"
                                           title="TeamDev" width="200"></a>
-        ${this.addSlot('user-panel')}
+            <ul class="authorized-user-panel">
+            <li>
+                ${this.addSlot('user-info')}
+            </li>
+            <li>
+                <a ${this.markElement('logout-link')} class="logout-button" href="/" title="Log Out">
+                    Log Out
+                    <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
     </header>
     <main class="container">
         <ul class="breadcrumb">

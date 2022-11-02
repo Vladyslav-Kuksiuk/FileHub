@@ -7,7 +7,7 @@ const LINK_CLICK_EVENT = 'LINK_CLICK_EVENT';
 /**
  * User panel component.
  */
-export class UserPanel extends Component {
+export class UserInfo extends Component {
   #eventTarget = new EventTarget();
   #stateManagementService;
   #username = '';
@@ -28,16 +28,6 @@ export class UserPanel extends Component {
     });
     this.#stateManagementService.dispatch(new LoadUserAction({}, applicationContext.apiService));
     this.init();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  afterRender() {
-    this.rootElement.querySelector('a').addEventListener('click', (event)=>{
-      event.preventDefault();
-      this.#eventTarget.dispatchEvent(new Event(LINK_CLICK_EVENT));
-    });
   }
 
   /**
@@ -76,23 +66,13 @@ export class UserPanel extends Component {
       userData = '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>';
     } else {
       userData = `
+            <slot>
                 <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
                 <span>${this.#username}</span>
+            </slot>
       `;
     }
 
-    return `
-    <ul ${this.markElement('user-panel-component')} class="authorized-user-panel">
-            <li>
-                ${userData}
-            </li>
-            <li>
-                <a class="logout-button" href="/" title="Log Out">
-                    Log Out
-                    <span aria-hidden="true" class="glyphicon glyphicon-log-out"></span>
-                </a>
-            </li>
-        </ul>
-    `;
+    return `${userData}`;
   }
 }
