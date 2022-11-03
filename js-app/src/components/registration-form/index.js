@@ -162,7 +162,7 @@ export class RegistrationForm extends Component {
 
   /**
    * @param {FormData} formData
-   * @param {object} configCreator
+   * @param {Function} configCreator
    * @returns {Promise<void>}
    * @private
    */
@@ -182,7 +182,7 @@ export class RegistrationForm extends Component {
             return tempErrors;
           }, {});
           this.formErrors = errorsByField;
-          return Promise.reject(new Error());
+          throw new Error();
         });
   }
 

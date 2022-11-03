@@ -25,25 +25,70 @@ describe('RegistrationForm', () => {
     expect(document.body.querySelector('[data-td="button-component"]').textContent).toBe('Sign Up');
   });
 
+
   [
-    ['Email', 'Password', 'Password', [], [], []],
-    ['ema', 'Password', 'Password', [EMAIL_LENGTH_ERROR], [], []],
-    ['email%', 'Password', 'Password', [EMAIL_VALIDATION_ERROR], [], []],
-    ['em%', 'Password', 'Password', [EMAIL_LENGTH_ERROR, EMAIL_VALIDATION_ERROR], [], []],
-    ['Email', 'pass', 'pass', [], [PASSWORD_LENGTH_ERROR], []],
-    ['em%', 'pass', 'password',
-      [EMAIL_LENGTH_ERROR, EMAIL_VALIDATION_ERROR],
-      [PASSWORD_LENGTH_ERROR],
-      [PASSWORD_MATCH_ERROR],
-    ],
-  ].forEach(([email, password, confirm, emailErrors, passwordErrors, confirmErrors]) => {
+    {
+      email: 'Email',
+      password: 'Password',
+      confirmPassword: 'Password',
+      emailErrors: [],
+      passwordErrors: [],
+      confirmPasswordErrors: [],
+    },
+    {
+      email: 'ema',
+      password: 'Password',
+      confirmPassword: 'Password',
+      emailErrors: [EMAIL_LENGTH_ERROR],
+      passwordErrors: [],
+      confirmPasswordErrors: [],
+    },
+    {
+      email: 'email%',
+      password: 'Password',
+      confirmPassword: 'Password',
+      emailErrors: [EMAIL_VALIDATION_ERROR],
+      passwordErrors: [],
+      confirmPasswordErrors: [],
+    },
+    {
+      email: 'em%',
+      password: 'Password',
+      confirmPassword: 'Password',
+      emailErrors: [EMAIL_LENGTH_ERROR, EMAIL_VALIDATION_ERROR],
+      passwordErrors: [],
+      confirmPasswordErrors: [],
+    },
+    {
+      email: 'Email',
+      password: 'pass',
+      confirmPassword: 'pass',
+      emailErrors: [],
+      passwordErrors: [PASSWORD_LENGTH_ERROR],
+      confirmPasswordErrors: [],
+    },
+    {
+      email: 'em%',
+      password: 'pass',
+      confirmPassword: 'password',
+      emailErrors: [EMAIL_LENGTH_ERROR, EMAIL_VALIDATION_ERROR],
+      passwordErrors: [PASSWORD_LENGTH_ERROR],
+      confirmPasswordErrors: [PASSWORD_MATCH_ERROR],
+    },
+  ].forEach(({
+    email,
+    password,
+    confirmPassword,
+    emailErrors,
+    passwordErrors,
+    confirmPasswordErrors}) => {
     test(`Should render ${emailErrors.length + passwordErrors.length + passwordErrors.length} errors`, function(done) {
-      expect.assertions(emailErrors.length + passwordErrors.length + confirmErrors.length);
+      expect.assertions(emailErrors.length + passwordErrors.length + confirmPasswordErrors.length);
 
       new RegistrationForm(document.body);
       document.body.querySelectorAll('[data-td="form-control"] input')[0].value = email;
       document.body.querySelectorAll('[data-td="form-control"] input')[1].value = password;
-      document.body.querySelectorAll('[data-td="form-control"] input')[2].value = confirm;
+      document.body.querySelectorAll('[data-td="form-control"] input')[2].value = confirmPassword;
       document.body.querySelector('[data-td="button-component"]').click();
 
       setTimeout(() => {
@@ -57,7 +102,7 @@ describe('RegistrationForm', () => {
               .querySelectorAll('[data-td="error-message"]')[index].textContent)
               .toBe(error);
         });
-        confirmErrors.forEach((error, index) => {
+        confirmPasswordErrors.forEach((error, index) => {
           expect(document.body.querySelectorAll('[data-td="form-control"]')[2]
               .querySelectorAll('[data-td="error-message"]')[index].textContent)
               .toBe(error);

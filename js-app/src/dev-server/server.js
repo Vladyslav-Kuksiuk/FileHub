@@ -11,10 +11,10 @@ app.post('/login', (req, res) => {
 app.post('/register', (req, res) => {
   res.status(422);
   res.send({
-    errors: {
-      email: ['User with this email already registered'],
-      password: ['Some server password error'],
-    },
+    errors: [
+      {fieldName: 'email', errorText: 'EmailError'},
+      {fieldName: 'password', errorText: 'PasswordError'},
+    ],
   });
 });
 

@@ -2,11 +2,11 @@ import {RequestService} from '../../src/server-connection/request-service';
 import {Response} from '../../src/server-connection/response';
 import {
   ApiService,
-  DEFAULT_ERROR,
   LOGIN_401_ERROR,
   LOG_IN_USER_PATH,
   REGISTER_USER_PATH,
 } from '../../src/server-connection/api-service';
+import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
 
@@ -19,13 +19,11 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation((url, body) => {
+        .mockImplementation( async (url, body) => {
           expect(url).toBe(LOG_IN_USER_PATH);
           expect(body.username).toBe(login);
           expect(body.password).toBe(password);
-          return new Promise(((resolve) => {
-            resolve(new Response(200, {token: 'myToken'}));
-          }));
+          return new Response(200, {token: 'myToken'});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -41,10 +39,8 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(new Response(400, {}));
-          }));
+        .mockImplementation(async () => {
+          return new Response(400, {});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -61,10 +57,8 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(new Response(401, {}));
-          }));
+        .mockImplementation(async () => {
+          return new Response(401, {});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -84,13 +78,11 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation((url, body) => {
+        .mockImplementation(async (url, body) => {
           expect(url).toBe(REGISTER_USER_PATH);
           expect(body.username).toBe(login);
           expect(body.password).toBe(password);
-          return new Promise(((resolve) => {
-            resolve(new Response(200, {token: 'myToken'}));
-          }));
+          return new Response(200, {token: 'myToken'});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -106,12 +98,8 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(
-                new Response(400, {}),
-            );
-          }));
+        .mockImplementation(async () => {
+          return new Response(400, {});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -132,17 +120,15 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(new Response(422, {errors: errors}));
-          }));
+        .mockImplementation(async () => {
+          return new Response(422, {errors: errors});
         });
 
     const apiService = new ApiService(new RequestService());
     apiService.register(new UserData('login', 'password'))
         .catch((error) => {
-          expect(error.errors).toBe(errors);
           expect(requestServiceMock).toBeCalledTimes(1);
+          expect(error.fieldErrors).toBe(errors);
           done();
         });
   });

@@ -140,8 +140,8 @@ export class AuthorizationForm extends Component {
 
   /**
    * @param {FormData} formData
-   * @param {function(FormData)} configCreator
-   * @returns {*|Promise<void | Promise>}
+   * @param {Function} configCreator
+   * @returns {Promise<void>}
    * @private
    */
   #validateForm(formData, configCreator) {
@@ -159,7 +159,7 @@ export class AuthorizationForm extends Component {
             return tempErrors;
           }, {});
           this.#setFormErrors(errorsByField);
-          return Promise.reject(new Error());
+          throw new Error();
         });
   }
 

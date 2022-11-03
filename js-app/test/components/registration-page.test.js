@@ -44,11 +44,7 @@ describe('RegistrationPage', () => {
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'register')
-        .mockImplementation(async () => {
-          return await new Promise((resolve) => {
-            resolve();
-          });
-        });
+        .mockImplementation(async () => {});
 
     const page = new RegistrationPage(document.body, applicationContext);
 
@@ -68,10 +64,8 @@ describe('RegistrationPage', () => {
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'register')
-        .mockImplementation( () => {
-          return new Promise((resolve, reject) => {
-            reject(new Error('Error message'));
-          });
+        .mockImplementation( async () => {
+          throw new Error('Error message');
         });
 
     new RegistrationPage(document.body, applicationContext);
