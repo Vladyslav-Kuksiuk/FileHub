@@ -46,7 +46,7 @@ export class RegistrationPage extends Component {
                 const prevErrors = errors[fieldError.fieldName] || [];
                 errors[fieldError.fieldName] = [...prevErrors, fieldError.errorText];
               });
-              form.formErrors = error.fieldErrors;
+              form.formErrors = errors;
             } else {
               form.setHeadError(error.message);
             }
