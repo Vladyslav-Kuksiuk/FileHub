@@ -41,11 +41,7 @@ describe('AuthorizationPage', () => {
 
     const apiServiceMock = jest
         .spyOn(ApiService.prototype, 'logIn')
-        .mockImplementation(async () => {
-          return await new Promise((resolve) => {
-            resolve();
-          });
-        });
+        .mockImplementation(async () => {});
 
     const page = new AuthorizationPage(document.body, new TitleService(), new ApiService());
 
@@ -64,10 +60,8 @@ describe('AuthorizationPage', () => {
 
     const apiServiceMock = jest
         .spyOn(ApiService.prototype, 'logIn')
-        .mockImplementation(() => {
-          return new Promise((resolve, reject) => {
-            reject(new Error('Error message'));
-          });
+        .mockImplementation(async () => {
+          throw new Error('Error message');
         });
 
     const authFormMock = jest

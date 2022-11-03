@@ -19,13 +19,11 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation((url, body) => {
+        .mockImplementation(async (url, body) => {
           expect(url).toBe(LOGIN_PATH);
           expect(body.username).toBe(login);
           expect(body.password).toBe(password);
-          return new Promise(((resolve) => {
-            resolve(new Response(200, {token: 'myToken'}));
-          }));
+          return new Response(200, {token: 'myToken'});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -41,10 +39,8 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(new Response(400, {}));
-          }));
+        .mockImplementation(async () => {
+          return new Response(400, {});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -61,10 +57,8 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation(() => {
-          return new Promise(((resolve) => {
-            resolve(new Response(401, {}));
-          }));
+        .mockImplementation(async () => {
+          return new Response(401, {});
         });
 
     const apiService = new ApiService(new RequestService());
@@ -84,13 +78,11 @@ describe('ApiService', () => {
 
     const requestServiceMock = jest
         .spyOn(RequestService.prototype, 'postJson')
-        .mockImplementation((url, body) => {
+        .mockImplementation(async (url, body) => {
           expect(url).toBe(REGISTER_PATH);
           expect(body.username).toBe(login);
           expect(body.password).toBe(password);
-          return new Promise(((resolve) => {
-            resolve(new Response(200, {token: 'myToken'}));
-          }));
+          return new Response(200, {token: 'myToken'});
         });
 
     const apiService = new ApiService(new RequestService());
