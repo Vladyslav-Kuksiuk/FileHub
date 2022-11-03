@@ -1,5 +1,5 @@
 import {RouterConfigBuilder} from '../../src/router/router-config';
-import {Router} from '../../src/router/router';
+import {Router} from '../../src/router';
 
 describe('Router', () => {
   const routerConfig = new RouterConfigBuilder()

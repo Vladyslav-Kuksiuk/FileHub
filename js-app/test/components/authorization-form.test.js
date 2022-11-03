@@ -21,12 +21,33 @@ describe('AuthorizationForm', () => {
     expect(document.body.querySelector('[data-td="button-component"]').textContent).toBe('Sign In');
   });
 
+
   [
-    ['Email', 'Password', [], []],
-    ['ema', 'password', [EMAIL_LENGTH_ERROR], []],
-    ['Email', 'pass', [], [PASSWORD_LENGTH_ERROR]],
-    ['ema', 'pass', [EMAIL_LENGTH_ERROR], [PASSWORD_LENGTH_ERROR]],
-  ].forEach(([email, password, emailErrors, passwordErrors])=>{
+    {
+      email: 'Email',
+      password: 'Password',
+      emailErrors: [],
+      passwordErrors: [],
+    },
+    {
+      email: 'ema',
+      password: 'password',
+      emailErrors: [EMAIL_LENGTH_ERROR],
+      passwordErrors: [],
+    },
+    {
+      email: 'Email',
+      password: 'pass',
+      emailErrors: [],
+      passwordErrors: [PASSWORD_LENGTH_ERROR],
+    },
+    {
+      email: 'ema',
+      password: 'pass',
+      emailErrors: [EMAIL_LENGTH_ERROR],
+      passwordErrors: [PASSWORD_LENGTH_ERROR],
+    },
+  ].forEach(({email, password, emailErrors, passwordErrors})=>{
     test(`Should render ${emailErrors.length + passwordErrors.length} errors`, function(done) {
       expect.assertions(emailErrors.length + passwordErrors.length);
 
