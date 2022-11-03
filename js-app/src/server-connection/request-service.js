@@ -26,8 +26,8 @@ export class RequestService {
         responseBody = await fetchResponse.json();
       }
       return new Response(fetchResponse.status, responseBody);
-    }).catch(()=>{
-      return new Response(522, {});
+    }).catch((error)=>{
+      return new Response(522, {error: error.message});
     });
   }
 
@@ -39,20 +39,20 @@ export class RequestService {
    * @returns {Promise<Response>}
    */
   async get(url, token) {
-    const fetchResponse = await fetch(url, {
+    return fetch(url, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
+    }).then(async (fetchResponse) => {
+      let responseBody = {};
+      if (fetchResponse.status === 200 || fetchResponse.status === 422) {
+        responseBody = await fetchResponse.json();
+      }
+      return new Response(fetchResponse.status, responseBody);
+    }).catch((error)=>{
+      return new Response(522, {error: error.message});
     });
-
-    let responseBody;
-    await fetchResponse.json()
-        .then((json) => {
-          responseBody = json;
-        });
-
-    return new Response(fetchResponse.status, responseBody);
   }
 }
