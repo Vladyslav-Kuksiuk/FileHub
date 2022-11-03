@@ -20,7 +20,7 @@ describe('RegistrationPage', () => {
   test('Should create and render RegistrationPage component', function() {
     expect.assertions(4);
 
-    new RegistrationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+    new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
     expect(document.body.querySelectorAll('[data-td="form-component"]').length).toBe(1);
     expect(document.body.querySelector('main h1').textContent).toBe('Sign up to FileHub');
     expect(titleServiceMock).toBeCalledTimes(1);
@@ -30,7 +30,7 @@ describe('RegistrationPage', () => {
   test('Should trigger navigate to authorization event by clicking on link', function(done) {
     expect.assertions(1);
 
-    const page = new RegistrationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+    const page = new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
     page.onNavigateToAuthorization(() => {
       expect(true).toBeTruthy();
@@ -46,7 +46,7 @@ describe('RegistrationPage', () => {
         .spyOn(applicationContext.apiService, 'register')
         .mockImplementation(async () => {});
 
-    const page = new RegistrationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+    const page = new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
     page.onNavigateToAuthorization(() => {
       expect(apiServiceMock).toBeCalledTimes(1);
@@ -68,7 +68,7 @@ describe('RegistrationPage', () => {
           throw new Error('Error message');
         });
 
-    new RegistrationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+    new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
     document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
     document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';

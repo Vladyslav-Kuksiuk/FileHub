@@ -20,7 +20,7 @@ describe('AuthorizationPage', () => {
   test('Should create and render AuthorizationPage component', function() {
     expect.assertions(4);
 
-    new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+    new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
     expect(document.body.querySelectorAll('[data-td="form-component"]').length).toBe(1);
     expect(document.body.querySelector('main h1').textContent).toBe('Sign in to FileHub');
     expect(titleServiceMock).toBeCalledTimes(1);
@@ -31,7 +31,7 @@ describe('AuthorizationPage', () => {
     expect.assertions(1);
 
     const page =
-      new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+      new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
     page.onNavigateToRegistration(() => {
       expect(true).toBeTruthy();
@@ -48,7 +48,7 @@ describe('AuthorizationPage', () => {
         .mockImplementation(async () => {});
 
     const page =
-      new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+      new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
     page.onNavigateToTable(() => {
       expect(apiServiceMock).toBeCalledTimes(1);
@@ -69,7 +69,7 @@ describe('AuthorizationPage', () => {
           throw new Error('Error message');
         });
 
-    new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
+    new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
     document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
     document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';

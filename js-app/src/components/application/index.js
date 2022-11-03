@@ -43,7 +43,7 @@ export class Application extends Component {
         .addRoute(LOGIN_PATH, () => {
           this.rootElement.innerHTML = '';
           const page =
-            new AuthorizationPage(this.rootElement, applicationContext.apiService, applicationContext.titleService);
+            new AuthorizationPage(this.rootElement, applicationContext.titleService, applicationContext.apiService);
           page.onNavigateToRegistration(() => {
             router.redirect(REGISTRATION_PATH);
           });
@@ -54,7 +54,7 @@ export class Application extends Component {
         .addRoute(REGISTRATION_PATH, () => {
           this.rootElement.innerHTML = '';
           const page =
-            new RegistrationPage(this.rootElement, applicationContext.apiService, applicationContext.titleService);
+            new RegistrationPage(this.rootElement, applicationContext.titleService, applicationContext.apiService);
           page.onNavigateToAuthorization(() => {
             router.redirect(LOGIN_PATH);
           });
