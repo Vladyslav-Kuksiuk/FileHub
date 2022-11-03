@@ -45,7 +45,26 @@ export class StateManagementService {
    * @returns {object} Immutable state.
    */
   get state() {
-    return Object.freeze(Object.assign({}, this.#state));
+    return this.#deepFreeze(Object.assign({}, this.#state));
+  }
+
+  /**
+   * @param {object} object
+   * @returns {object} Immutable.
+   * @private
+   */
+  #deepFreeze(object) {
+    const propNames = Object.getOwnPropertyNames(object);
+
+    for (const name of propNames) {
+      const value = object[name];
+
+      if (value && typeof value === 'object') {
+        this.#deepFreeze(value);
+      }
+    }
+
+    return Object.freeze(object);
   }
 
   /**
