@@ -17,7 +17,5 @@ export class Action {
    * @abstract
    * @param {Function} executor
    */
-  execute(executor) {
-
-  }
+  execute(executor) {}
 }
