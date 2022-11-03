@@ -10,8 +10,8 @@ describe('LogOutUserAction', () => {
 
     const apiService = new ApiService(new RequestService);
     const apiServiceMock = jest
-      .spyOn(apiService, 'logOut')
-      .mockImplementation(async ()=>{});
+        .spyOn(apiService, 'logOut')
+        .mockImplementation(async ()=>{});
 
     const action = new LogOutUserAction({}, apiService);
 
@@ -22,7 +22,7 @@ describe('LogOutUserAction', () => {
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);
       expect(executor).toBeCalledTimes(1);
-      expect(executor).toBeCalledWith(MUTATOR_NAMES.SET_USERNAME, null)
+      expect(executor).toBeCalledWith(MUTATOR_NAMES.SET_USERNAME, null);
       done();
     });
   });

@@ -32,7 +32,7 @@ export class ApiService {
    * @returns {Promise<Response>}
    */
   async logIn(data) {
-    return this.#requestService.postJson(LOGIN_PATH, {
+    return this.#requestService.postJson(LOG_IN_USER_PATH, {
       username: data.login,
       password: data.password,
     }).then((response) => {
@@ -53,7 +53,7 @@ export class ApiService {
    * @returns {Promise<Error | FieldValidationError>}
    */
   async register(data) {
-    return this.#requestService.postJson(REGISTER_PATH, {
+    return this.#requestService.postJson(REGISTER_USER_PATH, {
       username: data.login,
       password: data.password,
     }).then((response) => {

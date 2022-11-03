@@ -52,10 +52,10 @@ describe('LoadUserAction', () => {
 
     const apiService = new ApiService(new RequestService);
     const apiServiceMock = jest
-      .spyOn(apiService, 'loadUser')
-      .mockImplementation(async ()=>{
-        throw new Error(error)
-      });
+        .spyOn(apiService, 'loadUser')
+        .mockImplementation(async ()=>{
+          throw new Error(error);
+        });
 
     const action = new LoadUserAction({}, apiService);
 
@@ -72,5 +72,4 @@ describe('LoadUserAction', () => {
       done();
     });
   });
-
 });

@@ -17,8 +17,10 @@ describe('ApiService', () => {
     const login = 'login';
     const password = 'password';
 
+    const requestService = new RequestService();
+
     const requestServiceMock = jest
-        .spyOn(RequestService.prototype, 'postJson')
+        .spyOn(requestService, 'postJson')
         .mockImplementation( async (url, body) => {
           expect(url).toBe(LOG_IN_USER_PATH);
           expect(body.username).toBe(login);
@@ -26,7 +28,7 @@ describe('ApiService', () => {
           return new Response(200, {token: 'myToken'});
         });
 
-    const apiService = new ApiService(new RequestService());
+    const apiService = new ApiService(requestService);
     apiService.logIn(new UserData(login, password))
         .then(() => {
           expect(requestServiceMock).toBeCalledTimes(1);
