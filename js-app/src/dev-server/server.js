@@ -30,4 +30,7 @@ app.get('/log-out-user', (req, res) => {
   res.send({});
 });
 
-app.listen(port);
+app.listen(port, ()=>{
+  // eslint-disable-next-line no-console
+  console.log(`Listening port: ${port}`);
+});

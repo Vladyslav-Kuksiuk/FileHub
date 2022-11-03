@@ -1,17 +1,14 @@
 import {Component} from '../component';
-import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {StateManagementService} from '../../state-management/state-management-service';
-
-const LINK_CLICK_EVENT = 'LINK_CLICK_EVENT';
 
 /**
  * User panel component.
  */
 export class UserInfo extends Component {
-  #eventTarget = new EventTarget();
   #stateManagementService;
-  #username = '';
-  #isLoading = true;
+  #error;
+  #username;
+  #isLoading;
 
   /**
    * @param {HTMLElement} parent
@@ -19,14 +16,22 @@ export class UserInfo extends Component {
    */
   constructor(parent, stateManagementService) {
     super(parent);
+
+    const state = stateManagementService.state;
+    this.#error = state.userError;
+    this.#username = state.username;
+    this.#isLoading = state.isUserLoading;
+
     this.#stateManagementService = stateManagementService;
-    this.#stateManagementService.addStateListener('username', (state)=>{
+    this.#stateManagementService.addStateListener('username', (state) => {
       this.#setUsername(state.username);
     });
-    this.#stateManagementService.addStateListener('isUserLoading', (state)=>{
+    this.#stateManagementService.addStateListener('isUserLoading', (state) => {
       this.#setIsLoading(state.isUserLoading);
     });
-    this.#stateManagementService.dispatch(new LoadUserAction());
+    this.#stateManagementService.addStateListener('userError', (state) => {
+      this.#setError(state.userError);
+    });
     this.init();
   }
 
@@ -40,6 +45,15 @@ export class UserInfo extends Component {
   }
 
   /**
+   * @param {string} error
+   * @private
+   */
+  #setError(error) {
+    this.#error = error;
+    this.render();
+  }
+
+  /**
    * @param {boolean} isLoading
    * @private
    */
@@ -49,26 +63,22 @@ export class UserInfo extends Component {
   }
 
   /**
-   * Adds listener on link click event.
-   *
-   * @param {Function} listener
-   */
-  onLinkClick(listener) {
-    this.#eventTarget.addEventListener(LINK_CLICK_EVENT, listener);
-  }
-
-  /**
    * @inheritDoc
    */
   markup() {
     let userData;
     if (this.#isLoading) {
-      userData = '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>';
+      userData = `<span ${this.markElement('user-info-loading')}
+                     aria-hidden="true" class="glyphicon glyphicon-repeat"></span>`;
+    } else if (this.#error) {
+      userData = `<span ${this.markElement('user-info-error')} class="text-danger"> 
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        Can't load user data</span>`;
     } else {
       userData = `
             <slot>
                 <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
-                <span>${this.#username}</span>
+                <span ${this.markElement('user-info-username')}>${this.#username}</span>
             </slot>
       `;
     }

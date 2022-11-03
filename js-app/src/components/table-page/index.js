@@ -3,6 +3,7 @@ import {LogOutUserAction} from '../../state-management/user/log-out-user-action'
 import {UserInfo} from '../user-info';
 import {StateManagementService} from '../../state-management/state-management-service';
 import {TitleService} from '../../title-service';
+import {LoadUserAction} from '../../state-management/user/load-user-action.js';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 
@@ -31,6 +32,7 @@ export class TablePage extends Component {
   afterRender() {
     const userInfoSlot = this.getSlot('user-info');
     new UserInfo(userInfoSlot, this.#stateManagementService);
+    this.#stateManagementService.dispatch(new LoadUserAction());
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
