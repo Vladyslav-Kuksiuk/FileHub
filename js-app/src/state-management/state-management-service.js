@@ -1,4 +1,5 @@
 import {Action} from './action';
+import {ApplicationContext} from '../application-context';
 
 /**
  * Service to provide state management.
@@ -7,16 +8,18 @@ export class StateManagementService {
   #eventTarget;
   #mutators;
   #state;
+  #applicationContext;
 
   /**
    * @param {object} mutators
    * @param {object} state
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(mutators, state) {
+  constructor(mutators, state, applicationContext) {
     this.#eventTarget = new EventTarget();
     this.#mutators = mutators || {};
-
     this.#state = state;
+    this.#applicationContext = applicationContext;
   }
 
   /**
@@ -35,7 +38,7 @@ export class StateManagementService {
           }));
         }
       });
-    });
+    }, this.#applicationContext);
   }
 
   /**

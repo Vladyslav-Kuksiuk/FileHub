@@ -1,7 +1,8 @@
 import {Component} from '../component';
 import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
-import {ApplicationContext} from '../../application-context';
 import {UserInfo} from '../user-info';
+import {StateManagementService} from '../../state-management/state-management-service';
+import {TitleService} from '../../title-service';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 
@@ -10,20 +11,17 @@ const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
  */
 export class TablePage extends Component {
   #eventTarget = new EventTarget();
-  #applicationContext;
-  #apiService;
   #stateManagementService;
 
   /**
    * @param {HTMLElement} parent
-   * @param {ApplicationContext} applicationContext
+   * @param {StateManagementService} stateManagementService
+   * @param {TitleService} titleService
    */
-  constructor(parent, applicationContext) {
+  constructor(parent, stateManagementService, titleService) {
     super(parent);
-    applicationContext.titleService.setTitles(['Table']);
-    this.#applicationContext = applicationContext;
-    this.#stateManagementService = applicationContext.stateManagementService;
-    this.#apiService = applicationContext.apiService;
+    titleService.setTitles(['Table']);
+    this.#stateManagementService = stateManagementService;
     this.init();
   }
 
@@ -32,11 +30,11 @@ export class TablePage extends Component {
    */
   afterRender() {
     const userInfoSlot = this.getSlot('user-info');
-    new UserInfo(userInfoSlot, this.#applicationContext);
+    new UserInfo(userInfoSlot, this.#stateManagementService);
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
-      this.#stateManagementService.dispatch(new LogOutUserAction({}, this.#apiService));
+      this.#stateManagementService.dispatch(new LogOutUserAction());
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
   }

@@ -1,10 +1,15 @@
-import {ApiService} from '../../../src/server-connection/api-service';
-import {RequestService} from '../../../src/server-connection/request-service';
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {jest} from '@jest/globals';
+import {ApplicationContext} from '../../../src/application-context';
 
 describe('LoadUserAction', () => {
+  let applicationContext;
+
+  beforeEach(()=>{
+    applicationContext = new ApplicationContext();
+  });
+
   test(`Should return expected sequence of mutator calls`, function(done) {
     expect.assertions(3);
 
@@ -16,20 +21,19 @@ describe('LoadUserAction', () => {
       {mutator: MUTATOR_NAMES.SET_IS_USER_LOADING, payload: false},
     ];
 
-    const apiService = new ApiService(new RequestService);
     const apiServiceMock = jest
-        .spyOn(apiService, 'loadUser')
+        .spyOn(applicationContext.apiService, 'loadUser')
         .mockImplementation(async ()=>{
           return {username: username};
         });
 
-    const action = new LoadUserAction({}, apiService);
+    const action = new LoadUserAction();
 
     const executor = jest.fn((mutator, payload)=>{
       mutatorCallStack.push({mutator, payload});
     });
 
-    action.execute(executor);
+    action.execute(executor, applicationContext);
 
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);
@@ -50,20 +54,19 @@ describe('LoadUserAction', () => {
       {mutator: MUTATOR_NAMES.SET_IS_USER_LOADING, payload: false},
     ];
 
-    const apiService = new ApiService(new RequestService);
     const apiServiceMock = jest
-        .spyOn(apiService, 'loadUser')
+        .spyOn(applicationContext.apiService, 'loadUser')
         .mockImplementation(async ()=>{
           throw new Error(error);
         });
 
-    const action = new LoadUserAction({}, apiService);
+    const action = new LoadUserAction();
 
     const executor = jest.fn((mutator, payload)=>{
       mutatorCallStack.push({mutator, payload});
     });
 
-    action.execute(executor);
+    action.execute(executor, applicationContext);
 
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);

@@ -20,7 +20,7 @@ describe('AuthorizationPage', () => {
   test('Should create and render AuthorizationPage component', function() {
     expect.assertions(4);
 
-    new AuthorizationPage(document.body, applicationContext);
+    new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
     expect(document.body.querySelectorAll('[data-td="form-component"]').length).toBe(1);
     expect(document.body.querySelector('main h1').textContent).toBe('Sign in to FileHub');
     expect(titleServiceMock).toBeCalledTimes(1);
@@ -30,7 +30,8 @@ describe('AuthorizationPage', () => {
   test('Should trigger navigate to registration event', function(done) {
     expect.assertions(1);
 
-    const page = new AuthorizationPage(document.body, applicationContext);
+    const page =
+      new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
 
     page.onNavigateToRegistration(() => {
       expect(true).toBeTruthy();
@@ -46,7 +47,8 @@ describe('AuthorizationPage', () => {
         .spyOn(applicationContext.apiService, 'logIn')
         .mockImplementation(async () => {});
 
-    const page = new AuthorizationPage(document.body, applicationContext);
+    const page =
+      new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
 
     page.onNavigateToTable(() => {
       expect(apiServiceMock).toBeCalledTimes(1);
@@ -67,7 +69,7 @@ describe('AuthorizationPage', () => {
           throw new Error('Error message');
         });
 
-    new AuthorizationPage(document.body, applicationContext);
+    new AuthorizationPage(document.body, applicationContext.apiService, applicationContext.titleService);
 
     document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
     document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';

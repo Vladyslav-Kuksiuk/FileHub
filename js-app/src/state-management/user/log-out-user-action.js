@@ -1,28 +1,15 @@
 import {Action} from '../action';
-import {ApiService} from '../../server-connection/api-service';
 import {MUTATOR_NAMES} from '../mutators.js';
 
 /**
  * Action to perform user log out.
  */
 export class LogOutUserAction extends Action {
-  #apiService;
-
-
-  /**
-   * @param {object} payload
-   * @param {ApiService} apiService
-   */
-  constructor(payload, apiService) {
-    super(payload);
-    this.#apiService = apiService;
-  }
-
   /**
    * @inheritDoc
    */
-  execute(executor) {
-    return this.#apiService
+  execute(executor, applicationContext) {
+    return applicationContext.apiService
         .logOut()
         .then(() => {
           executor(MUTATOR_NAMES.SET_USERNAME, null);

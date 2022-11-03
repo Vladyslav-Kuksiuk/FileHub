@@ -6,6 +6,8 @@ import {Error404Page} from '../error-404-page';
 import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table-page';
 import {ApplicationContext} from '../../application-context';
+import {StateManagementService} from '../../state-management/state-management-service.js';
+import {MUTATORS} from '../../state-management/mutators.js';
 
 const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';
@@ -23,18 +25,25 @@ export class Application extends Component {
     this.init();
 
     const applicationContext = new ApplicationContext();
+    const state = {
+      isUserLoading: false,
+      username: null,
+      userError: null,
+    };
+    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
     const routerConfig = new RouterConfigBuilder()
         .addErrorRoute(() => {
           this.rootElement.innerHTML = '';
-          const page = new Error404Page(this.rootElement, applicationContext);
+          const page = new Error404Page(this.rootElement, applicationContext.titleService);
           page.onNavigateToHome(() => {
             router.redirect('');
           });
         })
         .addRoute(LOGIN_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new AuthorizationPage(this.rootElement, applicationContext);
+          const page =
+            new AuthorizationPage(this.rootElement, applicationContext.apiService, applicationContext.titleService);
           page.onNavigateToRegistration(() => {
             router.redirect(REGISTRATION_PATH);
           });
@@ -44,14 +53,15 @@ export class Application extends Component {
         })
         .addRoute(REGISTRATION_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new RegistrationPage(this.rootElement, applicationContext);
+          const page =
+            new RegistrationPage(this.rootElement, applicationContext.apiService, applicationContext.titleService);
           page.onNavigateToAuthorization(() => {
             router.redirect(LOGIN_PATH);
           });
         })
         .addRoute(TABLE_PATH, () => {
           this.rootElement.innerHTML = '';
-          const page = new TablePage(this.rootElement, applicationContext);
+          const page = new TablePage(this.rootElement, stateManagementService, applicationContext.titleService);
           page.onNavigateToAuthorization(() => {
             router.redirect(LOGIN_PATH);
           });

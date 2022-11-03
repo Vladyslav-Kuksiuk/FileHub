@@ -1,3 +1,5 @@
+import {ApplicationContext} from '../application-context';
+
 /**
  *  Base Action class.
  */
@@ -7,15 +9,16 @@ export class Action {
   /**
    * @param {object} payload
    */
-  constructor(payload) {
+  constructor(payload = {}) {
     this._payload = payload;
   }
 
   /**
-   * Executes an action and mutates the state.
+   * Executes an action.
    *
    * @abstract
    * @param {Function} executor
+   * @param {ApplicationContext} applicationContext
    */
-  execute(executor) {}
+  execute(executor, applicationContext) {}
 }

@@ -1,23 +1,27 @@
-import {ApiService} from '../../../src/server-connection/api-service';
-import {RequestService} from '../../../src/server-connection/request-service';
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
-import {LogOutUserAction} from '../../../src/state-management/user/log-out-user-action.js';
+import {LogOutUserAction} from '../../../src/state-management/user/log-out-user-action';
 import {jest} from '@jest/globals';
+import {ApplicationContext} from '../../../src/application-context';
 
 describe('LogOutUserAction', () => {
-  test(`Should return new state with changed 'isUserLoading'`, function(done) {
+  let applicationContext;
+
+  beforeEach(()=>{
+    applicationContext = new ApplicationContext();
+  });
+
+  test(`Should successfully logOut`, function(done) {
     expect.assertions(3);
 
-    const apiService = new ApiService(new RequestService);
     const apiServiceMock = jest
-        .spyOn(apiService, 'logOut')
+        .spyOn(applicationContext.apiService, 'logOut')
         .mockImplementation(async ()=>{});
 
-    const action = new LogOutUserAction({}, apiService);
+    const action = new LogOutUserAction();
 
     const executor = jest.fn((mutator, payload)=>{});
 
-    action.execute(executor);
+    action.execute(executor, applicationContext);
 
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);

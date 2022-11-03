@@ -48,8 +48,7 @@ describe('RequestService', () => {
     });
 
     const requestService = new RequestService();
-    const token = 'myToken';
-    const responsePromise = requestService.postJson('myUrl', {}, token);
+    const responsePromise = requestService.postJson('myUrl', {}, 'token');
 
     responsePromise.then((response) => {
       expect(response.status).toBe(522);
@@ -75,6 +74,7 @@ describe('RequestService', () => {
     const requestService = new RequestService();
     const token = 'myToken';
     const responsePromise = requestService.get(url, token);
+
     expect(fetch).toBeCalledTimes(1);
     expect(fetch).toBeCalledWith(url, {
       method: 'GET',
@@ -101,8 +101,7 @@ describe('RequestService', () => {
     });
 
     const requestService = new RequestService();
-    const token = 'myToken';
-    const responsePromise = requestService.get('myUrl', token);
+    const responsePromise = requestService.get('myUrl', 'myToken');
 
     responsePromise.then((response) => {
       expect(response.status).toBe(522);
