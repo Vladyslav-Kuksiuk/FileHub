@@ -26,7 +26,7 @@ describe('LogOutUserAction', () => {
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);
       expect(executor).toBeCalledTimes(1);
-      expect(executor).toBeCalledWith(MUTATOR_NAMES.SET_USERNAME, null);
+      expect(executor).toBeCalledWith(MUTATOR_NAMES.SET_USER_PROFILE, null);
       done();
     });
   });

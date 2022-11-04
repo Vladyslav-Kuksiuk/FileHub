@@ -1,5 +1,6 @@
 import {Component} from '../component';
 import {StateManagementService} from '../../state-management/state-management-service';
+import {STATE, USER_PROFILE} from '../../state-management/state';
 
 /**
  * User panel component.
@@ -18,19 +19,19 @@ export class UserInfo extends Component {
     super(parent);
 
     const state = stateManagementService.state;
-    this.#error = state.userError;
-    this.#username = state.username;
-    this.#isLoading = state.isUserLoading;
+    this.#error = state[STATE.USER_PROFILE_ERROR];
+    this.#username = state[STATE.USER_PROFILE]?.[USER_PROFILE.USERNAME];
+    this.#isLoading = state[STATE.IS_USER_PROFILE_LOADING];
 
     this.#stateManagementService = stateManagementService;
-    this.#stateManagementService.addStateListener('username', (state) => {
-      this.#setUsername(state.username);
+    this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state) => {
+      this.#setUsername(state[STATE.USER_PROFILE]?.[USER_PROFILE.USERNAME]);
     });
-    this.#stateManagementService.addStateListener('isUserLoading', (state) => {
-      this.#setIsLoading(state.isUserLoading);
+    this.#stateManagementService.addStateListener(STATE.IS_USER_PROFILE_LOADING, (state) => {
+      this.#setIsLoading(state[STATE.IS_USER_PROFILE_LOADING]);
     });
-    this.#stateManagementService.addStateListener('userError', (state) => {
-      this.#setError(state.userError);
+    this.#stateManagementService.addStateListener(STATE.USER_PROFILE_ERROR, (state) => {
+      this.#setError(state[STATE.USER_PROFILE_ERROR]);
     });
     this.init();
   }

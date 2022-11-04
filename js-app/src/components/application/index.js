@@ -8,6 +8,7 @@ import {TablePage} from '../table-page';
 import {ApplicationContext} from '../../application-context';
 import {StateManagementService} from '../../state-management/state-management-service.js';
 import {MUTATORS} from '../../state-management/mutators.js';
+import {STATE} from '../../state-management/state';
 
 const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';
@@ -26,9 +27,9 @@ export class Application extends Component {
 
     const applicationContext = new ApplicationContext();
     const state = {
-      isUserLoading: false,
-      username: null,
-      userError: null,
+      [STATE.IS_USER_PROFILE_LOADING]: false,
+      [STATE.USER_PROFILE]: null,
+      [STATE.USER_PROFILE_ERROR]: null,
     };
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 

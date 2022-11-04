@@ -1,4 +1,5 @@
 import express from 'express';
+import {STATE, USER_PROFILE} from '../state-management/state.js';
 
 const app = express();
 const port = 3001;
@@ -21,7 +22,12 @@ app.post('/register', (req, res) => {
 app.get('/user', (req, res) => {
   setTimeout(() => {
     res.status(200);
-    res.send({username: 'test user name'});
+    res.send({
+      [STATE.USER_PROFILE]: {
+        [USER_PROFILE.USERNAME]: 'testUser',
+        [USER_PROFILE.ROOT_FOLDER_ID]: 'testUser-0',
+      },
+    });
   }, 1000);
 });
 

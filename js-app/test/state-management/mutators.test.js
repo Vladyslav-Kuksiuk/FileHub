@@ -1,43 +1,47 @@
 import {MUTATORS, MUTATOR_NAMES} from '../../src/state-management/mutators';
+import {STATE, USER_PROFILE} from '../../src/state-management/state';
 
 describe('Mutators', () => {
   let state;
 
   beforeEach(() => {
     state = {
-      isUserLoading: false,
-      username: null,
-      userError: null,
+      [STATE.IS_USER_PROFILE_LOADING]: false,
+      [STATE.USER_PROFILE]: null,
+      [STATE.USER_PROFILE_ERROR]: null,
     };
   });
 
   test(`Should return new state with changed 'isUserLoading'`, function() {
     expect.assertions(2);
 
-    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_USER_LOADING](state, true);
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING](state, true);
 
-    expect(state.isUserLoading).toBeFalsy();
-    expect(newState.isUserLoading).toBeTruthy();
+    expect(state[STATE.IS_USER_PROFILE_LOADING]).toBeFalsy();
+    expect(newState[STATE.IS_USER_PROFILE_LOADING]).toBeTruthy();
   });
 
   test(`Should return new state with changed 'username'`, function() {
     expect.assertions(2);
 
-    const username = 'username';
+    const userProfile = {
+      [USER_PROFILE.USERNAME]: 'username',
+      [USER_PROFILE.ROOT_FOLDER_ID]: '3123',
+    };
 
-    const newState = MUTATORS[MUTATOR_NAMES.SET_USERNAME](state, username);
+    const newState = MUTATORS[MUTATOR_NAMES.SET_USER_PROFILE](state, userProfile);
 
-    expect(state.username).toBeNull();
-    expect(newState.username).toBe(username);
+    expect(state[STATE.USER_PROFILE]).toBeNull();
+    expect(newState[STATE.USER_PROFILE]).toStrictEqual(userProfile);
   });
 
   test(`Should return new state with changed 'userError'`, function() {
     expect.assertions(2);
 
     const error = 'error';
-    const newState = MUTATORS[MUTATOR_NAMES.SET_USER_ERROR](state, error);
+    const newState = MUTATORS[MUTATOR_NAMES.SET_USER_PROFILE_ERROR](state, error);
 
-    expect(state.userError).toBeNull();
-    expect(newState.userError).toBe(error);
+    expect(state[STATE.USER_PROFILE_ERROR]).toBeNull();
+    expect(newState[STATE.USER_PROFILE_ERROR]).toBe(error);
   });
 });

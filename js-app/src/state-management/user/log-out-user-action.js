@@ -12,10 +12,10 @@ export class LogOutUserAction extends Action {
     return applicationContext.apiService
         .logOut()
         .then(() => {
-          executor(MUTATOR_NAMES.SET_USERNAME, null);
+          executor(MUTATOR_NAMES.SET_USER_PROFILE, null);
         })
         .catch((error)=>{
-          executor(MUTATOR_NAMES.SET_USER_ERROR, error);
+          executor(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, error);
         });
   }
 }

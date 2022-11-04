@@ -2,6 +2,7 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {jest} from '@jest/globals';
 import {ApplicationContext} from '../../../src/application-context';
+import {STATE, USER_PROFILE} from '../../../src/state-management/state';
 
 describe('LoadUserAction', () => {
   let applicationContext;
@@ -13,18 +14,21 @@ describe('LoadUserAction', () => {
   test(`Should return expected sequence of mutator calls`, function(done) {
     expect.assertions(3);
 
-    const username = 'testUsername';
+    const userProfile = {
+      [USER_PROFILE.USERNAME]: 'testUser',
+      [USER_PROFILE.ROOT_FOLDER_ID]: 'rootFolderId',
+    };
     const mutatorCallStack = [];
     const expectedStack = [
-      {mutator: MUTATOR_NAMES.SET_IS_USER_LOADING, payload: true},
-      {mutator: MUTATOR_NAMES.SET_USERNAME, payload: username},
-      {mutator: MUTATOR_NAMES.SET_IS_USER_LOADING, payload: false},
+      {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: true},
+      {mutator: MUTATOR_NAMES.SET_USER_PROFILE, payload: userProfile},
+      {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: false},
     ];
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'loadUser')
         .mockImplementation(async ()=>{
-          return {username: username};
+          return {[STATE.USER_PROFILE]: userProfile};
         });
 
     const action = new LoadUserAction();
@@ -49,9 +53,9 @@ describe('LoadUserAction', () => {
     const error = 'testError';
     const mutatorCallStack = [];
     const expectedStack = [
-      {mutator: MUTATOR_NAMES.SET_IS_USER_LOADING, payload: true},
-      {mutator: MUTATOR_NAMES.SET_USER_ERROR, payload: error},
-      {mutator: MUTATOR_NAMES.SET_IS_USER_LOADING, payload: false},
+      {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: true},
+      {mutator: MUTATOR_NAMES.SET_USER_PROFILE_ERROR, payload: error},
+      {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: false},
     ];
 
     const apiServiceMock = jest

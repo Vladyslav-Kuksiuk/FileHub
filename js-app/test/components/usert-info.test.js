@@ -3,6 +3,7 @@ import {StateManagementService} from '../../src/state-management/state-managemen
 import {UserInfo} from '../../src/components/user-info/index';
 import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
+import {STATE, USER_PROFILE} from '../../src/state-management/state';
 
 describe('UserInfo', () => {
   beforeEach(() => {
@@ -12,22 +13,25 @@ describe('UserInfo', () => {
   test(`Should change UserInfo states`, function() {
     expect.assertions(5);
 
-    const username = 'test username';
+    const userProfile = {
+      [USER_PROFILE.USERNAME]: 'username',
+      [USER_PROFILE.ROOT_FOLDER_ID]: '123',
+    };
     const error = 'error text';
 
     const state = {
-      isUserLoading: true,
-      username: null,
-      userError: null,
+      [STATE.IS_USER_PROFILE_LOADING]: true,
+      [STATE.USER_PROFILE]: null,
+      [STATE.USER_PROFILE_ERROR]: null,
     };
 
     const applicationContext = new ApplicationContext();
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
     const fieldListeners = {
-      isUserLoading: null,
-      username: null,
-      userError: null,
+      [STATE.IS_USER_PROFILE_LOADING]: null,
+      [STATE.USER_PROFILE]: null,
+      [STATE.USER_PROFILE_ERROR]: null,
     };
 
     jest.spyOn(stateManagementService, 'addStateListener')
@@ -37,19 +41,20 @@ describe('UserInfo', () => {
 
     new UserInfo(document.body, stateManagementService);
 
-    state.isUserLoading = true;
-    fieldListeners.isUserLoading(state);
+    state[STATE.IS_USER_PROFILE_LOADING] = true;
+    fieldListeners[STATE.IS_USER_PROFILE_LOADING](state);
     expect(document.body.querySelectorAll('[data-td="user-info-loading"]').length).toBe(1);
 
-    state.username = username;
-    state.isUserLoading = false;
-    fieldListeners.isUserLoading(state);
-    fieldListeners.username(state);
+    state[STATE.USER_PROFILE] = userProfile;
+    state[STATE.IS_USER_PROFILE_LOADING] = false;
+    fieldListeners[STATE.IS_USER_PROFILE_LOADING](state);
+    fieldListeners[STATE.USER_PROFILE](state);
     expect(document.body.querySelectorAll('[data-td="user-info-loading"]').length).toBe(0);
-    expect(document.body.querySelector('[data-td="user-info-username"]').textContent).toBe(username);
+    expect(document.body.querySelector('[data-td="user-info-username"]').textContent)
+        .toBe(userProfile[USER_PROFILE.USERNAME]);
 
-    state.userError = error;
-    fieldListeners.userError(state);
+    state[STATE.USER_PROFILE_ERROR] = error;
+    fieldListeners[STATE.USER_PROFILE_ERROR](state);
     expect(document.body.querySelectorAll('[data-td="user-info-loading"]').length).toBe(0);
     expect(document.body.querySelectorAll('[data-td="user-info-error"]').length).toBe(1);
   });
