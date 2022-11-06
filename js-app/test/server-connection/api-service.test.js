@@ -9,7 +9,7 @@ import {
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
-import {STATE, FOLDER_INFO} from "../../src/state-management/state";
+import {STATE, FOLDER_INFO} from '../../src/state-management/state';
 
 describe('ApiService', () => {
   test(`Should successfully log in`, function(done) {

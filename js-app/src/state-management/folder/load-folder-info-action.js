@@ -1,9 +1,9 @@
 import {Action} from '../action';
-import {MUTATOR_NAMES} from '../mutators.js';
-import {STATE} from '../state.js';
+import {MUTATOR_NAMES} from '../mutators';
+import {STATE} from '../state';
 
 /**
- * Action to perform user loading.
+ * Action to perform folder info loading.
  */
 export class LoadFolderInfoAction extends Action {
   #folderId;
