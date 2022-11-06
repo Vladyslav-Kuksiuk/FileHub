@@ -7,7 +7,7 @@ import {ApiServiceError} from './api-service-error';
 export const LOG_IN_USER_PATH = 'api/login';
 export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
-export const LOAD_FOLDER_INFO_PATH = 'api/folder-info/';
+export const LOAD_FOLDER_INFO_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';

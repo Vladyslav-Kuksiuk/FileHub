@@ -34,7 +34,7 @@ app.get('/user', (req, res) => {
   }, 1000);
 });
 
-app.get('/folder-info/'+ROOT_FOLDER_ID, (req, res) => {
+app.get('/folders/'+ROOT_FOLDER_ID, (req, res) => {
   setTimeout(() => {
     res.status(200);
     res.send({
@@ -48,7 +48,7 @@ app.get('/folder-info/'+ROOT_FOLDER_ID, (req, res) => {
   }, 500);
 });
 
-app.get('/folder-info/'+FIRS_INNER_FOLDER_ID, (req, res) => {
+app.get('/folders/'+FIRS_INNER_FOLDER_ID, (req, res) => {
   setTimeout(() => {
     res.status(200);
     res.send({
