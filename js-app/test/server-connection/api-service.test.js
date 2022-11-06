@@ -9,6 +9,7 @@ import {
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
+import {STATE, FOLDER_INFO} from "../../src/state-management/state";
 
 describe('ApiService', () => {
   test(`Should successfully log in`, function(done) {
@@ -215,6 +216,52 @@ describe('ApiService', () => {
 
     const apiService = new ApiService(requestService);
     apiService.loadUser()
+        .catch((error) => {
+          expect(requestServiceMock).toBeCalledTimes(1);
+          expect(error.message).toBe(DEFAULT_ERROR);
+          done();
+        });
+  });
+
+  test(`Should successfully load folder info`, function(done) {
+    expect.assertions(2);
+    const requestService = new RequestService();
+    const folderInfo = {
+      [FOLDER_INFO.NAME]: 'folderName',
+      [FOLDER_INFO.ID]: 'folderId',
+      [FOLDER_INFO.ITEMS_AMOUNT]: 10,
+      [FOLDER_INFO.PARENT_ID]: 'parentId',
+    };
+
+    const requestServiceMock = jest
+        .spyOn(requestService, 'get')
+        .mockImplementation(async () => {
+          return new Response(200, {
+            [STATE.FOLDER_INFO]: folderInfo,
+          });
+        });
+
+    const apiService = new ApiService(requestService);
+    apiService.loadFolderInfo(folderInfo[FOLDER_INFO.ID])
+        .then((data) => {
+          expect(requestServiceMock).toBeCalledTimes(1);
+          expect(data[STATE.FOLDER_INFO]).toStrictEqual(folderInfo);
+          done();
+        });
+  });
+
+  test(`Should fail loadFolderInfo`, function(done) {
+    expect.assertions(2);
+    const requestService = new RequestService();
+
+    const requestServiceMock = jest
+        .spyOn(requestService, 'get')
+        .mockImplementation(async () => {
+          return new Response(405, {});
+        });
+
+    const apiService = new ApiService(requestService);
+    apiService.loadFolderInfo('notID')
         .catch((error) => {
           expect(requestServiceMock).toBeCalledTimes(1);
           expect(error.message).toBe(DEFAULT_ERROR);
