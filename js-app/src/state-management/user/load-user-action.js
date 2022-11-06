@@ -11,7 +11,6 @@ export class LoadUserAction extends Action {
    */
   execute(executor, applicationContext) {
     executor(MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, true);
-
     return applicationContext.apiService
         .loadUser()
         .then((body) => {

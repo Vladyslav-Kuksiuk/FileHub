@@ -4,6 +4,9 @@ import {UserInfo} from '../user-info';
 import {StateManagementService} from '../../state-management/state-management-service';
 import {TitleService} from '../../title-service';
 import {LoadUserAction} from '../../state-management/user/load-user-action.js';
+import {Breadcrumb} from '../breadcrumb/index';
+import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
+import {STATE, USER_PROFILE} from '../../state-management/state';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 
@@ -30,9 +33,19 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
+    this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state)=>{
+      if (state[STATE.USER_PROFILE]) {
+        this.#stateManagementService.dispatch(
+            new LoadFolderInfoAction(state[STATE.USER_PROFILE][USER_PROFILE.ROOT_FOLDER_ID]));
+      }
+    });
+
     const userInfoSlot = this.getSlot('user-info');
     new UserInfo(userInfoSlot, this.#stateManagementService);
     this.#stateManagementService.dispatch(new LoadUserAction());
+
+    const breadcrumbSlot = this.getSlot('breadcrumb-slot');
+    new Breadcrumb(breadcrumbSlot, this.#stateManagementService);
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
@@ -72,9 +85,7 @@ export class TablePage extends Component {
         </ul>
     </header>
     <main class="container">
-        <ul class="breadcrumb">
-            <li class="active">Home</li>
-        </ul>
+        ${this.addSlot('breadcrumb-slot')}
         <hr class="horizontal-line">
         <div class="row table-tool-bar">
             <div class="col-xs-8 col-sm-6">

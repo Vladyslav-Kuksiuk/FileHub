@@ -6,8 +6,8 @@ import {Error404Page} from '../error-404-page';
 import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table-page';
 import {ApplicationContext} from '../../application-context';
-import {StateManagementService} from '../../state-management/state-management-service.js';
-import {MUTATORS} from '../../state-management/mutators.js';
+import {StateManagementService} from '../../state-management/state-management-service';
+import {MUTATORS} from '../../state-management/mutators';
 import {STATE} from '../../state-management/state';
 
 const LOGIN_PATH = 'login';
@@ -27,9 +27,12 @@ export class Application extends Component {
 
     const applicationContext = new ApplicationContext();
     const state = {
-      [STATE.IS_USER_PROFILE_LOADING]: false,
+      [STATE.IS_USER_PROFILE_LOADING]: true,
       [STATE.USER_PROFILE]: null,
       [STATE.USER_PROFILE_ERROR]: null,
+      [STATE.IS_FOLDER_INFO_LOADING]: true,
+      [STATE.FOLDER_INFO]: null,
+      [STATE.FOLDER_INFO_ERROR]: null,
     };
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
