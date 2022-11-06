@@ -1,7 +1,7 @@
-import {Component} from '../../../../../../../Users/vladk/Desktop/Новая папка (2)/src/components/component.js';
+import {Component} from '../component';
 import {StateManagementService} from '../../state-management/state-management-service';
 import {FOLDER_INFO, STATE, USER_PROFILE} from '../../state-management/state';
-import {Link} from '../../../../../../../Users/vladk/Desktop/Новая папка (2)/src/components/link/index.js';
+import {Link} from '../link';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 
 const HOME_FOLDER_LINK_SLOT = 'home-folder-link-slot';
@@ -26,8 +26,8 @@ export class Breadcrumb extends Component {
     super(parent);
 
     const state = stateManagementService.state;
-    this.#error = state[STATE.USER_PROFILE_ERROR];
-    this.#rootFolderId = state[STATE.USER_PROFILE]?.[USER_PROFILE.ROOT_FOLDER_ID];
+    this.#error = state[STATE.FOLDER_INFO_ERROR];
+    this.#rootFolderId = state[STATE.USER_PROFILE]?.[USER_PROFILE.ROOT_FOLDER_ID] ?? null;
     this.#isLoading = state[STATE.IS_USER_PROFILE_LOADING] || state[STATE.IS_FOLDER_INFO_LOADING];
     this.#folderName = state[STATE.FOLDER_INFO]?.[FOLDER_INFO.NAME];
     this.#folderParentId = state[STATE.FOLDER_INFO]?.[FOLDER_INFO.PARENT_ID];
@@ -112,14 +112,14 @@ export class Breadcrumb extends Component {
    */
   markup() {
     if (this.#isLoading) {
-      return `<ul class="breadcrumb">
+      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
                 <span ${this.markElement('breadcrumb-loading')}
                      aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
              </ul>`;
     }
 
-    if (this.#error) {
-      return `<ul class="breadcrumb">
+    if (this.#error || this.#rootFolderId == null) {
+      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
                    <span ${this.markElement('breadcrumb-error')} class="text-danger"> 
                           <span class="glyphicon glyphicon-exclamation-sign"></span>
                           Can't load breadcrumb data
@@ -128,19 +128,19 @@ export class Breadcrumb extends Component {
     }
 
     if (this.#folderParentId == null) {
-      return `<ul class="breadcrumb">
+      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
                   <li>Home</li>
               </ul>`;
     }
 
     if (this.#rootFolderId === this.#folderParentId) {
-      return `<ul class="breadcrumb">
+      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
                 <li>${this.addSlot(HOME_FOLDER_LINK_SLOT)}</li>
                 <li>${this.#folderName}</li>
              </ul>`;
     }
 
-    return `<ul class="breadcrumb">
+    return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
                 <li>${this.addSlot(HOME_FOLDER_LINK_SLOT)}</li>
                 <li>${this.addSlot(PARENT_FOLDER_LINK_SLOT)}</li>
                 <li>${this.#folderName}</li>
