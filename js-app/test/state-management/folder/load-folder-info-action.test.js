@@ -22,6 +22,8 @@ describe('LoadFolderInfoAction', () => {
     };
     const mutatorCallStack = [];
     const expectedStack = [
+      {mutator: MUTATOR_NAMES.SET_FOLDER_INFO, payload: null},
+      {mutator: MUTATOR_NAMES.SET_FOLDER_INFO_ERROR, payload: null},
       {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: true},
       {mutator: MUTATOR_NAMES.SET_FOLDER_INFO, payload: folderInfo},
       {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: false},
@@ -43,7 +45,7 @@ describe('LoadFolderInfoAction', () => {
 
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(3);
+      expect(executor).toBeCalledTimes(5);
       expect(mutatorCallStack).toStrictEqual(expectedStack);
       done();
     });
@@ -55,6 +57,8 @@ describe('LoadFolderInfoAction', () => {
     const error = 'testError';
     const mutatorCallStack = [];
     const expectedStack = [
+      {mutator: MUTATOR_NAMES.SET_FOLDER_INFO, payload: null},
+      {mutator: MUTATOR_NAMES.SET_FOLDER_INFO_ERROR, payload: null},
       {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: true},
       {mutator: MUTATOR_NAMES.SET_FOLDER_INFO_ERROR, payload: error},
       {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: false},
@@ -76,7 +80,7 @@ describe('LoadFolderInfoAction', () => {
 
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(3);
+      expect(executor).toBeCalledTimes(5);
       expect(mutatorCallStack).toStrictEqual(expectedStack);
       done();
     });
