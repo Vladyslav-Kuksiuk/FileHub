@@ -7,7 +7,7 @@ import {ApiServiceError} from './api-service-error';
 export const LOG_IN_USER_PATH = 'api/login';
 export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
-export const LOAD_FOLDER_INFO_PATH = 'api/folders/';
+export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
@@ -89,7 +89,23 @@ export class ApiService {
    * @returns {Promise<object | Error>}
    */
   async loadFolderInfo(folderId) {
-    return this.#requestService.get(LOAD_FOLDER_INFO_PATH+folderId, this.#userToken)
+    return this.#requestService.get(LOAD_FOLDER_PATH+folderId, this.#userToken)
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body;
+        });
+  }
+
+  /**
+   * Loads folder content.
+   *
+   * @param {string} folderId
+   * @returns {Promise<object | Error>}
+   */
+  async loadFolderContent(folderId) {
+    return this.#requestService.get(LOAD_FOLDER_PATH+folderId+'/content', this.#userToken)
         .then((response) => {
           if (response.status !== 200) {
             throw new ApiServiceError();

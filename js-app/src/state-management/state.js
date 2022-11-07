@@ -1,3 +1,5 @@
+export const FOLDER_TYPE = 'folder';
+
 export const STATE = {
   IS_USER_PROFILE_LOADING: 'isUserProfileLoading',
   IS_FOLDER_INFO_LOADING: 'isFolderLoading',
@@ -5,6 +7,9 @@ export const STATE = {
   USER_PROFILE_ERROR: 'userProfileError',
   FOLDER_INFO_ERROR: 'folderError',
   FOLDER_INFO: 'folderInfo',
+  IS_FOLDER_CONTENT_LOADING: 'isFolderContentLoading',
+  FOLDER_CONTENT: 'folderContent',
+  FOLDER_CONTENT_ERROR: 'folderContentError',
 };
 
 export const USER_PROFILE = {
@@ -17,4 +22,11 @@ export const FOLDER_INFO = {
   ID: 'id',
   PARENT_ID: 'parentId',
   ITEMS_AMOUNT: 'itemsAmount',
+};
+
+export const FOLDER_CONTENT_ITEM = {
+  TYPE: 'type',
+  ID: 'id',
+  NAME: 'name',
+  SIZE: 'size',
 };
