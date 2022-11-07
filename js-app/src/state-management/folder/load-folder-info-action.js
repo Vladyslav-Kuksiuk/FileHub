@@ -20,6 +20,8 @@ export class LoadFolderInfoAction extends Action {
    * @inheritDoc
    */
   execute(executor, applicationContext) {
+    executor(MUTATOR_NAMES.SET_FOLDER_INFO, null);
+    executor(MUTATOR_NAMES.SET_FOLDER_INFO_ERROR, null);
     executor(MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, true);
 
     return applicationContext.apiService
