@@ -6,9 +6,13 @@ import {TitleService} from '../../title-service';
 import {LoadUserAction} from '../../state-management/user/load-user-action.js';
 import {Breadcrumb} from '../breadcrumb/index';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
-import {STATE, USER_PROFILE} from '../../state-management/state';
+import {STATE, USER_PROFILE, FOLDER_INFO} from '../../state-management/state';
+import {FolderContent} from '../folder-content';
+import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
+
+const FOLDER_CONTENT_SLOT = 'folder-content-slot';
 
 /**
  * Table page component.
@@ -40,6 +44,13 @@ export class TablePage extends Component {
       }
     });
 
+    this.#stateManagementService.addStateListener(STATE.FOLDER_INFO, (state)=>{
+      if (state[STATE.FOLDER_INFO]) {
+        this.#stateManagementService.dispatch(
+            new LoadFolderContentAction(state[STATE.FOLDER_INFO][FOLDER_INFO.ID]));
+      }
+    });
+
     const userInfoSlot = this.getSlot('user-info');
     new UserInfo(userInfoSlot, this.#stateManagementService);
     this.#stateManagementService.dispatch(new LoadUserAction());
@@ -52,6 +63,9 @@ export class TablePage extends Component {
       this.#stateManagementService.dispatch(new LogOutUserAction());
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
+
+    const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
+    new FolderContent(folderContentSlot, this.#stateManagementService);
   }
 
   /**
@@ -111,33 +125,7 @@ export class TablePage extends Component {
                 </div>
             </div>
         </div>
-        <div class="table-wrapper">
-            <table class="table table-hover">
-                <tr>
-                    <td class="cell-arrow">
-                        <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
-                    </td>
-                    <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
-                    </td>
-                    <td class="cell-name"><a href="inner.html">Documents</a></td>
-                    <td class="cell-type">Folder</td>
-                    <td class="cell-size">—</td>
-                    <td class="cell-buttons">
-                        <div class="data-buttons-container">
-                            <button class="icon-button"
-                                    title="Upload file.">
-                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                            </button>
-                            <button class="icon-button" title="Delete">
-                                <span aria-hidden="true"
-                                      class="glyphicon glyphicon-remove-circle"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        ${this.addSlot(FOLDER_CONTENT_SLOT)}
     </main>
     <footer class="page-footer">
         <ul class="list-inline social-icons">

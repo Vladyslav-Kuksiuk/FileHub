@@ -33,6 +33,9 @@ export class Application extends Component {
       [STATE.IS_FOLDER_INFO_LOADING]: true,
       [STATE.FOLDER_INFO]: null,
       [STATE.FOLDER_INFO_ERROR]: null,
+      [STATE.IS_FOLDER_CONTENT_LOADING]: true,
+      [STATE.FOLDER_CONTENT]: null,
+      [STATE.FOLDER_CONTENT_ERROR]: null,
     };
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 

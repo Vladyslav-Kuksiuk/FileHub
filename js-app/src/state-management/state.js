@@ -1,4 +1,5 @@
 export const FOLDER_TYPE = 'folder';
+export const FOLDER_ITEMS = 'items';
 
 export const STATE = {
   IS_USER_PROFILE_LOADING: 'isUserProfileLoading',
