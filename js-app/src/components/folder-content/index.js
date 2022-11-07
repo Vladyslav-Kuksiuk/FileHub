@@ -47,10 +47,12 @@ export class FolderContent extends Component {
   afterRender() {
     this.#folders.forEach((folder, index) => {
       const linkSlot = this.rootElement.querySelector(`[data-td="${FOLDER_LINK + index}"]`);
-      const link = new Link(linkSlot, folder[FOLDER_CONTENT_ITEM.NAME]);
-      link.onClick(() => {
-        this.#stateManagementService.dispatch(new LoadFolderInfoAction(folder[FOLDER_CONTENT_ITEM.ID]));
-      });
+      if (linkSlot) {
+        const link = new Link(linkSlot, folder[FOLDER_CONTENT_ITEM.NAME]);
+        link.onClick(() => {
+          this.#stateManagementService.dispatch(new LoadFolderInfoAction(folder[FOLDER_CONTENT_ITEM.ID]));
+        });
+      }
     });
   }
 
@@ -142,7 +144,7 @@ export class FolderContent extends Component {
                 </tr>
                 `;
     });
-    this.#files.forEach((file, index) => {
+    this.#files.forEach((file) => {
       folderContent +=
                 `
                 <tr>
