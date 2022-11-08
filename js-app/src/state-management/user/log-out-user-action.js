@@ -1,5 +1,5 @@
 import {Action} from '../action';
-import {MUTATOR_NAMES} from '../mutators.js';
+import {MUTATOR_NAMES} from '../mutators';
 
 /**
  * Action to perform user log out.
