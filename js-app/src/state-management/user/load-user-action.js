@@ -10,8 +10,6 @@ export class LoadUserAction extends Action {
    * @inheritDoc
    */
   execute(executor, applicationContext) {
-    executor(MUTATOR_NAMES.SET_USER_PROFILE, null);
-    executor(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, null);
     executor(MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, true);
     return applicationContext.apiService
         .loadUser()

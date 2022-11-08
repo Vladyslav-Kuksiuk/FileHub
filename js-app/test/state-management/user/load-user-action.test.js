@@ -20,8 +20,6 @@ describe('LoadUserAction', () => {
     };
     const mutatorCallStack = [];
     const expectedStack = [
-      {mutator: MUTATOR_NAMES.SET_USER_PROFILE, payload: null},
-      {mutator: MUTATOR_NAMES.SET_USER_PROFILE_ERROR, payload: null},
       {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: true},
       {mutator: MUTATOR_NAMES.SET_USER_PROFILE, payload: userProfile},
       {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: false},
@@ -43,7 +41,7 @@ describe('LoadUserAction', () => {
 
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(5);
+      expect(executor).toBeCalledTimes(3);
       expect(mutatorCallStack).toStrictEqual(expectedStack);
       done();
     });
@@ -55,8 +53,6 @@ describe('LoadUserAction', () => {
     const error = 'testError';
     const mutatorCallStack = [];
     const expectedStack = [
-      {mutator: MUTATOR_NAMES.SET_USER_PROFILE, payload: null},
-      {mutator: MUTATOR_NAMES.SET_USER_PROFILE_ERROR, payload: null},
       {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: true},
       {mutator: MUTATOR_NAMES.SET_USER_PROFILE_ERROR, payload: error},
       {mutator: MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, payload: false},
@@ -78,7 +74,7 @@ describe('LoadUserAction', () => {
 
     setTimeout(()=>{
       expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(5);
+      expect(executor).toBeCalledTimes(3);
       expect(mutatorCallStack).toStrictEqual(expectedStack);
       done();
     });
