@@ -1,6 +1,6 @@
 import {Action} from '../action';
-import {MUTATOR_NAMES} from '../mutators.js';
-import {STATE} from '../state.js';
+import {MUTATOR_NAMES} from '../mutators';
+import {STATE} from '../state';
 
 /**
  * Action to perform user loading.
