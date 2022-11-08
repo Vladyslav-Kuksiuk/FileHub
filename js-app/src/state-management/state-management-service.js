@@ -16,6 +16,9 @@ export class StateManagementService {
    * @param {ApplicationContext} applicationContext
    */
   constructor(mutators, state, applicationContext) {
+    if (state == null || state === {}) {
+      throw new Error('Initial state is not valid ');
+    }
     this.#eventTarget = new EventTarget();
     this.#mutators = mutators || {};
     this.#state = state;
