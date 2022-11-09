@@ -1,6 +1,6 @@
 import {ApplicationContext} from '../../src/application-context';
 import {StateManagementService} from '../../src/state-management/state-management-service';
-import {Breadcrumb} from '../../src/application-components/table/breadcrumb';
+import {BreadcrumbWrapper} from '../../src/application-components/table/breadcrumb-wrapper';
 import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
 import {STATE} from '../../src/state-management/state';
@@ -56,7 +56,7 @@ describe('Breadcrumb', () => {
     const applicationContext = new ApplicationContext();
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
-    new Breadcrumb(document.body, stateManagementService);
+    new BreadcrumbWrapper(document.body, stateManagementService);
 
     expect(document.body.querySelectorAll('[data-td="breadcrumb-loading"]').length).toBe(1);
   });
@@ -71,7 +71,7 @@ describe('Breadcrumb', () => {
     state[STATE.FOLDER_INFO_ERROR] = error;
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
-    new Breadcrumb(document.body, stateManagementService);
+    new BreadcrumbWrapper(document.body, stateManagementService);
 
     expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
   });
@@ -88,7 +88,7 @@ describe('Breadcrumb', () => {
 
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
-    new Breadcrumb(document.body, stateManagementService);
+    new BreadcrumbWrapper(document.body, stateManagementService);
 
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(1);
     expect(document.body.querySelector('[data-td="breadcrumb-component"] li').textContent).toBe('Home');
@@ -106,7 +106,7 @@ describe('Breadcrumb', () => {
 
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
-    new Breadcrumb(document.body, stateManagementService);
+    new BreadcrumbWrapper(document.body, stateManagementService);
 
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(2);
     expect(document.body.querySelector('[data-td="breadcrumb-component"] li a').textContent).toBe('Home');
@@ -126,7 +126,7 @@ describe('Breadcrumb', () => {
 
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
-    new Breadcrumb(document.body, stateManagementService);
+    new BreadcrumbWrapper(document.body, stateManagementService);
 
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(3);
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[0].textContent).toBe('Home');
@@ -153,7 +153,7 @@ describe('Breadcrumb', () => {
           fieldListeners[field] = listener;
         });
 
-    new Breadcrumb(document.body, stateManagementService);
+    new BreadcrumbWrapper(document.body, stateManagementService);
 
     expect(document.body.querySelectorAll('[data-td="breadcrumb-loading"]').length).toBe(1);
 

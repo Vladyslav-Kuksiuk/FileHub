@@ -1,14 +1,12 @@
 import {Component} from '../../../components/component';
 import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
-import {UserInfo} from '../user-info';
+import {UserInfoWrapper} from '../user-info-wrapper';
 import {StateManagementService} from '../../../state-management/state-management-service';
 import {TitleService} from '../../../title-service';
-import {LoadUserAction} from '../../../state-management/user/load-user-action';
-import {Breadcrumb} from '../breadcrumb';
-import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action';
-import {STATE} from '../../../state-management/state';
+import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
+const USER_INFO_WRAPPER_SLOT = 'user-info-wrapper-slot';
 
 /**
  * Table page component.
@@ -33,19 +31,11 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state)=>{
-      if (state[STATE.USER_PROFILE]) {
-        this.#stateManagementService.dispatch(
-            new LoadFolderInfoAction(state[STATE.USER_PROFILE].rootFolderId));
-      }
-    });
-
-    const userInfoSlot = this.getSlot('user-info');
-    new UserInfo(userInfoSlot, this.#stateManagementService);
-    this.#stateManagementService.dispatch(new LoadUserAction());
+    const userInfoSlot = this.getSlot(USER_INFO_WRAPPER_SLOT);
+    new UserInfoWrapper(userInfoSlot, this.#stateManagementService);
 
     const breadcrumbSlot = this.getSlot('breadcrumb-slot');
-    new Breadcrumb(breadcrumbSlot, this.#stateManagementService);
+    new BreadcrumbWrapper(breadcrumbSlot, this.#stateManagementService);
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
@@ -74,7 +64,7 @@ export class TablePage extends Component {
                                           title="TeamDev" width="200"></a>
             <ul class="authorized-user-panel">
             <li>
-                ${this.addSlot('user-info')}
+                ${this.addSlot(USER_INFO_WRAPPER_SLOT)}
             </li>
             <li>
                 <a ${this.markElement('logout-link')} class="logout-button" href="/" title="Log Out">

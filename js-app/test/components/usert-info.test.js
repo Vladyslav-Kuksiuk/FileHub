@@ -1,6 +1,6 @@
 import {ApplicationContext} from '../../src/application-context';
 import {StateManagementService} from '../../src/state-management/state-management-service';
-import {UserInfo} from '../../src/application-components/table/user-info/index';
+import {UserInfoWrapper} from '../../src/application-components/table/user-info-wrapper/index';
 import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
 import {STATE} from '../../src/state-management/state';
@@ -40,7 +40,7 @@ describe('UserInfo', () => {
           fieldListeners[field] = listener;
         });
 
-    new UserInfo(document.body, stateManagementService);
+    new UserInfoWrapper(document.body, stateManagementService);
 
     state[STATE.IS_USER_PROFILE_LOADING] = true;
     fieldListeners[STATE.IS_USER_PROFILE_LOADING](state);
