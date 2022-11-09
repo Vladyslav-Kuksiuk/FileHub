@@ -1,12 +1,12 @@
-import {Component} from '../component';
-import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
+import {Component} from '../../../components/component';
+import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
 import {UserInfo} from '../user-info';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {TitleService} from '../../title-service';
-import {LoadUserAction} from '../../state-management/user/load-user-action.js';
-import {Breadcrumb} from '../breadcrumb/index';
-import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
-import {STATE, USER_PROFILE} from '../../state-management/state';
+import {StateManagementService} from '../../../state-management/state-management-service';
+import {TitleService} from '../../../title-service';
+import {LoadUserAction} from '../../../state-management/user/load-user-action';
+import {Breadcrumb} from '../breadcrumb';
+import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action';
+import {STATE, USER_PROFILE} from '../../../state-management/state';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 

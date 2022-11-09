@@ -1,8 +1,8 @@
-import {Component} from '../component';
+import {Component} from '../../../components/component';
 import {RegistrationForm} from '../registration-form';
-import {TitleService} from '../../title-service';
-import {ApiService} from '../../server-connection/api-service';
-import {FieldValidationError} from '../../server-connection/field-validation-error';
+import {TitleService} from '../../../title-service';
+import {ApiService} from '../../../server-connection/api-service';
+import {FieldValidationError} from '../../../server-connection/field-validation-error';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 

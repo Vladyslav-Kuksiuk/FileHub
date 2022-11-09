@@ -1,6 +1,6 @@
 import {ApplicationContext} from '../../src/application-context';
 import {StateManagementService} from '../../src/state-management/state-management-service';
-import {Breadcrumb} from '../../src/components/breadcrumb';
+import {Breadcrumb} from '../../src/application-components/table/breadcrumb';
 import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
 import {FOLDER_INFO, STATE, USER_PROFILE} from '../../src/state-management/state';

@@ -1,4 +1,4 @@
-import {AuthorizationPage} from '../../src/components/authorization-page';
+import {AuthorizationPage} from '../../src/application-components/authorization/authorization-page';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
 import {ApplicationContext} from '../../src/application-context.js';

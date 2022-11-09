@@ -1,7 +1,7 @@
-import {Component} from '../component';
+import {Component} from '../../../components/component';
 import {AuthorizationForm} from '../authorization-form';
-import {TitleService} from '../../title-service';
-import {ApiService} from '../../server-connection/api-service';
+import {TitleService} from '../../../title-service';
+import {ApiService} from '../../../server-connection/api-service';
 
 const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
 const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';

@@ -1,6 +1,6 @@
-import {Component} from '../component';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {STATE, USER_PROFILE} from '../../state-management/state';
+import {Component} from '../../../components/component';
+import {StateManagementService} from '../../../state-management/state-management-service';
+import {STATE, USER_PROFILE} from '../../../state-management/state';
 
 /**
  * User panel component.

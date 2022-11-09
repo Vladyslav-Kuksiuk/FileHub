@@ -6,7 +6,7 @@ import {
   PASSWORD_LENGTH_ERROR,
   PASSWORD_MATCH_ERROR,
   RegistrationForm,
-} from '../../src/components/registration-form';
+} from '../../src/application-components/registration/registration-form';
 
 describe('RegistrationForm', () => {
   beforeEach(() => {

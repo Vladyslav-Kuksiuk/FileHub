@@ -1,5 +1,5 @@
 import express from 'express';
-import {STATE, USER_PROFILE, FOLDER_INFO} from '../state-management/state.js';
+import {STATE, USER_PROFILE, FOLDER_INFO} from '../state-management/state';
 
 const app = express();
 const port = 3001;

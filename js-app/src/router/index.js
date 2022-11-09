@@ -1,4 +1,4 @@
-import {RouterConfig} from './router-config.js';
+import {RouterConfig} from './router-config';
 /**
  * Service for handling routes along the given paths.
  */

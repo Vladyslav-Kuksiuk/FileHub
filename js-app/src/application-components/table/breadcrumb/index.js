@@ -1,8 +1,8 @@
-import {Component} from '../component';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {FOLDER_INFO, STATE, USER_PROFILE} from '../../state-management/state';
-import {Link} from '../link';
-import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
+import {Component} from '../../../components/component';
+import {StateManagementService} from '../../../state-management/state-management-service';
+import {FOLDER_INFO, STATE, USER_PROFILE} from '../../../state-management/state';
+import {Link} from '../../../components/link';
+import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action';
 
 const HOME_FOLDER_LINK_SLOT = 'home-folder-link-slot';
 const PARENT_FOLDER_LINK_SLOT = 'parent-folder-link-slot';

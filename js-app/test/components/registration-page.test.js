@@ -1,4 +1,4 @@
-import {RegistrationPage} from '../../src/components/registration-page';
+import {RegistrationPage} from '../../src/application-components/registration/registration-page';
 import {jest} from '@jest/globals';
 import {UserData} from '../../src/user-data';
 import {ApplicationContext} from '../../src/application-context';

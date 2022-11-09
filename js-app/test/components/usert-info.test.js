@@ -1,6 +1,6 @@
 import {ApplicationContext} from '../../src/application-context';
 import {StateManagementService} from '../../src/state-management/state-management-service';
-import {UserInfo} from '../../src/components/user-info/index';
+import {UserInfo} from '../../src/application-components/table/user-info/index';
 import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
 import {STATE, USER_PROFILE} from '../../src/state-management/state';
