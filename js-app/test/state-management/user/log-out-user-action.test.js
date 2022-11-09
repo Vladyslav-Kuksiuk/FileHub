@@ -10,7 +10,7 @@ describe('LogOutUserAction', () => {
     applicationContext = new ApplicationContext();
   });
 
-  test(`Should successfully logOut`, function(done) {
+  test(`Should successfully logOut`, function() {
     expect.assertions(3);
 
     const apiServiceMock = jest
@@ -19,15 +19,12 @@ describe('LogOutUserAction', () => {
 
     const action = new LogOutUserAction();
 
-    const executor = jest.fn((mutator, payload)=>{});
+    const executor = jest.fn(()=>{});
 
-    action.execute(executor, applicationContext);
-
-    setTimeout(()=>{
-      expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(1);
-      expect(executor).toBeCalledWith(MUTATOR_NAMES.SET_USER_PROFILE, null);
-      done();
+    return action.execute(executor, applicationContext).then(()=>{
+      expect(apiServiceMock).toHaveBeenCalledTimes(1);
+      expect(executor).toHaveBeenCalledTimes(1);
+      expect(executor).toHaveBeenCalledWith(MUTATOR_NAMES.SET_USER_PROFILE, null);
     });
   });
 });

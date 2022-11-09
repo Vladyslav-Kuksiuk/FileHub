@@ -11,8 +11,8 @@ describe('LoadFolderInfoAction', () => {
     applicationContext = new ApplicationContext();
   });
 
-  test(`Should return expected successfully sequence of mutator calls`, function(done) {
-    expect.assertions(3);
+  test(`Should return expected successfully sequence of mutator calls`, function() {
+    expect.assertions(5);
 
     const folderInfo = {
       [FOLDER_INFO.NAME]: 'folder',
@@ -20,12 +20,6 @@ describe('LoadFolderInfoAction', () => {
       [FOLDER_INFO.ITEMS_AMOUNT]: 1,
       [FOLDER_INFO.ID]: 'ID',
     };
-    const mutatorCallStack = [];
-    const expectedStack = [
-      {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: true},
-      {mutator: MUTATOR_NAMES.SET_FOLDER_INFO, payload: folderInfo},
-      {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: false},
-    ];
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'loadFolderInfo')
@@ -35,30 +29,21 @@ describe('LoadFolderInfoAction', () => {
 
     const action = new LoadFolderInfoAction(folderInfo[FOLDER_INFO.ID]);
 
-    const executor = jest.fn((mutator, payload)=>{
-      mutatorCallStack.push({mutator, payload});
-    });
+    const executor = jest.fn(()=>{});
 
-    action.execute(executor, applicationContext);
-
-    setTimeout(()=>{
-      expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(3);
-      expect(mutatorCallStack).toStrictEqual(expectedStack);
-      done();
+    return action.execute(executor, applicationContext).then(()=>{
+      expect(apiServiceMock).toHaveBeenCalledTimes(1);
+      expect(executor).toHaveBeenCalledTimes(3);
+      expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, true);
+      expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_FOLDER_INFO, folderInfo);
+      expect(executor).toHaveBeenNthCalledWith(3, MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, false);
     });
   });
 
-  test(`Should return expected failed sequence of mutator calls`, function(done) {
-    expect.assertions(3);
+  test(`Should return expected failed sequence of mutator calls`, function() {
+    expect.assertions(5);
 
     const error = 'testError';
-    const mutatorCallStack = [];
-    const expectedStack = [
-      {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: true},
-      {mutator: MUTATOR_NAMES.SET_FOLDER_INFO_ERROR, payload: error},
-      {mutator: MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, payload: false},
-    ];
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'loadFolderInfo')
@@ -68,17 +53,14 @@ describe('LoadFolderInfoAction', () => {
 
     const action = new LoadFolderInfoAction();
 
-    const executor = jest.fn((mutator, payload)=>{
-      mutatorCallStack.push({mutator, payload});
-    });
+    const executor = jest.fn(()=>{});
 
-    action.execute(executor, applicationContext);
-
-    setTimeout(()=>{
-      expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(3);
-      expect(mutatorCallStack).toStrictEqual(expectedStack);
-      done();
+    return action.execute(executor, applicationContext).then(()=>{
+      expect(apiServiceMock).toHaveBeenCalledTimes(1);
+      expect(executor).toHaveBeenCalledTimes(3);
+      expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, true);
+      expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_FOLDER_INFO_ERROR, error);
+      expect(executor).toHaveBeenNthCalledWith(3, MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, false);
     });
   });
 });

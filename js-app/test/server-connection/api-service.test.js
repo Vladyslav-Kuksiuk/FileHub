@@ -5,24 +5,29 @@ import {
   LOGIN_401_ERROR,
   LOG_IN_USER_PATH,
   REGISTER_USER_PATH,
+  LOG_OUT_USER_PATH,
+  LOAD_USER_PATH,
+  LOAD_FOLDER_INFO_PATH,
 } from '../../src/server-connection/api-service';
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
-import {STATE, FOLDER_INFO} from '../../src/state-management/state';
+import {STATE, FOLDER_INFO, USER_PROFILE} from '../../src/state-management/state';
+import {ApiServiceError} from '../../src/server-connection/api-service-error';
+import {FieldValidationError} from '../../src/server-connection/field-validation-error';
 
 describe('ApiService', () => {
-  test(`Should successfully log in`, function(done) {
-    expect.assertions(4);
+  const login = 'login';
+  const password = 'password';
 
-    const login = 'login';
-    const password = 'password';
+  test(`Should successfully log in`, async function() {
+    expect.assertions(6);
 
     const requestService = new RequestService();
 
     const requestServiceMock = jest
         .spyOn(requestService, 'postJson')
-        .mockImplementation( async (url, body) => {
+        .mockImplementation(async (url, body) => {
           expect(url).toBe(LOG_IN_USER_PATH);
           expect(body.username).toBe(login);
           expect(body.password).toBe(password);
@@ -30,16 +35,14 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.logIn(new UserData(login, password))
-        .then(() => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          done();
-        });
+
+    await expect(apiService.logIn(new UserData(login, password))).resolves.toBeUndefined();
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {username: login, password: password});
   });
 
-  test(`Should fail login with error message ${DEFAULT_ERROR}`, function(done) {
-    expect.assertions(2);
-
+  test(`Should return error after login with error message ${DEFAULT_ERROR}`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -49,17 +52,15 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.logIn(new UserData('login', 'password'))
-        .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(error.message).toBe(DEFAULT_ERROR);
-          done();
-        });
+
+    await expect(apiService.logIn(new UserData(login, password)))
+        .rejects.toEqual(new ApiServiceError());
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {username: login, password: password});
   });
 
-  test(`Should fail login with error message ${LOGIN_401_ERROR}`, function(done) {
-    expect.assertions(2);
-
+  test(`Should return error after login with error message ${LOGIN_401_ERROR}`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -69,19 +70,15 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.logIn(new UserData('login', 'password'))
-        .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(error.message).toBe(LOGIN_401_ERROR);
-          done();
-        });
+
+    await expect(apiService.logIn(new UserData(login, password)))
+        .rejects.toEqual(new ApiServiceError(LOGIN_401_ERROR));
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {username: login, password: password});
   });
 
-  test(`Should successfully register`, function(done) {
-    expect.assertions(4);
-
-    const login = 'login';
-    const password = 'password';
+  test(`Should successfully register`, async function() {
+    expect.assertions(6);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -94,16 +91,14 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.register(new UserData(login, password))
-        .then(() => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          done();
-        });
+
+    await expect(apiService.register(new UserData(login, password))).resolves.toBeUndefined();
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {username: login, password: password});
   });
 
-  test(`Should fail registration with error message ${DEFAULT_ERROR}`, function(done) {
-    expect.assertions(2);
-
+  test(`Should return error after registration with error message ${DEFAULT_ERROR}`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -113,20 +108,25 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.register(new UserData('login', 'password'))
-        .catch((error) => {
-          expect(error.message).toBe(DEFAULT_ERROR);
-          expect(requestServiceMock).toBeCalledTimes(1);
-          done();
-        });
+
+    await expect(apiService.register(new UserData(login, password)))
+        .rejects.toEqual(new ApiServiceError());
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {username: login, password: password});
   });
 
-  test(`Should fail registration with errors in response body`, function(done) {
-    expect.assertions(2);
-    const errors = {
-      email: 'Email error',
-      password: 'Password error',
-    };
+  test(`Should return error after registration with errors in response body`, async function() {
+    expect.assertions(3);
+    const errors = [
+      {
+        fieldName: 'email',
+        errorText: 'Email error',
+      },
+      {
+        fieldName: 'password',
+        errorText: 'Password error',
+      },
+    ];
 
     const requestService = new RequestService();
 
@@ -137,16 +137,16 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.register(new UserData('login', 'password'))
-        .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(error.fieldErrors).toBe(errors);
-          done();
-        });
+
+    await expect(apiService.register(new UserData('login', 'password')))
+        .rejects.toEqual(new FieldValidationError(errors));
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH,
+        {username: login, password: password});
   });
 
-  test(`Should successfully logOut`, function(done) {
-    expect.assertions(1);
+  test(`Should successfully log out`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -156,15 +156,14 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.logOut()
-        .then(() => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          done();
-        });
+
+    await expect(apiService.logOut()).resolves.toStrictEqual({});
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
   });
 
-  test(`Should fail logOut`, function(done) {
-    expect.assertions(2);
+  test(`Should return error after log out`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -174,16 +173,14 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.logOut()
-        .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(error.message).toBe(DEFAULT_ERROR);
-          done();
-        });
+
+    await expect(apiService.logOut()).rejects.toEqual(new ApiServiceError());
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
   });
 
-  test(`Should successfully load user`, function(done) {
-    expect.assertions(2);
+  test(`Should successfully load user`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
     const username = 'test user';
 
@@ -196,16 +193,16 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.loadUser()
-        .then((userdata) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(userdata.username).toBe(username);
-          done();
-        });
+
+    await expect(apiService.loadUser()).resolves.toStrictEqual({
+      [USER_PROFILE.USERNAME]: username,
+    });
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_USER_PATH, undefined);
   });
 
-  test(`Should fail loadUser`, function(done) {
-    expect.assertions(2);
+  test(`Should return error after user loading`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -215,16 +212,13 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.loadUser()
-        .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(error.message).toBe(DEFAULT_ERROR);
-          done();
-        });
+    await expect(apiService.loadUser()).rejects.toEqual(new ApiServiceError());
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_USER_PATH, undefined);
   });
 
-  test(`Should successfully load folder info`, function(done) {
-    expect.assertions(2);
+  test(`Should successfully load folder info`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
     const folderInfo = {
       [FOLDER_INFO.NAME]: 'folderName',
@@ -242,16 +236,15 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.loadFolderInfo(folderInfo[FOLDER_INFO.ID])
-        .then((data) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(data[STATE.FOLDER_INFO]).toStrictEqual(folderInfo);
-          done();
-        });
+    await expect(apiService.loadFolderInfo(folderInfo[FOLDER_INFO.ID])).resolves.toStrictEqual({
+      [STATE.FOLDER_INFO]: folderInfo,
+    });
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH+folderInfo[FOLDER_INFO.ID], undefined);
   });
 
-  test(`Should fail loadFolderInfo`, function(done) {
-    expect.assertions(2);
+  test(`Should return error after loading folder info`, async function() {
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
@@ -261,11 +254,8 @@ describe('ApiService', () => {
         });
 
     const apiService = new ApiService(requestService);
-    apiService.loadFolderInfo('notID')
-        .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(error.message).toBe(DEFAULT_ERROR);
-          done();
-        });
+    await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
+    await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH+'notID', undefined);
   });
 });

@@ -20,8 +20,8 @@ describe('Mutators', () => {
 
     const newState = MUTATORS[MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING](state, true);
 
-    expect(state[STATE.IS_USER_PROFILE_LOADING]).toBeFalsy();
-    expect(newState[STATE.IS_USER_PROFILE_LOADING]).toBeTruthy();
+    expect(state[STATE.IS_USER_PROFILE_LOADING]).toBe(false);
+    expect(newState[STATE.IS_USER_PROFILE_LOADING]).toBe(true);
   });
 
   test(`Should return new state with changed  ${STATE.USER_PROFILE}`, function() {
@@ -53,8 +53,8 @@ describe('Mutators', () => {
 
     const newState = MUTATORS[MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING](state, true);
 
-    expect(state[STATE.IS_FOLDER_INFO_LOADING]).toBeFalsy();
-    expect(newState[STATE.IS_FOLDER_INFO_LOADING]).toBeTruthy();
+    expect(state[STATE.IS_FOLDER_INFO_LOADING]).toBe(false);
+    expect(newState[STATE.IS_FOLDER_INFO_LOADING]).toBe(true);
   });
 
   test(`Should return new state with changed  ${STATE.FOLDER_INFO}`, function() {

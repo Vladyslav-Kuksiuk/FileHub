@@ -5,7 +5,8 @@ module.exports = {
     "jest/globals": true
   },
   'extends': [
-    'google'
+    'google',
+    'plugin:jest/recommended',
   ],
   'overrides': [],
   'parserOptions': {

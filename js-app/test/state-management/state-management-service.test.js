@@ -29,20 +29,19 @@ describe('StateManagementService', () => {
 
     expect(stateManagementService.state.isChanged).toBeFalsy();
     stateManagementService.dispatch(action);
-    expect(actionMock).toBeCalledTimes(1);
+    expect(actionMock).toHaveBeenCalledTimes(1);
     expect(stateManagementService.state.isChanged).toBeTruthy();
   });
 
-  test(`Should successfully trigger state event`, function(done) {
+  test(`Should successfully trigger state event`, function() {
     expect.assertions(4);
 
     expect(stateManagementService.state.isChanged).toBeFalsy();
     stateManagementService.addStateListener('isChanged', (state)=>{
       expect(state.isChanged).toBeTruthy();
-      done();
     });
     stateManagementService.dispatch(action);
-    expect(actionMock).toBeCalledTimes(1);
+    expect(actionMock).toHaveBeenCalledTimes(1);
     expect(stateManagementService.state.isChanged).toBeTruthy();
   });
 });

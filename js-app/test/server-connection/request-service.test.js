@@ -2,7 +2,7 @@ import {RequestService} from '../../src/server-connection/request-service';
 import {jest} from '@jest/globals';
 
 describe('RequestService', () => {
-  test(`Should correctly send POST request and handle response`, function(done) {
+  test(`Should correctly send POST request and handle response`, function() {
     expect.assertions(4);
     const url = 'MyUrl';
     const requestBody = {text: 'myText'};
@@ -21,8 +21,8 @@ describe('RequestService', () => {
     const token = 'myToken';
     const responsePromise = requestService.postJson(url, requestBody, token);
 
-    expect(fetch).toBeCalledTimes(1);
-    expect(fetch).toBeCalledWith(url, {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -31,14 +31,13 @@ describe('RequestService', () => {
       body: JSON.stringify(requestBody),
     });
 
-    responsePromise.then((response) => {
+    return responsePromise.then((response) => {
       expect(response.status).toBe(200);
       expect(response.body).toBe(responseBody);
-      done();
     });
   });
 
-  test(`Should fail POST request and handle error`, function(done) {
+  test(`Should fail POST request and handle error`, function() {
     expect.assertions(2);
 
     const errorText = 'error text';
@@ -50,14 +49,13 @@ describe('RequestService', () => {
     const requestService = new RequestService();
     const responsePromise = requestService.postJson('myUrl', {}, 'token');
 
-    responsePromise.then((response) => {
+    return responsePromise.then((response) => {
       expect(response.status).toBe(522);
       expect(response.body).toStrictEqual({error: errorText});
-      done();
     });
   });
 
-  test(`Should correctly send GET request and handle response`, function(done) {
+  test(`Should correctly send GET request and handle response`, function() {
     expect.assertions(4);
     const url = 'MyUrl';
     const responseBody = {answer: 'answer'};
@@ -75,8 +73,8 @@ describe('RequestService', () => {
     const token = 'myToken';
     const responsePromise = requestService.get(url, token);
 
-    expect(fetch).toBeCalledTimes(1);
-    expect(fetch).toBeCalledWith(url, {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -84,14 +82,13 @@ describe('RequestService', () => {
       },
     });
 
-    responsePromise.then((response) => {
+    return responsePromise.then((response) => {
       expect(response.status).toBe(200);
       expect(response.body).toBe(responseBody);
-      done();
     });
   });
 
-  test(`Should fail GET request and handle error`, function(done) {
+  test(`Should fail GET request and handle error`, function() {
     expect.assertions(2);
 
     const errorText = 'error text';
@@ -103,10 +100,9 @@ describe('RequestService', () => {
     const requestService = new RequestService();
     const responsePromise = requestService.get('myUrl', 'myToken');
 
-    responsePromise.then((response) => {
+    return responsePromise.then((response) => {
       expect(response.status).toBe(522);
       expect(response.body).toStrictEqual({error: errorText});
-      done();
     });
   });
 });

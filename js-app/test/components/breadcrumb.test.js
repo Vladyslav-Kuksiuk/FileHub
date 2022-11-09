@@ -65,19 +65,6 @@ describe('Breadcrumb', () => {
     const applicationContext = new ApplicationContext();
     state[STATE.IS_USER_PROFILE_LOADING] = false;
     state[STATE.IS_FOLDER_INFO_LOADING] = false;
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
-
-    new Breadcrumb(document.body, stateManagementService);
-
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
-  });
-
-  test(`Should render Breadcrumb error state`, function() {
-    expect.assertions(1);
-
-    const applicationContext = new ApplicationContext();
-    state[STATE.IS_USER_PROFILE_LOADING] = false;
-    state[STATE.IS_FOLDER_INFO_LOADING] = false;
     state[STATE.USER_PROFILE] = userProfile;
     state[STATE.FOLDER_INFO_ERROR] = error;
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
