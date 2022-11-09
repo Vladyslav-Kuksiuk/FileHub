@@ -3,7 +3,7 @@ import {
   EMAIL,
   EMAIL_LENGTH_ERROR, PASSWORD,
   PASSWORD_LENGTH_ERROR,
-} from '../../src/application-components/authorization/authorization-form';
+} from '../../../src/application-components/authorization/authorization-form';
 
 describe('AuthorizationForm', () => {
   beforeEach(() => {

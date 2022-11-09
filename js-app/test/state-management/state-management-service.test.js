@@ -20,7 +20,7 @@ describe('StateManagementService', () => {
     actionMock = jest
         .spyOn(action, 'execute')
         .mockImplementation((executor) => {
-          executor('change', true);
+          executor('change', !state.isChanged);
         });
   });
 
@@ -34,14 +34,13 @@ describe('StateManagementService', () => {
   });
 
   test(`Should successfully trigger state event`, function() {
-    expect.assertions(4);
+    expect.assertions(3);
 
-    expect(stateManagementService.state.isChanged).toBeFalsy();
-    stateManagementService.addStateListener('isChanged', (state)=>{
-      expect(state.isChanged).toBeTruthy();
-    });
+    const listenerMock = jest.fn();
+    stateManagementService.addStateListener('isChanged', listenerMock);
     stateManagementService.dispatch(action);
     expect(actionMock).toHaveBeenCalledTimes(1);
+    expect(listenerMock).toHaveBeenCalledTimes(2);
     expect(stateManagementService.state.isChanged).toBeTruthy();
   });
 });

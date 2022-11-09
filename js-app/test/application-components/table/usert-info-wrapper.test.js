@@ -1,10 +1,10 @@
-import {ApplicationContext} from '../../src/application-context';
-import {StateManagementService} from '../../src/state-management/state-management-service';
-import {UserInfoWrapper} from '../../src/application-components/table/user-info-wrapper/index';
-import {MUTATORS} from '../../src/state-management/mutators';
+import {ApplicationContext} from '../../../src/application-context';
+import {StateManagementService} from '../../../src/state-management/state-management-service';
+import {UserInfoWrapper} from '../../../src/application-components/table/user-info-wrapper/index';
+import {MUTATORS} from '../../../src/state-management/mutators';
 import {jest} from '@jest/globals';
-import {STATE} from '../../src/state-management/state';
-import {UserProfile} from '../../src/state-management/user/user-profile';
+import {STATE} from '../../../src/state-management/state';
+import {UserProfile} from '../../../src/state-management/user/user-profile';
 
 describe('UserInfo', () => {
   beforeEach(() => {

@@ -88,6 +88,7 @@ export class StateManagementService {
    * @param {Function} listener
    */
   addStateListener(fieldName, listener) {
+    listener(this.state);
     this.#eventTarget.addEventListener(`STATE_CHANGED.${fieldName}`,
         (event) => listener(event.detail));
   }

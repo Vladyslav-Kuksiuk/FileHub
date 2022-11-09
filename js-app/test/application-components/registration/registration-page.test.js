@@ -1,9 +1,9 @@
-import {AuthorizationPage} from '../../src/application-components/authorization/authorization-page';
-import {UserData} from '../../src/user-data';
+import {RegistrationPage} from '../../../src/application-components/registration/registration-page';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../src/application-context.js';
+import {UserData} from '../../../src/user-data';
+import {ApplicationContext} from '../../../src/application-context';
 
-describe('AuthorizationPage', () => {
+describe('RegistrationPage', () => {
   let applicationContext;
   let titleServiceMock;
 
@@ -17,24 +17,23 @@ describe('AuthorizationPage', () => {
         .mockImplementation(() => {});
   });
 
-  test('Should create and render AuthorizationPage component', function() {
+  test('Should create and render RegistrationPage component', function() {
     expect.assertions(4);
 
-    new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+    new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
     expect(document.body.querySelectorAll('[data-td="form-component"]').length).toBe(1);
-    expect(document.body.querySelector('main h1').textContent).toBe('Sign in to FileHub');
+    expect(document.body.querySelector('main h1').textContent).toBe('Sign up to FileHub');
     expect(titleServiceMock).toHaveBeenCalledTimes(1);
-    expect(titleServiceMock).toHaveBeenCalledWith(['Sign In']);
+    expect(titleServiceMock).toHaveBeenCalledWith(['Sign Up']);
   });
 
-  test('Should trigger navigate to registration event', function() {
+  test('Should trigger navigate to authorization event by clicking on link', function() {
     return new Promise((done) => {
       expect.assertions(1);
 
-      const page =
-      new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+      const page = new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
-      page.onNavigateToRegistration(() => {
+      page.onNavigateToAuthorization(() => {
         expect(true).toBeTruthy();
         done();
       });
@@ -42,24 +41,24 @@ describe('AuthorizationPage', () => {
     });
   });
 
-  test('Should trigger navigate to table event', function() {
+  test('Should trigger navigate to authorization event by form submitting', function() {
     return new Promise((done) => {
       expect.assertions(2);
 
       const apiServiceMock = jest
-          .spyOn(applicationContext.apiService, 'logIn')
+          .spyOn(applicationContext.apiService, 'register')
           .mockImplementation(async () => {});
 
-      const page =
-      new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+      const page = new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
-      page.onNavigateToTable(() => {
+      page.onNavigateToAuthorization(() => {
         expect(apiServiceMock).toHaveBeenCalledTimes(1);
         expect(apiServiceMock).toHaveBeenCalledWith(new UserData('email', 'password'));
         done();
       });
       document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
       document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
+      document.body.querySelectorAll('[data-td="form-control"] input')[2].value = 'password';
       document.body.querySelector('[data-td="form-component"]').submit();
     });
   });
@@ -69,15 +68,16 @@ describe('AuthorizationPage', () => {
       expect.assertions(3);
 
       const apiServiceMock = jest
-          .spyOn(applicationContext.apiService, 'logIn')
-          .mockImplementation(async () => {
+          .spyOn(applicationContext.apiService, 'register')
+          .mockImplementation( async () => {
             throw new Error('Error message');
           });
 
-      new AuthorizationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+      new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
 
       document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
       document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
+      document.body.querySelectorAll('[data-td="form-control"] input')[2].value = 'password';
       document.body.querySelector('[data-td="form-component"]').submit();
 
       setTimeout(()=>{
