@@ -3,7 +3,8 @@ import {StateManagementService} from '../../src/state-management/state-managemen
 import {UserInfo} from '../../src/application-components/table/user-info/index';
 import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
-import {STATE, USER_PROFILE} from '../../src/state-management/state';
+import {STATE} from '../../src/state-management/state';
+import {UserProfile} from '../../src/state-management/user/user-profile';
 
 describe('UserInfo', () => {
   beforeEach(() => {
@@ -12,11 +13,11 @@ describe('UserInfo', () => {
 
   test(`Should change UserInfo states`, function() {
     expect.assertions(5);
+    const userProfile = new UserProfile(
+        'username',
+        '123',
+    );
 
-    const userProfile = {
-      [USER_PROFILE.USERNAME]: 'username',
-      [USER_PROFILE.ROOT_FOLDER_ID]: '123',
-    };
     const error = 'error text';
 
     const state = {
@@ -51,7 +52,7 @@ describe('UserInfo', () => {
     fieldListeners[STATE.USER_PROFILE](state);
     expect(document.body.querySelectorAll('[data-td="user-info-loading"]').length).toBe(0);
     expect(document.body.querySelector('[data-td="user-info-username"]').textContent)
-        .toBe(userProfile[USER_PROFILE.USERNAME]);
+        .toBe(userProfile.username);
 
     state[STATE.USER_PROFILE_ERROR] = error;
     fieldListeners[STATE.USER_PROFILE_ERROR](state);

@@ -6,7 +6,7 @@ import {TitleService} from '../../../title-service';
 import {LoadUserAction} from '../../../state-management/user/load-user-action';
 import {Breadcrumb} from '../breadcrumb';
 import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action';
-import {STATE, USER_PROFILE} from '../../../state-management/state';
+import {STATE} from '../../../state-management/state';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 
@@ -36,7 +36,7 @@ export class TablePage extends Component {
     this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state)=>{
       if (state[STATE.USER_PROFILE]) {
         this.#stateManagementService.dispatch(
-            new LoadFolderInfoAction(state[STATE.USER_PROFILE][USER_PROFILE.ROOT_FOLDER_ID]));
+            new LoadFolderInfoAction(state[STATE.USER_PROFILE].rootFolderId));
       }
     });
 

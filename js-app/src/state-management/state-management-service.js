@@ -1,5 +1,6 @@
 import {Action} from './action';
 import {ApplicationContext} from '../application-context';
+import {UserProfile} from './user/user-profile';
 
 /**
  * Service to provide state management.
@@ -11,8 +12,18 @@ export class StateManagementService {
   #applicationContext;
 
   /**
+   * @typedef {object} State
+   * @property {boolean} isUserProfileLoading
+   * @property {boolean} isFolderLoading
+   * @property {UserProfile} userProfile
+   * @property {string} userProfileError
+   * @property {string} folderError
+   * @property {string} folderInfo
+   */
+
+  /**
    * @param {object} mutators
-   * @param {object} state
+   * @param {State} state
    * @param {ApplicationContext} applicationContext
    */
   constructor(mutators, state, applicationContext) {
@@ -45,7 +56,7 @@ export class StateManagementService {
   }
 
   /**
-   * @returns {object} Immutable state.
+   * @returns {State} Immutable state.
    */
   get state() {
     return this.#deepFreeze(Object.assign({}, this.#state));

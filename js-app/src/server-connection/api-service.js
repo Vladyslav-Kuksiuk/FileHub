@@ -1,8 +1,9 @@
 import {RequestService} from './request-service';
 import {FieldValidationError} from './field-validation-error';
-import {Response} from './response';
 import {UserData} from '../user-data';
 import {ApiServiceError} from './api-service-error';
+import {UserProfile} from '../state-management/user/user-profile';
+import {FolderInfo} from '../state-management/folder/folder-info';
 
 export const LOG_IN_USER_PATH = 'api/login';
 export const REGISTER_USER_PATH = 'api/register';
@@ -30,7 +31,7 @@ export class ApiService {
    * Log in user.
    *
    * @param {UserData} data
-   * @returns {Promise<Response>}
+   * @returns {Promise<ApiServiceError>}
    */
   async logIn(data) {
     return this.#requestService.postJson(LOG_IN_USER_PATH, {
@@ -51,7 +52,7 @@ export class ApiService {
    * Registers user.
    *
    * @param {UserData} data
-   * @returns {Promise<Error | FieldValidationError>}
+   * @returns {Promise<ApiServiceError | FieldValidationError>}
    */
   async register(data) {
     return this.#requestService.postJson(REGISTER_USER_PATH, {
@@ -70,7 +71,7 @@ export class ApiService {
   /**
    * Loads user data.
    *
-   * @returns {Promise<object | Error>}
+   * @returns {Promise<UserProfile | ApiServiceError>}
    */
   async loadUser() {
     return this.#requestService.get(LOAD_USER_PATH, this.#userToken)
@@ -78,7 +79,10 @@ export class ApiService {
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
-          return response.body;
+          return new UserProfile(
+              response.body.userProfile.username,
+              response.body.userProfile.rootFolderId,
+          );
         });
   }
 
@@ -86,7 +90,7 @@ export class ApiService {
    * Loads folder info.
    *
    * @param {string} folderId
-   * @returns {Promise<object | Error>}
+   * @returns {Promise<FolderInfo | ApiServiceError>}
    */
   async loadFolderInfo(folderId) {
     return this.#requestService.get(LOAD_FOLDER_INFO_PATH+folderId, this.#userToken)
@@ -94,14 +98,19 @@ export class ApiService {
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
-          return response.body;
+          return new FolderInfo(
+              response.body.folderInfo.name,
+              response.body.folderInfo.id,
+              response.body.folderInfo.parentId,
+              response.body.folderInfo.itemsAmount,
+          );
         });
   }
 
   /**
    * Log out user.
    *
-   * @returns {Promise<object | Error>}
+   * @returns {Promise<ApiServiceError>}
    */
   async logOut() {
     return this.#requestService.get(LOG_OUT_USER_PATH, this.#userToken)
@@ -109,7 +118,6 @@ export class ApiService {
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
-          return response.body;
         });
   }
 }

@@ -3,34 +3,36 @@ import {StateManagementService} from '../../src/state-management/state-managemen
 import {Breadcrumb} from '../../src/application-components/table/breadcrumb';
 import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
-import {FOLDER_INFO, STATE, USER_PROFILE} from '../../src/state-management/state';
+import {STATE} from '../../src/state-management/state';
+import {FolderInfo} from '../../src/state-management/folder/folder-info';
+import {UserProfile} from '../../src/state-management/user/user-profile';
 
 describe('Breadcrumb', () => {
-  const userProfile = {
-    [USER_PROFILE.USERNAME]: 'username',
-    [USER_PROFILE.ROOT_FOLDER_ID]: 'username-0',
-  };
+  const userProfile = new UserProfile(
+      'username',
+      'username-0',
+  );
 
-  const rootFolderInfo = {
-    [FOLDER_INFO.NAME]: 'rootFolder',
-    [FOLDER_INFO.ID]: userProfile[USER_PROFILE.ROOT_FOLDER_ID],
-    [FOLDER_INFO.PARENT_ID]: null,
-    [FOLDER_INFO.ITEMS_AMOUNT]: 10,
-  };
+  const rootFolderInfo = new FolderInfo(
+      'rootFolder',
+      'username-0',
+      null,
+      1,
+  );
 
-  const firstInnerFolderInfo = {
-    [FOLDER_INFO.NAME]: 'firstInnerFolder',
-    [FOLDER_INFO.ID]: 'username-1',
-    [FOLDER_INFO.PARENT_ID]: rootFolderInfo[FOLDER_INFO.ID],
-    [FOLDER_INFO.ITEMS_AMOUNT]: 5,
-  };
+  const firstInnerFolderInfo = new FolderInfo(
+      'firstInnerFolder',
+      'username-1',
+      'username-0',
+      2,
+  );
 
-  const secondInnerFolderInfo = {
-    [FOLDER_INFO.NAME]: 'firstInnerFolder',
-    [FOLDER_INFO.ID]: 'username-2',
-    [FOLDER_INFO.PARENT_ID]: firstInnerFolderInfo[FOLDER_INFO.ID],
-    [FOLDER_INFO.ITEMS_AMOUNT]: 5,
-  };
+  const secondInnerFolderInfo = new FolderInfo(
+      'secondInnerFolder',
+      'username-2',
+      'username-1',
+      3,
+  );
 
   const error = 'ErrorText';
   let state;
@@ -109,7 +111,7 @@ describe('Breadcrumb', () => {
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(2);
     expect(document.body.querySelector('[data-td="breadcrumb-component"] li a').textContent).toBe('Home');
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li')[1].textContent)
-        .toBe(firstInnerFolderInfo[FOLDER_INFO.NAME]);
+        .toBe(firstInnerFolderInfo.name);
   });
 
   test(`Should render Breadcrumb second inner state`, function() {
@@ -130,7 +132,7 @@ describe('Breadcrumb', () => {
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[0].textContent).toBe('Home');
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[1].textContent).toBe('...');
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li')[2].textContent)
-        .toBe(secondInnerFolderInfo[FOLDER_INFO.NAME]);
+        .toBe(secondInnerFolderInfo.name);
   });
 
   test(`Should rerender Breadcrumb after each state changing`, function() {
@@ -171,6 +173,6 @@ describe('Breadcrumb', () => {
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[0].textContent).toBe('Home');
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[1].textContent).toBe('...');
     expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li')[2].textContent)
-        .toBe(secondInnerFolderInfo[FOLDER_INFO.NAME]);
+        .toBe(secondInnerFolderInfo.name);
   });
 });

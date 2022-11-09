@@ -1,8 +1,9 @@
 import {Component} from '../../../components/component';
 import {StateManagementService} from '../../../state-management/state-management-service';
-import {FOLDER_INFO, STATE, USER_PROFILE} from '../../../state-management/state';
+import {STATE} from '../../../state-management/state';
 import {Link} from '../../../components/link';
 import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action';
+import {FolderInfo} from '../../../state-management/folder/folder-info';
 
 const HOME_FOLDER_LINK_SLOT = 'home-folder-link-slot';
 const PARENT_FOLDER_LINK_SLOT = 'parent-folder-link-slot';
@@ -27,14 +28,14 @@ export class Breadcrumb extends Component {
 
     const state = stateManagementService.state;
     this.#error = state[STATE.FOLDER_INFO_ERROR];
-    this.#rootFolderId = state[STATE.USER_PROFILE]?.[USER_PROFILE.ROOT_FOLDER_ID] ?? null;
+    this.#rootFolderId = state[STATE.USER_PROFILE]?.rootFolderId ?? null;
     this.#isLoading = state[STATE.IS_USER_PROFILE_LOADING] || state[STATE.IS_FOLDER_INFO_LOADING];
-    this.#folderName = state[STATE.FOLDER_INFO]?.[FOLDER_INFO.NAME];
-    this.#folderParentId = state[STATE.FOLDER_INFO]?.[FOLDER_INFO.PARENT_ID];
+    this.#folderName = state[STATE.FOLDER_INFO]?.name;
+    this.#folderParentId = state[STATE.FOLDER_INFO]?.parentId;
 
     this.#stateManagementService = stateManagementService;
     this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state) => {
-      this.#setRootFolderId(state[STATE.USER_PROFILE]?.[USER_PROFILE.ROOT_FOLDER_ID]);
+      this.#setRootFolderId(state[STATE.USER_PROFILE]?.rootFolderId);
     });
     this.#stateManagementService.addStateListener(STATE.IS_FOLDER_INFO_LOADING, (state) => {
       this.#setIsLoading(state[STATE.IS_FOLDER_INFO_LOADING]);
@@ -80,12 +81,12 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * @param {string} folderInfo
+   * @param {FolderInfo} folderInfo
    * @private
    */
   #setFolderInfo(folderInfo) {
-    this.#folderName = folderInfo[FOLDER_INFO.NAME];
-    this.#folderParentId = folderInfo[FOLDER_INFO.PARENT_ID];
+    this.#folderName = folderInfo.name;
+    this.#folderParentId = folderInfo.parentId;
     this.render();
   }
 

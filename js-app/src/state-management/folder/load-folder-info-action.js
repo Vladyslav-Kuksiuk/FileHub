@@ -1,6 +1,5 @@
 import {Action} from '../action';
 import {MUTATOR_NAMES} from '../mutators';
-import {STATE} from '../state';
 
 /**
  * Action to perform folder info loading.
@@ -24,8 +23,8 @@ export class LoadFolderInfoAction extends Action {
 
     return applicationContext.apiService
         .loadFolderInfo(this.#folderId)
-        .then((body) => {
-          executor(MUTATOR_NAMES.SET_FOLDER_INFO, body[STATE.FOLDER_INFO]);
+        .then((folderInfo) => {
+          executor(MUTATOR_NAMES.SET_FOLDER_INFO, folderInfo);
         })
         .catch((error)=>{
           executor(MUTATOR_NAMES.SET_FOLDER_INFO_ERROR, error.message);

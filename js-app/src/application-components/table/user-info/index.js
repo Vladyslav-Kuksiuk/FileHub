@@ -1,6 +1,6 @@
 import {Component} from '../../../components/component';
 import {StateManagementService} from '../../../state-management/state-management-service';
-import {STATE, USER_PROFILE} from '../../../state-management/state';
+import {STATE} from '../../../state-management/state';
 
 /**
  * User panel component.
@@ -20,12 +20,12 @@ export class UserInfo extends Component {
 
     const state = stateManagementService.state;
     this.#error = state[STATE.USER_PROFILE_ERROR];
-    this.#username = state[STATE.USER_PROFILE]?.[USER_PROFILE.USERNAME];
+    this.#username = state[STATE.USER_PROFILE]?.username;
     this.#isLoading = state[STATE.IS_USER_PROFILE_LOADING];
 
     this.#stateManagementService = stateManagementService;
     this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state) => {
-      this.#setUsername(state[STATE.USER_PROFILE]?.[USER_PROFILE.USERNAME]);
+      this.#setUsername(state[STATE.USER_PROFILE]?.username);
     });
     this.#stateManagementService.addStateListener(STATE.IS_USER_PROFILE_LOADING, (state) => {
       this.#setIsLoading(state[STATE.IS_USER_PROFILE_LOADING]);

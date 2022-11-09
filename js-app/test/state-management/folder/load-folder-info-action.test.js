@@ -2,7 +2,7 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {jest} from '@jest/globals';
 import {ApplicationContext} from '../../../src/application-context';
-import {STATE, FOLDER_INFO} from '../../../src/state-management/state';
+import {FolderInfo} from '../../../src/state-management/folder/folder-info';
 
 describe('LoadFolderInfoAction', () => {
   let applicationContext;
@@ -14,20 +14,20 @@ describe('LoadFolderInfoAction', () => {
   test(`Should return expected successfully sequence of mutator calls`, function() {
     expect.assertions(5);
 
-    const folderInfo = {
-      [FOLDER_INFO.NAME]: 'folder',
-      [FOLDER_INFO.PARENT_ID]: 'parentId',
-      [FOLDER_INFO.ITEMS_AMOUNT]: 1,
-      [FOLDER_INFO.ID]: 'ID',
-    };
+    const folderInfo = new FolderInfo(
+        'folder',
+        'ID',
+        'parentId',
+        1,
+    );
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'loadFolderInfo')
         .mockImplementation(async ()=>{
-          return {[STATE.FOLDER_INFO]: folderInfo};
+          return folderInfo;
         });
 
-    const action = new LoadFolderInfoAction(folderInfo[FOLDER_INFO.ID]);
+    const action = new LoadFolderInfoAction(folderInfo.id);
 
     const executor = jest.fn(()=>{});
 

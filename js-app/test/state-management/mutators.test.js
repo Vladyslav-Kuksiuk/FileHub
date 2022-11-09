@@ -1,5 +1,7 @@
 import {MUTATORS, MUTATOR_NAMES} from '../../src/state-management/mutators';
-import {STATE, USER_PROFILE, FOLDER_INFO} from '../../src/state-management/state';
+import {STATE} from '../../src/state-management/state';
+import {FolderInfo} from '../../src/state-management/folder/folder-info.js';
+import {UserProfile} from '../../src/state-management/user/user-profile.js';
 
 describe('Mutators', () => {
   let state;
@@ -27,10 +29,10 @@ describe('Mutators', () => {
   test(`Should return new state with changed  ${STATE.USER_PROFILE}`, function() {
     expect.assertions(2);
 
-    const userProfile = {
-      [USER_PROFILE.USERNAME]: 'username',
-      [USER_PROFILE.ROOT_FOLDER_ID]: '3123',
-    };
+    const userProfile = new UserProfile(
+        'testUser',
+        'rootFolderId',
+    );
 
     const newState = MUTATORS[MUTATOR_NAMES.SET_USER_PROFILE](state, userProfile);
 
@@ -60,12 +62,12 @@ describe('Mutators', () => {
   test(`Should return new state with changed  ${STATE.FOLDER_INFO}`, function() {
     expect.assertions(2);
 
-    const folderInfo = {
-      [FOLDER_INFO.NAME]: 'name',
-      [FOLDER_INFO.ID]: 'id',
-      [FOLDER_INFO.PARENT_ID]: 'parentId',
-      [FOLDER_INFO.ITEMS_AMOUNT]: 123,
-    };
+    const folderInfo = new FolderInfo(
+        'folder',
+        'ID',
+        'parentId',
+        1,
+    );
 
     const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_INFO](state, folderInfo);
 

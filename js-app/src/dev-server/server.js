@@ -1,5 +1,5 @@
 import express from 'express';
-import {STATE, USER_PROFILE, FOLDER_INFO} from '../state-management/state';
+import {STATE} from '../state-management/state.js';
 
 const app = express();
 const port = 3001;
@@ -27,8 +27,8 @@ app.get('/user', (req, res) => {
     res.status(200);
     res.send({
       [STATE.USER_PROFILE]: {
-        [USER_PROFILE.USERNAME]: 'testUser',
-        [USER_PROFILE.ROOT_FOLDER_ID]: ROOT_FOLDER_ID,
+        username: 'testUser',
+        rootFolderId: ROOT_FOLDER_ID,
       },
     });
   }, 1000);
@@ -39,10 +39,10 @@ app.get('/folders/'+ROOT_FOLDER_ID, (req, res) => {
     res.status(200);
     res.send({
       [STATE.FOLDER_INFO]: {
-        [FOLDER_INFO.NAME]: 'testUserRoot',
-        [FOLDER_INFO.ID]: ROOT_FOLDER_ID,
-        [FOLDER_INFO.ITEMS_AMOUNT]: 1,
-        [FOLDER_INFO.PARENT_ID]: null,
+        name: 'testUserRoot',
+        id: ROOT_FOLDER_ID,
+        itemsAmount: 1,
+        parentId: null,
       },
     });
   }, 500);
@@ -53,10 +53,10 @@ app.get('/folders/'+FIRS_INNER_FOLDER_ID, (req, res) => {
     res.status(200);
     res.send({
       [STATE.FOLDER_INFO]: {
-        [FOLDER_INFO.NAME]: 'FirstInnerFolder',
-        [FOLDER_INFO.ID]: FIRS_INNER_FOLDER_ID,
-        [FOLDER_INFO.ITEMS_AMOUNT]: 1,
-        [FOLDER_INFO.PARENT_ID]: ROOT_FOLDER_ID,
+        name: 'FirstInnerFolder',
+        id: FIRS_INNER_FOLDER_ID,
+        itemsAmount: 1,
+        parentId: ROOT_FOLDER_ID,
       },
     });
   }, 500);

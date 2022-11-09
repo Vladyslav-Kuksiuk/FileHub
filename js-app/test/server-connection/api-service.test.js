@@ -12,25 +12,24 @@ import {
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
-import {STATE, FOLDER_INFO, USER_PROFILE} from '../../src/state-management/state';
+import {STATE} from '../../src/state-management/state';
 import {ApiServiceError} from '../../src/server-connection/api-service-error';
 import {FieldValidationError} from '../../src/server-connection/field-validation-error';
+import {FolderInfo} from '../../src/state-management/folder/folder-info.js';
+import {UserProfile} from '../../src/state-management/user/user-profile.js';
 
 describe('ApiService', () => {
   const login = 'login';
   const password = 'password';
 
   test(`Should successfully log in`, async function() {
-    expect.assertions(6);
+    expect.assertions(3);
 
     const requestService = new RequestService();
 
     const requestServiceMock = jest
         .spyOn(requestService, 'postJson')
         .mockImplementation(async (url, body) => {
-          expect(url).toBe(LOG_IN_USER_PATH);
-          expect(body.username).toBe(login);
-          expect(body.password).toBe(password);
           return new Response(200, {token: 'myToken'});
         });
 
@@ -78,15 +77,12 @@ describe('ApiService', () => {
   });
 
   test(`Should successfully register`, async function() {
-    expect.assertions(6);
+    expect.assertions(3);
     const requestService = new RequestService();
 
     const requestServiceMock = jest
         .spyOn(requestService, 'postJson')
-        .mockImplementation(async (url, body) => {
-          expect(url).toBe(REGISTER_USER_PATH);
-          expect(body.username).toBe(login);
-          expect(body.password).toBe(password);
+        .mockImplementation(async () => {
           return new Response(200, {token: 'myToken'});
         });
 
@@ -157,7 +153,7 @@ describe('ApiService', () => {
 
     const apiService = new ApiService(requestService);
 
-    await expect(apiService.logOut()).resolves.toStrictEqual({});
+    await expect(apiService.logOut()).resolves.toBeUndefined();
     await expect(requestServiceMock).toHaveBeenCalledTimes(1);
     await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
   });
@@ -182,21 +178,26 @@ describe('ApiService', () => {
   test(`Should successfully load user`, async function() {
     expect.assertions(3);
     const requestService = new RequestService();
-    const username = 'test user';
+
+    const userProfile = new UserProfile(
+        'testUser',
+        'rootFolder',
+    );
 
     const requestServiceMock = jest
         .spyOn(requestService, 'get')
         .mockImplementation(async () => {
           return new Response(200, {
-            username: username,
+            [STATE.USER_PROFILE]: {
+              username: userProfile.username,
+              rootFolderId: userProfile.rootFolderId,
+            },
           });
         });
 
     const apiService = new ApiService(requestService);
 
-    await expect(apiService.loadUser()).resolves.toStrictEqual({
-      [USER_PROFILE.USERNAME]: username,
-    });
+    await expect(apiService.loadUser()).resolves.toStrictEqual(userProfile);
     await expect(requestServiceMock).toHaveBeenCalledTimes(1);
     await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_USER_PATH, undefined);
   });
@@ -220,27 +221,31 @@ describe('ApiService', () => {
   test(`Should successfully load folder info`, async function() {
     expect.assertions(3);
     const requestService = new RequestService();
-    const folderInfo = {
-      [FOLDER_INFO.NAME]: 'folderName',
-      [FOLDER_INFO.ID]: 'folderId',
-      [FOLDER_INFO.ITEMS_AMOUNT]: 10,
-      [FOLDER_INFO.PARENT_ID]: 'parentId',
-    };
+
+    const folderInfo = new FolderInfo(
+        'folderName',
+        'folderId',
+        'parentId',
+        10,
+    );
 
     const requestServiceMock = jest
         .spyOn(requestService, 'get')
         .mockImplementation(async () => {
           return new Response(200, {
-            [STATE.FOLDER_INFO]: folderInfo,
+            [STATE.FOLDER_INFO]: {
+              name: folderInfo.name,
+              parentId: folderInfo.parentId,
+              id: folderInfo.id,
+              itemsAmount: folderInfo.itemsAmount,
+            },
           });
         });
 
     const apiService = new ApiService(requestService);
-    await expect(apiService.loadFolderInfo(folderInfo[FOLDER_INFO.ID])).resolves.toStrictEqual({
-      [STATE.FOLDER_INFO]: folderInfo,
-    });
+    await expect(apiService.loadFolderInfo(folderInfo.id)).resolves.toStrictEqual(folderInfo);
     await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-    await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH+folderInfo[FOLDER_INFO.ID], undefined);
+    await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH+folderInfo.id, undefined);
   });
 
   test(`Should return error after loading folder info`, async function() {

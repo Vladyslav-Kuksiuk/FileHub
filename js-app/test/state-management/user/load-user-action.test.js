@@ -2,7 +2,7 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {jest} from '@jest/globals';
 import {ApplicationContext} from '../../../src/application-context';
-import {STATE, USER_PROFILE} from '../../../src/state-management/state';
+import {UserProfile} from '../../../src/state-management/user/user-profile.js';
 
 describe('LoadUserAction', () => {
   let applicationContext;
@@ -14,15 +14,15 @@ describe('LoadUserAction', () => {
   test(`Should return expected sequence of successfully mutator calls`, function() {
     expect.assertions(5);
 
-    const userProfile = {
-      [USER_PROFILE.USERNAME]: 'testUser',
-      [USER_PROFILE.ROOT_FOLDER_ID]: 'rootFolderId',
-    };
+    const userProfile = new UserProfile(
+        'testUser',
+        'rootFolderId',
+    );
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'loadUser')
         .mockImplementation(async ()=>{
-          return {[STATE.USER_PROFILE]: userProfile};
+          return userProfile;
         });
 
     const action = new LoadUserAction();

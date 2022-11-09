@@ -4,7 +4,7 @@ import {RegistrationPage} from '../registration/registration-page';
 import {Router} from '../../router';
 import {Error404Page} from '../../components/error-404-page';
 import {RouterConfigBuilder} from '../../router/router-config';
-import {TablePage} from '../../components/table-page';
+import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../../application-context';
 import {StateManagementService} from '../../state-management/state-management-service';
 import {MUTATORS} from '../../state-management/mutators';
