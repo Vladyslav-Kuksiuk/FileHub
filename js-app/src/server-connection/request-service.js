@@ -13,22 +13,20 @@ export class RequestService {
    * @returns {Promise<Response>}
    */
   async postJson(url, body, token) {
-    return fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
-    }).then(async (fetchResponse) => {
-      let responseBody = {};
-      if (fetchResponse.status === 200 || fetchResponse.status === 422) {
-        responseBody = await fetchResponse.json();
-      }
-      return new Response(fetchResponse.status, responseBody);
-    }).catch((error)=>{
-      return new Response(522, {error: error.message});
     });
+
+    try {
+      return new Response(response.status, await response.json());
+    } catch (e) {
+      return new Response(response.status);
+    }
   }
 
   /**
@@ -39,20 +37,18 @@ export class RequestService {
    * @returns {Promise<Response>}
    */
   async get(url, token) {
-    return fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-    }).then(async (fetchResponse) => {
-      let responseBody = {};
-      if (fetchResponse.status === 200 || fetchResponse.status === 422) {
-        responseBody = await fetchResponse.json();
-      }
-      return new Response(fetchResponse.status, responseBody);
-    }).catch((error)=>{
-      return new Response(522, {error: error.message});
     });
+
+    try {
+      return new Response(response.status, await response.json());
+    } catch (e) {
+      return new Response(response.status);
+    }
   }
 }

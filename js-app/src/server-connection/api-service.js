@@ -37,6 +37,8 @@ export class ApiService {
     return this.#requestService.postJson(LOG_IN_USER_PATH, {
       username: data.login,
       password: data.password,
+    }).catch(()=>{
+      throw new ApiServiceError();
     }).then((response) => {
       if (response.status === 401) {
         throw new ApiServiceError(LOGIN_401_ERROR);
@@ -58,6 +60,8 @@ export class ApiService {
     return this.#requestService.postJson(REGISTER_USER_PATH, {
       username: data.login,
       password: data.password,
+    }).catch(()=>{
+      throw new ApiServiceError();
     }).then((response) => {
       if (response.status === 422) {
         throw new FieldValidationError(response.body.errors);
@@ -74,16 +78,19 @@ export class ApiService {
    * @returns {Promise<UserProfile | ApiServiceError>}
    */
   async loadUser() {
-    return this.#requestService.get(LOAD_USER_PATH, this.#userToken)
-        .then((response) => {
-          if (response.status !== 200) {
-            throw new ApiServiceError();
-          }
-          return new UserProfile(
-              response.body.userProfile.username,
-              response.body.userProfile.rootFolderId,
-          );
-        });
+    return this.#requestService.get(LOAD_USER_PATH, this.#userToken).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+      return new UserProfile(
+          response.body.userProfile.username,
+          response.body.userProfile.rootFolderId,
+      );
+    }).catch(()=>{
+      throw new ApiServiceError();
+    });
   }
 
   /**
@@ -94,6 +101,9 @@ export class ApiService {
    */
   async loadFolderInfo(folderId) {
     return this.#requestService.get(LOAD_FOLDER_INFO_PATH+folderId, this.#userToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
         .then((response) => {
           if (response.status !== 200) {
             throw new ApiServiceError();
@@ -114,6 +124,9 @@ export class ApiService {
    */
   async logOut() {
     return this.#requestService.get(LOG_OUT_USER_PATH, this.#userToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
         .then((response) => {
           if (response.status !== 200) {
             throw new ApiServiceError();
