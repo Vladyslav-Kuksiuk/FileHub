@@ -1,47 +1,38 @@
-import {Component} from '../../../components/component';
-import {StateManagementService} from '../../../state-management/state-management-service';
-import {UserInfo} from '../../../components/user-info';
-import {LoadUserAction} from '../../../state-management/user/load-user-action';
+import {LoadUserAction} from '../../state-management/user/load-user-action';
+import {StateManagementService} from '../../state-management/state-management-service';
+import {UserInfo} from '../../components/user-info';
 
 /**
- * User panel component with state listening.
+ * Breadcrumb wrapper for state change listening.
  */
-export class UserInfoWrapper extends Component {
+export class UserInfoWrapper {
   #stateManagementService;
 
   /**
-   * @param {HTMLElement} parent
    * @param {StateManagementService} stateManagementService
    */
-  constructor(parent, stateManagementService) {
-    super(parent);
-
+  constructor(stateManagementService) {
     this.#stateManagementService = stateManagementService;
+
     stateManagementService.dispatch(new LoadUserAction());
-    this.init();
   }
 
   /**
-   * @inheritDoc
+   * Adds state listeners to UserInfo component.
+   *
+   * @param {UserInfo} userInfo
    */
-  afterRender() {
-    const userInfo = new UserInfo(this.rootElement, true, null, null);
-
+  wrap(userInfo) {
     this.#stateManagementService.addStateListener('userProfile', (state) => {
       userInfo.username = state.userProfile?.username;
     });
+
     this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
       userInfo.isLoading = state.isUserProfileLoading;
     });
+
     this.#stateManagementService.addStateListener('userProfileError', (state) => {
       userInfo.hasError = !!state.userProfileError;
     });
-  }
-
-  /**
-   * @inheritDoc
-   */
-  markup() {
-    return '<slot></slot>';
   }
 }

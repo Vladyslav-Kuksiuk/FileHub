@@ -1,12 +1,15 @@
 import {Component} from '../../../components/component';
 import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
-import {UserInfoWrapper} from '../user-info-wrapper';
 import {StateManagementService} from '../../../state-management/state-management-service';
 import {TitleService} from '../../../title-service';
 import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
+import {UserInfoWrapper} from '../user-info-wrapper';
+import {Breadcrumb} from '../../../components/breadcrumb';
+import {UserInfo} from '../../../components/user-info/index.js';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
-const USER_INFO_WRAPPER_SLOT = 'user-info-wrapper-slot';
+const USER_INFO_SLOT = 'user-info-slot';
+const BREADCRUMB_SLOT = 'breadcrumb-slot';
 
 /**
  * Table page component.
@@ -31,11 +34,21 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    const userInfoSlot = this.getSlot(USER_INFO_WRAPPER_SLOT);
-    new UserInfoWrapper(userInfoSlot, this.#stateManagementService);
+    const userInfoWrapper = new UserInfoWrapper(this.#stateManagementService);
+    const userInfoSlot = this.getSlot(USER_INFO_SLOT);
+    userInfoWrapper.wrap(
+        new UserInfo(userInfoSlot, true, null, false));
 
-    const breadcrumbSlot = this.getSlot('breadcrumb-slot');
-    new BreadcrumbWrapper(breadcrumbSlot, this.#stateManagementService);
+    const breadcrumbWrapper = new BreadcrumbWrapper(this.#stateManagementService);
+    const breadcrumbSlot = this.getSlot(BREADCRUMB_SLOT);
+    breadcrumbWrapper.wrap(new Breadcrumb(
+        breadcrumbSlot,
+        true,
+        false,
+        false,
+        false,
+        null,
+    ));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
@@ -64,7 +77,7 @@ export class TablePage extends Component {
                                           title="TeamDev" width="200"></a>
             <ul class="authorized-user-panel">
             <li>
-                ${this.addSlot(USER_INFO_WRAPPER_SLOT)}
+                ${this.addSlot(USER_INFO_SLOT)}
             </li>
             <li>
                 <a ${this.markElement('logout-link')} class="logout-button" href="/" title="Log Out">
@@ -75,7 +88,7 @@ export class TablePage extends Component {
         </ul>
     </header>
     <main class="container">
-        ${this.addSlot('breadcrumb-slot')}
+        ${this.addSlot(BREADCRUMB_SLOT)}
         <hr class="horizontal-line">
         <div class="row table-tool-bar">
             <div class="col-xs-8 col-sm-6">

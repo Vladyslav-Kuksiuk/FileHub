@@ -1,45 +1,44 @@
-import {Component} from '../../../components/component';
-import {StateManagementService} from '../../../state-management/state-management-service';
-import {Breadcrumb} from '../../../components/breadcrumb';
-import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action';
+import {Breadcrumb} from '../../components/breadcrumb';
+import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
+import {LoadUserAction} from '../../state-management/user/load-user-action';
+import {StateManagementService} from '../../state-management/state-management-service';
 
 /**
- * Breadcrumb component with state listening.
+ * Breadcrumb wrapper for state change listening.
  */
-export class BreadcrumbWrapper extends Component {
+export class BreadcrumbWrapper {
   #stateManagementService;
 
   /**
-   * @param {HTMLElement} parent
    * @param {StateManagementService} stateManagementService
    */
-  constructor(parent, stateManagementService) {
-    super(parent);
-
+  constructor(stateManagementService) {
     this.#stateManagementService = stateManagementService;
-    this.#stateManagementService.addStateListener('userProfile', (state)=>{
+
+    const state = stateManagementService.state;
+
+    if (state.userProfile == null && !state.isUserProfileLoading) {
+      stateManagementService.dispatch(new LoadUserAction());
+    }
+
+    stateManagementService.addStateListener('userProfile', (state)=>{
       if (state.userProfile) {
-        this.#stateManagementService.dispatch(
+        stateManagementService.dispatch(
             new LoadFolderInfoAction(state.userProfile.rootFolderId));
       }
     });
-    this.init();
   }
 
   /**
-   * @inheritDoc
+   * Adds state listeners to Breadcrumb component.
+   *
+   * @param {Breadcrumb} breadcrumb
    */
-  afterRender() {
-    const breadcrumb = new Breadcrumb(this.rootElement,
-        true,
-        false,
-        false,
-        false,
-        null);
-
+  wrap(breadcrumb) {
     this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
       breadcrumb.isLoading = state.isFolderInfoLoading;
     });
+
     this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (!!state.folderInfo) {
         breadcrumb.folderName = state.folderInfo.name;
@@ -59,15 +58,10 @@ export class BreadcrumbWrapper extends Component {
         breadcrumb.isSecondNesting = false;
       }
     });
+
     this.#stateManagementService.addStateListener('folderInfoError', (state) => {
       breadcrumb.hasError = !!state.folderInfoError;
     });
   }
-
-  /**
-   * @inheritDoc
-   */
-  markup() {
-    return '<slot></slot>';
-  }
 }
+
