@@ -8,7 +8,7 @@ import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../../application-context';
 import {StateManagementService} from '../../state-management/state-management-service';
 import {MUTATORS} from '../../state-management/mutators';
-import {STATE} from '../../state-management/state';
+import {State} from '../../state-management/state';
 import {ROUTE} from '../../router/routes';
 
 /**
@@ -23,14 +23,7 @@ export class Application extends Component {
     this.init();
 
     const applicationContext = new ApplicationContext();
-    const state = {
-      [STATE.IS_USER_PROFILE_LOADING]: true,
-      [STATE.USER_PROFILE]: null,
-      [STATE.USER_PROFILE_ERROR]: null,
-      [STATE.IS_FOLDER_INFO_LOADING]: true,
-      [STATE.FOLDER_INFO]: null,
-      [STATE.FOLDER_INFO_ERROR]: null,
-    };
+    const state = new State();
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
     const routerConfig = new RouterConfigBuilder()

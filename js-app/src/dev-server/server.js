@@ -1,5 +1,4 @@
 import express from 'express';
-import {STATE} from '../state-management/state.js';
 
 const app = express();
 const port = 3001;
@@ -26,7 +25,7 @@ app.get('/user', (req, res) => {
   setTimeout(() => {
     res.status(200);
     res.send({
-      [STATE.USER_PROFILE]: {
+      userProfile: {
         username: 'testUser',
         rootFolderId: ROOT_FOLDER_ID,
       },
@@ -38,7 +37,7 @@ app.get('/folders/'+ROOT_FOLDER_ID, (req, res) => {
   setTimeout(() => {
     res.status(200);
     res.send({
-      [STATE.FOLDER_INFO]: {
+      folderInfo: {
         name: 'testUserRoot',
         id: ROOT_FOLDER_ID,
         itemsAmount: 1,
@@ -52,7 +51,7 @@ app.get('/folders/'+FIRS_INNER_FOLDER_ID, (req, res) => {
   setTimeout(() => {
     res.status(200);
     res.send({
-      [STATE.FOLDER_INFO]: {
+      folderInfo: {
         name: 'FirstInnerFolder',
         id: FIRS_INNER_FOLDER_ID,
         itemsAmount: 1,

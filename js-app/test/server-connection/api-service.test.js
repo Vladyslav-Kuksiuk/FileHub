@@ -12,7 +12,6 @@ import {
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
-import {STATE} from '../../src/state-management/state';
 import {ApiServiceError} from '../../src/server-connection/api-service-error';
 import {FieldValidationError} from '../../src/server-connection/field-validation-error';
 import {FolderInfo} from '../../src/state-management/folder/folder-info.js';
@@ -188,7 +187,7 @@ describe('ApiService', () => {
         .spyOn(requestService, 'get')
         .mockImplementation(async () => {
           return new Response(200, {
-            [STATE.USER_PROFILE]: {
+            userProfile: {
               username: userProfile.username,
               rootFolderId: userProfile.rootFolderId,
             },
@@ -233,7 +232,7 @@ describe('ApiService', () => {
         .spyOn(requestService, 'get')
         .mockImplementation(async () => {
           return new Response(200, {
-            [STATE.FOLDER_INFO]: {
+            folderInfo: {
               name: folderInfo.name,
               parentId: folderInfo.parentId,
               id: folderInfo.id,

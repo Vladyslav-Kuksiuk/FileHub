@@ -1,6 +1,6 @@
 import {Action} from './action';
 import {ApplicationContext} from '../application-context';
-import {UserProfile} from './user/user-profile';
+import {State} from './state';
 
 /**
  * Service to provide state management.
@@ -12,22 +12,12 @@ export class StateManagementService {
   #applicationContext;
 
   /**
-   * @typedef {object} State
-   * @property {boolean} isUserProfileLoading
-   * @property {boolean} isFolderLoading
-   * @property {UserProfile} userProfile
-   * @property {string} userProfileError
-   * @property {string} folderError
-   * @property {string} folderInfo
-   */
-
-  /**
    * @param {object} mutators
    * @param {State} state
    * @param {ApplicationContext} applicationContext
    */
   constructor(mutators, state, applicationContext) {
-    if (state == null || state === {}) {
+    if (state == null) {
       throw new Error('Initial state is not valid ');
     }
     this.#eventTarget = new EventTarget();
@@ -59,33 +49,14 @@ export class StateManagementService {
    * @returns {State} Immutable state.
    */
   get state() {
-    return this.#deepFreeze(Object.assign({}, this.#state));
-  }
-
-  /**
-   * @param {object} object
-   * @returns {object} Immutable.
-   * @private
-   */
-  #deepFreeze(object) {
-    const propNames = Object.getOwnPropertyNames(object);
-
-    for (const name of propNames) {
-      const value = object[name];
-
-      if (value && typeof value === 'object') {
-        this.#deepFreeze(value);
-      }
-    }
-
-    return Object.freeze(object);
+    return this.#state;
   }
 
   /**
    * Adds listener to some field in state changes' event.
    *
    * @param {string} fieldName
-   * @param {Function} listener
+   * @param {function(State)} listener
    */
   addStateListener(fieldName, listener) {
     listener(this.state);

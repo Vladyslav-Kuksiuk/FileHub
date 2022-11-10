@@ -1,4 +1,4 @@
-import {STATE} from './state';
+import {State} from './state';
 
 export const MUTATOR_NAMES = {
   SET_IS_USER_PROFILE_LOADING: 'isUserProfileLoading',
@@ -12,32 +12,32 @@ export const MUTATOR_NAMES = {
 export const MUTATORS = {
   [MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING]: (state, isLoading) =>{
     if (isLoading) {
-      return {...state,
-        [STATE.IS_USER_PROFILE_LOADING]: isLoading,
-        [STATE.USER_PROFILE]: null,
-        [STATE.USER_PROFILE_ERROR]: null};
+      return new State({...state,
+        isUserProfileLoading: isLoading,
+        userProfile: null,
+        userProfileError: null});
     }
-    return {...state, [STATE.IS_USER_PROFILE_LOADING]: isLoading};
+    return new State({...state, isUserProfileLoading: isLoading});
   },
   [MUTATOR_NAMES.SET_USER_PROFILE]: (state, userProfile) =>{
-    return {...state, [STATE.USER_PROFILE]: userProfile};
+    return new State({...state, userProfile: userProfile});
   },
   [MUTATOR_NAMES.SET_USER_PROFILE_ERROR]: (state, error) =>{
-    return {...state, [STATE.USER_PROFILE_ERROR]: error};
+    return new State({...state, userProfileError: error});
   },
   [MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING]: (state, isLoading) =>{
     if (isLoading) {
-      return {...state,
-        [STATE.IS_FOLDER_INFO_LOADING]: isLoading,
-        [STATE.FOLDER_INFO]: null,
-        [STATE.FOLDER_INFO_ERROR]: null};
+      return new State({...state,
+        isFolderInfoLoading: isLoading,
+        folderInfo: null,
+        folderInfoError: null});
     }
-    return {...state, [STATE.IS_FOLDER_INFO_LOADING]: isLoading};
+    return new State({...state, isFolderInfoLoading: isLoading});
   },
-  [MUTATOR_NAMES.SET_FOLDER_INFO]: (state, userProfile) =>{
-    return {...state, [STATE.FOLDER_INFO]: userProfile};
+  [MUTATOR_NAMES.SET_FOLDER_INFO]: (state, folderInfo) =>{
+    return new State({...state, folderInfo: folderInfo});
   },
   [MUTATOR_NAMES.SET_FOLDER_INFO_ERROR]: (state, error) =>{
-    return {...state, [STATE.FOLDER_INFO_ERROR]: error};
+    return new State({...state, folderInfoError: error});
   },
 };

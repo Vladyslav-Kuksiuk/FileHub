@@ -1,8 +1,7 @@
 import {Component} from '../../../components/component';
 import {StateManagementService} from '../../../state-management/state-management-service';
-import {STATE} from '../../../state-management/state';
 import {Breadcrumb} from '../../../components/breadcrumb';
-import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action.js';
+import {LoadFolderInfoAction} from '../../../state-management/folder/load-folder-info-action';
 
 /**
  * Breadcrumb component with state listening.
@@ -18,10 +17,10 @@ export class BreadcrumbWrapper extends Component {
     super(parent);
 
     this.#stateManagementService = stateManagementService;
-    this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state)=>{
-      if (state[STATE.USER_PROFILE]) {
+    this.#stateManagementService.addStateListener('userProfile', (state)=>{
+      if (state.userProfile) {
         this.#stateManagementService.dispatch(
-            new LoadFolderInfoAction(state[STATE.USER_PROFILE].rootFolderId));
+            new LoadFolderInfoAction(state.userProfile.rootFolderId));
       }
     });
     this.init();
@@ -38,16 +37,16 @@ export class BreadcrumbWrapper extends Component {
         false,
         null);
 
-    this.#stateManagementService.addStateListener(STATE.IS_FOLDER_INFO_LOADING, (state) => {
-      breadcrumb.isLoading = state[STATE.IS_FOLDER_INFO_LOADING];
+    this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
+      breadcrumb.isLoading = state.isFolderInfoLoading;
     });
-    this.#stateManagementService.addStateListener(STATE.FOLDER_INFO, (state) => {
-      if (!!state[STATE.FOLDER_INFO]) {
-        breadcrumb.folderName = state[STATE.FOLDER_INFO].name;
-        if (state[STATE.FOLDER_INFO].parentId == null) {
+    this.#stateManagementService.addStateListener('folderInfo', (state) => {
+      if (!!state.folderInfo) {
+        breadcrumb.folderName = state.folderInfo.name;
+        if (state.folderInfo.parentId == null) {
           breadcrumb.isFirstNesting = false;
           breadcrumb.isSecondNesting = false;
-        } else if (state[STATE.FOLDER_INFO].parentId === state[STATE.USER_PROFILE].rootFolderId) {
+        } else if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
           breadcrumb.isFirstNesting = true;
           breadcrumb.isSecondNesting = false;
         } else {
@@ -60,8 +59,8 @@ export class BreadcrumbWrapper extends Component {
         breadcrumb.isSecondNesting = false;
       }
     });
-    this.#stateManagementService.addStateListener(STATE.FOLDER_INFO_ERROR, (state) => {
-      breadcrumb.hasError = !!state[STATE.FOLDER_INFO_ERROR];
+    this.#stateManagementService.addStateListener('folderInfoError', (state) => {
+      breadcrumb.hasError = !!state.folderInfoError;
     });
   }
 
