@@ -4,7 +4,6 @@ const app = express();
 const port = 3001;
 
 const ROOT_FOLDER_ID = 'testUser-0';
-const FIRS_INNER_FOLDER_ID = 'testUser-1';
 
 app.post('/login', (req, res) => {
   res.status(200);
@@ -42,20 +41,6 @@ app.get('/folders/'+ROOT_FOLDER_ID, (req, res) => {
         id: ROOT_FOLDER_ID,
         itemsAmount: 1,
         parentId: null,
-      },
-    });
-  }, 500);
-});
-
-app.get('/folders/'+FIRS_INNER_FOLDER_ID, (req, res) => {
-  setTimeout(() => {
-    res.status(200);
-    res.send({
-      folderInfo: {
-        name: 'FirstInnerFolder',
-        id: FIRS_INNER_FOLDER_ID,
-        itemsAmount: 1,
-        parentId: ROOT_FOLDER_ID,
       },
     });
   }, 500);

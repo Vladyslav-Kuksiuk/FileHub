@@ -40,23 +40,20 @@ export class BreadcrumbWrapper {
     });
 
     this.#stateManagementService.addStateListener('folderInfo', (state) => {
+      let path = [{name: 'Home'}];
       if (!!state.folderInfo) {
-        breadcrumb.folderName = state.folderInfo.name;
-        if (state.folderInfo.parentId == null) {
-          breadcrumb.isFirstNesting = false;
-          breadcrumb.isSecondNesting = false;
-        } else if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
-          breadcrumb.isFirstNesting = true;
-          breadcrumb.isSecondNesting = false;
-        } else {
-          breadcrumb.isFirstNesting = false;
-          breadcrumb.isSecondNesting = true;
+        if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
+          path = [
+            {name: 'Home', linkListener: ()=>{}},
+            {name: state.folderInfo.name}];
+        } else if (state.folderInfo.parentId != null) {
+          path = [
+            {name: 'Home', linkListener: ()=>{}},
+            {name: '...', linkListener: ()=>{}},
+            {name: state.folderInfo.name}];
         }
-      } else {
-        breadcrumb.folderName = null;
-        breadcrumb.isFirstNesting = false;
-        breadcrumb.isSecondNesting = false;
       }
+      breadcrumb.path = path;
     });
 
     this.#stateManagementService.addStateListener('folderInfoError', (state) => {

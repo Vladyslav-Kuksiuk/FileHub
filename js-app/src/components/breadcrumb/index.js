@@ -1,8 +1,7 @@
 import {Component} from '../component';
 import {Link} from '../link';
 
-const HOME_FOLDER_LINK_SLOT = 'home-folder-link-slot';
-const PARENT_FOLDER_LINK_SLOT = 'parent-folder-link-slot';
+const LINK_SLOT = 'link-slot-';
 
 /**
  * Breadcrumb component.
@@ -10,26 +9,26 @@ const PARENT_FOLDER_LINK_SLOT = 'parent-folder-link-slot';
 export class Breadcrumb extends Component {
   #isLoading;
   #hasError;
-  #isFirstNesting;
-  #isSecondNesting;
-  #folderName;
+  #path;
+
+  /**
+   *@typedef Folder
+   * @param {string} name
+   * @param {Function} linkListener
+   */
 
   /**
    * @param {HTMLElement} parent
    * @param {boolean} isLoading
    * @param {boolean} hasError
-   * @param {boolean} isFirstNesting
-   * @param {boolean} isSecondNesting
-   * @param {string} folderName
+   * @param {Folder[]} path
    */
-  constructor(parent, isLoading, hasError, isFirstNesting, isSecondNesting, folderName) {
+  constructor(parent, isLoading, hasError, path) {
     super(parent);
 
     this.#isLoading = isLoading;
     this.#hasError = hasError;
-    this.#isFirstNesting = isFirstNesting;
-    this.#isSecondNesting = isSecondNesting;
-    this.#folderName = folderName;
+    this.#path = path;
 
     this.init();
   }
@@ -38,15 +37,15 @@ export class Breadcrumb extends Component {
    * @inheritDoc
    */
   afterRender() {
-    if (this.#isFirstNesting || this.#isSecondNesting) {
-      const homeFolderLinkSlot = this.getSlot(HOME_FOLDER_LINK_SLOT);
-      new Link(homeFolderLinkSlot, 'Home');
-    }
-
-    if (this.#isSecondNesting) {
-      const parentFolderLinkSlot = this.getSlot(PARENT_FOLDER_LINK_SLOT);
-      new Link(parentFolderLinkSlot, '...');
-    }
+    this.#path.forEach((folder, index)=>{
+      if (index < this.#path.length - 1) {
+        const linkSlot = this.getSlot(LINK_SLOT+index);
+        if (linkSlot) {
+          const link = new Link(linkSlot, folder.name);
+          link.onClick(folder.linkListener);
+        }
+      }
+    });
   }
 
   /**
@@ -66,26 +65,10 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * @param {boolean} value
+   * @param {Folder[]} value
    */
-  set isFirstNesting(value) {
-    this.#isFirstNesting = value;
-    this.render();
-  }
-
-  /**
-   * @param {boolean} value
-   */
-  set isSecondNesting(value) {
-    this.#isSecondNesting = value;
-    this.render();
-  }
-
-  /**
-   * @param {string} value
-   */
-  set folderName(value) {
-    this.#folderName = value;
+  set path(value) {
+    this.#path = value;
     this.render();
   }
 
@@ -93,7 +76,15 @@ export class Breadcrumb extends Component {
    * @inheritDoc
    */
   markup() {
-    let breadcrumbData = '<li>Home</li>';
+    let breadcrumbData = '';
+
+    this.#path.forEach((folder, index)=>{
+      if (index < this.#path.length - 1) {
+        breadcrumbData += `<li>${this.addSlot(LINK_SLOT + index)}</li>`;
+      } else {
+        breadcrumbData += `<li>${folder.name}</li>`;
+      }
+    });
 
     if (this.#isLoading) {
       breadcrumbData = `<span ${this.markElement('breadcrumb-loading')}
@@ -107,16 +98,6 @@ export class Breadcrumb extends Component {
                         </span>`;
     }
 
-    if (this.#isFirstNesting) {
-      breadcrumbData = `<li>${this.addSlot(HOME_FOLDER_LINK_SLOT)}</li>
-                        <li>${this.#folderName}</li>`;
-    }
-
-    if (this.#isSecondNesting) {
-      breadcrumbData = `<li>${this.addSlot(HOME_FOLDER_LINK_SLOT)}</li>
-                        <li>${this.addSlot(PARENT_FOLDER_LINK_SLOT)}</li>
-                        <li>${this.#folderName}</li>`;
-    }
 
     return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">${breadcrumbData}</ul>`;
   }
