@@ -49,4 +49,27 @@ describe('Breadcrumb', () => {
     new Breadcrumb(document.body, false, true, []);
     expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
   });
+
+  test('Should change state one folder -> two folders -> error -> loading', function() {
+    expect.assertions(5);
+    const path1 = [{name: 'Home'}];
+    const breadcrumb = new Breadcrumb(document.body, false, false, path1);
+
+    expect(document.body.querySelector('ul li').textContent).toBe(path1[0].name);
+
+    const path2 = [{name: 'Home', linkListener: ()=>{}},
+      {name: 'folder2'}];
+
+    breadcrumb.path = path2;
+    expect(document.body.querySelector('ul li a').textContent).toBe(path2[0].name);
+    expect(document.body.querySelectorAll('ul li')[1].textContent).toBe(path2[1].name);
+
+    breadcrumb.path = [];
+    breadcrumb.hasError = true;
+    expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
+
+    breadcrumb.hasError = false;
+    breadcrumb.isLoading = true;
+    expect(document.body.querySelectorAll('[data-td="breadcrumb-loading"]').length).toBe(1);
+  } );
 });
