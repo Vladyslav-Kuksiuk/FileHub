@@ -15,7 +15,7 @@ export class LogOutUserAction extends Action {
           executor(MUTATOR_NAMES.SET_USER_PROFILE, null);
         })
         .catch((error)=>{
-          executor(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, error);
+          executor(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, error.message);
         });
   }
 }

@@ -24,6 +24,13 @@ describe('StateManagementService', () => {
         });
   });
 
+  test('Should return error on constructor without state', function() {
+    expect.assertions(1);
+    expect(()=>{
+      new StateManagementService({}, undefined, {});
+    }).toThrow(new Error('Initial state is not valid'));
+  });
+
   test(`Should successfully change state`, function() {
     expect.assertions(3);
 
