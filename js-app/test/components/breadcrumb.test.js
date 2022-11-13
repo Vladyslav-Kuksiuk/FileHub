@@ -1,189 +1,75 @@
-import {ApplicationContext} from '../../src/application-context';
-import {StateManagementService} from '../../src/state-management/state-management-service';
 import {Breadcrumb} from '../../src/components/breadcrumb';
-import {MUTATORS} from '../../src/state-management/mutators';
 import {jest} from '@jest/globals';
-import {FOLDER_INFO, STATE, USER_PROFILE} from '../../src/state-management/state';
 
 describe('Breadcrumb', () => {
-  const userProfile = {
-    [USER_PROFILE.USERNAME]: 'username',
-    [USER_PROFILE.ROOT_FOLDER_ID]: 'username-0',
-  };
-
-  const rootFolderInfo = {
-    [FOLDER_INFO.NAME]: 'rootFolder',
-    [FOLDER_INFO.ID]: userProfile[USER_PROFILE.ROOT_FOLDER_ID],
-    [FOLDER_INFO.PARENT_ID]: null,
-    [FOLDER_INFO.ITEMS_AMOUNT]: 10,
-  };
-
-  const firstInnerFolderInfo = {
-    [FOLDER_INFO.NAME]: 'firstInnerFolder',
-    [FOLDER_INFO.ID]: 'username-1',
-    [FOLDER_INFO.PARENT_ID]: rootFolderInfo[FOLDER_INFO.ID],
-    [FOLDER_INFO.ITEMS_AMOUNT]: 5,
-  };
-
-  const secondInnerFolderInfo = {
-    [FOLDER_INFO.NAME]: 'firstInnerFolder',
-    [FOLDER_INFO.ID]: 'username-2',
-    [FOLDER_INFO.PARENT_ID]: firstInnerFolderInfo[FOLDER_INFO.ID],
-    [FOLDER_INFO.ITEMS_AMOUNT]: 5,
-  };
-
-  const error = 'ErrorText';
-  let state;
-
   beforeEach(() => {
     document.body.innerHTML = '';
-
-    state = {
-      [STATE.IS_USER_PROFILE_LOADING]: true,
-      [STATE.USER_PROFILE]: null,
-      [STATE.USER_PROFILE_ERROR]: null,
-      [STATE.IS_FOLDER_INFO_LOADING]: true,
-      [STATE.FOLDER_INFO]: null,
-      [STATE.FOLDER_INFO_ERROR]: null,
-    };
   });
 
-  test(`Should render Breadcrumb loading state`, function() {
-    expect.assertions(1);
-
-    const applicationContext = new ApplicationContext();
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
-
-    new Breadcrumb(document.body, stateManagementService);
-
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-loading"]').length).toBe(1);
-  });
-
-  test(`Should render Breadcrumb error state`, function() {
-    expect.assertions(1);
-
-    const applicationContext = new ApplicationContext();
-    state[STATE.IS_USER_PROFILE_LOADING] = false;
-    state[STATE.IS_FOLDER_INFO_LOADING] = false;
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
-
-    new Breadcrumb(document.body, stateManagementService);
-
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
-  });
-
-  test(`Should render Breadcrumb error state`, function() {
-    expect.assertions(1);
-
-    const applicationContext = new ApplicationContext();
-    state[STATE.IS_USER_PROFILE_LOADING] = false;
-    state[STATE.IS_FOLDER_INFO_LOADING] = false;
-    state[STATE.USER_PROFILE] = userProfile;
-    state[STATE.FOLDER_INFO_ERROR] = error;
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
-
-    new Breadcrumb(document.body, stateManagementService);
-
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
-  });
-
-  test(`Should render Breadcrumb home state`, function() {
+  test(`Should render Breadcrumb component with one path element`, function() {
     expect.assertions(2);
 
-    const applicationContext = new ApplicationContext();
+    const path = [{name: 'Home'}];
+    new Breadcrumb(document.body, false, false, path);
 
-    state[STATE.IS_USER_PROFILE_LOADING] = false;
-    state[STATE.IS_FOLDER_INFO_LOADING] = false;
-    state[STATE.USER_PROFILE] = userProfile;
-    state[STATE.FOLDER_INFO] = rootFolderInfo;
-
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
-
-    new Breadcrumb(document.body, stateManagementService);
-
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(1);
-    expect(document.body.querySelector('[data-td="breadcrumb-component"] li').textContent).toBe('Home');
+    expect(document.body.querySelectorAll('ul li').length).toBe(1);
+    expect(document.body.querySelector('ul li').textContent).toBe(path[0].name);
   });
 
-  test(`Should render Breadcrumb first inner state`, function() {
-    expect.assertions(3);
-
-    const applicationContext = new ApplicationContext();
-
-    state[STATE.IS_USER_PROFILE_LOADING] = false;
-    state[STATE.IS_FOLDER_INFO_LOADING] = false;
-    state[STATE.USER_PROFILE] = userProfile;
-    state[STATE.FOLDER_INFO] = firstInnerFolderInfo;
-
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
-
-    new Breadcrumb(document.body, stateManagementService);
-
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(2);
-    expect(document.body.querySelector('[data-td="breadcrumb-component"] li a').textContent).toBe('Home');
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li')[1].textContent)
-        .toBe(firstInnerFolderInfo[FOLDER_INFO.NAME]);
-  });
-
-  test(`Should render Breadcrumb second inner state`, function() {
-    expect.assertions(4);
-
-    const applicationContext = new ApplicationContext();
-
-    state[STATE.IS_USER_PROFILE_LOADING] = false;
-    state[STATE.IS_FOLDER_INFO_LOADING] = false;
-    state[STATE.USER_PROFILE] = userProfile;
-    state[STATE.FOLDER_INFO] = secondInnerFolderInfo;
-
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
-
-    new Breadcrumb(document.body, stateManagementService);
-
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(3);
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[0].textContent).toBe('Home');
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[1].textContent).toBe('...');
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li')[2].textContent)
-        .toBe(secondInnerFolderInfo[FOLDER_INFO.NAME]);
-  });
-
-  test(`Should rerender Breadcrumb after each state changing`, function() {
+  test(`Should render Breadcrumb component with three path element`, function() {
     expect.assertions(6);
 
-    const applicationContext = new ApplicationContext();
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
+    const path = [
+      {name: 'folder1', linkListener: jest.fn()},
+      {name: 'folder2', linkListener: jest.fn()},
+      {name: 'folder3'},
+    ];
+    new Breadcrumb(document.body, false, false, path);
 
-    const fieldListeners = {
-      [STATE.USER_PROFILE]: null,
-      [STATE.IS_FOLDER_INFO_LOADING]: null,
-      [STATE.FOLDER_INFO]: null,
-      [STATE.FOLDER_INFO_ERROR]: null,
-    };
+    expect(document.body.querySelectorAll('ul li').length).toBe(3);
+    expect(document.body.querySelectorAll('ul li a')[0].textContent).toBe(path[0].name);
+    document.body.querySelectorAll('ul li a')[0].click();
+    expect(path[0].linkListener).toHaveBeenCalledTimes(1);
+    expect(document.body.querySelectorAll('ul li a')[1].textContent).toBe(path[1].name);
+    document.body.querySelectorAll('ul li a')[1].click();
+    expect(path[1].linkListener).toHaveBeenCalledTimes(1);
+    expect(document.body.querySelectorAll('ul li')[2].textContent).toBe(path[2].name);
+  });
 
-    jest.spyOn(stateManagementService, 'addStateListener')
-        .mockImplementation((field, listener) => {
-          fieldListeners[field] = listener;
-        });
+  test(`Should render Breadcrumb component with loading`, function() {
+    expect.assertions(1);
 
-    new Breadcrumb(document.body, stateManagementService);
-
+    new Breadcrumb(document.body, true, false, []);
     expect(document.body.querySelectorAll('[data-td="breadcrumb-loading"]').length).toBe(1);
+  });
 
-    state[STATE.USER_PROFILE] = userProfile;
-    fieldListeners[STATE.USER_PROFILE](state);
-    state[STATE.IS_FOLDER_INFO_LOADING] = false;
-    fieldListeners[STATE.IS_FOLDER_INFO_LOADING](state);
-    state[STATE.FOLDER_INFO_ERROR] = error;
-    fieldListeners[STATE.FOLDER_INFO_ERROR](state);
+  test(`Should render Breadcrumb component with error`, function() {
+    expect.assertions(1);
+
+    new Breadcrumb(document.body, false, true, []);
+    expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
+  });
+
+  test('Should change state one folder -> two folders -> error -> loading', function() {
+    expect.assertions(5);
+    const path1 = [{name: 'Home'}];
+    const breadcrumb = new Breadcrumb(document.body, false, false, path1);
+
+    expect(document.body.querySelector('ul li').textContent).toBe(path1[0].name);
+
+    const path2 = [{name: 'Home', linkListener: ()=>{}},
+      {name: 'folder2'}];
+
+    breadcrumb.path = path2;
+    expect(document.body.querySelector('ul li a').textContent).toBe(path2[0].name);
+    expect(document.body.querySelectorAll('ul li')[1].textContent).toBe(path2[1].name);
+
+    breadcrumb.path = [];
+    breadcrumb.hasError = true;
     expect(document.body.querySelectorAll('[data-td="breadcrumb-error"]').length).toBe(1);
 
-    state[STATE.FOLDER_INFO_ERROR] = null;
-    fieldListeners[STATE.FOLDER_INFO_ERROR](state);
-    state[STATE.FOLDER_INFO] = secondInnerFolderInfo;
-    fieldListeners[STATE.FOLDER_INFO](state);
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li').length).toBe(3);
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[0].textContent).toBe('Home');
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li a')[1].textContent).toBe('...');
-    expect(document.body.querySelectorAll('[data-td="breadcrumb-component"] li')[2].textContent)
-        .toBe(secondInnerFolderInfo[FOLDER_INFO.NAME]);
-  });
+    breadcrumb.hasError = false;
+    breadcrumb.isLoading = true;
+    expect(document.body.querySelectorAll('[data-td="breadcrumb-loading"]').length).toBe(1);
+  } );
 });

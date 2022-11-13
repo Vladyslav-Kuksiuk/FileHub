@@ -1,17 +1,15 @@
-import {Component} from '../component';
-import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
-import {UserInfo} from '../user-info';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {TitleService} from '../../title-service';
-import {LoadUserAction} from '../../state-management/user/load-user-action.js';
-import {Breadcrumb} from '../breadcrumb/index';
-import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
-import {STATE, USER_PROFILE, FOLDER_INFO} from '../../state-management/state';
-import {FolderContent} from '../folder-content';
-import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
+import {Component} from '../../../components/component';
+import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
+import {StateManagementService} from '../../../state-management/state-management-service';
+import {TitleService} from '../../../title-service';
+import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
+import {UserInfoWrapper} from '../user-info-wrapper';
+import {Breadcrumb} from '../../../components/breadcrumb';
+import {UserInfo} from '../../../components/user-info';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
-
+const USER_INFO_SLOT = 'user-info-slot';
+const BREADCRUMB_SLOT = 'breadcrumb-slot';
 const FOLDER_CONTENT_SLOT = 'folder-content-slot';
 
 /**
@@ -37,35 +35,25 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state)=>{
-      if (state[STATE.USER_PROFILE]) {
-        this.#stateManagementService.dispatch(
-            new LoadFolderInfoAction(state[STATE.USER_PROFILE][USER_PROFILE.ROOT_FOLDER_ID]));
-      }
-    });
+    const userInfoWrapper = new UserInfoWrapper(this.#stateManagementService);
+    const userInfoSlot = this.getSlot(USER_INFO_SLOT);
+    userInfoWrapper.wrap(
+        new UserInfo(userInfoSlot, true, null, false));
 
-    this.#stateManagementService.addStateListener(STATE.FOLDER_INFO, (state)=>{
-      if (state[STATE.FOLDER_INFO]) {
-        this.#stateManagementService.dispatch(
-            new LoadFolderContentAction(state[STATE.FOLDER_INFO][FOLDER_INFO.ID]));
-      }
-    });
-
-    const userInfoSlot = this.getSlot('user-info');
-    new UserInfo(userInfoSlot, this.#stateManagementService);
-    this.#stateManagementService.dispatch(new LoadUserAction());
-
-    const breadcrumbSlot = this.getSlot('breadcrumb-slot');
-    new Breadcrumb(breadcrumbSlot, this.#stateManagementService);
+    const breadcrumbWrapper = new BreadcrumbWrapper(this.#stateManagementService);
+    const breadcrumbSlot = this.getSlot(BREADCRUMB_SLOT);
+    breadcrumbWrapper.wrap(new Breadcrumb(
+        breadcrumbSlot,
+        true,
+        false,
+        [{name: 'Home'}],
+    ));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
       this.#stateManagementService.dispatch(new LogOutUserAction());
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
-
-    const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
-    new FolderContent(folderContentSlot, this.#stateManagementService);
   }
 
   /**
@@ -88,7 +76,7 @@ export class TablePage extends Component {
                                           title="TeamDev" width="200"></a>
             <ul class="authorized-user-panel">
             <li>
-                ${this.addSlot('user-info')}
+                ${this.addSlot(USER_INFO_SLOT)}
             </li>
             <li>
                 <a ${this.markElement('logout-link')} class="logout-button" href="/" title="Log Out">
@@ -99,7 +87,7 @@ export class TablePage extends Component {
         </ul>
     </header>
     <main class="container">
-        ${this.addSlot('breadcrumb-slot')}
+        ${this.addSlot(BREADCRUMB_SLOT)}
         <hr class="horizontal-line">
         <div class="row table-tool-bar">
             <div class="col-xs-8 col-sm-6">

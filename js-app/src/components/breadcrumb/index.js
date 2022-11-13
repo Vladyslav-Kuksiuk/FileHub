@@ -1,50 +1,35 @@
 import {Component} from '../component';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {FOLDER_INFO, STATE, USER_PROFILE} from '../../state-management/state';
 import {Link} from '../link';
-import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 
-const HOME_FOLDER_LINK_SLOT = 'home-folder-link-slot';
-const PARENT_FOLDER_LINK_SLOT = 'parent-folder-link-slot';
+const LINK_SLOT = 'link-slot-';
 
 /**
  * Breadcrumb component.
  */
 export class Breadcrumb extends Component {
-  #stateManagementService;
-  #error;
-  #rootFolderId;
-  #folderName;
-  #folderParentId;
   #isLoading;
+  #hasError;
+  #path;
+
+  /**
+   *@typedef Folder
+   * @param {string} name
+   * @param {Function} linkListener
+   */
 
   /**
    * @param {HTMLElement} parent
-   * @param {StateManagementService} stateManagementService
+   * @param {boolean} isLoading
+   * @param {boolean} hasError
+   * @param {Folder[]} path
    */
-  constructor(parent, stateManagementService) {
+  constructor(parent, isLoading, hasError, path) {
     super(parent);
 
-    const state = stateManagementService.state;
-    this.#error = state[STATE.FOLDER_INFO_ERROR];
-    this.#rootFolderId = state[STATE.USER_PROFILE]?.[USER_PROFILE.ROOT_FOLDER_ID] ?? null;
-    this.#isLoading = state[STATE.IS_USER_PROFILE_LOADING] || state[STATE.IS_FOLDER_INFO_LOADING];
-    this.#folderName = state[STATE.FOLDER_INFO]?.[FOLDER_INFO.NAME];
-    this.#folderParentId = state[STATE.FOLDER_INFO]?.[FOLDER_INFO.PARENT_ID];
+    this.#isLoading = isLoading;
+    this.#hasError = hasError;
+    this.#path = path;
 
-    this.#stateManagementService = stateManagementService;
-    this.#stateManagementService.addStateListener(STATE.USER_PROFILE, (state) => {
-      this.#setRootFolderId(state[STATE.USER_PROFILE]?.[USER_PROFILE.ROOT_FOLDER_ID]);
-    });
-    this.#stateManagementService.addStateListener(STATE.IS_FOLDER_INFO_LOADING, (state) => {
-      this.#setIsLoading(state[STATE.IS_FOLDER_INFO_LOADING]);
-    });
-    this.#stateManagementService.addStateListener(STATE.FOLDER_INFO, (state) => {
-      this.#setFolderInfo(state[STATE.FOLDER_INFO]);
-    });
-    this.#stateManagementService.addStateListener(STATE.FOLDER_INFO_ERROR, (state) => {
-      this.#setError(state[STATE.FOLDER_INFO_ERROR]);
-    });
     this.init();
   }
 
@@ -52,58 +37,38 @@ export class Breadcrumb extends Component {
    * @inheritDoc
    */
   afterRender() {
-    const homeFolderLinkSlot = this.getSlot(HOME_FOLDER_LINK_SLOT);
-    const parentFolderLinkSlot = this.getSlot(PARENT_FOLDER_LINK_SLOT);
-
-    if (homeFolderLinkSlot) {
-      const homeFolderLink = new Link(homeFolderLinkSlot, 'Home');
-      homeFolderLink.onClick(()=>{
-        this.#stateManagementService.dispatch(new LoadFolderInfoAction(this.#rootFolderId));
-      });
-    }
-
-    if (parentFolderLinkSlot) {
-      const parentFolderLink = new Link(parentFolderLinkSlot, '...');
-      parentFolderLink.onClick(()=>{
-        this.#stateManagementService.dispatch(new LoadFolderInfoAction(this.#folderParentId));
-      });
-    }
+    this.#path.forEach((folder, index)=>{
+      if (index < this.#path.length - 1) {
+        const linkSlot = this.getSlot(LINK_SLOT+index);
+        if (linkSlot) {
+          const link = new Link(linkSlot, folder.name);
+          link.onClick(folder.linkListener);
+        }
+      }
+    });
   }
 
   /**
-   * @param {string} id
-   * @private
+   * @param {boolean} value
    */
-  #setRootFolderId(id) {
-    this.#rootFolderId = id;
+  set isLoading(value) {
+    this.#isLoading = value;
     this.render();
   }
 
   /**
-   * @param {string} folderInfo
-   * @private
+   * @param {boolean} value
    */
-  #setFolderInfo(folderInfo) {
-    this.#folderName = folderInfo[FOLDER_INFO.NAME];
-    this.#folderParentId = folderInfo[FOLDER_INFO.PARENT_ID];
+  set hasError(value) {
+    this.#hasError = value;
     this.render();
   }
 
   /**
-   * @param {string} error
-   * @private
+   * @param {Folder[]} value
    */
-  #setError(error) {
-    this.#error = error;
-    this.render();
-  }
-
-  /**
-   * @param {boolean} isLoading
-   * @private
-   */
-  #setIsLoading(isLoading) {
-    this.#isLoading = isLoading;
+  set path(value) {
+    this.#path = value;
     this.render();
   }
 
@@ -111,39 +76,27 @@ export class Breadcrumb extends Component {
    * @inheritDoc
    */
   markup() {
+    let breadcrumbData = '';
+    this.#path.forEach((folder, index)=>{
+      if (index < this.#path.length - 1) {
+        breadcrumbData += `<li>${this.addSlot(LINK_SLOT + index)}</li>`;
+      } else {
+        breadcrumbData += `<li>${folder.name}</li>`;
+      }
+    });
+
     if (this.#isLoading) {
-      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
-                <span ${this.markElement('breadcrumb-loading')}
-                     aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
-             </ul>`;
+      breadcrumbData = `<span ${this.markElement('breadcrumb-loading')}
+                     aria-hidden="true" class="glyphicon glyphicon-repeat"></span>`;
     }
 
-    if (this.#error || this.#rootFolderId == null) {
-      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
-                   <span ${this.markElement('breadcrumb-error')} class="text-danger"> 
-                          <span class="glyphicon glyphicon-exclamation-sign"></span>
-                          Can't load breadcrumb data
-                   </span>
-              </ul>`;
+    if (this.#hasError) {
+      breadcrumbData = `<span ${this.markElement('breadcrumb-error')} class="text-danger"> 
+                           <span class="glyphicon glyphicon-exclamation-sign"></span>
+                           Can't load breadcrumb data
+                        </span>`;
     }
 
-    if (this.#folderParentId == null) {
-      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
-                  <li>Home</li>
-              </ul>`;
-    }
-
-    if (this.#rootFolderId === this.#folderParentId) {
-      return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
-                <li>${this.addSlot(HOME_FOLDER_LINK_SLOT)}</li>
-                <li>${this.#folderName}</li>
-             </ul>`;
-    }
-
-    return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">
-                <li>${this.addSlot(HOME_FOLDER_LINK_SLOT)}</li>
-                <li>${this.addSlot(PARENT_FOLDER_LINK_SLOT)}</li>
-                <li>${this.#folderName}</li>
-            </ul>`;
+    return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">${breadcrumbData}</ul>`;
   }
 }

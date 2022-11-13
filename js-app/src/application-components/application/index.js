@@ -1,18 +1,15 @@
-import {Component} from '../component';
-import {AuthorizationPage} from '../authorization-page';
-import {RegistrationPage} from '../registration-page';
+import {Component} from '../../components/component';
+import {AuthorizationPage} from '../authorization/authorization-page';
+import {RegistrationPage} from '../registration/registration-page';
 import {Router} from '../../router';
-import {Error404Page} from '../error-404-page';
+import {Error404Page} from '../../components/error-404-page';
 import {RouterConfigBuilder} from '../../router/router-config';
-import {TablePage} from '../table-page';
+import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../../application-context';
 import {StateManagementService} from '../../state-management/state-management-service';
 import {MUTATORS} from '../../state-management/mutators';
-import {STATE} from '../../state-management/state';
-
-const LOGIN_PATH = 'login';
-const REGISTRATION_PATH = 'registration';
-const TABLE_PATH = 'table';
+import {State} from '../../state-management/state';
+import {ROUTE} from '../../router/routes';
 
 /**
  * Application component.
@@ -26,17 +23,7 @@ export class Application extends Component {
     this.init();
 
     const applicationContext = new ApplicationContext();
-    const state = {
-      [STATE.IS_USER_PROFILE_LOADING]: true,
-      [STATE.USER_PROFILE]: null,
-      [STATE.USER_PROFILE_ERROR]: null,
-      [STATE.IS_FOLDER_INFO_LOADING]: true,
-      [STATE.FOLDER_INFO]: null,
-      [STATE.FOLDER_INFO_ERROR]: null,
-      [STATE.IS_FOLDER_CONTENT_LOADING]: true,
-      [STATE.FOLDER_CONTENT]: null,
-      [STATE.FOLDER_CONTENT_ERROR]: null,
-    };
+    const state = new State();
     const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
     const routerConfig = new RouterConfigBuilder()
@@ -47,33 +34,33 @@ export class Application extends Component {
             router.redirect('');
           });
         })
-        .addRoute(LOGIN_PATH, () => {
+        .addRoute(ROUTE.LOGIN, () => {
           this.rootElement.innerHTML = '';
           const page =
             new AuthorizationPage(this.rootElement, applicationContext.titleService, applicationContext.apiService);
           page.onNavigateToRegistration(() => {
-            router.redirect(REGISTRATION_PATH);
+            router.redirect(ROUTE.REGISTRATION);
           });
           page.onNavigateToTable(()=>{
-            router.redirect(TABLE_PATH);
+            router.redirect(ROUTE.TABLE);
           });
         })
-        .addRoute(REGISTRATION_PATH, () => {
+        .addRoute(ROUTE.REGISTRATION, () => {
           this.rootElement.innerHTML = '';
           const page =
             new RegistrationPage(this.rootElement, applicationContext.titleService, applicationContext.apiService);
           page.onNavigateToAuthorization(() => {
-            router.redirect(LOGIN_PATH);
+            router.redirect(ROUTE.LOGIN);
           });
         })
-        .addRoute(TABLE_PATH, () => {
+        .addRoute(ROUTE.TABLE, () => {
           this.rootElement.innerHTML = '';
           const page = new TablePage(this.rootElement, stateManagementService, applicationContext.titleService);
           page.onNavigateToAuthorization(() => {
-            router.redirect(LOGIN_PATH);
+            router.redirect(ROUTE.LOGIN);
           });
         })
-        .addHomeRoutePath(TABLE_PATH)
+        .addHomeRoutePath(ROUTE.TABLE)
         .build();
 
     const router = new Router(routerConfig);

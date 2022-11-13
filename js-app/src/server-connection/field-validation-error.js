@@ -1,4 +1,4 @@
-import {ApiServiceError} from './api-service-error.js';
+import {ApiServiceError} from './api-service-error';
 
 /**
  * ApiService error with field errors.

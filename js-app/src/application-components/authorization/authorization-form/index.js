@@ -1,11 +1,11 @@
-import {Component} from '../component';
-import {FormControl} from '../form-control';
-import {Form} from '../form';
-import {FormValidationConfigBuilder} from '../../validation/form-validation-config';
-import {validateLength} from '../../validation/value-validations';
-import {ValidationService} from '../../validation/validation-service';
-import {Link} from '../link';
-import {UserData} from '../../user-data';
+import {Component} from '../../../components/component';
+import {FormControl} from '../../../components/form-control';
+import {Form} from '../../../components/form';
+import {FormValidationConfigBuilder} from '../../../validation/form-validation-config';
+import {validateLength} from '../../../validation/value-validations';
+import {ValidationService} from '../../../validation/validation-service';
+import {Link} from '../../../components/link';
+import {UserData} from '../../../user-data';
 
 export const EMAIL = 'email';
 export const PASSWORD = 'password';
