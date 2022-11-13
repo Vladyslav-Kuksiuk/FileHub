@@ -54,7 +54,7 @@ export class BreadcrumbWrapper {
         }
         breadcrumb.path = path;
       } else {
-        breadcrumb.path = {};
+        breadcrumb.path = [];
       }
     });
 

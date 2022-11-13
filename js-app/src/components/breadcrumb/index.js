@@ -77,7 +77,6 @@ export class Breadcrumb extends Component {
    */
   markup() {
     let breadcrumbData = '';
-
     this.#path.forEach((folder, index)=>{
       if (index < this.#path.length - 1) {
         breadcrumbData += `<li>${this.addSlot(LINK_SLOT + index)}</li>`;
@@ -97,7 +96,6 @@ export class Breadcrumb extends Component {
                            Can't load breadcrumb data
                         </span>`;
     }
-
 
     return `<ul ${this.markElement('breadcrumb-component')} class="breadcrumb">${breadcrumbData}</ul>`;
   }

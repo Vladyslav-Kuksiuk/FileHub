@@ -36,12 +36,12 @@ export class StateManagementService {
       const newState = this.#mutators[mutatorKey](this.#state, payload);
       Object.entries(newState).forEach(([field]) => {
         if (this.#state[field] !== newState[field]) {
-          this.#state = newState;
           this.#eventTarget.dispatchEvent(new CustomEvent(`STATE_CHANGED.${field}`, {
             detail: newState,
           }));
         }
       });
+      this.#state = newState;
     }, this.#applicationContext);
   }
 
