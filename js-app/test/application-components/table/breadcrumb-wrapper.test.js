@@ -8,14 +8,13 @@ import {jest} from '@jest/globals';
 describe('BreadcrumbWrapper', () => {
   let stateManagementService;
   let stateListeners = {};
-  let addStateListenerMock;
   let dispatchMock;
 
   beforeEach(() => {
     stateManagementService = new StateManagementService({}, {}, {});
 
     stateListeners = {};
-    addStateListenerMock = jest.spyOn(stateManagementService, 'addStateListener')
+    jest.spyOn(stateManagementService, 'addStateListener')
         .mockImplementation((field, listener)=>{
           stateListeners[field] = listener;
         });
@@ -32,6 +31,21 @@ describe('BreadcrumbWrapper', () => {
     expect(dispatchMock).toHaveBeenCalledTimes(2);
     expect(dispatchMock).toHaveBeenCalledWith(new LoadUserAction);
     expect(dispatchMock).toHaveBeenCalledWith(new LoadFolderInfoAction('123'));
+  });
+
+  test(`Should not dispatch LoadUserAction and LoadFolderInfoAction`, function() {
+    expect.assertions(1);
+
+    jest.spyOn(stateManagementService, 'state', 'get')
+        .mockImplementation(()=>{
+          return {
+            userProfile: {},
+          };
+        });
+
+    new BreadcrumbWrapper(stateManagementService);
+
+    expect(dispatchMock).toHaveBeenCalledTimes(0);
   });
 
   test(`Should add state listeners.`, function() {
@@ -112,18 +126,4 @@ describe('BreadcrumbWrapper', () => {
           {name: '...', linkListener: ()=>{}},
           {name: 'Folder'}]+'');
   });
-
 });
-
-// if (!!state.folderInfo) {
-//   if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
-//     path = [
-//       {name: 'Home', linkListener: ()=>{}},
-//       {name: state.folderInfo.name}];
-//   } else if (state.folderInfo.parentId != null) {
-//     path = [
-//       {name: 'Home', linkListener: ()=>{}},
-//       {name: '...', linkListener: ()=>{}},
-//       {name: state.folderInfo.name}];
-//   }
-// }

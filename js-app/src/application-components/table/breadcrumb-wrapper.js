@@ -40,8 +40,8 @@ export class BreadcrumbWrapper {
     });
 
     this.#stateManagementService.addStateListener('folderInfo', (state) => {
-      let path = [{name: 'Home'}];
       if (!!state.folderInfo) {
+        let path = [{name: 'Home'}];
         if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
           path = [
             {name: 'Home', linkListener: ()=>{}},
@@ -52,8 +52,10 @@ export class BreadcrumbWrapper {
             {name: '...', linkListener: ()=>{}},
             {name: state.folderInfo.name}];
         }
+        breadcrumb.path = path;
+      } else {
+        breadcrumb.path = {};
       }
-      breadcrumb.path = path;
     });
 
     this.#stateManagementService.addStateListener('folderInfoError', (state) => {
