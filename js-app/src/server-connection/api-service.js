@@ -126,6 +126,9 @@ export class ApiService {
    */
   async loadFolderContent(folderId) {
     return this.#requestService.get(LOAD_FOLDER_PATH+folderId+'/content', this.#userToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
         .then((response) => {
           if (response.status !== 200) {
             throw new ApiServiceError();
