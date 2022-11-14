@@ -61,7 +61,7 @@ export class RouterConfigBuilder {
    * Adds page to router config.
    *
    * @param {string} path
-   * @param {Function} route
+   * @param {function(object)} route
    * @returns {RouterConfigBuilder}
    */
   addRoute(path, route) {
