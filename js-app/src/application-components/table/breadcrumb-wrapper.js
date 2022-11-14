@@ -1,7 +1,7 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {LoadUserAction} from '../../state-management/user/load-user-action';
-import {StateManagementService} from '../../state-management/state-management-service';
+import {ApplicationContext} from '../../application-context';
 
 /**
  * Breadcrumb wrapper for state change listening.
@@ -10,21 +10,21 @@ export class BreadcrumbWrapper {
   #stateManagementService;
 
   /**
-   * @param {StateManagementService} stateManagementService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(stateManagementService) {
-    this.#stateManagementService = stateManagementService;
+  constructor(applicationContext) {
+    this.#stateManagementService = applicationContext.stateManagementService;
 
-    const state = stateManagementService.state;
+    const state = this.#stateManagementService.state;
 
     if (state.userProfile == null && !state.isUserProfileLoading) {
-      stateManagementService.dispatch(new LoadUserAction());
+      this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
     }
 
-    stateManagementService.addStateListener('userProfile', (state)=>{
+    this.#stateManagementService.addStateListener('userProfile', (state)=>{
       if (state.userProfile) {
-        stateManagementService.dispatch(
-            new LoadFolderInfoAction(state.userProfile.rootFolderId));
+        this.#stateManagementService.dispatch(
+            new LoadFolderInfoAction(state.userProfile.rootFolderId, applicationContext.apiService));
       }
     });
   }
@@ -42,7 +42,7 @@ export class BreadcrumbWrapper {
     this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (!!state.folderInfo) {
         let path = [{name: 'Home'}];
-        if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
+        if (state.folderInfo.parentId === state?.userProfile?.rootFolderId) {
           path = [
             {name: 'Home', linkListener: ()=>{}},
             {name: state.folderInfo.name}];

@@ -1,5 +1,4 @@
 import {Action} from './action';
-import {ApplicationContext} from '../application-context';
 import {State} from './state';
 
 /**
@@ -9,21 +8,18 @@ export class StateManagementService {
   #eventTarget;
   #mutators;
   #state;
-  #applicationContext;
 
   /**
    * @param {object} mutators
    * @param {State} state
-   * @param {ApplicationContext} applicationContext
    */
-  constructor(mutators, state, applicationContext) {
+  constructor(mutators, state) {
     if (state == null) {
       throw new Error('Initial state is not valid');
     }
     this.#eventTarget = new EventTarget();
     this.#mutators = mutators || {};
     this.#state = state;
-    this.#applicationContext = applicationContext;
   }
 
   /**
@@ -34,15 +30,16 @@ export class StateManagementService {
   dispatch(action) {
     action.execute((mutatorKey, payload) => {
       const newState = this.#mutators[mutatorKey](this.#state, payload);
+      const clonedState = this.state;
+      this.#state = newState;
       Object.entries(newState).forEach(([field]) => {
-        if (this.#state[field] !== newState[field]) {
+        if (clonedState[field] !== newState[field]) {
           this.#eventTarget.dispatchEvent(new CustomEvent(`STATE_CHANGED.${field}`, {
             detail: newState,
           }));
         }
       });
-      this.#state = newState;
-    }, this.#applicationContext);
+    });
   }
 
   /**
