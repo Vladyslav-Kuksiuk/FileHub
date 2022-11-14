@@ -1,4 +1,4 @@
-import {STATE} from './state';
+import {State} from './state';
 
 export const MUTATOR_NAMES = {
   SET_IS_USER_PROFILE_LOADING: 'isUserProfileLoading',
@@ -44,12 +44,18 @@ export const MUTATORS = {
     return new State({...state, folderInfoError: error});
   },
   [MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING]: (state, isLoading) =>{
-    return {...state, [STATE.IS_FOLDER_CONTENT_LOADING]: isLoading};
+    if (isLoading) {
+      return new State({...state,
+        isFolderContentLoading: isLoading,
+        folderContent: null,
+        folderContentError: null});
+    }
+    return new State({...state, isFolderContentLoading: isLoading});
   },
   [MUTATOR_NAMES.SET_FOLDER_CONTENT]: (state, folderContent) =>{
-    return {...state, [STATE.FOLDER_CONTENT]: folderContent};
+    return new State({...state, folderContent: folderContent});
   },
   [MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR]: (state, error) =>{
-    return {...state, [STATE.FOLDER_CONTENT_ERROR]: error};
+    return new State({...state, folderContentError: error});
   },
 };

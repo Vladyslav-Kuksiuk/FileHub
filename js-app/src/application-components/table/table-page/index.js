@@ -6,6 +6,8 @@ import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
 import {UserInfo} from '../../../components/user-info';
+import {FolderContentWrapper} from '../folder-content-wrapper';
+import {FolderContent} from '../../../components/folder-content';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const USER_INFO_SLOT = 'user-info-slot';
@@ -48,6 +50,10 @@ export class TablePage extends Component {
         false,
         [{name: 'Home'}],
     ));
+
+    const folderContentWrapper = new FolderContentWrapper(this.#stateManagementService);
+    const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
+    folderContentWrapper.wrap(new FolderContent(folderContentSlot, true, false, [], []));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();

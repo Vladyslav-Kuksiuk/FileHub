@@ -1,7 +1,4 @@
 import {Component} from '../component';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {FOLDER_CONTENT_ITEM, FOLDER_ITEMS, FOLDER_TYPE, STATE} from '../../state-management/state';
-import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {Link} from '../link';
 
 const FOLDER_LINK = 'folder-link-';
@@ -10,34 +7,39 @@ const FOLDER_LINK = 'folder-link-';
  * User panel component.
  */
 export class FolderContent extends Component {
-  #stateManagementService;
-  #error;
+  #hasError;
   #folders;
   #files;
   #isLoading;
 
   /**
-   * @param {HTMLElement} parent
-   * @param {StateManagementService} stateManagementService
+   * @typedef Folder
+   * @param {string} name
+   * @param {Function} linkListener
    */
-  constructor(parent, stateManagementService) {
+
+  /**
+   * @typedef File
+   * @param {string} name
+   * @param {string} type
+   * @param {string} size
+   */
+
+  /**
+   * @param {HTMLElement} parent
+   * @param {boolean} isLoading
+   * @param {boolean} hasError
+   * @param {Folder[]} folders
+   * @param {File[]} files
+   */
+  constructor(parent, isLoading, hasError, folders, files) {
     super(parent);
 
-    this.#stateManagementService = stateManagementService;
-    const state = stateManagementService.state;
-    this.#error = state[STATE.FOLDER_CONTENT_ERROR];
-    this.#setFolderContent(state[STATE.FOLDER_CONTENT]);
-    this.#isLoading = state[STATE.IS_FOLDER_CONTENT_LOADING];
+    this.#isLoading = isLoading;
+    this.#hasError = hasError;
+    this.#folders = folders;
+    this.#files = files;
 
-    this.#stateManagementService.addStateListener(STATE.FOLDER_CONTENT, (state) => {
-      this.#setFolderContent(state[STATE.FOLDER_CONTENT]);
-    });
-    this.#stateManagementService.addStateListener(STATE.IS_FOLDER_CONTENT_LOADING, (state) => {
-      this.#setIsLoading(state[STATE.IS_FOLDER_CONTENT_LOADING]);
-    });
-    this.#stateManagementService.addStateListener(STATE.FOLDER_CONTENT_ERROR, (state) => {
-      this.#setError(state[STATE.FOLDER_CONTENT_ERROR]);
-    });
     this.init();
   }
 
@@ -48,41 +50,37 @@ export class FolderContent extends Component {
     this.#folders.forEach((folder, index) => {
       const linkSlot = this.rootElement.querySelector(`[data-td="${FOLDER_LINK + index}"]`);
       if (linkSlot) {
-        const link = new Link(linkSlot, folder[FOLDER_CONTENT_ITEM.NAME]);
-        link.onClick(() => {
-          this.#stateManagementService.dispatch(new LoadFolderInfoAction(folder[FOLDER_CONTENT_ITEM.ID]));
-        });
+        const link = new Link(linkSlot, folder.name);
+        link.onClick(folder.linkListener);
       }
     });
   }
 
   /**
-   * @param {object} folderContent
-   * @private
+   * @param {boolean} value
    */
-  #setFolderContent(folderContent) {
-    this.#folders = folderContent?.[FOLDER_ITEMS]
-        ?.filter((item) => item[FOLDER_CONTENT_ITEM.TYPE] === FOLDER_TYPE) || [];
-    this.#files = folderContent?.[FOLDER_ITEMS]
-        ?.filter((item) => item[FOLDER_CONTENT_ITEM.TYPE] !== FOLDER_TYPE) || [];
+  set isLoading(value) {
+    this.#isLoading = value;
     this.render();
   }
 
   /**
-   * @param {string} error
-   * @private
+   * @param {boolean} value
    */
-  #setError(error) {
-    this.#error = error;
+  set hasError(value) {
+    this.#hasError = value;
     this.render();
   }
 
   /**
-   * @param {boolean} isLoading
-   * @private
+   * Set folder content.
+   *
+   * @param {Folder[]} folders
+   * @param {File[]} files
    */
-  #setIsLoading(isLoading) {
-    this.#isLoading = isLoading;
+  setContent(folders, files) {
+    this.#folders = folders;
+    this.#files = files;
     this.render();
   }
 
@@ -98,7 +96,7 @@ export class FolderContent extends Component {
                     </div>`;
     }
 
-    if (this.#error) {
+    if (this.#hasError) {
       return `<div ${this.markElement('folder-content-error')} class="table-wrapper">
                         <p class="centered-in-table text-danger">
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -152,9 +150,9 @@ export class FolderContent extends Component {
                     <td class="cell-icon">
                         <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
                     </td>
-                    <td class="cell-name">${file[FOLDER_CONTENT_ITEM.NAME]}</td>
-                    <td class="cell-type">${file[FOLDER_CONTENT_ITEM.TYPE]}</td>
-                    <td class="cell-size">${file[FOLDER_CONTENT_ITEM.SIZE]}</td>
+                    <td class="cell-name">${file.name}</td>
+                    <td class="cell-type">${file.type}</td>
+                    <td class="cell-size">${file.size}</td>
                     <td class="cell-buttons">
                         <div class="data-buttons-container">
                             <button class="icon-button"

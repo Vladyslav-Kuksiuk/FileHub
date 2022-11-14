@@ -34,14 +34,15 @@ export class StateManagementService {
   dispatch(action) {
     action.execute((mutatorKey, payload) => {
       const newState = this.#mutators[mutatorKey](this.#state, payload);
+      const clonedState = this.state;
+      this.#state = newState;
       Object.entries(newState).forEach(([field]) => {
-        if (this.#state[field] !== newState[field]) {
+        if (clonedState[field] !== newState[field]) {
           this.#eventTarget.dispatchEvent(new CustomEvent(`STATE_CHANGED.${field}`, {
             detail: newState,
           }));
         }
       });
-      this.#state = newState;
     }, this.#applicationContext);
   }
 

@@ -25,8 +25,8 @@ export class LoadFolderContentAction extends Action {
 
     return applicationContext.apiService
         .loadFolderContent(this.#folderId)
-        .then((body) => {
-          executor(MUTATOR_NAMES.SET_FOLDER_CONTENT, body);
+        .then((folderContent) => {
+          executor(MUTATOR_NAMES.SET_FOLDER_CONTENT, folderContent);
         })
         .catch((error) => {
           executor(MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR, error.message);

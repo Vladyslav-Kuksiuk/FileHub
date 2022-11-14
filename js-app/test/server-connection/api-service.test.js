@@ -7,7 +7,7 @@ import {
   REGISTER_USER_PATH,
   LOG_OUT_USER_PATH,
   LOAD_USER_PATH,
-  LOAD_FOLDER_INFO_PATH,
+  LOAD_FOLDER_PATH,
 } from '../../src/server-connection/api-service';
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
@@ -322,7 +322,7 @@ describe('ApiService', () => {
       const apiService = new ApiService(requestService);
       await expect(apiService.loadFolderInfo(folderInfo.id)).resolves.toStrictEqual(folderInfo);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH + folderInfo.id, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + folderInfo.id, undefined);
     });
 
     test(`Should return error after loading folder info`, async function() {
@@ -338,7 +338,7 @@ describe('ApiService', () => {
       const apiService = new ApiService(requestService);
       await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH + 'notID', undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID', undefined);
     });
 
     test('Should return error after request error', async function() {
@@ -354,7 +354,7 @@ describe('ApiService', () => {
       const apiService = new ApiService(requestService);
       await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH + 'notID', undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID', undefined);
     });
   });
 });
