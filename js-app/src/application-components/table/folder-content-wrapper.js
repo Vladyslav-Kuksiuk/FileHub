@@ -1,13 +1,14 @@
-import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {StateManagementService} from '../../state-management/state-management-service';
 import {FolderContent} from '../../components/folder-content';
-import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
+
+const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
 /**
  * Breadcrumb wrapper for state change listening.
  */
 export class FolderContentWrapper {
+  #eventTarget = new EventTarget();
   #stateManagementService;
 
   /**
@@ -16,23 +17,8 @@ export class FolderContentWrapper {
   constructor(stateManagementService) {
     this.#stateManagementService = stateManagementService;
 
-    const state = stateManagementService.state;
-
-    if (state.userProfile == null && !state.isUserProfileLoading) {
-      stateManagementService.dispatch(new LoadUserAction());
-    }
-
-    if (state.folderInfo == null && !state.isFolderInfoLoading) {
-      stateManagementService.addStateListener('userProfile', (state) => {
-        if (state.userProfile) {
-          stateManagementService.dispatch(
-              new LoadFolderInfoAction(state.userProfile.rootFolderId));
-        }
-      });
-    }
-
     stateManagementService.addStateListener('folderInfo', (state) => {
-      if (state.folderInfo) {
+      if (state.folderInfo && !state.isFolderContentLoading) {
         stateManagementService.dispatch(
             new LoadFolderContentAction(state.folderInfo.id));
       }
@@ -52,6 +38,13 @@ export class FolderContentWrapper {
             .map((folder) => {
               return {
                 name: folder.name,
+                linkListener: ()=>{
+                  this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                    detail: {
+                      folderId: folder.id,
+                    },
+                  }));
+                },
               };
             });
 
@@ -76,6 +69,12 @@ export class FolderContentWrapper {
 
     this.#stateManagementService.addStateListener('folderContentError', (state) => {
       folderContentComponent.hasError = !!state.folderContentError;
+    });
+  }
+
+  onNavigateToFolder(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_FOLDER, (event)=>{
+      listener(event.detail.folderId);
     });
   }
 }

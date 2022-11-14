@@ -13,8 +13,10 @@ export class UserInfoWrapper {
    */
   constructor(stateManagementService) {
     this.#stateManagementService = stateManagementService;
-
-    stateManagementService.dispatch(new LoadUserAction());
+    const state = stateManagementService.state;
+    if (state.userProfile == null && !state.isUserProfileLoading) {
+      stateManagementService.dispatch(new LoadUserAction());
+    }
   }
 
   /**

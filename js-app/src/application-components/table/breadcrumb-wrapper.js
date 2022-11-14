@@ -1,12 +1,14 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
-import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {StateManagementService} from '../../state-management/state-management-service';
+
+const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
 /**
  * Breadcrumb wrapper for state change listening.
  */
 export class BreadcrumbWrapper {
+  #eventTarget = new EventTarget();
   #stateManagementService;
 
   /**
@@ -15,16 +17,18 @@ export class BreadcrumbWrapper {
   constructor(stateManagementService) {
     this.#stateManagementService = stateManagementService;
 
-    const state = stateManagementService.state;
-
-    if (state.userProfile == null && !state.isUserProfileLoading) {
-      stateManagementService.dispatch(new LoadUserAction());
-    }
-
     stateManagementService.addStateListener('userProfile', (state)=>{
-      if (state.userProfile) {
-        stateManagementService.dispatch(
-            new LoadFolderInfoAction(state.userProfile.rootFolderId));
+      if (state.userProfile && !state.isFolderInfoLoading) {
+        if (state.locationFolderId) {
+          stateManagementService.dispatch(
+              new LoadFolderInfoAction(state.locationFolderId));
+        } else {
+          this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+            detail: {
+              folderId: state.userProfile.rootFolderId,
+            },
+          }));
+        }
       }
     });
   }
@@ -44,12 +48,33 @@ export class BreadcrumbWrapper {
         let path = [{name: 'Home'}];
         if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
           path = [
-            {name: 'Home'},
+            {name: 'Home',
+              linkListener: ()=>{
+                this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                  detail: {
+                    folderId: state.userProfile.rootFolderId,
+                  },
+                }));
+              }},
             {name: state.folderInfo.name}];
         } else if (state.folderInfo.parentId != null) {
           path = [
-            {name: 'Home'},
-            {name: '...'},
+            {name: 'Home',
+              linkListener: ()=>{
+                this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                  detail: {
+                    folderId: state.userProfile.rootFolderId,
+                  },
+                }));
+              }},
+            {name: '...',
+              linkListener: ()=>{
+                this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                  detail: {
+                    folderId: state.folderInfo.parentId,
+                  },
+                }));
+              }},
             {name: state.folderInfo.name}];
         }
         breadcrumb.path = path;
@@ -60,6 +85,12 @@ export class BreadcrumbWrapper {
 
     this.#stateManagementService.addStateListener('folderInfoError', (state) => {
       breadcrumb.hasError = !!state.folderInfoError;
+    });
+  }
+
+  onNavigateToFolder(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_FOLDER, (event)=>{
+      listener(event.detail.folderId);
     });
   }
 }

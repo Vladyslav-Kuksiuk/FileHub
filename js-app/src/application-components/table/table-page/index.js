@@ -10,6 +10,7 @@ import {FolderContentWrapper} from '../folder-content-wrapper';
 import {FolderContent} from '../../../components/folder-content';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
+const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
 const FOLDER_CONTENT_SLOT = 'folder-content-slot';
@@ -50,10 +51,24 @@ export class TablePage extends Component {
         false,
         [{name: 'Home'}],
     ));
+    breadcrumbWrapper.onNavigateToFolder((folderId)=>{
+      this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+        detail: {
+          folderId: folderId,
+        },
+      }));
+    });
 
     const folderContentWrapper = new FolderContentWrapper(this.#stateManagementService);
     const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
     folderContentWrapper.wrap(new FolderContent(folderContentSlot, true, false, [], []));
+    folderContentWrapper.onNavigateToFolder((folderId)=>{
+      this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+        detail: {
+          folderId: folderId,
+        },
+      }));
+    });
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
@@ -69,6 +84,12 @@ export class TablePage extends Component {
    */
   onNavigateToAuthorization(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT_AUTHORIZATION, listener);
+  }
+
+  onNavigateToFolder(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_FOLDER, (event)=>{
+      listener(event.detail.folderId);
+    });
   }
 
   /**

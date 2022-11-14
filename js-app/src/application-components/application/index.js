@@ -10,7 +10,7 @@ import {StateManagementService} from '../../state-management/state-management-se
 import {MUTATORS} from '../../state-management/mutators';
 import {State} from '../../state-management/state';
 import {ROUTE} from '../../router/routes';
-
+import {ChangeLocationAction} from '../../state-management/change-location-action';
 /**
  * Application component.
  */
@@ -21,6 +21,7 @@ export class Application extends Component {
   constructor(parent) {
     super(parent);
     this.init();
+    console.log('123');
 
     const applicationContext = new ApplicationContext();
     const state = new State();
@@ -42,7 +43,7 @@ export class Application extends Component {
             router.redirect(ROUTE.REGISTRATION);
           });
           page.onNavigateToTable(()=>{
-            router.redirect(ROUTE.TABLE);
+            router.redirect(ROUTE.FILE_LIST);
           });
         })
         .addRoute(ROUTE.REGISTRATION, () => {
@@ -53,14 +54,19 @@ export class Application extends Component {
             router.redirect(ROUTE.LOGIN);
           });
         })
-        .addRoute(ROUTE.TABLE, () => {
+        .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
+          console.log('reroute');
           this.rootElement.innerHTML = '';
+          stateManagementService.dispatch(new ChangeLocationAction(params.folderId));
           const page = new TablePage(this.rootElement, stateManagementService, applicationContext.titleService);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
           });
+          page.onNavigateToFolder((folderId)=>{
+            router.redirect(ROUTE.FILE_LIST+'/'+folderId);
+          });
         })
-        .addHomeRoutePath(ROUTE.TABLE)
+        .addHomeRoutePath(ROUTE.FILE_LIST)
         .build();
 
     const router = new Router(routerConfig);
