@@ -52,9 +52,6 @@ export class FolderContentWrapper {
             .map((folder) => {
               return {
                 name: folder.name,
-                linkListener: () => {
-                  this.#stateManagementService.dispatch(new LoadFolderInfoAction(folder.id));
-                },
               };
             });
 

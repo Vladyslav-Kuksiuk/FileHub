@@ -19,8 +19,6 @@ export class LoadFolderContentAction extends Action {
    * @inheritDoc
    */
   execute(executor, applicationContext) {
-    executor(MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR, null);
-    executor(MUTATOR_NAMES.SET_FOLDER_CONTENT, null);
     executor(MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING, true);
 
     return applicationContext.apiService
