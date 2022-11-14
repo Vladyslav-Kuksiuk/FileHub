@@ -104,8 +104,7 @@ export class FolderContent extends Component {
                         </p>
                     </div>`;
     }
-
-    if (this.#folders.length === 0 && this.#files === 0) {
+    if (this.#folders.length === 0 && this.#files.length === 0) {
       return `<div ${this.markElement('folder-content-empty')} class="table-wrapper">
                         <p class="centered-in-table">
                             There are no files/directories created yet.
