@@ -11,20 +11,21 @@ describe('LogOutUserAction', () => {
   });
 
   test(`Should call executor with user profile`, function() {
-    expect.assertions(3);
+    expect.assertions(4);
 
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'logOut')
         .mockImplementation(async ()=>{});
 
-    const action = new LogOutUserAction();
+    const action = new LogOutUserAction(applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
-      expect(executor).toHaveBeenCalledTimes(1);
+      expect(executor).toHaveBeenCalledTimes(2);
       expect(executor).toHaveBeenCalledWith(MUTATOR_NAMES.SET_USER_PROFILE, null);
+      expect(executor).toHaveBeenCalledWith(MUTATOR_NAMES.SET_FOLDER_INFO, null);
     });
   });
 
@@ -39,11 +40,11 @@ describe('LogOutUserAction', () => {
           throw new Error(errorMessage);
         });
 
-    const action = new LogOutUserAction();
+    const action = new LogOutUserAction(applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledWith(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, errorMessage);

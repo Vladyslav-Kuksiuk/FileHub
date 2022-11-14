@@ -27,11 +27,11 @@ describe('LoadFolderInfoAction', () => {
           return folderInfo;
         });
 
-    const action = new LoadFolderInfoAction(folderInfo.id);
+    const action = new LoadFolderInfoAction(folderInfo.id, applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, true);
@@ -51,11 +51,11 @@ describe('LoadFolderInfoAction', () => {
           throw new Error(error);
         });
 
-    const action = new LoadFolderInfoAction();
+    const action = new LoadFolderInfoAction('id', applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, true);
