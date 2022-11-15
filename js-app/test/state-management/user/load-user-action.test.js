@@ -25,11 +25,11 @@ describe('LoadUserAction', () => {
           return userProfile;
         });
 
-    const action = new LoadUserAction();
+    const action = new LoadUserAction(applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, true);
@@ -49,11 +49,11 @@ describe('LoadUserAction', () => {
           throw new Error(error);
         });
 
-    const action = new LoadUserAction();
+    const action = new LoadUserAction(applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, true);

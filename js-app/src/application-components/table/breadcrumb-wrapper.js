@@ -1,6 +1,7 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
-import {StateManagementService} from '../../state-management/state-management-service';
+import {LoadUserAction} from '../../state-management/user/load-user-action';
+import {ApplicationContext} from '../../application-context';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -12,26 +13,31 @@ export class BreadcrumbWrapper {
   #stateManagementService;
 
   /**
-   * @param {StateManagementService} stateManagementService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(stateManagementService) {
-    this.#stateManagementService = stateManagementService;
+  constructor(applicationContext) {
+    this.#stateManagementService = applicationContext.stateManagementService;
 
-    stateManagementService.addStateListener('userProfile', (state)=>{
-      if (state.userProfile && !state.isFolderInfoLoading) {
+    const state = this.#stateManagementService.state;
+
+    if (state.userProfile == null && !state.isUserProfileLoading) {
+      this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
+    }
+
+    this.#stateManagementService.addStateListener('userProfile', (state)=>{
+      if (state.userProfile) {
         if (state.locationFolderId) {
-          stateManagementService.dispatch(
-              new LoadFolderInfoAction(state.locationFolderId));
+          this.#stateManagementService.dispatch(
+              new LoadFolderInfoAction(state.locationFolderId, applicationContext.apiService));
         } else {
           this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
             detail: {
               folderId: state.userProfile.rootFolderId,
             },
           }));
-        }
       }
-    });
-  }
+    }
+  })}
 
   /**
    * Adds state listeners to Breadcrumb component.
@@ -46,7 +52,7 @@ export class BreadcrumbWrapper {
     this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (!!state.folderInfo) {
         let path = [{name: 'Home'}];
-        if (state.folderInfo.parentId === state.userProfile.rootFolderId) {
+        if (state.folderInfo.parentId === state?.userProfile?.rootFolderId) {
           path = [
             {name: 'Home',
               linkListener: ()=>{

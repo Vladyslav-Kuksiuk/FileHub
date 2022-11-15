@@ -1,4 +1,4 @@
-import {StateManagementService} from '../../../src/state-management/state-management-service';
+import {ApplicationContext} from '../../../src/application-context';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
@@ -7,39 +7,45 @@ import {FolderContent} from '../../../src/components/folder-content';
 import {jest} from '@jest/globals';
 
 describe('FolderContentWrapper', () => {
-  let stateManagementService;
+  let applicationContext;
   let stateListeners = {};
   let dispatchMock;
 
   beforeEach(() => {
-    stateManagementService = new StateManagementService({}, {}, {});
+    applicationContext = new ApplicationContext();
 
     stateListeners = {};
-    jest.spyOn(stateManagementService, 'addStateListener')
+    jest.spyOn(applicationContext.stateManagementService, 'addStateListener')
         .mockImplementation((field, listener)=>{
           stateListeners[field] = listener;
         });
-    dispatchMock = jest.spyOn(stateManagementService, 'dispatch')
+    dispatchMock = jest.spyOn(applicationContext.stateManagementService, 'dispatch')
         .mockImplementation(()=>{});
   });
 
   test(`Should dispatch LoadUserAction, LoadFolderInfoAction, LoadFolderContentAction`, function() {
     expect.assertions(4);
 
-    new FolderContentWrapper(stateManagementService);
+    new FolderContentWrapper(applicationContext);
 
-    stateListeners.userProfile?.({userProfile: {rootFolderId: 'root'}});
-    stateListeners.folderInfo?.({folderInfo: {id: 'folder'}});
+    stateListeners.userProfile?.({
+      userProfile: {rootFolderId: 'root',
+      }});
+
+    stateListeners.folderInfo?.({
+      userProfile: {rootFolderId: 'root'},
+      folderInfo: {id: 'folder'}});
+
     expect(dispatchMock).toHaveBeenCalledTimes(3);
-    expect(dispatchMock).toHaveBeenCalledWith(new LoadUserAction);
-    expect(dispatchMock).toHaveBeenCalledWith(new LoadFolderInfoAction('root'));
-    expect(dispatchMock).toHaveBeenCalledWith(new LoadFolderContentAction('folder'));
+    expect(dispatchMock).toHaveBeenCalledWith(new LoadUserAction(applicationContext.apiService));
+    expect(dispatchMock).toHaveBeenCalledWith(new LoadFolderInfoAction('root', applicationContext.apiService));
+    expect(dispatchMock).toHaveBeenCalledWith(new LoadFolderContentAction('folder', applicationContext.apiService));
   });
 
   test(`Should add state listeners`, function() {
     expect.assertions(6);
 
-    const wrapper = new FolderContentWrapper(stateManagementService);
+    const wrapper = new FolderContentWrapper(applicationContext);
     const folderContent = new FolderContent(document.body, false, false, [], []);
 
     const isLoadingMock = jest.spyOn(folderContent, 'isLoading', 'set').mockImplementation(()=>{});

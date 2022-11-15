@@ -1,5 +1,4 @@
 import {Action} from './action';
-import {ApplicationContext} from '../application-context';
 import {State} from './state';
 
 /**
@@ -9,21 +8,18 @@ export class StateManagementService {
   #eventTarget;
   #mutators;
   #state;
-  #applicationContext;
 
   /**
    * @param {object} mutators
    * @param {State} state
-   * @param {ApplicationContext} applicationContext
    */
-  constructor(mutators, state, applicationContext) {
+  constructor(mutators, state) {
     if (state == null) {
       throw new Error('Initial state is not valid');
     }
     this.#eventTarget = new EventTarget();
     this.#mutators = mutators || {};
     this.#state = state;
-    this.#applicationContext = applicationContext;
   }
 
   /**
@@ -43,7 +39,7 @@ export class StateManagementService {
           }));
         }
       });
-    }, this.#applicationContext);
+    });
   }
 
   /**

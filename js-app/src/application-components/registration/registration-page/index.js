@@ -1,7 +1,6 @@
 import {Component} from '../../../components/component';
 import {RegistrationForm} from '../registration-form';
-import {TitleService} from '../../../title-service';
-import {ApiService} from '../../../server-connection/api-service';
+import {ApplicationContext} from '../../../application-context';
 import {FieldValidationError} from '../../../server-connection/field-validation-error';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
@@ -15,13 +14,12 @@ export class RegistrationPage extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {TitleService} titleService
-   * @param {ApiService} apiService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, titleService, apiService) {
+  constructor(parent, applicationContext) {
     super(parent);
-    titleService.setTitles(['Sign Up']);
-    this.#apiService = apiService;
+    applicationContext.titleService.setTitles(['Sign Up']);
+    this.#apiService = applicationContext.apiService;
     this.init();
   }
 

@@ -1,7 +1,6 @@
 import {Component} from '../../../components/component';
 import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
-import {StateManagementService} from '../../../state-management/state-management-service';
-import {TitleService} from '../../../title-service';
+import {ApplicationContext} from '../../../application-context';
 import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
@@ -21,16 +20,17 @@ const FOLDER_CONTENT_SLOT = 'folder-content-slot';
 export class TablePage extends Component {
   #eventTarget = new EventTarget();
   #stateManagementService;
+  #applicationContext;
 
   /**
    * @param {HTMLElement} parent
-   * @param {StateManagementService} stateManagementService
-   * @param {TitleService} titleService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, stateManagementService, titleService) {
+  constructor(parent, applicationContext) {
     super(parent);
-    titleService.setTitles(['Table']);
-    this.#stateManagementService = stateManagementService;
+    this.#applicationContext = applicationContext;
+    applicationContext.titleService.setTitles(['Table']);
+    this.#stateManagementService = applicationContext.stateManagementService;
     this.init();
   }
 
@@ -38,16 +38,16 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    const userInfoWrapper = new UserInfoWrapper(this.#stateManagementService);
+    const userInfoWrapper = new UserInfoWrapper(this.#applicationContext);
     const userInfoSlot = this.getSlot(USER_INFO_SLOT);
     userInfoWrapper.wrap(
-        new UserInfo(userInfoSlot, true, null, false));
+        new UserInfo(userInfoSlot, false, null, false));
 
-    const breadcrumbWrapper = new BreadcrumbWrapper(this.#stateManagementService);
+    const breadcrumbWrapper = new BreadcrumbWrapper(this.#applicationContext);
     const breadcrumbSlot = this.getSlot(BREADCRUMB_SLOT);
     breadcrumbWrapper.wrap(new Breadcrumb(
         breadcrumbSlot,
-        true,
+        false,
         false,
         [{name: 'Home'}],
     ));
@@ -59,7 +59,7 @@ export class TablePage extends Component {
       }));
     });
 
-    const folderContentWrapper = new FolderContentWrapper(this.#stateManagementService);
+    const folderContentWrapper = new FolderContentWrapper(this.#applicationContext);
     const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
     folderContentWrapper.wrap(new FolderContent(folderContentSlot, true, false, [], []));
     folderContentWrapper.onNavigateToFolder((folderId)=>{
@@ -72,7 +72,7 @@ export class TablePage extends Component {
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
-      this.#stateManagementService.dispatch(new LogOutUserAction());
+      this.#stateManagementService.dispatch(new LogOutUserAction(this.#applicationContext.apiService));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
   }

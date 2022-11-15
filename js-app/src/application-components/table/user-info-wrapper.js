@@ -1,6 +1,6 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
-import {StateManagementService} from '../../state-management/state-management-service';
 import {UserInfo} from '../../components/user-info';
+import {ApplicationContext} from '../../application-context';
 
 /**
  * Breadcrumb wrapper for state change listening.
@@ -9,13 +9,13 @@ export class UserInfoWrapper {
   #stateManagementService;
 
   /**
-   * @param {StateManagementService} stateManagementService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(stateManagementService) {
-    this.#stateManagementService = stateManagementService;
+  constructor(applicationContext) {
+    this.#stateManagementService = applicationContext.stateManagementService;
     const state = stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
-      stateManagementService.dispatch(new LoadUserAction());
+      this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
     }
   }
 

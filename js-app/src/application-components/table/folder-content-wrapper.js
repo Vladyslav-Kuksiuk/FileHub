@@ -1,4 +1,4 @@
-import {StateManagementService} from '../../state-management/state-management-service';
+import {ApplicationContext} from '../../application-context';
 import {FolderContent} from '../../components/folder-content';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 
@@ -12,15 +12,15 @@ export class FolderContentWrapper {
   #stateManagementService;
 
   /**
-   * @param {StateManagementService} stateManagementService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(stateManagementService) {
-    this.#stateManagementService = stateManagementService;
+  constructor(applicationContext) {
+    this.#stateManagementService = applicationContext.stateManagementService;
 
     stateManagementService.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {
         stateManagementService.dispatch(
-            new LoadFolderContentAction(state.folderInfo.id));
+            new LoadFolderContentAction(state.folderInfo.id, applicationContext.apiService));
       }
     });
   }
