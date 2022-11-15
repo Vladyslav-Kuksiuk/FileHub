@@ -1,5 +1,5 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
-import {StateManagementService} from '../../state-management/state-management-service';
+import {ApplicationContext} from '../../application-context';
 import {FolderContent} from '../../components/folder-content';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
@@ -11,30 +11,28 @@ export class FolderContentWrapper {
   #stateManagementService;
 
   /**
-   * @param {StateManagementService} stateManagementService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(stateManagementService) {
-    this.#stateManagementService = stateManagementService;
+  constructor(applicationContext) {
+    this.#stateManagementService = applicationContext.stateManagementService;
 
-    const state = stateManagementService.state;
+    const state = this.#stateManagementService.state;
 
     if (state.userProfile == null && !state.isUserProfileLoading) {
-      stateManagementService.dispatch(new LoadUserAction());
+      this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
     }
 
-    if (state.folderInfo == null && !state.isFolderInfoLoading) {
-      stateManagementService.addStateListener('userProfile', (state) => {
-        if (state.userProfile) {
-          stateManagementService.dispatch(
-              new LoadFolderInfoAction(state.userProfile.rootFolderId));
-        }
-      });
-    }
+    this.#stateManagementService.addStateListener('userProfile', (state) => {
+      if (state.userProfile) {
+        this.#stateManagementService.dispatch(
+            new LoadFolderInfoAction(state.userProfile.rootFolderId, applicationContext.apiService));
+      }
+    });
 
-    stateManagementService.addStateListener('folderInfo', (state) => {
+    this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (state.folderInfo) {
-        stateManagementService.dispatch(
-            new LoadFolderContentAction(state.folderInfo.id));
+        this.#stateManagementService.dispatch(
+            new LoadFolderContentAction(state.folderInfo.id, applicationContext.apiService));
       }
     });
   }

@@ -1,4 +1,5 @@
 import {Action} from '../action';
+import {ApiService} from '../../server-connection/api-service';
 import {MUTATOR_NAMES} from '../mutators';
 
 /**
@@ -6,22 +7,25 @@ import {MUTATOR_NAMES} from '../mutators';
  */
 export class LoadFolderContentAction extends Action {
   #folderId;
+  #apiService;
 
   /**
    * @param {string} folderId
+   * @param {ApiService} apiService
    */
-  constructor(folderId) {
+  constructor(folderId, apiService) {
     super();
     this.#folderId = folderId;
+    this.#apiService = apiService;
   }
 
   /**
    * @inheritDoc
    */
-  execute(executor, applicationContext) {
+  execute(executor) {
     executor(MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING, true);
 
-    return applicationContext.apiService
+    return this.#apiService
         .loadFolderContent(this.#folderId)
         .then((folderContent) => {
           executor(MUTATOR_NAMES.SET_FOLDER_CONTENT, folderContent);

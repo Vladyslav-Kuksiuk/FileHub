@@ -51,7 +51,7 @@ export class TablePage extends Component {
         [{name: 'Home'}],
     ));
 
-    const folderContentWrapper = new FolderContentWrapper(this.#stateManagementService);
+    const folderContentWrapper = new FolderContentWrapper(this.#applicationContext);
     const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
     folderContentWrapper.wrap(new FolderContent(folderContentSlot, true, false, [], []));
 

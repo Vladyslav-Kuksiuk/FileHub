@@ -19,11 +19,11 @@ describe('LoadFolderContentAction', () => {
           return {};
         });
 
-    const action = new LoadFolderContentAction('id');
+    const action = new LoadFolderContentAction('id', applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING, true);
@@ -43,11 +43,11 @@ describe('LoadFolderContentAction', () => {
           throw new Error(error);
         });
 
-    const action = new LoadFolderContentAction('id');
+    const action = new LoadFolderContentAction('id', applicationContext.apiService);
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING, true);

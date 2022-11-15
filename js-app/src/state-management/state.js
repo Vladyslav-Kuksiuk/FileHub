@@ -9,17 +9,17 @@ export class State {
   /**
    * @type {boolean}
    */
-  isUserProfileLoading = true;
+  isUserProfileLoading = false;
 
   /**
    * @type {boolean}
    */
-  isFolderInfoLoading = true;
+  isFolderInfoLoading = false;
 
   /**
    * @type {boolean}
    */
-  isFolderContentLoading = true;
+  isFolderContentLoading = false;
 
   /**
    * @type {UserProfile}
