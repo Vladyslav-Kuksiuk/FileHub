@@ -35,9 +35,10 @@ export class BreadcrumbWrapper {
               folderId: state.userProfile.rootFolderId,
             },
           }));
+        }
       }
-    }
-  })}
+    });
+  }
 
   /**
    * Adds state listeners to Breadcrumb component.

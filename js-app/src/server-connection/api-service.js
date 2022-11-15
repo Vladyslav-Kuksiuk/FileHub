@@ -125,7 +125,6 @@ export class ApiService {
    * @returns {Promise<FolderContentItem[] | ApiServiceError>}
    */
   async loadFolderContent(folderId) {
-    console.log(folderId);
     return this.#requestService.get(LOAD_FOLDER_PATH+folderId+'/content', this.#userToken)
         .catch(()=>{
           throw new ApiServiceError();

@@ -17,9 +17,9 @@ export class FolderContentWrapper {
   constructor(applicationContext) {
     this.#stateManagementService = applicationContext.stateManagementService;
 
-    stateManagementService.addStateListener('folderInfo', (state) => {
+    this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {
-        stateManagementService.dispatch(
+        this.#stateManagementService.dispatch(
             new LoadFolderContentAction(state.folderInfo.id, applicationContext.apiService));
       }
     });

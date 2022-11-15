@@ -49,9 +49,8 @@ export class Application extends Component {
           });
         })
         .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
-          console.log('reroute');
           this.rootElement.innerHTML = '';
-          stateManagementService.dispatch(new ChangeLocationAction(params.folderId));
+          applicationContext.stateManagementService.dispatch(new ChangeLocationAction(params.folderId));
           const page = new TablePage(this.rootElement, applicationContext);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
