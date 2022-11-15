@@ -20,7 +20,7 @@ describe('RegistrationPage', () => {
   test('Should create and render RegistrationPage component', function() {
     expect.assertions(4);
 
-    new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+    new RegistrationPage(document.body, applicationContext);
     expect(document.body.querySelectorAll('[data-td="form-component"]').length).toBe(1);
     expect(document.body.querySelector('main h1').textContent).toBe('Sign up to FileHub');
     expect(titleServiceMock).toHaveBeenCalledTimes(1);
@@ -31,7 +31,7 @@ describe('RegistrationPage', () => {
     return new Promise((done) => {
       expect.assertions(1);
 
-      const page = new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+      const page = new RegistrationPage(document.body, applicationContext);
 
       page.onNavigateToAuthorization(() => {
         expect(true).toBeTruthy();
@@ -49,7 +49,7 @@ describe('RegistrationPage', () => {
           .spyOn(applicationContext.apiService, 'register')
           .mockImplementation(async () => {});
 
-      const page = new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+      const page = new RegistrationPage(document.body, applicationContext);
 
       page.onNavigateToAuthorization(() => {
         expect(apiServiceMock).toHaveBeenCalledTimes(1);
@@ -73,7 +73,7 @@ describe('RegistrationPage', () => {
             throw new Error('Error message');
           });
 
-      new RegistrationPage(document.body, applicationContext.titleService, applicationContext.apiService);
+      new RegistrationPage(document.body, applicationContext);
 
       document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
       document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';

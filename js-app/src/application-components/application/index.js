@@ -6,9 +6,6 @@ import {Error404Page} from '../../components/error-404-page';
 import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../../application-context';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {MUTATORS} from '../../state-management/mutators';
-import {State} from '../../state-management/state';
 import {ROUTE} from '../../router/routes';
 
 /**
@@ -23,13 +20,11 @@ export class Application extends Component {
     this.init();
 
     const applicationContext = new ApplicationContext();
-    const state = new State();
-    const stateManagementService = new StateManagementService(MUTATORS, state, applicationContext);
 
     const routerConfig = new RouterConfigBuilder()
         .addErrorRoute(() => {
           this.rootElement.innerHTML = '';
-          const page = new Error404Page(this.rootElement, applicationContext.titleService);
+          const page = new Error404Page(this.rootElement, applicationContext);
           page.onNavigateToHome(() => {
             router.redirect('');
           });
@@ -37,7 +32,7 @@ export class Application extends Component {
         .addRoute(ROUTE.LOGIN, () => {
           this.rootElement.innerHTML = '';
           const page =
-            new AuthorizationPage(this.rootElement, applicationContext.titleService, applicationContext.apiService);
+            new AuthorizationPage(this.rootElement, applicationContext);
           page.onNavigateToRegistration(() => {
             router.redirect(ROUTE.REGISTRATION);
           });
@@ -48,14 +43,14 @@ export class Application extends Component {
         .addRoute(ROUTE.REGISTRATION, () => {
           this.rootElement.innerHTML = '';
           const page =
-            new RegistrationPage(this.rootElement, applicationContext.titleService, applicationContext.apiService);
+            new RegistrationPage(this.rootElement, applicationContext);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
           });
         })
         .addRoute(ROUTE.TABLE, () => {
           this.rootElement.innerHTML = '';
-          const page = new TablePage(this.rootElement, stateManagementService, applicationContext.titleService);
+          const page = new TablePage(this.rootElement, applicationContext);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
           });

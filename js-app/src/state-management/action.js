@@ -1,5 +1,3 @@
-import {ApplicationContext} from '../application-context';
-
 /**
  *  Base Action class.
  */
@@ -18,7 +16,6 @@ export class Action {
    *
    * @abstract
    * @param {Function} executor
-   * @param {ApplicationContext} applicationContext
    */
-  execute(executor, applicationContext) {}
+  execute(executor) {}
 }

@@ -1,16 +1,27 @@
 import {Action} from '../action';
+import {ApiService} from '../../server-connection/api-service';
 import {MUTATOR_NAMES} from '../mutators';
 
 /**
  * Action to perform user loading.
  */
 export class LoadUserAction extends Action {
+  #apiService;
+
+  /**
+   * @param {ApiService} apiService
+   */
+  constructor(apiService) {
+    super();
+    this.#apiService = apiService;
+  }
+
   /**
    * @inheritDoc
    */
-  execute(executor, applicationContext) {
+  execute(executor) {
     executor(MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, true);
-    return applicationContext.apiService
+    return this.#apiService
         .loadUser()
         .then((userProfile) => {
           executor(MUTATOR_NAMES.SET_USER_PROFILE, userProfile);
