@@ -50,6 +50,12 @@ export class BreadcrumbWrapper {
       breadcrumb.isLoading = state.isFolderInfoLoading;
     });
 
+    this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
+      if (state.isUserProfileLoading) {
+        breadcrumb.isLoading = true;
+      }
+    });
+
     this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (!!state.folderInfo) {
         let path = [{name: 'Home'}];

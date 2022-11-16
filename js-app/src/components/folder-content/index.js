@@ -1,5 +1,6 @@
 import {Component} from '../component';
 import {Link} from '../link';
+import {FileTypeIconFactory} from './file-type-icon-factory.js';
 
 const FOLDER_LINK = 'folder-link-';
 
@@ -11,6 +12,7 @@ export class FolderContent extends Component {
   #folders;
   #files;
   #isLoading;
+  #iconFactory;
 
   /**
    * @typedef Folder
@@ -39,6 +41,7 @@ export class FolderContent extends Component {
     this.#hasError = hasError;
     this.#folders = folders;
     this.#files = files;
+    this.#iconFactory = new FileTypeIconFactory();
 
     this.init();
   }
@@ -121,7 +124,7 @@ export class FolderContent extends Component {
                         <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
                     </td>
                     <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
+                        <span aria-hidden="true" class="glyphicon ${this.#iconFactory.getIcon('folder')}"></span>
                     </td>
                     <td class="cell-name">${this.addSlot(FOLDER_LINK + index)}</td>
                     <td class="cell-type">Folder</td>
@@ -147,7 +150,7 @@ export class FolderContent extends Component {
                 <tr>
                     <td class="cell-arrow"></td>
                     <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
+                        <span aria-hidden="true" class="glyphicon ${this.#iconFactory.getIcon(file.type)}"></span>
                     </td>
                     <td class="cell-name">${file.name}</td>
                     <td class="cell-type">${file.type}</td>

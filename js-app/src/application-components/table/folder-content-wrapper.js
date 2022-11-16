@@ -5,7 +5,7 @@ import {LoadFolderContentAction} from '../../state-management/folder/load-folder
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
 /**
- * Breadcrumb wrapper for state change listening.
+ * FolderContent wrapper for state change listening.
  */
 export class FolderContentWrapper {
   #eventTarget = new EventTarget();
@@ -65,6 +65,18 @@ export class FolderContentWrapper {
 
     this.#stateManagementService.addStateListener('isFolderContentLoading', (state) => {
       folderContentComponent.isLoading = state.isFolderContentLoading;
+    });
+
+    this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
+      if (state.isUserProfileLoading) {
+        folderContentComponent.isLoading = true;
+      }
+    });
+
+    this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
+      if (state.isFolderInfoLoading) {
+        folderContentComponent.isLoading = true;
+      }
     });
 
     this.#stateManagementService.addStateListener('folderContentError', (state) => {
