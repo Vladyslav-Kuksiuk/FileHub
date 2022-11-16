@@ -5,7 +5,7 @@ import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-in
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 
 /**
- * Breadcrumb wrapper for state change listening.
+ * FolderContent wrapper for state change listening.
  */
 export class FolderContentWrapper {
   #stateManagementService;
@@ -70,6 +70,18 @@ export class FolderContentWrapper {
 
     this.#stateManagementService.addStateListener('isFolderContentLoading', (state) => {
       folderContentComponent.isLoading = state.isFolderContentLoading;
+    });
+
+    this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
+      if (state.isUserProfileLoading) {
+        folderContentComponent.isLoading = true;
+      }
+    });
+
+    this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
+      if (state.isFolderInfoLoading) {
+        folderContentComponent.isLoading = true;
+      }
     });
 
     this.#stateManagementService.addStateListener('folderContentError', (state) => {

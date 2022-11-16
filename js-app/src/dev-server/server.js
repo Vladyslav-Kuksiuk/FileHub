@@ -33,7 +33,7 @@ const foldersContent = {
     },
     {
       name: 'MyFavouriteTrack.mp3',
-      type: 'MP3',
+      type: 'MP3 Audio',
       size: '1.34 MB',
       id: 'testUser-file-0',
 
@@ -47,13 +47,13 @@ const foldersContent = {
     },
     {
       name: 'MyFavouriteVideo.avi',
-      type: 'AVI',
+      type: 'AVI Movie',
       size: '3.4 GB',
       id: 'testUser-file-1',
     },
     {
-      name: 'MyFavouriteText.txt',
-      type: 'TXT',
+      name: 'MyFavouriteText.pdf',
+      type: 'PDF Document',
       size: '13 KB',
       id: 'testUser-file-2',
     },

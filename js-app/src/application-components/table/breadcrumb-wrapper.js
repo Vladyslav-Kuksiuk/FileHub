@@ -21,7 +21,7 @@ export class BreadcrumbWrapper {
       this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
     }
 
-    this.#stateManagementService.addStateListener('userProfile', (state)=>{
+    this.#stateManagementService.addStateListener('userProfile', (state) => {
       if (state.userProfile) {
         this.#stateManagementService.dispatch(
             new LoadFolderInfoAction(state.userProfile.rootFolderId, applicationContext.apiService));
@@ -37,6 +37,12 @@ export class BreadcrumbWrapper {
   wrap(breadcrumb) {
     this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
       breadcrumb.isLoading = state.isFolderInfoLoading;
+    });
+
+    this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
+      if (state.isUserProfileLoading) {
+        breadcrumb.isLoading = true;
+      }
     });
 
     this.#stateManagementService.addStateListener('folderInfo', (state) => {
