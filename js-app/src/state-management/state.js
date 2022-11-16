@@ -52,9 +52,9 @@ export class State {
   folderContentError = null;
 
   /**
-   * @type {string}
+   * @type {object}
    */
-  locationFolderId = null;
+  locationMetadata = null;
 
   /**
    * @param {object} state

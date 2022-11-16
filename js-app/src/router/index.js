@@ -1,9 +1,10 @@
-import {RouterConfig} from './router-config';
+import {METADATA_CHANGE_EVENT, RouterConfig} from './router-config';
 /**
  * Service for handling routes along the given paths.
  */
 export class Router {
   #config;
+  #currentRoutePath;
 
   /**
    * @param {RouterConfig} config
@@ -25,37 +26,49 @@ export class Router {
    */
   #handleRoute(path) {
     if (path === '') {
+      this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
+      this.#currentRoutePath = this.#config.homeRoutePath;
       this.#config.routesMap[this.#config.homeRoutePath]();
       return;
     }
 
     const parsedRoute = this.#parseWithParams(path);
-    if (parsedRoute.route) {
-      parsedRoute.route(parsedRoute.params);
+    if (parsedRoute.routePath) {
+      this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {
+        detail: {
+          metadata: parsedRoute.params,
+        },
+      }));
+
+      if (this.#currentRoutePath !== parsedRoute.routePath) {
+        this.#currentRoutePath = parsedRoute.routePath;
+        this.#config.routesMap[parsedRoute.routePath](parsedRoute.params);
+      }
       return;
     }
 
+    this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
     this.#config.errorRoute();
   }
 
   /**
    * @param {string} path
-   * @returns {{route: {function}, params: {}}}
+   * @returns {{routePath: {string}, params: {}}}
    * @private
    */
   #parseWithParams(path) {
     const pathArray = path.split('/');
     let params = {};
-    let route;
+    let parsedRoutePath;
 
     Object.keys(this.#config.routesMap).some((routePath)=>{
-      route = this.#config.routesMap[routePath];
+      parsedRoutePath = routePath;
       const routeArray = routePath.split('/');
       return routeArray.every((routePart, index)=>{
         if (routePart.startsWith(':')) {
           params[routePart.substring(1)] = pathArray[index];
         } else if (routePart !== pathArray[index]) {
-          route = null;
+          parsedRoutePath = null;
           params = {};
           return false;
         }
@@ -63,7 +76,7 @@ export class Router {
       });
     });
     return {
-      route: route,
+      routePath: parsedRoutePath,
       params: params,
     };
   }

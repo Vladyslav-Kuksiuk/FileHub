@@ -7,7 +7,7 @@ import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../../application-context';
 import {ROUTE} from '../../router/routes';
-import {ChangeLocationAction} from '../../state-management/change-location-action';
+import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action.js';
 /**
  * Application component.
  */
@@ -50,7 +50,6 @@ export class Application extends Component {
         })
         .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
           this.rootElement.innerHTML = '';
-          applicationContext.stateManagementService.dispatch(new ChangeLocationAction(params.folderId));
           const page = new TablePage(this.rootElement, applicationContext);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
@@ -58,6 +57,9 @@ export class Application extends Component {
           page.onNavigateToFolder((folderId)=>{
             router.redirect(ROUTE.FILE_LIST+'/'+folderId);
           });
+        })
+        .addMetadataChangeListener((metadata)=>{
+          applicationContext.stateManagementService.dispatch(new ChangeLocationMetadataAction(metadata));
         })
         .addHomeRoutePath(ROUTE.FILE_LIST)
         .build();

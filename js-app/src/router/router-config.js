@@ -1,5 +1,6 @@
 import {Preconditions} from '../preconditions';
 
+export const METADATA_CHANGE_EVENT = 'METADATA_CHANGE_EVENT';
 /**
  * Config for {@link Router}.
  */
@@ -7,13 +8,15 @@ export class RouterConfig {
   #pathToRouteMap;
   #errorRoute;
   #homeRoutePath;
+  #eventTarget;
 
   /**
    * @param {object} pathToRouteMap - Object structure: {string} path : {Function} route.
    * @param {Function} errorRoute
    * @param {string} homeRoutePath
+   * @param {EventTarget} eventTarget
    */
-  constructor(pathToRouteMap, errorRoute, homeRoutePath) {
+  constructor(pathToRouteMap, errorRoute, homeRoutePath, eventTarget) {
     Preconditions.checkType(pathToRouteMap, 'object');
     Object.entries(pathToRouteMap).forEach(([key, value]) => {
       Preconditions.checkType(key, 'string');
@@ -25,6 +28,7 @@ export class RouterConfig {
     this.#pathToRouteMap = pathToRouteMap;
     this.#errorRoute = errorRoute;
     this.#homeRoutePath = homeRoutePath;
+    this.#eventTarget = eventTarget;
   }
 
   /**
@@ -47,6 +51,13 @@ export class RouterConfig {
   get homeRoutePath() {
     return this.#homeRoutePath;
   }
+
+  /**
+   * @returns {EventTarget}
+   */
+  get eventTarget() {
+    return this.#eventTarget;
+  }
 }
 
 /**
@@ -56,6 +67,7 @@ export class RouterConfigBuilder {
   #pathToRouteMap = {};
   #errorRoute;
   #homeRoutePath;
+  #eventTarget = new EventTarget();
 
   /**
    * Adds page to router config.
@@ -92,6 +104,19 @@ export class RouterConfigBuilder {
   }
 
   /**
+   * Adds listener on metadata change event.
+   *
+   * @param {function(object)} listener - Listener receives metadata object.
+   * @returns {RouterConfigBuilder}
+   */
+  addMetadataChangeListener(listener) {
+    this.#eventTarget.addEventListener(METADATA_CHANGE_EVENT, (event)=>{
+      listener(event.detail.metadata);
+    });
+    return this;
+  }
+
+  /**
    * Creates {@link RouterConfig}.
    *
    * @returns {RouterConfig}
@@ -100,6 +125,7 @@ export class RouterConfigBuilder {
     return new RouterConfig(
         this.#pathToRouteMap,
         this.#errorRoute,
-        this.#homeRoutePath);
+        this.#homeRoutePath,
+        this.#eventTarget);
   }
 }

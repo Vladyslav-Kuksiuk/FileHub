@@ -72,6 +72,11 @@ export class FolderContentWrapper {
     });
   }
 
+  /**
+   * Adds listener on navigate to folder event.
+   *
+   * @param {function(string)} listener
+   */
   onNavigateToFolder(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT_FOLDER, (event)=>{
       listener(event.detail.folderId);
