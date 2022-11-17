@@ -1,6 +1,7 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {ApplicationContext} from '../../application-context';
+import {State} from '../../state-management/state';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -11,44 +12,43 @@ export class BreadcrumbWrapper {
   #eventTarget = new EventTarget();
   #stateListeners = [];
   #stateManagementService;
+  #applicationContext;
 
   /**
    * @param {ApplicationContext} applicationContext
    */
   constructor(applicationContext) {
+    this.#applicationContext = applicationContext;
     this.#stateManagementService = applicationContext.stateManagementService;
 
     const userProfileListener = this.#stateManagementService.addStateListener('userProfile', (state)=>{
-      if (state.userProfile) {
-        if (state.locationMetadata?.folderId) {
-          this.#stateManagementService.dispatch(
-              new LoadFolderInfoAction(state.locationMetadata.folderId, applicationContext.apiService));
-        } else {
-          this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-            detail: {
-              folderId: state.userProfile.rootFolderId,
-            },
-          }));
-        }
-      }
+      this.#triggerFolderLoading(state);
     });
     this.#stateListeners.push(userProfileListener);
 
     const locationMetadataListener = this.#stateManagementService.addStateListener('locationMetadata', (state)=>{
-      if (state.userProfile) {
-        if (state.locationMetadata?.folderId) {
-          this.#stateManagementService.dispatch(
-              new LoadFolderInfoAction(state.locationMetadata.folderId, applicationContext.apiService));
-        } else {
-          this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-            detail: {
-              folderId: state.userProfile.rootFolderId,
-            },
-          }));
-        }
-      }
+      this.#triggerFolderLoading(state);
     });
     this.#stateListeners.push(locationMetadataListener);
+  }
+
+  /**
+   * @param {State} state
+   * @private
+   */
+  #triggerFolderLoading(state) {
+    if (state.userProfile) {
+      if (state.locationMetadata?.folderId) {
+        this.#stateManagementService.dispatch(
+            new LoadFolderInfoAction(state.locationMetadata.folderId, this.#applicationContext.apiService));
+      } else {
+        this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+          detail: {
+            folderId: state.userProfile.rootFolderId,
+          },
+        }));
+      }
+    }
   }
 
   /**
@@ -73,37 +73,29 @@ export class BreadcrumbWrapper {
 
     const folderInfoListener =
         this.#stateManagementService.addStateListener('folderInfo', (state) => {
+          const toFolderListener = (folderId) =>{
+            return ()=>{
+              this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                detail: {
+                  folderId: folderId,
+                },
+              }));
+            };
+          };
+
           if (!!state.folderInfo) {
             let path = [{name: 'Home'}];
             if (state.folderInfo.parentId === state?.userProfile?.rootFolderId) {
               path = [
                 {name: 'Home',
-                  linkListener: ()=>{
-                    this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-                      detail: {
-                        folderId: state.userProfile.rootFolderId,
-                      },
-                    }));
-                  }},
+                  linkListener: toFolderListener(state.userProfile.rootFolderId)},
                 {name: state.folderInfo.name}];
             } else if (state.folderInfo.parentId != null) {
               path = [
                 {name: 'Home',
-                  linkListener: ()=>{
-                    this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-                      detail: {
-                        folderId: state.userProfile.rootFolderId,
-                      },
-                    }));
-                  }},
+                  linkListener: toFolderListener(state.userProfile.rootFolderId)},
                 {name: '...',
-                  linkListener: ()=>{
-                    this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-                      detail: {
-                        folderId: state.folderInfo.parentId,
-                      },
-                    }));
-                  }},
+                  linkListener: toFolderListener(state.folderInfo.parentId)},
                 {name: state.folderInfo.name}];
             }
             breadcrumb.path = path;
