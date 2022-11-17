@@ -15,7 +15,6 @@ export class Router {
       this.#handleRoute(window.location.hash.replace('#', ''));
     });
 
-    window.location.hash = config.homeRoutePath;
     this.#handleRoute(window.location.hash.replace('#', ''));
   }
 

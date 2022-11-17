@@ -61,7 +61,7 @@ export class Application extends Component {
         .addMetadataChangeListener((metadata)=>{
           applicationContext.stateManagementService.dispatch(new ChangeLocationMetadataAction(metadata));
         })
-        .addHomeRoutePath(ROUTE.FILE_LIST)
+        .addHomeRoutePath(ROUTE.FILE_LIST_FOLDER)
         .build();
 
     const router = new Router(routerConfig);

@@ -23,7 +23,7 @@ describe('Router', () => {
       const router = new Router(routerConfig);
 
       expect(document.body.textContent).toBe('login');
-      expect(window.location.hash).toBe('#login');
+      expect(window.location.hash).toBe('');
 
       router.redirect('register');
 
@@ -51,8 +51,6 @@ describe('Router', () => {
       const router = new Router(routerConfig);
 
       expect(document.body.textContent).toBe('login');
-      window.location.hash = '#login';
-
       router.redirect('register');
 
       setTimeout(() => {

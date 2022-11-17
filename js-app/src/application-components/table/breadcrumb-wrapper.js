@@ -35,9 +35,17 @@ export class BreadcrumbWrapper {
     this.#stateListeners.push(userProfileListener);
 
     const locationMetadataListener = this.#stateManagementService.addStateListener('locationMetadata', (state)=>{
-      if (state.locationMetadata?.folderId) {
-        this.#stateManagementService.dispatch(
-            new LoadFolderInfoAction(state.locationMetadata.folderId, applicationContext.apiService));
+      if (state.userProfile) {
+        if (state.locationMetadata?.folderId) {
+          this.#stateManagementService.dispatch(
+              new LoadFolderInfoAction(state.locationMetadata.folderId, applicationContext.apiService));
+        } else {
+          this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+            detail: {
+              folderId: state.userProfile.rootFolderId,
+            },
+          }));
+        }
       }
     });
     this.#stateListeners.push(locationMetadataListener);
