@@ -19,10 +19,18 @@ export class Component {
    */
   init() {
     this.render();
+    const observer = new MutationObserver((mutationRecords)=>{
+      if (mutationRecords.filter((record)=>Array.from(record.removedNodes)
+          .includes(this.rootElement)).length > 0) {
+        this.onDestroy();
+      }
+    });
+
+    observer.observe(this.parentElement, {'childList': true});
   }
 
   /**
-   * Called after each render.
+   * Calls after each render.
    *
    * @protected
    */
@@ -60,6 +68,15 @@ export class Component {
   render() {
     this.#createDomTree();
     this.afterRender();
+  }
+
+  /**
+   * Calls after root element removed.
+   *
+   * @protected
+   */
+  onDestroy() {
+
   }
 
   /**

@@ -21,6 +21,9 @@ export class TablePage extends Component {
   #eventTarget = new EventTarget();
   #stateManagementService;
   #applicationContext;
+  #userInfoWrapper;
+  #breadcrumbWrapper;
+  #folderContentWrapper;
 
   /**
    * @param {HTMLElement} parent
@@ -39,11 +42,13 @@ export class TablePage extends Component {
    */
   afterRender() {
     const userInfoWrapper = new UserInfoWrapper(this.#applicationContext);
+    this.#userInfoWrapper = userInfoWrapper;
     const userInfoSlot = this.getSlot(USER_INFO_SLOT);
     userInfoWrapper.wrap(
         new UserInfo(userInfoSlot, false, null, false));
 
     const breadcrumbWrapper = new BreadcrumbWrapper(this.#applicationContext);
+    this.#breadcrumbWrapper = breadcrumbWrapper;
     const breadcrumbSlot = this.getSlot(BREADCRUMB_SLOT);
     breadcrumbWrapper.wrap(new Breadcrumb(
         breadcrumbSlot,
@@ -60,6 +65,7 @@ export class TablePage extends Component {
     });
 
     const folderContentWrapper = new FolderContentWrapper(this.#applicationContext);
+    this.#folderContentWrapper = folderContentWrapper;
     const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
     folderContentWrapper.wrap(new FolderContent(folderContentSlot, true, false, [], []));
     folderContentWrapper.onNavigateToFolder((folderId)=>{
@@ -75,6 +81,15 @@ export class TablePage extends Component {
       this.#stateManagementService.dispatch(new LogOutUserAction(this.#applicationContext.apiService));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
+  }
+
+  /**
+   * @inheritDoc
+   */
+  onDestroy() {
+    this.#userInfoWrapper.removeStateListeners();
+    this.#breadcrumbWrapper.removeStateListeners();
+    this.#folderContentWrapper.removeStateListeners();
   }
 
   /**
