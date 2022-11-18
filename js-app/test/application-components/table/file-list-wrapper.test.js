@@ -28,7 +28,7 @@ describe('FileListWrapper', () => {
 
   test('Should add folderInfo state listeners', function() {
     expect.assertions(2);
-    new FolderContentWrapper(applicationContext);
+    new FileListWrapper(applicationContext);
 
     expect(addStateListenerMock).toHaveBeenCalledTimes(1);
     expect(addStateListenerMock.mock.calls[0][0]).toBe('folderInfo');
@@ -97,14 +97,14 @@ describe('FileListWrapper', () => {
 
   test('Should remove state listeners', function() {
     expect.assertions(1);
-    const folderContentWrapper = new FolderContentWrapper(applicationContext);
+    const fileListWrapper = new FileListWrapper(applicationContext);
 
     const removeStateListenersMock = jest.spyOn(
         applicationContext.stateManagementService,
         'removeStateListener')
         .mockImplementation(()=>{});
 
-    folderContentWrapper.removeStateListeners();
+    fileListWrapper.removeStateListeners();
 
     expect(removeStateListenersMock.mock.calls[0][0]).toBe('folderInfo');
   });
@@ -112,7 +112,7 @@ describe('FileListWrapper', () => {
   test('Should trigger onNavigateToFolder listener', function() {
     expect.assertions(2);
 
-    const folderContentWrapper = new FolderContentWrapper(applicationContext);
+    const fileListWrapper = new FileListWrapper(applicationContext);
     const folderContent = [{
       type: 'folder',
       name: 'myFolder',
@@ -125,10 +125,10 @@ describe('FileListWrapper', () => {
     });
 
     const navigateListenerMock = jest.fn();
-    folderContentWrapper.wrap({
+    fileListWrapper.wrap({
       setContent: setContentMock,
     });
-    folderContentWrapper.onNavigateToFolder(navigateListenerMock);
+    fileListWrapper.onNavigateToFolder(navigateListenerMock);
 
     stateListeners['folderContent']({
       folderContent: folderContent,

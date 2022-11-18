@@ -65,9 +65,9 @@ export class TablePage extends Component {
     });
 
     const fileListWrapper = new FileListWrapper(this.#applicationContext);
-    this.#fileListWrapper = folderContentWrapper;
+    this.#fileListWrapper = fileListWrapper;
     const fileListSlot = this.getSlot(FILE_LIST_SLOT);
-    fileListWrapper.wrap(new FileList(folderContentSlot, true, false, [], []));
+    fileListWrapper.wrap(new FileList(fileListSlot, true, false, [], []));
     fileListWrapper.onNavigateToFolder((folderId)=>{
       this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
         detail: {
