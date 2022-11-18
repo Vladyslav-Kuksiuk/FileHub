@@ -38,16 +38,12 @@ describe('Router', () => {
       const refs = sideEffects[obj].addEventListener.refs;
 
       const addEventListenerSpy = (type, listener, options) => {
-        // Store listener reference so it can be removed during reset
         refs.push({type, listener, options});
-        // Call original window.addEventListener
         fn(type, listener, options);
       };
 
-      // Add to default key array to prevent removal during reset
       sideEffects[obj].keys.push('addEventListener');
 
-      // Replace addEventListener with mock
       global[obj].addEventListener = addEventListenerSpy;
     });
   });

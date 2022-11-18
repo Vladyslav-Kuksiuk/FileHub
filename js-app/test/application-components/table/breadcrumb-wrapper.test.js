@@ -2,7 +2,7 @@ import {ApplicationContext} from '../../../src/application-context';
 import {BreadcrumbWrapper} from '../../../src/application-components/table/breadcrumb-wrapper';
 import {Breadcrumb} from '../../../src/components/breadcrumb';
 import {jest} from '@jest/globals';
-import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action.js';
+import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 
 describe('BreadcrumbWrapper', () => {
   let applicationContext;

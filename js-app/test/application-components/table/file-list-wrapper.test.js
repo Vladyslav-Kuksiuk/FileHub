@@ -1,5 +1,5 @@
 import {ApplicationContext} from '../../../src/application-context';
-import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper.js';
+import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper';
 import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';

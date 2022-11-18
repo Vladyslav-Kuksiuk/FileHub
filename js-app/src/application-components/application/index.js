@@ -7,7 +7,7 @@ import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../../application-context';
 import {ROUTE} from '../../router/routes';
-import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action.js';
+import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action';
 /**
  * Application component.
  */
