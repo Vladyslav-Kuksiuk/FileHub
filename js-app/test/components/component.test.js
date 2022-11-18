@@ -74,4 +74,11 @@ describe('Component', () => {
     expect(document.body.querySelectorAll('p').length).toBe(1);
     expect(document.body.querySelector('p').textContent).toBe('test');
   });
+
+  test('Should throw error on markup call in abstract component', function() {
+    const component = new Component(document.body);
+    expect(()=>{
+      component.markup();
+    }).toThrow(new Error('Method of Abstract Class cannot be called'));
+  });
 });
