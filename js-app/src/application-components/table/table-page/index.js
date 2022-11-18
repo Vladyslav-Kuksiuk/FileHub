@@ -4,11 +4,14 @@ import {ApplicationContext} from '../../../application-context';
 import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
-import {UserInfo} from '../../../components/user-info/index.js';
+import {UserInfo} from '../../../components/user-info';
+import {FileListWrapper} from '../file-list-wrapper';
+import {FileList} from '../../../components/file-list';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
+const FOLDER_CONTENT_SLOT = 'file-list-slot';
 
 /**
  * Table page component.
@@ -47,6 +50,10 @@ export class TablePage extends Component {
         false,
         [{name: 'Home'}],
     ));
+
+    const folderContentWrapper = new FileListWrapper(this.#applicationContext);
+    const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
+    folderContentWrapper.wrap(new FileList(folderContentSlot, true, false, [], []));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
@@ -112,33 +119,7 @@ export class TablePage extends Component {
                 </div>
             </div>
         </div>
-        <div class="table-wrapper">
-            <table class="table table-hover">
-                <tr>
-                    <td class="cell-arrow">
-                        <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
-                    </td>
-                    <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
-                    </td>
-                    <td class="cell-name"><a href="inner.html">Documents</a></td>
-                    <td class="cell-type">Folder</td>
-                    <td class="cell-size">—</td>
-                    <td class="cell-buttons">
-                        <div class="data-buttons-container">
-                            <button class="icon-button"
-                                    title="Upload file.">
-                                <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                            </button>
-                            <button class="icon-button" title="Delete">
-                                <span aria-hidden="true"
-                                      class="glyphicon glyphicon-remove-circle"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        ${this.addSlot(FOLDER_CONTENT_SLOT)}
     </main>
     <footer class="page-footer">
         <ul class="list-inline social-icons">

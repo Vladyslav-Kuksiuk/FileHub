@@ -1,5 +1,6 @@
 import {UserProfile} from './user/user-profile';
 import {FolderInfo} from './folder/folder-info';
+import {FolderContentItem} from './folder/folder-content-item';
 
 /**
  * State.
@@ -8,12 +9,17 @@ export class State {
   /**
    * @type {boolean}
    */
-  isUserProfileLoading = true;
+  isUserProfileLoading = false;
 
   /**
    * @type {boolean}
    */
-  isFolderInfoLoading = true;
+  isFolderInfoLoading = false;
+
+  /**
+   * @type {boolean}
+   */
+  isFolderContentLoading = false;
 
   /**
    * @type {UserProfile}
@@ -34,6 +40,16 @@ export class State {
    * @type {FolderInfo}
    */
   folderInfo = null;
+
+  /**
+   * @type {FolderContentItem[]}
+   */
+  folderContent = null;
+
+  /**
+   * @type {string}
+   */
+  folderContentError = null;
 
   /**
    * @param {object} state

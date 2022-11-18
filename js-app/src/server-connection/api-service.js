@@ -4,11 +4,12 @@ import {UserData} from '../user-data';
 import {ApiServiceError} from './api-service-error';
 import {UserProfile} from '../state-management/user/user-profile';
 import {FolderInfo} from '../state-management/folder/folder-info';
+import {FolderContentItem} from '../state-management/folder/folder-content-item';
 
 export const LOG_IN_USER_PATH = 'api/login';
 export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
-export const LOAD_FOLDER_INFO_PATH = 'api/folders/';
+export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
@@ -100,7 +101,7 @@ export class ApiService {
    * @returns {Promise<FolderInfo | ApiServiceError>}
    */
   async loadFolderInfo(folderId) {
-    return this.#requestService.get(LOAD_FOLDER_INFO_PATH+folderId, this.#userToken)
+    return this.#requestService.get(LOAD_FOLDER_PATH+folderId, this.#userToken)
         .catch(()=>{
           throw new ApiServiceError();
         })
@@ -114,6 +115,30 @@ export class ApiService {
               response.body.folderInfo.parentId,
               response.body.folderInfo.itemsAmount,
           );
+        });
+  }
+
+  /**
+   * Loads folder content.
+   *
+   * @param {string} folderId
+   * @returns {Promise<FolderContentItem[] | ApiServiceError>}
+   */
+  async loadFolderContent(folderId) {
+    return this.#requestService.get(LOAD_FOLDER_PATH+folderId+'/content', this.#userToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body.folderContent.map((item)=>new FolderContentItem(
+              item.type,
+              item.id,
+              item.name,
+              item.size,
+          ));
         });
   }
 

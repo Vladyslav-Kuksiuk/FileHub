@@ -7,7 +7,7 @@ import {
   REGISTER_USER_PATH,
   LOG_OUT_USER_PATH,
   LOAD_USER_PATH,
-  LOAD_FOLDER_INFO_PATH,
+  LOAD_FOLDER_PATH,
 } from '../../src/server-connection/api-service';
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
@@ -16,6 +16,7 @@ import {ApiServiceError} from '../../src/server-connection/api-service-error';
 import {FieldValidationError} from '../../src/server-connection/field-validation-error';
 import {FolderInfo} from '../../src/state-management/folder/folder-info.js';
 import {UserProfile} from '../../src/state-management/user/user-profile.js';
+import {FolderContentItem} from '../../src/state-management/folder/folder-content-item';
 
 describe('ApiService', () => {
   const login = 'login';
@@ -322,7 +323,7 @@ describe('ApiService', () => {
       const apiService = new ApiService(requestService);
       await expect(apiService.loadFolderInfo(folderInfo.id)).resolves.toStrictEqual(folderInfo);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH + folderInfo.id, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + folderInfo.id, undefined);
     });
 
     test(`Should return error after loading folder info`, async function() {
@@ -338,7 +339,7 @@ describe('ApiService', () => {
       const apiService = new ApiService(requestService);
       await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH + 'notID', undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID', undefined);
     });
 
     test('Should return error after request error', async function() {
@@ -354,7 +355,73 @@ describe('ApiService', () => {
       const apiService = new ApiService(requestService);
       await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_INFO_PATH + 'notID', undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID', undefined);
+    });
+  });
+
+  describe('loadFolderContent', () => {
+    test(`Should successfully load folder content`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const folderContent = [new FolderContentItem(
+          'type',
+          'id',
+          'name',
+          'size',
+      )];
+      const folderId = 'folderId';
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'get')
+          .mockImplementation(async () => {
+            return new Response(200, {
+              folderContent: [{
+                type: folderContent[0].type,
+                id: folderContent[0].id,
+                name: folderContent[0].name,
+                size: folderContent[0].size,
+              }],
+            });
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.loadFolderContent(folderId)).resolves.toStrictEqual(folderContent);
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith(LOAD_FOLDER_PATH + folderId + '/content', undefined);
+    });
+
+    test(`Should return error after loading folder content`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'get')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.loadFolderContent('notID')).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID/content', undefined);
+    });
+
+    test('Should return error after request error', async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'get')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.loadFolderContent('notID')).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID/content', undefined);
     });
   });
 });

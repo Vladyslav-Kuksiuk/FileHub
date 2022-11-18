@@ -7,6 +7,9 @@ export const MUTATOR_NAMES = {
   SET_IS_FOLDER_INFO_LOADING: 'isFolderInfoLoading',
   SET_FOLDER_INFO: 'setFolderInfo',
   SET_FOLDER_INFO_ERROR: 'setFolderInfoError',
+  SET_IS_FOLDER_CONTENT_LOADING: 'isFolderContentLoading',
+  SET_FOLDER_CONTENT: 'setFolderContent',
+  SET_FOLDER_CONTENT_ERROR: 'setFolderContentError',
 };
 
 export const MUTATORS = {
@@ -39,5 +42,20 @@ export const MUTATORS = {
   },
   [MUTATOR_NAMES.SET_FOLDER_INFO_ERROR]: (state, error) =>{
     return new State({...state, folderInfoError: error});
+  },
+  [MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING]: (state, isLoading) =>{
+    if (isLoading) {
+      return new State({...state,
+        isFolderContentLoading: isLoading,
+        folderContent: null,
+        folderContentError: null});
+    }
+    return new State({...state, isFolderContentLoading: isLoading});
+  },
+  [MUTATOR_NAMES.SET_FOLDER_CONTENT]: (state, folderContent) =>{
+    return new State({...state, folderContent: folderContent});
+  },
+  [MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR]: (state, error) =>{
+    return new State({...state, folderContentError: error});
   },
 };

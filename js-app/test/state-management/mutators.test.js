@@ -128,4 +128,58 @@ describe('Mutators', () => {
 
     expect(newState).toStrictEqual(expectedState);
   });
+
+  test(`Should return new state with changed isFolderContentLoading`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      isFolderContentLoading: false,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING](state, false);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed isFolderContentLoading and nulled folderContent and folderContentError`,
+      function() {
+        expect.assertions(1);
+
+        const state = new State({
+          isFolderContentLoading: false,
+          folderContent: {},
+          folderContentError: {},
+        });
+
+        const expectedState = new State({
+          isFolderContentLoading: true,
+          folderContent: null,
+          folderContentError: null,
+        });
+        const newState = MUTATORS[MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING](state, true);
+
+        expect(newState).toStrictEqual(expectedState);
+      });
+
+  test(`Should return new state with changed folderContent`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      folderContent: {},
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_CONTENT](state, {});
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed folderContentError`, function() {
+    expect.assertions(1);
+
+    const error = 'error';
+    const expectedState = new State({
+      folderContentError: error,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR](state, error);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
 });
