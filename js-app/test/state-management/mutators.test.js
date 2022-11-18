@@ -182,4 +182,18 @@ describe('Mutators', () => {
 
     expect(newState).toStrictEqual(expectedState);
   });
+
+  test(`Should return new state with changed locationMetadata`, function() {
+    expect.assertions(1);
+
+    const locationMetadata = {
+      folderId: '123',
+    };
+    const expectedState = new State({
+      locationMetadata: locationMetadata,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_LOCATION_METADATA](state, locationMetadata);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
 });
