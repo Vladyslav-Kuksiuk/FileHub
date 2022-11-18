@@ -1,7 +1,7 @@
-import {FolderContent} from '../../src/components/folder-content';
+import {FileList} from '../../src/components/file-list';
 import {jest} from '@jest/globals';
 
-describe('FolderContent', () => {
+describe('FileList', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });
@@ -32,7 +32,7 @@ describe('FolderContent', () => {
         size: 'size2',
       },
     ];
-    new FolderContent(document.body, false, false, folders, files);
+    new FileList(document.body, false, false, folders, files);
 
     expect(document.body.querySelectorAll('tr').length).toBe(4);
 
@@ -68,27 +68,27 @@ describe('FolderContent', () => {
   test(`Should render FolderContent component with loading`, function() {
     expect.assertions(1);
 
-    new FolderContent(document.body, true, false, [], []);
+    new FileList(document.body, true, false, [], []);
     expect(document.body.querySelectorAll('[data-td="folder-content-loading"]').length).toBe(1);
   });
 
   test(`Should render FolderContent component with error`, function() {
     expect.assertions(1);
 
-    new FolderContent(document.body, false, true, [], []);
+    new FileList(document.body, false, true, [], []);
     expect(document.body.querySelectorAll('[data-td="folder-content-error"]').length).toBe(1);
   });
 
   test(`Should render FolderContent empty state`, function() {
     expect.assertions(1);
 
-    new FolderContent(document.body, false, false, [], []);
+    new FileList(document.body, false, false, [], []);
     expect(document.body.querySelectorAll('[data-td="folder-content-empty"]').length).toBe(1);
   });
 
   test('Should change states empty->loading->error->folder', function() {
     expect.assertions(4);
-    const folderContent = new FolderContent(document.body, false, false, [], []);
+    const folderContent = new FileList(document.body, false, false, [], []);
     expect(document.body.querySelectorAll('[data-td="folder-content-empty"]').length).toBe(1);
 
     folderContent.isLoading = true;

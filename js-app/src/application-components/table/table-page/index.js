@@ -5,13 +5,13 @@ import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
 import {UserInfo} from '../../../components/user-info';
-import {FolderContentWrapper} from '../folder-content-wrapper';
-import {FolderContent} from '../../../components/folder-content';
+import {FileListWrapper} from '../file-list-wrapper';
+import {FileList} from '../../../components/file-list';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
-const FOLDER_CONTENT_SLOT = 'folder-content-slot';
+const FOLDER_CONTENT_SLOT = 'file-list-slot';
 
 /**
  * Table page component.
@@ -51,9 +51,9 @@ export class TablePage extends Component {
         [{name: 'Home'}],
     ));
 
-    const folderContentWrapper = new FolderContentWrapper(this.#applicationContext);
+    const folderContentWrapper = new FileListWrapper(this.#applicationContext);
     const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
-    folderContentWrapper.wrap(new FolderContent(folderContentSlot, true, false, [], []));
+    folderContentWrapper.wrap(new FileList(folderContentSlot, true, false, [], []));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();

@@ -2,11 +2,11 @@ import {ApplicationContext} from '../../../src/application-context';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
-import {FolderContentWrapper} from '../../../src/application-components/table/folder-content-wrapper';
-import {FolderContent} from '../../../src/components/folder-content';
+import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper.js';
+import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
 
-describe('FolderContentWrapper', () => {
+describe('FileListWrapper', () => {
   let applicationContext;
   let stateListeners = {};
   let dispatchMock;
@@ -26,7 +26,7 @@ describe('FolderContentWrapper', () => {
   test(`Should dispatch LoadUserAction, LoadFolderInfoAction, LoadFolderContentAction`, function() {
     expect.assertions(4);
 
-    new FolderContentWrapper(applicationContext);
+    new FileListWrapper(applicationContext);
 
     stateListeners.userProfile?.({
       userProfile: {rootFolderId: 'root',
@@ -45,8 +45,8 @@ describe('FolderContentWrapper', () => {
   test(`Should add state listeners`, function() {
     expect.assertions(6);
 
-    const wrapper = new FolderContentWrapper(applicationContext);
-    const folderContent = new FolderContent(document.body, false, false, [], []);
+    const wrapper = new FileListWrapper(applicationContext);
+    const folderContent = new FileList(document.body, false, false, [], []);
 
     const isLoadingMock = jest.spyOn(folderContent, 'isLoading', 'set').mockImplementation(()=>{});
     const hasErrorMock = jest.spyOn(folderContent, 'hasError', 'set').mockImplementation(()=>{});

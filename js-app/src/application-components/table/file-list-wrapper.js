@@ -1,13 +1,13 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {ApplicationContext} from '../../application-context';
-import {FolderContent} from '../../components/folder-content';
+import {FileList} from '../../components/file-list';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 
 /**
- * FolderContent wrapper for state change listening.
+ * FileList wrapper for state change listening.
  */
-export class FolderContentWrapper {
+export class FileListWrapper {
   #stateManagementService;
 
   /**
@@ -38,11 +38,11 @@ export class FolderContentWrapper {
   }
 
   /**
-   * Adds state listeners to FolderContent component.
+   * Adds state listeners to FileList component.
    *
-   * @param {FolderContent} folderContentComponent
+   * @param {FileList} fileList
    */
-  wrap(folderContentComponent) {
+  wrap(fileList) {
     this.#stateManagementService.addStateListener('folderContent', (state) => {
       if (state.folderContent) {
         const folders = state.folderContent
@@ -62,30 +62,30 @@ export class FolderContentWrapper {
                 size: file.size,
               };
             });
-        folderContentComponent.setContent(folders, files);
+        fileList.setContent(folders, files);
       } else {
-        folderContentComponent.setContent([], []);
+        fileList.setContent([], []);
       }
     });
 
     this.#stateManagementService.addStateListener('isFolderContentLoading', (state) => {
-      folderContentComponent.isLoading = state.isFolderContentLoading;
+      fileList.isLoading = state.isFolderContentLoading;
     });
 
     this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
       if (state.isUserProfileLoading) {
-        folderContentComponent.isLoading = true;
+        fileList.isLoading = true;
       }
     });
 
     this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
       if (state.isFolderInfoLoading) {
-        folderContentComponent.isLoading = true;
+        fileList.isLoading = true;
       }
     });
 
     this.#stateManagementService.addStateListener('folderContentError', (state) => {
-      folderContentComponent.hasError = !!state.folderContentError;
+      fileList.hasError = !!state.folderContentError;
     });
   }
 }

@@ -1,13 +1,13 @@
 import {Component} from '../component';
 import {Link} from '../link';
-import {FileTypeIconFactory} from './file-type-icon-factory.js';
+import {FileTypeIconFactory} from './file-type-icon-factory';
 
 const FOLDER_LINK = 'folder-link-';
 
 /**
- * User panel component.
+ * File list component.
  */
-export class FolderContent extends Component {
+export class FileList extends Component {
   #hasError;
   #folders;
   #files;
