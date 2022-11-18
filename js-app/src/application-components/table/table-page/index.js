@@ -5,14 +5,14 @@ import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
 import {UserInfo} from '../../../components/user-info';
-import {FolderContentWrapper} from '../folder-content-wrapper';
-import {FolderContent} from '../../../components/folder-content';
+import {FileListWrapper} from '../file-list-wrapper';
+import {FileList} from '../../../components/file-list';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
-const FOLDER_CONTENT_SLOT = 'folder-content-slot';
+const FILE_LIST_SLOT = 'file-list-slot';
 
 /**
  * Table page component.
@@ -23,7 +23,7 @@ export class TablePage extends Component {
   #applicationContext;
   #userInfoWrapper;
   #breadcrumbWrapper;
-  #folderContentWrapper;
+  #fileListWrapper;
 
   /**
    * @param {HTMLElement} parent
@@ -64,11 +64,11 @@ export class TablePage extends Component {
       }));
     });
 
-    const folderContentWrapper = new FolderContentWrapper(this.#applicationContext);
-    this.#folderContentWrapper = folderContentWrapper;
-    const folderContentSlot = this.getSlot(FOLDER_CONTENT_SLOT);
-    folderContentWrapper.wrap(new FolderContent(folderContentSlot, true, false, [], []));
-    folderContentWrapper.onNavigateToFolder((folderId)=>{
+    const fileListWrapper = new FileListWrapper(this.#applicationContext);
+    this.#fileListWrapper = folderContentWrapper;
+    const fileListSlot = this.getSlot(FILE_LIST_SLOT);
+    fileListWrapper.wrap(new FileList(folderContentSlot, true, false, [], []));
+    fileListWrapper.onNavigateToFolder((folderId)=>{
       this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
         detail: {
           folderId: folderId,
@@ -89,7 +89,7 @@ export class TablePage extends Component {
   onDestroy() {
     this.#userInfoWrapper.removeStateListeners();
     this.#breadcrumbWrapper.removeStateListeners();
-    this.#folderContentWrapper.removeStateListeners();
+    this.#fileListWrapper.removeStateListeners();
   }
 
   /**
@@ -160,7 +160,7 @@ export class TablePage extends Component {
                 </div>
             </div>
         </div>
-        ${this.addSlot(FOLDER_CONTENT_SLOT)}
+        ${this.addSlot(FILE_LIST_SLOT)}
     </main>
     <footer class="page-footer">
         <ul class="list-inline social-icons">

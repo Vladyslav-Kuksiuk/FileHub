@@ -1,10 +1,10 @@
 import {ApplicationContext} from '../../../src/application-context';
-import {FolderContentWrapper} from '../../../src/application-components/table/folder-content-wrapper';
-import {FolderContent} from '../../../src/components/folder-content';
+import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper.js';
+import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 
-describe('FolderContentWrapper', () => {
+describe('FileListWrapper', () => {
   let applicationContext;
   let stateListeners = {};
   let dispatchMock;
@@ -36,7 +36,7 @@ describe('FolderContentWrapper', () => {
 
   test('Should dispatch LoadFolderContentAction', function() {
     expect.assertions(2);
-    new FolderContentWrapper(applicationContext);
+    new FileListWrapper(applicationContext);
 
     stateListeners['folderInfo']({
       folderInfo: {
@@ -52,8 +52,8 @@ describe('FolderContentWrapper', () => {
   test(`Should add state listeners`, function() {
     expect.assertions(11);
 
-    const wrapper = new FolderContentWrapper(applicationContext);
-    const folderContent = new FolderContent(document.body, false, false, [], []);
+    const wrapper = new FileListWrapper(applicationContext);
+    const folderContent = new FileList(document.body, false, false, [], []);
 
     const isLoadingMock = jest.spyOn(folderContent, 'isLoading', 'set').mockImplementation(()=>{});
     const hasErrorMock = jest.spyOn(folderContent, 'hasError', 'set').mockImplementation(()=>{});
