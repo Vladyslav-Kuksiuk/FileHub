@@ -7,12 +7,15 @@ import {Breadcrumb} from '../../../components/breadcrumb';
 import {UserInfo} from '../../../components/user-info';
 import {FileListWrapper} from '../file-list-wrapper';
 import {FileList} from '../../../components/file-list';
+import {ModalRemove} from '../../../components/modal-remove/index.js';
+import {ModalRemoveWrapper} from '../modal-remove-wrapper.js';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
 const FILE_LIST_SLOT = 'file-list-slot';
+const MODAL_REMOVE_SLOT = 'modal-remove-slot';
 
 /**
  * Table page component.
@@ -21,6 +24,7 @@ export class TablePage extends Component {
   #eventTarget = new EventTarget();
   #stateManagementService;
   #applicationContext;
+  #modalRemoveWrapper;
   #userInfoWrapper;
   #breadcrumbWrapper;
   #fileListWrapper;
@@ -41,6 +45,10 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
+    const modalRemoveSlot = this.getSlot(MODAL_REMOVE_SLOT);
+    this.#modalRemoveWrapper = new ModalRemoveWrapper(this.#applicationContext);
+    this.#modalRemoveWrapper.wrap(new ModalRemove(modalRemoveSlot, '', '', null));
+
     const userInfoWrapper = new UserInfoWrapper(this.#applicationContext);
     this.#userInfoWrapper = userInfoWrapper;
     const userInfoSlot = this.getSlot(USER_INFO_SLOT);
@@ -90,6 +98,7 @@ export class TablePage extends Component {
     this.#userInfoWrapper.removeStateListeners();
     this.#breadcrumbWrapper.removeStateListeners();
     this.#fileListWrapper.removeStateListeners();
+    this.#modalRemoveWrapper.removeStateListeners();
   }
 
   /**
@@ -186,6 +195,7 @@ export class TablePage extends Component {
         </p>
     </footer>
 </div>
+${this.addSlot(MODAL_REMOVE_SLOT)}
     `;
   }
 }

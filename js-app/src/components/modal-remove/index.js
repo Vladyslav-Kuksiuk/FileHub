@@ -11,7 +11,8 @@ const CLOSE_CROSS = 'close-cross';
  * ModalRemove component.
  */
 export class ModalRemove extends Component {
-  #fileName;
+  #itemType;
+  #itemName;
   #error;
   #cancelButton;
   #deleteButton;
@@ -20,12 +21,14 @@ export class ModalRemove extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {string} fileName
+   * @param {string} itemName
+   * @param {string} itemType
    * @param {string} error
    */
-  constructor(parent, fileName, error) {
+  constructor(parent, itemName, itemType, error) {
     super(parent);
-    this.#fileName = fileName;
+    this.#itemName = itemName;
+    this.#itemType = itemType;
     this.#error = error;
     this.init();
   }
@@ -79,8 +82,16 @@ export class ModalRemove extends Component {
   /**
    * @param {string} value
    */
-  set fileName(value) {
-    this.#fileName = value;
+  set itemName(value) {
+    this.#itemName = value;
+    this.render();
+  }
+
+  /**
+   * @param {string} value
+   */
+  set itemType(value) {
+    this.#itemType = value;
     this.render();
   }
 
@@ -118,12 +129,12 @@ export class ModalRemove extends Component {
       <div ${this.#isHidden ? 'hidden' : ''} class="modal">
           <div class="modal-container">
               <header>
-                  <h3>Delete File</h3>
+                  <h3>Delete ${this.#itemType}</h3>
                   <a ${this.markElement(CLOSE_CROSS)} href="">×</a>
               </header>
               <div class="modal-body">
                   <p class="modal-text">
-                      Are you sure you want to delete "${this.#fileName}" file?
+                      Are you sure you want to delete "${this.#itemName}" file?
                   </p>
                   ${this.#error ? '<p class="help-block text-danger">'+this.#error+'</p>' : ''}
               </div>
