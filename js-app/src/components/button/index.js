@@ -61,7 +61,7 @@ export class Button extends Component {
    * @param {string} type
    */
   set type(type) {
-    this.#type = value;
+    this.#type = type;
     this.render();
   }
 
