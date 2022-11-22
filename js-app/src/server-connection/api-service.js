@@ -11,8 +11,8 @@ export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
-const DELETE_FOLDER_PATH = 'api/delete-folder/';
-const DELETE_FILE_PATH = 'api/delete-file/';
+const DELETE_FOLDER_PATH = 'api/folder/';
+const DELETE_FILE_PATH = 'api/file/';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
 
@@ -151,7 +151,7 @@ export class ApiService {
    */
   async deleteItem(item) {
     if (item.type === 'folder') {
-      return this.#requestService.get(DELETE_FOLDER_PATH+item.id)
+      return this.#requestService.delete(DELETE_FOLDER_PATH+item.id)
           .catch(() => {
             throw new ApiServiceError();
           })
@@ -161,7 +161,7 @@ export class ApiService {
             }
           });
     }
-    return this.#requestService.get(DELETE_FILE_PATH+item.id)
+    return this.#requestService.delete(DELETE_FILE_PATH+item.id)
         .catch(() => {
           throw new ApiServiceError();
         })

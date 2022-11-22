@@ -109,7 +109,7 @@ app.get('/folders/:folderId', (req, res) => {
   }, 500);
 });
 
-app.get('/delete-file/:id', ((req, res) => {
+app.delete('/file/:id', ((req, res) => {
   setTimeout(() => {
     Object.entries(foldersContent).forEach(([folderId, contentArray]) => {
       contentArray.forEach((file, index)=>{
@@ -124,7 +124,7 @@ app.get('/delete-file/:id', ((req, res) => {
   }, 500);
 }));
 
-app.get('/delete-folder/:id', ((req, res) => {
+app.delete('/folder/:id', ((req, res) => {
   setTimeout(() => {
     res.status(404);
     res.send({});
