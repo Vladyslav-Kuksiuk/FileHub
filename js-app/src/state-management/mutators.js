@@ -69,15 +69,26 @@ export const MUTATORS = {
     if (isDeleting) {
       return new State({...state,
         isItemDeleting: isDeleting,
-        itemDeletingError: null});
+        itemDeletingError: null,
+      });
     }
+
+    if (!isDeleting && state.itemDeletingError) {
+      return new State({...state,
+        isItemDeleting: isDeleting,
+      });
+    }
+
     return new State({...state,
-      itemInRemovingState: null,
       isItemDeleting: isDeleting,
+      itemInRemovingState: null,
     });
   },
   [MUTATOR_NAMES.SET_REMOVING_ITEM]: (state, item) =>{
-    return new State({...state, itemInRemovingState: item});
+    return new State({...state,
+      itemInRemovingState: item,
+      itemDeletingError: null,
+    });
   },
   [MUTATOR_NAMES.SET_ITEM_DELETING_ERROR]: (state, error) =>{
     return new State({...state, itemDeletingError: error});

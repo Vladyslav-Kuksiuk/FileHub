@@ -194,8 +194,8 @@ export class TablePage extends Component {
             Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
         </p>
     </footer>
-</div>
 ${this.addSlot(MODAL_REMOVE_SLOT)}
+</div>
     `;
   }
 }

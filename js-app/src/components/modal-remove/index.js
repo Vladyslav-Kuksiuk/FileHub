@@ -11,6 +11,7 @@ const CLOSE_CROSS = 'close-cross';
  * ModalRemove component.
  */
 export class ModalRemove extends Component {
+  #isLoading = false;
   #itemType;
   #itemName;
   #error;
@@ -34,31 +35,18 @@ export class ModalRemove extends Component {
   }
 
   /**
-   * @param {boolean} isLoading
-   */
-  set isLoading(isLoading) {
-    this.#deleteButton.disabled = isLoading;
-    this.#cancelButton.disabled = isLoading;
-    if (isLoading) {
-      this.#deleteButton.title = '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span> Delete';
-    } else {
-      this.#deleteButton.title = `Delete`;
-    }
-  }
-
-  /**
    * @inheritDoc
    */
   afterRender() {
     const deleteButtonSlot = this.getSlot(DELETE_BUTTON_SLOT);
-    const deleteButton = new Button(deleteButtonSlot, 'Delete', BUTTON_TYPE.DANGER);
+    const deleteButton = new Button(deleteButtonSlot, 'Delete', BUTTON_TYPE.DANGER, this.#isLoading);
     deleteButton.onClick(()=>{
       this.#eventTarget.dispatchEvent(new Event(DELETE_EVENT));
     });
     this.#deleteButton = deleteButton;
 
     const cancelButtonSlot = this.getSlot(CANCEL_BUTTON_SLOT);
-    const cancelButton = new Button(cancelButtonSlot, 'Cancel');
+    const cancelButton = new Button(cancelButtonSlot, 'Cancel', BUTTON_TYPE.DEFAULT, this.#isLoading);
     cancelButton.onClick(()=>{
       this.#eventTarget.dispatchEvent(new Event(CANCEL_EVENT));
     });
@@ -69,6 +57,20 @@ export class ModalRemove extends Component {
           event.preventDefault();
           this.#eventTarget.dispatchEvent(new Event(CANCEL_EVENT));
         });
+  }
+
+  /**
+   * @param {boolean} isLoading
+   */
+  set isLoading(isLoading) {
+    this.#isLoading = isLoading;
+    this.#deleteButton.isDisabled = isLoading;
+    this.#cancelButton.isDisabled = isLoading;
+    if (isLoading) {
+      this.#deleteButton.text = '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span> Delete';
+    } else {
+      this.#deleteButton.text = `Delete`;
+    }
   }
 
   /**
@@ -126,7 +128,7 @@ export class ModalRemove extends Component {
    */
   markup() {
     return `
-      <div ${this.#isHidden ? 'hidden' : ''} class="modal">
+      <div style="${this.#isHidden ? 'display: none' : 'display: unset'}" class="modal">
           <div class="modal-container">
               <header>
                   <h3>Delete ${this.#itemType}</h3>
@@ -134,7 +136,7 @@ export class ModalRemove extends Component {
               </header>
               <div class="modal-body">
                   <p class="modal-text">
-                      Are you sure you want to delete "${this.#itemName}" file?
+                      Are you sure you want to delete "${this.#itemName}"?
                   </p>
                   ${this.#error ? '<p class="help-block text-danger">'+this.#error+'</p>' : ''}
               </div>

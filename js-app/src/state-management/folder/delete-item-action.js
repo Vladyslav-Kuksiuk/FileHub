@@ -4,7 +4,7 @@ import {MUTATOR_NAMES} from '../mutators';
 import {FolderContentItem} from './folder-content-item';
 
 /**
- * Action to perform folder content loading.
+ * Action to perform item deleting.
  */
 export class DeleteItemAction extends Action {
   #item;

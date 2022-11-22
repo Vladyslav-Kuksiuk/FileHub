@@ -1,6 +1,7 @@
 import {ApplicationContext} from '../../application-context';
 import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
+import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -47,6 +48,9 @@ export class FileListWrapper {
                     },
                   }));
                 },
+                deleteListener: () => {
+                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
+                },
               };
             });
 
@@ -57,6 +61,9 @@ export class FileListWrapper {
                 name: file.name,
                 type: file.type,
                 size: file.size,
+                deleteListener: () => {
+                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                },
               };
             });
         fileList.setContent(folders, files);

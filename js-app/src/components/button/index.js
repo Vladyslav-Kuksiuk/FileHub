@@ -11,6 +11,7 @@ export const BUTTON_TYPE = {
  * Button component.
  */
 export class Button extends Component {
+  #text;
   #title;
   #type;
   #isDisabled;
@@ -18,13 +19,14 @@ export class Button extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {string} title
+   * @param {string} text
    * @param {string} type
    * @param {boolean} isDisabled
    */
-  constructor(parent, title, type = BUTTON_TYPE.DEFAULT, isDisabled = false) {
+  constructor(parent, text, type = BUTTON_TYPE.DEFAULT, isDisabled = false) {
     super(parent);
-    this.#title = title;
+    this.#text = text;
+    this.#title = text;
     this.#type = type;
     this.#isDisabled = isDisabled;
     this.init();
@@ -37,6 +39,14 @@ export class Button extends Component {
     this.rootElement.addEventListener('click', ()=>{
       this.#eventTarget.dispatchEvent(new Event(CLICK_EVENT));
     });
+  }
+
+  /**
+   * @param {string} text
+   */
+  set text(text) {
+    this.#text = text;
+    this.render();
   }
 
   /**
@@ -78,7 +88,7 @@ export class Button extends Component {
   markup() {
     return `
     <button class="btn ${this.#type}" title="${this.#title}" ${this.#isDisabled ? 'disabled' : ''}
-            ${this.markElement('button-component')}>${this.#title}</button>
+            ${this.markElement('button-component')}>${this.#text}</button>
     `;
   }
 }

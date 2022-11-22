@@ -1,5 +1,7 @@
 import {ApplicationContext} from '../../application-context';
 import {ModalRemove} from '../../components/modal-remove';
+import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
+import {DeleteItemAction} from '../../state-management/folder/delete-item-action';
 
 /**
  * ModalRemove wrapper for state change listening.
@@ -27,7 +29,7 @@ export class ModalRemoveWrapper {
         .addStateListener('itemInRemovingState', (state) => {
           if (state.itemInRemovingState) {
             modal.itemName = state.itemInRemovingState.name;
-            if (state.itemInRemovingState.type==='folder') {
+            if (state.itemInRemovingState.type === 'folder') {
               modal.itemType = 'Folder';
             } else {
               modal.itemType = 'File';
@@ -50,6 +52,16 @@ export class ModalRemoveWrapper {
           modal.error = state.itemDeletingError;
         });
     this.#stateListeners.push(itemDeletingErrorListener);
+
+    modal.onCancel(()=>{
+      this.#stateManagementService.dispatch(new DefineRemovingItemAction(null));
+    });
+
+    modal.onDelete(()=>{
+      this.#stateManagementService.dispatch(
+          new DeleteItemAction(this.#stateManagementService.state.itemInRemovingState,
+              this.#applicationContext.apiService));
+    });
   }
 
   /**

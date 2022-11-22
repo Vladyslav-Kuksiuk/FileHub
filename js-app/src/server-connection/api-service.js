@@ -151,17 +151,7 @@ export class ApiService {
    */
   async deleteItem(item) {
     if (item.type === 'folder') {
-      this.#requestService.get(DELETE_FOLDER_PATH+item.id)
-          .catch(() => {
-            throw new ApiServiceError();
-          })
-          .then((response) => {
-            if (response.status !== 200) {
-              throw new ApiServiceError();
-            }
-          });
-    } else {
-      this.#requestService.get(DELETE_FILE_PATH+item.id)
+      return this.#requestService.get(DELETE_FOLDER_PATH+item.id)
           .catch(() => {
             throw new ApiServiceError();
           })
@@ -171,6 +161,15 @@ export class ApiService {
             }
           });
     }
+    return this.#requestService.get(DELETE_FILE_PATH+item.id)
+        .catch(() => {
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
   }
 
   /**

@@ -58,12 +58,14 @@ const foldersContent = {
       id: 'testUser-file-2',
     },
   ],
-  'testUser-2': {
-    name: 'SecondFolder',
-    id: 'testUser-2',
-    parentId: 'testUser-1',
-    itemsAmount: 1,
-  },
+  'testUser-2': [
+    {
+      name: 'SecondFolder',
+      id: 'testUser-2',
+      parentId: 'testUser-1',
+      itemsAmount: 1,
+    },
+  ],
 };
 
 app.post('/login', (req, res) => {
@@ -106,6 +108,28 @@ app.get('/folders/:folderId', (req, res) => {
     }
   }, 500);
 });
+
+app.get('/delete-file/:id', ((req, res) => {
+  setTimeout(() => {
+    Object.entries(foldersContent).forEach(([folderId, contentArray]) => {
+      contentArray.forEach((file, index)=>{
+        if (file.id === req.params.id) {
+          foldersContent[folderId].splice(index, 1);
+        }
+      });
+    });
+
+    res.status(200);
+    res.send({});
+  }, 500);
+}));
+
+app.get('/delete-folder/:id', ((req, res) => {
+  setTimeout(() => {
+    res.status(404);
+    res.send({});
+  }, 1000);
+}));
 
 app.get('/folders/:folderId/content', (req, res) => {
   setTimeout(() => {
