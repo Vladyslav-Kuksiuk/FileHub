@@ -128,7 +128,8 @@ export class ModalRemove extends Component {
    */
   markup() {
     return `
-      <div style="${this.#isHidden ? 'display: none' : 'display: unset'}" class="modal">
+      <div ${this.markElement('modal-remove-component')} 
+      style="${this.#isHidden ? 'display: none' : 'display: unset'}" class="modal">
           <div class="modal-container">
               <header>
                   <h3>Delete ${this.#itemType}</h3>
