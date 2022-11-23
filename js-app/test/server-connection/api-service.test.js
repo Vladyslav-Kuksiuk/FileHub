@@ -424,4 +424,134 @@ describe('ApiService', () => {
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID/content', undefined);
     });
   });
+
+  describe('deleteItem', () => {
+    test(`Should successfully delete folder`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'folder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            return new Response(200);
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.deleteItem(item)).resolves.toBeUndefined();
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith('api/folder/'+item.id, undefined);
+    });
+
+    test(`Should successfully delete file`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'notAFolder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            return new Response(200);
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.deleteItem(item)).resolves.toBeUndefined();
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith('api/file/'+item.id, undefined);
+    });
+
+    test(`Should return error after deleting folder`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'folder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, undefined);
+    });
+
+    test(`Should return error after deleting file`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'notAFolder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, undefined);
+    });
+
+    test(`Should return error after deleting folder fetch error`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'folder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, undefined);
+    });
+
+    test(`Should return error after deleting file fetch error`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'notAFolder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, undefined);
+    });
+  });
 });

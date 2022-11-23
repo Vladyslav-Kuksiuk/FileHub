@@ -151,7 +151,7 @@ export class ApiService {
    */
   async deleteItem(item) {
     if (item.type === 'folder') {
-      return this.#requestService.delete(DELETE_FOLDER_PATH+item.id)
+      return this.#requestService.delete(DELETE_FOLDER_PATH+item.id, this.#userToken)
           .catch(() => {
             throw new ApiServiceError();
           })
@@ -161,7 +161,7 @@ export class ApiService {
             }
           });
     }
-    return this.#requestService.delete(DELETE_FILE_PATH+item.id)
+    return this.#requestService.delete(DELETE_FILE_PATH+item.id, this.#userToken)
         .catch(() => {
           throw new ApiServiceError();
         })
