@@ -196,4 +196,67 @@ describe('Mutators', () => {
 
     expect(newState).toStrictEqual(expectedState);
   });
+
+  test(`Should return new state with changed itemInRemovingState`, function() {
+    expect.assertions(1);
+
+    const itemInRemovingState = {
+      name: '123',
+    };
+    const prevState = new State({
+      itemDeletingError: 'error',
+    });
+
+    const expectedState = new State({
+      itemInRemovingState: itemInRemovingState,
+      itemDeletingError: null,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_REMOVING_ITEM](prevState, itemInRemovingState);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed isItemDeleting and itemDeletingError`, function() {
+    expect.assertions(1);
+
+    const prevState = new State({
+      itemDeletingError: 'error',
+    });
+
+    const expectedState = new State({
+      isItemDeleting: true,
+      itemDeletingError: null,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_ITEM_DELETING](prevState, true);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed isItemDeleting`, function() {
+    expect.assertions(1);
+
+    const prevState = new State({
+      isItemDeleting: true,
+      itemDeletingError: 'error',
+    });
+
+    const expectedState = new State({
+      isItemDeleting: false,
+      itemDeletingError: 'error',
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_ITEM_DELETING](prevState, false);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed itemDeletingError`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      itemDeletingError: 'error',
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_ITEM_DELETING_ERROR](state, 'error');
+
+    expect(newState).toStrictEqual(expectedState);
+  });
 });
