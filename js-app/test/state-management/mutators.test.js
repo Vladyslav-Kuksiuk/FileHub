@@ -249,6 +249,23 @@ describe('Mutators', () => {
     expect(newState).toStrictEqual(expectedState);
   });
 
+  test(`Should return new state with changed isItemDeleting and itemInRemovingState`, function() {
+    expect.assertions(1);
+
+    const prevState = new State({
+      isItemDeleting: true,
+      itemInRemovingState: {},
+    });
+
+    const expectedState = new State({
+      isItemDeleting: false,
+      itemInRemovingState: null,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_ITEM_DELETING](prevState, false);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
   test(`Should return new state with changed itemDeletingError`, function() {
     expect.assertions(1);
 
