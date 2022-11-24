@@ -20,7 +20,7 @@ export const PASSWORD_MATCH_ERROR = 'Passwords don\'t match.';
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
 /**
- * Authorization page component.
+ * Registration form component.
  */
 export class RegistrationForm extends Component {
   #emailValue = '';

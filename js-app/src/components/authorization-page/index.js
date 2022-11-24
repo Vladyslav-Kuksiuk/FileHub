@@ -32,7 +32,7 @@ export class AuthorizationPage extends Component {
   /**
    * Adds event listener on navigate to registration.
    *
-   * @param {function} listener
+   * @param {function(): void} listener
    */
   onNavigateToRegistration(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);

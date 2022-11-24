@@ -3,7 +3,7 @@ import {Button} from '../button';
 
 const FORM_SUBMIT_EVENT = 'FORM_SUBMIT_EVENT';
 /**
- * Authorization page component.
+ * Form component.
  */
 export class Form extends Component {
   #buttonText;
@@ -57,7 +57,7 @@ export class Form extends Component {
   /**
    * Adds form control to form.
    *
-   * @param {function(HTMLElement)} inputCreator
+   * @param {function(HTMLElement): void} inputCreator
    */
   addFormControl(inputCreator) {
     this.#inputCreators.push(inputCreator);
@@ -67,7 +67,7 @@ export class Form extends Component {
   /**
    * Adds onSubmit event to form.
    *
-   * @param {function(FormData)} listener
+   * @param {function(FormData): void} listener
    */
   onSubmit(listener) {
     this.#eventTarget.addEventListener(FORM_SUBMIT_EVENT, (event) => {

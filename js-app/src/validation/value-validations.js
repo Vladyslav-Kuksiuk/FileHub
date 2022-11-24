@@ -5,7 +5,7 @@ import {Preconditions} from '../preconditions';
  *
  * @param {int} minLength
  * @param {string} errorMessage
- * @returns {function(*): Promise<string>}
+ * @returns {function(*): Promise<void | Error>}
  */
 export function validateLength(minLength, errorMessage) {
   Preconditions.checkTrue(Number.isInteger(minLength));
@@ -30,7 +30,7 @@ export function validateLength(minLength, errorMessage) {
  *
  * @param {RegExp} regex
  * @param {string} errorMessage
- * @returns {function(*): Promise<string>}
+ * @returns {function(string): Promise<void | Error>}
  */
 export function validateByRegexp(regex, errorMessage) {
   Preconditions.checkType(errorMessage, 'string');
@@ -53,7 +53,7 @@ export function validateByRegexp(regex, errorMessage) {
  * Validates the consistency of input values.
  * @param {any} referencedValue
  * @param {string} errorMessage
- * @returns {function(*): Promise<string>}
+ * @returns {function(*): Promise<void | Error>}
  */
 export function validateSameValue(referencedValue, errorMessage) {
   Preconditions.checkType(errorMessage, 'string');

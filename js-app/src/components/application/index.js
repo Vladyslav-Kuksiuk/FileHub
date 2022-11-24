@@ -9,7 +9,7 @@ const LOGIN_PATH = 'login';
 const REGISTRATION_PATH = 'registration';
 
 /**
- * Authorization page component.
+ * Application component.
  */
 export class Application extends Component {
   /**

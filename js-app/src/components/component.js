@@ -1,5 +1,5 @@
 /**
- * Virtual DOM of the element.
+ * Abstract component.
  */
 export class Component {
   parentElement;

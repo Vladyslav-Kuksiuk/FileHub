@@ -9,8 +9,8 @@ class RouterConfig {
   #homeRoutePath;
 
   /**
-   * @param {object} pathToRouteMap - {string} path : {function} route
-   * @param {function} errorRoute
+   * @param {Object.<string, function(): void>} pathToRouteMap
+   * @param {function(): void} errorRoute
    * @param {string} homeRoutePath
    */
   constructor(pathToRouteMap, errorRoute, homeRoutePath) {
@@ -28,14 +28,14 @@ class RouterConfig {
   }
 
   /**
-   * @returns {object} - {string} path : {function} route
+   * @returns {Object.<string, function(): void>}
    */
   get routesMap() {
     return this.#pathToRouteMap;
   }
 
   /**
-   * @returns {function}
+   * @returns {function(): void}
    */
   get errorRoute() {
     return this.#errorRoute;
@@ -61,7 +61,7 @@ export class RouterConfigBuilder {
    * Adds page to router config.
    *
    * @param {string} path
-   * @param {function} route
+   * @param {function(): void} route
    * @returns {RouterConfigBuilder}
    */
   addRoute(path, route) {
@@ -72,7 +72,7 @@ export class RouterConfigBuilder {
   /**
    * Adds error404 page to router config.
    *
-   * @param {function} route
+   * @param {function(): void} route
    * @returns {RouterConfigBuilder}
    */
   addErrorRoute(route) {

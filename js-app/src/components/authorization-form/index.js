@@ -16,7 +16,7 @@ export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LEN
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
 /**
- * Authorization page component.
+ * Authorization form component.
  */
 export class AuthorizationForm extends Component {
   #emailValue = '';
@@ -99,7 +99,7 @@ export class AuthorizationForm extends Component {
   /**
    * Adds event listener on navigate to registration.
    *
-   * @param {function} listener
+   * @param {function(): void} listener
    */
   onNavigateToRegistration(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
@@ -108,7 +108,7 @@ export class AuthorizationForm extends Component {
   /**
    * @private
    * @param {FormData} formData
-   * @param {function(FormData)} configCreator
+   * @param {function(FormData): config} configCreator
    */
   #validateForm(formData, configCreator) {
     this.#setFormErrors({

@@ -8,7 +8,7 @@ export class ValidationService {
   /**
    * @param {FormData} formData
    * @param {FormValidationConfig} config
-   * @returns {Promise<void>}
+   * @returns {Promise<void | ValidationErrorResult>}
    */
   async validate(formData, config) {
     const validationPromises = config.fieldValidators.map(({fieldName, validators}) =>{
