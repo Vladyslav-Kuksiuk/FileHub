@@ -150,7 +150,7 @@ export class RegistrationForm extends Component {
    * @private
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
-   * @returns {*|Promise<void | Promise>}
+   * @returns {Promise<void | Error>}
    */
   #validateForm(formData, configCreator) {
     this.#setFormErrors({
@@ -168,7 +168,7 @@ export class RegistrationForm extends Component {
             return tempErrors;
           }, {});
           this.#setFormErrors(errorsByField);
-          return Promise.reject(new Error());
+          throw new Error();
         });
   }
 
