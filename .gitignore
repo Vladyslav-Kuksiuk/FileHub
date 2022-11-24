@@ -58,3 +58,7 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+/js-app/node_modules/
+
+js-app/dist/
+js-app/manifest.hash.json
