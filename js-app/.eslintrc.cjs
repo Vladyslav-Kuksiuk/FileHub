@@ -11,6 +11,7 @@ module.exports = {
   'overrides': [],
   'parserOptions': {
     'ecmaVersion': 'latest',
+    'parser': 'babel-eslint',
     'sourceType': 'module',
   },
   'plugins': [

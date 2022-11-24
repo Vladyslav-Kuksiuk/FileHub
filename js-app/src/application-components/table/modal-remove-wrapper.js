@@ -1,23 +1,14 @@
-import {ApplicationContext} from '../../application-context';
 import {ModalRemove} from '../../components/modal-remove';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {DeleteItemAction} from '../../state-management/folder/delete-item-action';
+import {inject} from "../../registry";
 
 /**
  * ModalRemove wrapper for state change listening.
  */
 export class ModalRemoveWrapper {
   #stateListeners = [];
-  #stateManagementService;
-  #applicationContext;
-
-  /**
-   * @param {ApplicationContext} applicationContext
-   */
-  constructor(applicationContext) {
-    this.#applicationContext = applicationContext;
-    this.#stateManagementService = applicationContext.stateManagementService;
-  }
+  @inject #stateManagementService;
 
   /**
    * Adds state listeners to ModalRemove component.
@@ -59,8 +50,7 @@ export class ModalRemoveWrapper {
 
     modal.onDelete(()=>{
       this.#stateManagementService.dispatch(
-          new DeleteItemAction(this.#stateManagementService.state.itemInRemovingState,
-              this.#applicationContext.apiService));
+          new DeleteItemAction(this.#stateManagementService.state.itemInRemovingState));
     });
   }
 

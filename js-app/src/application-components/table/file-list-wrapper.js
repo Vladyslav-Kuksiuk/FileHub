@@ -1,7 +1,7 @@
-import {ApplicationContext} from '../../application-context';
 import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
+import {inject} from "../../registry";
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -10,19 +10,14 @@ const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
  */
 export class FileListWrapper {
   #eventTarget = new EventTarget();
-  #stateManagementService;
+  @inject #stateManagementService;
   #stateListeners = [];
 
-  /**
-   * @param {ApplicationContext} applicationContext
-   */
-  constructor(applicationContext) {
-    this.#stateManagementService = applicationContext.stateManagementService;
-
+  constructor() {
     const folderInfoListener = this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {
         this.#stateManagementService.dispatch(
-            new LoadFolderContentAction(state.folderInfo.id, applicationContext.apiService));
+            new LoadFolderContentAction(state.folderInfo.id));
       }
     });
     this.#stateListeners.push(folderInfoListener);
@@ -34,7 +29,8 @@ export class FileListWrapper {
    * @param {FileList} fileList
    */
   wrap(fileList) {
-    const folderContentListener = this.#stateManagementService.addStateListener('folderContent', (state) => {
+    const folderContentListener = this.#stateManagementService
+        .addStateListener('folderContent', (state) => {
       if (state.folderContent) {
         const folders = state.folderContent
             .filter((item) => item.type === 'folder')

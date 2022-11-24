@@ -1,22 +1,20 @@
 import {Action} from '../action';
-import {ApiService} from '../../server-connection/api-service';
 import {MUTATOR_NAMES} from '../mutators';
+import {inject} from "../../registry";
 
 /**
  * Action to perform folder content loading.
  */
 export class LoadFolderContentAction extends Action {
   #folderId;
-  #apiService;
+  @inject #apiService;
 
   /**
    * @param {string} folderId
-   * @param {ApiService} apiService
    */
-  constructor(folderId, apiService) {
+  constructor(folderId) {
     super();
     this.#folderId = folderId;
-    this.#apiService = apiService;
   }
 
   /**

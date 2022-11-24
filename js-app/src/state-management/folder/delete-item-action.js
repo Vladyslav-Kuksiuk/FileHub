@@ -1,24 +1,22 @@
 import {Action} from '../action';
-import {ApiService} from '../../server-connection/api-service';
 import {MUTATOR_NAMES} from '../mutators';
 import {FolderContentItem} from './folder-content-item';
 import {LoadFolderContentAction} from './load-folder-content-action';
+import {inject} from "../../registry";
 
 /**
  * Action to perform item deleting.
  */
 export class DeleteItemAction extends Action {
   #item;
-  #apiService;
+  @inject #apiService;
 
   /**
    * @param {FolderContentItem} item
-   * @param {ApiService} apiService
    */
-  constructor(item, apiService) {
+  constructor(item) {
     super();
     this.#item = item;
-    this.#apiService = apiService;
   }
 
   /**

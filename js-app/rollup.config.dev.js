@@ -4,6 +4,7 @@ import copy from 'rollup-plugin-copy';
 import dev from 'rollup-plugin-dev';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
+import babel from '@rollup/plugin-babel';
 
 export default {
   input: 'src/index.js',
@@ -12,6 +13,15 @@ export default {
     entryFileNames: 'app-[hash].js',
   },
   plugins: [
+    babel({
+      babelHelpers: 'bundled',
+      plugins: [
+        ['@babel/plugin-proposal-decorators', {
+          version: '2022-03',
+        }],
+        ['@babel/plugin-syntax-decorators'],
+      ],
+    }),
     nodeResolve(),
     commonjs(),
     htmlTemplate({

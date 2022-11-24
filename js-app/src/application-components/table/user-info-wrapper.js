@@ -1,22 +1,18 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {UserInfo} from '../../components/user-info';
-import {ApplicationContext} from '../../application-context';
+import {inject} from "../../registry";
 
 /**
  * Breadcrumb wrapper for state change listening.
  */
 export class UserInfoWrapper {
-  #stateManagementService;
+  @inject #stateManagementService;
   #stateListeners = [];
 
-  /**
-   * @param {ApplicationContext} applicationContext
-   */
-  constructor(applicationContext) {
-    this.#stateManagementService = applicationContext.stateManagementService;
-    const state = applicationContext.stateManagementService.state;
+  constructor() {
+    const state = this.#stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
-      this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
+      this.#stateManagementService.dispatch(new LoadUserAction());
     }
   }
 
@@ -38,7 +34,8 @@ export class UserInfoWrapper {
         });
     this.#stateListeners.push(isUserProfileLoadingListener);
 
-    const userProfileErrorListener = this.#stateManagementService.addStateListener('userProfileError', (state) => {
+    const userProfileErrorListener = this.#stateManagementService
+        .addStateListener('userProfileError', (state) => {
       userInfo.hasError = !!state.userProfileError;
     });
     this.#stateListeners.push(userProfileErrorListener);

@@ -2,6 +2,7 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import {terser} from 'rollup-plugin-terser';
 import htmlTemplate from 'rollup-plugin-generate-html-template';
 import copy from 'rollup-plugin-copy';
+import babel from '@rollup/plugin-babel';
 
 export default {
   input: 'src/index.js',
@@ -15,6 +16,14 @@ export default {
     },
   },
   plugins: [
+    babel({
+      babelHelpers: 'bundled',
+      plugins: [
+        ['@babel/plugin-proposal-decorators', {
+          version: '2022-03',
+        }],
+      ],
+    }),
     nodeResolve(),
     terser(),
     htmlTemplate({

@@ -1,7 +1,7 @@
 import {Component} from '../../../components/component';
 import {RegistrationForm} from '../registration-form';
-import {ApplicationContext} from '../../../application-context';
 import {FieldValidationError} from '../../../server-connection/field-validation-error';
+import {inject} from "../../../registry.js";
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -10,16 +10,15 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
-  #apiService;
+  @inject #apiService;
+  @inject #titleService;
 
   /**
    * @param {HTMLElement} parent
-   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, applicationContext) {
+  constructor(parent) {
     super(parent);
-    applicationContext.titleService.setTitles(['Sign Up']);
-    this.#apiService = applicationContext.apiService;
+    this.#titleService.setTitles(['Sign Up']);
     this.init();
   }
 

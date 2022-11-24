@@ -1,20 +1,12 @@
 import {Action} from '../action';
-import {ApiService} from '../../server-connection/api-service';
 import {MUTATOR_NAMES} from '../mutators';
+import {inject} from "../../registry";
 
 /**
  * Action to perform user log out.
  */
 export class LogOutUserAction extends Action {
-  #apiService;
-
-  /**
-   * @param {ApiService} apiService
-   */
-  constructor(apiService) {
-    super();
-    this.#apiService = apiService;
-  }
+  @inject #apiService;
 
   /**
    * @inheritDoc
@@ -25,6 +17,7 @@ export class LogOutUserAction extends Action {
         .then(() => {
           executor(MUTATOR_NAMES.SET_USER_PROFILE, null);
           executor(MUTATOR_NAMES.SET_FOLDER_INFO, null);
+          executor(MUTATOR_NAMES.SET_FOLDER_CONTENT, null);
         })
         .catch((error)=>{
           executor(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, error.message);

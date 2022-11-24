@@ -1,7 +1,7 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
-import {ApplicationContext} from '../../application-context';
 import {State} from '../../state-management/state';
+import {inject} from "../../registry";
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -11,16 +11,9 @@ const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 export class BreadcrumbWrapper {
   #eventTarget = new EventTarget();
   #stateListeners = [];
-  #stateManagementService;
-  #applicationContext;
+  @inject #stateManagementService;
 
-  /**
-   * @param {ApplicationContext} applicationContext
-   */
-  constructor(applicationContext) {
-    this.#applicationContext = applicationContext;
-    this.#stateManagementService = applicationContext.stateManagementService;
-
+  constructor() {
     const userProfileListener = this.#stateManagementService.addStateListener('userProfile', (state)=>{
       this.#triggerFolderLoading(state);
     });
@@ -38,9 +31,10 @@ export class BreadcrumbWrapper {
    */
   #triggerFolderLoading(state) {
     if (state.userProfile) {
+      console.log('folderId', state.locationMetadata?.folderId);
       if (state.locationMetadata?.folderId) {
         this.#stateManagementService.dispatch(
-            new LoadFolderInfoAction(state.locationMetadata.folderId, this.#applicationContext.apiService));
+            new LoadFolderInfoAction(state.locationMetadata.folderId));
       } else {
         this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
           detail: {
