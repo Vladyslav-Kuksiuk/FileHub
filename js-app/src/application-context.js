@@ -5,7 +5,7 @@ import {StateManagementService} from './state-management/state-management-servic
 import {State} from './state-management/state';
 import {MUTATORS} from './state-management/mutators';
 import {registry} from './registry';
-import {FileTypeIconFactory} from "./components/file-list/file-type-icon-factory.js";
+import {FileTypeIconFactory} from './components/file-list/file-type-icon-factory.js';
 
 /**
  * Application context to create and provide dependencies.

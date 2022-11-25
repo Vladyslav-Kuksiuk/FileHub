@@ -1,6 +1,6 @@
 import {Component} from '../component';
 import {Link} from '../link';
-import {inject} from "../../registry";
+import {inject} from '../../registry';
 
 const FOLDER_LINK = 'folder-link-';
 const REMOVE_BUTTON = 'remove-button-';
@@ -131,7 +131,8 @@ export class FileList extends Component {
                         <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
                     </td>
                     <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon ${this.#fileTypeIconFactory.getIcon('folder')}"></span>
+                        <span aria-hidden="true" class="glyphicon 
+                              ${this.#fileTypeIconFactory.getIcon('folder')}"></span>
                     </td>
                     <td class="cell-name">${this.addSlot(FOLDER_LINK + index)}</td>
                     <td class="cell-type">Folder</td>
@@ -157,7 +158,8 @@ export class FileList extends Component {
                 <tr>
                     <td class="cell-arrow"></td>
                     <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon ${this.#fileTypeIconFactory.getIcon(file.type)}"></span>
+                        <span aria-hidden="true" class="glyphicon
+                              ${this.#fileTypeIconFactory.getIcon(file.type)}"></span>
                     </td>
                     <td class="cell-name">${file.name}</td>
                     <td class="cell-type">${file.type}</td>
