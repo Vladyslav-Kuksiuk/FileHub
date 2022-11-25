@@ -13,6 +13,9 @@ export class BreadcrumbWrapper {
   #stateListeners = [];
   @inject #stateManagementService;
 
+  /**
+   * Constructor.
+   */
   constructor() {
     const userProfileListener = this.#stateManagementService.addStateListener('userProfile', (state)=>{
       this.#triggerFolderLoading(state);

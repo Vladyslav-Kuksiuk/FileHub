@@ -1,6 +1,9 @@
 const nameToClassCreator = new Map();
 const nameToInstance = new Map();
 
+/**
+ * Registry to save and provide dependencies.
+ */
 export const registry = {
   register(name, componentCreator) {
     nameToClassCreator.set(name, componentCreator);
@@ -22,11 +25,13 @@ export const registry = {
 };
 
 /**
+ * Decorator to provide registered dependency by name.
  *
- * @param _value
- * @param root0
- * @param {string} root0.kind
- * @param {string} root0.name
+ * @param {any} _value
+ * @param {object} state
+ * @param {string} state.kind
+ * @param {string} state.name
+ * @returns {void | function(): any}
  */
 export function inject(_value, {kind, name}) {
   if (kind === 'field') {
@@ -37,7 +42,7 @@ export function inject(_value, {kind, name}) {
 }
 
 /**
- *
+ * Clears all instances and creators in registry.
  */
 export function clearRegistry() {
   nameToClassCreator.clear();

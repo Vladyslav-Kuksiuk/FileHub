@@ -13,6 +13,9 @@ export class FileListWrapper {
   @inject #stateManagementService;
   #stateListeners = [];
 
+  /**
+   * Constructor.
+   */
   constructor() {
     const folderInfoListener = this.#stateManagementService.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {

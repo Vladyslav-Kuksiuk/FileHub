@@ -9,6 +9,9 @@ export class UserInfoWrapper {
   @inject #stateManagementService;
   #stateListeners = [];
 
+  /**
+   * Constructor.
+   */
   constructor() {
     const state = this.#stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
