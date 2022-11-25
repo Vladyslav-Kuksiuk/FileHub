@@ -99,7 +99,8 @@ export class FileList extends Component {
     }
     return `
         <div class="table-wrapper">
-            <table ${this.markElement(FILE_LIST_TABLE)} class="table table-hover">
+            <table class="table table-hover">
+            <tbody ${this.markElement(FILE_LIST_TABLE)}></tbody>
             </table>
         </div>
         `;

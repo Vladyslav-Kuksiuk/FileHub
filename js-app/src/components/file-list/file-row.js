@@ -14,60 +14,60 @@ export class FileRow extends Component {
   #type;
   #size;
   #eventTarget = new EventTarget();
-    @inject #fileTypeIconFactory;
+  @inject #fileTypeIconFactory;
 
-    /**
-     * @param {HTMLElement} parent
-     * @param {string} name
-     * @param {string} type
-     * @param {string} size
-     */
-    constructor(parent, name, type, size) {
-      super(parent);
-      this.#name = name;
-      this.#type = type;
-      this.#size = size;
-      this.init();
-    }
+  /**
+   * @param {HTMLElement} parent
+   * @param {string} name
+   * @param {string} type
+   * @param {string} size
+   */
+  constructor(parent, name, type, size) {
+    super(parent);
+    this.#name = name;
+    this.#type = type;
+    this.#size = size;
+    this.init();
+  }
 
-    /**
-     * @inheritDoc
-     */
-    afterRender() {
-      this.rootElement.querySelector(`[data-td="${DOWNLOAD_BUTTON}"]`)?.addEventListener('click', (event)=>{
-        event.preventDefault();
-        this.#eventTarget.dispatchEvent(new Event(DOWNLOAD_CLICK_EVENT));
-      });
+  /**
+   * @inheritDoc
+   */
+  afterRender() {
+    this.rootElement.querySelector(`[data-td="${DOWNLOAD_BUTTON}"]`)?.addEventListener('click', (event)=>{
+      event.preventDefault();
+      this.#eventTarget.dispatchEvent(new Event(DOWNLOAD_CLICK_EVENT));
+    });
 
-      this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`)?.addEventListener('click', (event)=>{
-        event.preventDefault();
-        this.#eventTarget.dispatchEvent(new Event(REMOVE_CLICK_EVENT));
-      });
-    }
+    this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`)?.addEventListener('click', (event)=>{
+      event.preventDefault();
+      this.#eventTarget.dispatchEvent(new Event(REMOVE_CLICK_EVENT));
+    });
+  }
 
-    /**
-     * Adds listener on download button click event.
-     *
-     * @param {function(): void} listener
-     */
-    onDownload(listener) {
-      this.#eventTarget.addEventListener(DOWNLOAD_CLICK_EVENT, listener);
-    }
+  /**
+   * Adds listener on download button click event.
+   *
+   * @param {function(): void} listener
+   */
+  onDownload(listener) {
+    this.#eventTarget.addEventListener(DOWNLOAD_CLICK_EVENT, listener);
+  }
 
-    /**
-     * Adds listener on remove button click event.
-     *
-     * @param {function(): void} listener
-     */
-    onRemove(listener) {
-      this.#eventTarget.addEventListener(REMOVE_CLICK_EVENT, listener);
-    }
+  /**
+   * Adds listener on remove button click event.
+   *
+   * @param {function(): void} listener
+   */
+  onRemove(listener) {
+    this.#eventTarget.addEventListener(REMOVE_CLICK_EVENT, listener);
+  }
 
-    /**
-     * @inheritDoc
-     */
-    markup() {
-      return `
+  /**
+   * @inheritDoc
+   */
+  markup() {
+    return `
     <tr>
        <td class="cell-arrow"></td>
        <td class="cell-icon">
@@ -78,18 +78,15 @@ export class FileRow extends Component {
        <td class="cell-size">${this.#size}</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button${this.markElement(DOWNLOAD_BUTTON)}
-                class="icon-button" title="Download file.">
+               <button ${this.markElement(DOWNLOAD_BUTTON)} class="icon-button" title="Download file.">
                    <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
                </button>
-               <button ${this.markElement(REMOVE_BUTTON)}
-                class="icon-button" title="Delete">
-                   <span aria-hidden="true"
-                         class="glyphicon glyphicon-remove-circle"></span>
+               <button ${this.markElement(REMOVE_BUTTON)} class="icon-button" title="Delete">
+                   <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>
            </div>
        </td>
     </tr>
     `;
-    }
+  }
 }

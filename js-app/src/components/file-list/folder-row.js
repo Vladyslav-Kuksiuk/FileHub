@@ -94,13 +94,11 @@ export class FolderRow extends Component {
         <td class="cell-size">—</td>
         <td class="cell-buttons">
             <div class="data-buttons-container">
-                <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button"
-                        title="Upload file.">
+                <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="Upload file.">
                     <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                 </button>
                 <button ${this.markElement(REMOVE_BUTTON)} class="icon-button" title="Delete">
-                    <span aria-hidden="true"
-                          class="glyphicon glyphicon-remove-circle"></span>
+                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                 </button>
             </div>
         </td>
