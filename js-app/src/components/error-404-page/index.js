@@ -1,7 +1,7 @@
 import {Component} from '../component';
 import {Link} from '../link';
 import {ApplicationContext} from '../../application-context';
-import {inject} from "../../registry.js";
+import {inject} from '../../registry.js';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 

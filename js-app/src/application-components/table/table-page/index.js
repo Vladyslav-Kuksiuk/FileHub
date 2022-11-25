@@ -8,7 +8,7 @@ import {FileListWrapper} from '../file-list-wrapper';
 import {FileList} from '../../../components/file-list';
 import {ModalRemove} from '../../../components/modal-remove/index.js';
 import {ModalRemoveWrapper} from '../modal-remove-wrapper.js';
-import {inject} from "../../../registry";
+import {inject} from '../../../registry';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';

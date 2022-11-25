@@ -10,10 +10,6 @@ import {registry} from './registry';
  * Application context to create and provide dependencies.
  */
 export class ApplicationContext {
-  titleService;
-  apiService;
-  stateManagementService;
-
   /**
    * Creates dependencies instances.
    */

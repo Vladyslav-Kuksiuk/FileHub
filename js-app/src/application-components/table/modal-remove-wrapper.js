@@ -1,7 +1,7 @@
 import {ModalRemove} from '../../components/modal-remove';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {DeleteItemAction} from '../../state-management/folder/delete-item-action';
-import {inject} from "../../registry";
+import {inject} from '../../registry';
 
 /**
  * ModalRemove wrapper for state change listening.

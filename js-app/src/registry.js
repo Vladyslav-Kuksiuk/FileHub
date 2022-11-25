@@ -4,10 +4,10 @@ const nameToInstance = new Map();
 export const registry = {
   register(name, componentCreator) {
     nameToClassCreator.set(name, componentCreator);
-    nameToClassCreator.set('#'+name, componentCreator);
   },
 
   getInstance(name) {
+    name = name.replace('#', '');
     if (nameToInstance.has(name)) {
       return nameToInstance.get(name);
     }
@@ -17,7 +17,6 @@ export const registry = {
     }
     const instance = componentClassCreator();
     nameToInstance.set(name, instance);
-    nameToInstance.set('#'+name, instance);
     return instance;
   },
 };
@@ -26,8 +25,8 @@ export const registry = {
  *
  * @param _value
  * @param root0
- * @param root0.kind
- * @param root0.name
+ * @param {string} root0.kind
+ * @param {string} root0.name
  */
 export function inject(_value, {kind, name}) {
   if (kind === 'field') {

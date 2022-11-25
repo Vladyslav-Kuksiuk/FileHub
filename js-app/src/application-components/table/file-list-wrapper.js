@@ -1,7 +1,7 @@
 import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
-import {inject} from "../../registry";
+import {inject} from '../../registry';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -31,42 +31,42 @@ export class FileListWrapper {
   wrap(fileList) {
     const folderContentListener = this.#stateManagementService
         .addStateListener('folderContent', (state) => {
-      if (state.folderContent) {
-        const folders = state.folderContent
-            .filter((item) => item.type === 'folder')
-            .map((folder) => {
-              return {
-                name: folder.name,
-                linkListener: ()=>{
-                  this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-                    detail: {
-                      folderId: folder.id,
+          if (state.folderContent) {
+            const folders = state.folderContent
+                .filter((item) => item.type === 'folder')
+                .map((folder) => {
+                  return {
+                    name: folder.name,
+                    linkListener: ()=>{
+                      this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                        detail: {
+                          folderId: folder.id,
+                        },
+                      }));
                     },
-                  }));
-                },
-                deleteListener: () => {
-                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
-                },
-              };
-            });
+                    deleteListener: () => {
+                      this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
+                    },
+                  };
+                });
 
-        const files = state.folderContent
-            .filter((item) => item.type !== 'folder')
-            .map((file) => {
-              return {
-                name: file.name,
-                type: file.type,
-                size: file.size,
-                deleteListener: () => {
-                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
-                },
-              };
-            });
-        fileList.setContent(folders, files);
-      } else {
-        fileList.setContent([], []);
-      }
-    });
+            const files = state.folderContent
+                .filter((item) => item.type !== 'folder')
+                .map((file) => {
+                  return {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    deleteListener: () => {
+                      this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                    },
+                  };
+                });
+            fileList.setContent(folders, files);
+          } else {
+            fileList.setContent([], []);
+          }
+        });
     this.#stateListeners.push(folderContentListener);
 
     const isFolderContentLoadingListener = this.#stateManagementService

@@ -1,6 +1,6 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {UserInfo} from '../../components/user-info';
-import {inject} from "../../registry";
+import {inject} from '../../registry';
 
 /**
  * Breadcrumb wrapper for state change listening.
@@ -36,8 +36,8 @@ export class UserInfoWrapper {
 
     const userProfileErrorListener = this.#stateManagementService
         .addStateListener('userProfileError', (state) => {
-      userInfo.hasError = !!state.userProfileError;
-    });
+          userInfo.hasError = !!state.userProfileError;
+        });
     this.#stateListeners.push(userProfileErrorListener);
   }
 

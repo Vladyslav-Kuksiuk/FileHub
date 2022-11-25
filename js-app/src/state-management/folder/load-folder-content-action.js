@@ -1,6 +1,6 @@
 import {Action} from '../action';
 import {MUTATOR_NAMES} from '../mutators';
-import {inject} from "../../registry";
+import {inject} from '../../registry';
 
 /**
  * Action to perform folder content loading.

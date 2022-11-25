@@ -1,7 +1,7 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {State} from '../../state-management/state';
-import {inject} from "../../registry";
+import {inject} from '../../registry';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -31,7 +31,6 @@ export class BreadcrumbWrapper {
    */
   #triggerFolderLoading(state) {
     if (state.userProfile) {
-      console.log('folderId', state.locationMetadata?.folderId);
       if (state.locationMetadata?.folderId) {
         this.#stateManagementService.dispatch(
             new LoadFolderInfoAction(state.locationMetadata.folderId));

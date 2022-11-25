@@ -1,7 +1,7 @@
 import {Component} from '../../../components/component';
 import {RegistrationForm} from '../registration-form';
 import {FieldValidationError} from '../../../server-connection/field-validation-error';
-import {inject} from "../../../registry.js";
+import {inject} from '../../../registry.js';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 

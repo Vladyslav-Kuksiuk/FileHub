@@ -19,7 +19,6 @@ export default {
         ['@babel/plugin-proposal-decorators', {
           version: '2022-03',
         }],
-        ['@babel/plugin-syntax-decorators'],
       ],
     }),
     nodeResolve(),

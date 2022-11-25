@@ -1,6 +1,6 @@
 import {Component} from '../../../components/component';
 import {AuthorizationForm} from '../authorization-form';
-import {inject} from "../../../registry";
+import {inject} from '../../../registry';
 
 const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
 const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
