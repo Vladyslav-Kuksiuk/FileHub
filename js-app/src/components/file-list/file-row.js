@@ -34,12 +34,12 @@ export class FileRow extends Component {
      * @inheritDoc
      */
     afterRender() {
-      this.rootElement.querySelector(`[data-td="${DOWNLOAD_BUTTON}"]`).addEventListener('click', (event)=>{
+      this.rootElement.querySelector(`[data-td="${DOWNLOAD_BUTTON}"]`)?.addEventListener('click', (event)=>{
         event.preventDefault();
         this.#eventTarget.dispatchEvent(new Event(DOWNLOAD_CLICK_EVENT));
       });
 
-      this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`).addEventListener('click', (event)=>{
+      this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`)?.addEventListener('click', (event)=>{
         event.preventDefault();
         this.#eventTarget.dispatchEvent(new Event(REMOVE_CLICK_EVENT));
       });

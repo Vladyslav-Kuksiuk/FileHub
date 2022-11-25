@@ -111,9 +111,9 @@ export class Component {
    * @private
    */
   #createNewElement() {
-    const tempElement = document.createElement('div');
+    const tempElement = document.createElement('template');
     tempElement.innerHTML = this.markup();
-    return tempElement.firstElementChild;
+    return tempElement.content.firstElementChild;
   }
 
   /**

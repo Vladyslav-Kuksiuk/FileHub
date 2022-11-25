@@ -2,6 +2,8 @@ import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {inject} from '../../registry';
+import {FolderRow} from '../../components/file-list/folder-row.js';
+import {FileRow} from '../../components/file-list/file-row.js';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -35,37 +37,35 @@ export class FileListWrapper {
     const folderContentListener = this.#stateManagementService
         .addStateListener('folderContent', (state) => {
           if (state.folderContent) {
-            const folders = state.folderContent
+            const folderCreators = state.folderContent
                 .filter((item) => item.type === 'folder')
                 .map((folder) => {
-                  return {
-                    name: folder.name,
-                    linkListener: ()=>{
+                  return (slot) => {
+                    const folderRow = new FolderRow(slot, folder.name);
+                    folderRow.onRemove(()=>{
+                      this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
+                    });
+                    folderRow.onFolderLinkClick(()=>{
                       this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
                         detail: {
                           folderId: folder.id,
                         },
                       }));
-                    },
-                    deleteListener: () => {
-                      this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
-                    },
+                    });
                   };
                 });
 
-            const files = state.folderContent
+            const fileCreators = state.folderContent
                 .filter((item) => item.type !== 'folder')
                 .map((file) => {
-                  return {
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                    deleteListener: () => {
+                  return (slot) => {
+                    const fileRow = new FileRow(slot, file.name, file.type, file.size);
+                    fileRow.onRemove(()=>{
                       this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
-                    },
+                    });
                   };
                 });
-            fileList.setContent(folders, files);
+            fileList.setContent(folderCreators, fileCreators);
           } else {
             fileList.setContent([], []);
           }

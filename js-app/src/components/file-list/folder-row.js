@@ -1,5 +1,6 @@
 import {Component} from '../component';
 import {inject} from '../../registry';
+import {Link} from '../link';
 
 const REMOVE_CLICK_EVENT = 'REMOVE_CLICK_EVENT';
 const UPLOAD_CLICK_EVENT = 'UPLOAD_CLICK_EVENT';
@@ -13,22 +14,16 @@ const FOLDER_LINK_SLOT = 'folder-link-slot';
  */
 export class FolderRow extends Component {
   #name;
-  #type;
-  #size;
   #eventTarget = new EventTarget();
     @inject #fileTypeIconFactory;
 
     /**
      * @param {HTMLElement} parent
      * @param {string} name
-     * @param {string} type
-     * @param {string} size
      */
-    constructor(parent, name, type, size) {
+    constructor(parent, name) {
       super(parent);
       this.#name = name;
-      this.#type = type;
-      this.#size = size;
       this.init();
     }
 
@@ -36,21 +31,23 @@ export class FolderRow extends Component {
      * @inheritDoc
      */
     afterRender() {
-      this.rootElement.querySelector(`[data-td="${UPLOAD_BUTTON}"]`).addEventListener('click', (event)=>{
+      this.rootElement.querySelector(`[data-td="${UPLOAD_BUTTON}"]`)?.addEventListener('click', (event)=>{
         event.preventDefault();
         this.#eventTarget.dispatchEvent(new Event(UPLOAD_CLICK_EVENT));
       });
 
-      this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`).addEventListener('click', (event)=>{
+      this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`)?.addEventListener('click', (event)=>{
         event.preventDefault();
         this.#eventTarget.dispatchEvent(new Event(REMOVE_CLICK_EVENT));
       });
 
       const folderLinkSlot = this.getSlot(FOLDER_LINK_SLOT);
-      const link = new Link(folderLinkSlot);
-      link.onClick(()=>{
-        this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
-      });
+      if (folderLinkSlot) {
+        const link = new Link(folderLinkSlot, this.#name);
+        link.onClick(()=>{
+          this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
+        });
+      }
     }
 
     /**
