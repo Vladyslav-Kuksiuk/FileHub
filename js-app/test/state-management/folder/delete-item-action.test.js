@@ -2,7 +2,7 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {DeleteItemAction} from '../../../src/state-management/folder/delete-item-action';
 import {jest} from '@jest/globals';
 import {ApplicationContext} from '../../../src/application-context';
-import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action.js';
+import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 
 describe('DeleteItemAction', () => {
   let applicationContext;

@@ -3,7 +3,7 @@ import {MUTATOR_NAMES} from '../mutators';
 import {FolderContentItem} from './folder-content-item';
 
 /**
- * Action to perform removing file defining.
+ * Action to perform removing item defining.
  */
 export class DefineRemovingItemAction extends Action {
   #item;

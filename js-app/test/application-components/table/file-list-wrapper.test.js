@@ -3,7 +3,7 @@ import {FileListWrapper} from '../../../src/application-components/table/file-li
 import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
-import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action.js';
+import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
 
 describe('FileListWrapper', () => {
   let applicationContext;
