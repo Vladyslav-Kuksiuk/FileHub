@@ -1,7 +1,7 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LogOutUserAction} from '../../../src/state-management/user/log-out-user-action';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 
 describe('LogOutUserAction', () => {
   let applicationContext;

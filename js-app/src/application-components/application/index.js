@@ -5,7 +5,7 @@ import {Router} from '../../router';
 import {Error404Page} from '../../components/error-404-page';
 import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table/table-page';
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../application-context';
 import {ROUTE} from '../../router/routes';
 
 /**

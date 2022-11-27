@@ -1,7 +1,7 @@
 import {AuthorizationPage} from '../../../src/application-components/authorization/authorization-page';
 import {UserData} from '../../../src/user-data';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 
 describe('AuthorizationPage', () => {
   let applicationContext;

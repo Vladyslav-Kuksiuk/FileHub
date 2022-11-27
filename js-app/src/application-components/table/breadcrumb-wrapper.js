@@ -1,7 +1,7 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {LoadUserAction} from '../../state-management/user/load-user-action';
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../application-context';
 
 /**
  * Breadcrumb wrapper for state change listening.

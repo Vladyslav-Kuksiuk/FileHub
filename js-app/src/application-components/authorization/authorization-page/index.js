@@ -1,6 +1,6 @@
 import {Component} from '../../../components/component';
 import {AuthorizationForm} from '../authorization-form';
-import {ApplicationContext} from '../../../application-context';
+import {ApplicationContext} from '../../application-context';
 
 const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
 const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';

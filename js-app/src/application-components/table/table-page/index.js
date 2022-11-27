@@ -1,6 +1,6 @@
 import {Component} from '../../../components/component';
 import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
-import {ApplicationContext} from '../../../application-context';
+import {ApplicationContext} from '../../application-context';
 import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
