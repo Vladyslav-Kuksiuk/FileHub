@@ -3,7 +3,7 @@ import {UserInfo} from '../../components/user-info';
 import {ApplicationContext} from '../../application-context';
 
 /**
- * Breadcrumb wrapper for state change listening.
+ * UserInfo wrapper for state change listening.
  */
 export class UserInfoWrapper {
   #stateManagementService;
