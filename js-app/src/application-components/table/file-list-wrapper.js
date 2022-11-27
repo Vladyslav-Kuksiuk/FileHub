@@ -1,5 +1,5 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../application-context';
 import {FileList} from '../../components/file-list';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';

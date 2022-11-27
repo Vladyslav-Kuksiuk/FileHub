@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
