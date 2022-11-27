@@ -1,30 +1,30 @@
 import {ApplicationContext} from '../../application-context';
 import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
+import {StateAwareWrapper} from '../state-aware-wrapper';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
 /**
  * FileList wrapper for state change listening.
  */
-export class FileListWrapper {
+export class FileListWrapper extends StateAwareWrapper {
   #eventTarget = new EventTarget();
   #stateManagementService;
-  #stateListeners = [];
 
   /**
    * @param {ApplicationContext} applicationContext
    */
   constructor(applicationContext) {
+    super(applicationContext.stateManagementService);
     this.#stateManagementService = applicationContext.stateManagementService;
 
-    const folderInfoListener = this.#stateManagementService.addStateListener('folderInfo', (state) => {
+    this.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {
         this.#stateManagementService.dispatch(
             new LoadFolderContentAction(state.folderInfo.id, applicationContext.apiService));
       }
     });
-    this.#stateListeners.push(folderInfoListener);
   }
 
   /**
@@ -33,7 +33,7 @@ export class FileListWrapper {
    * @param {FileList} fileList
    */
   wrap(fileList) {
-    const folderContentListener = this.#stateManagementService.addStateListener('folderContent', (state) => {
+    this.addStateListener('folderContent', (state) => {
       if (state.folderContent) {
         const folders = state.folderContent
             .filter((item) => item.type === 'folder')
@@ -64,35 +64,26 @@ export class FileListWrapper {
         fileList.setContent([], []);
       }
     });
-    this.#stateListeners.push(folderContentListener);
 
-    const isFolderContentLoadingListener = this.#stateManagementService
-        .addStateListener('isFolderContentLoading', (state) => {
-          fileList.isLoading = state.isFolderContentLoading;
-        });
-    this.#stateListeners.push(isFolderContentLoadingListener);
+    this.addStateListener('isFolderContentLoading', (state) => {
+      fileList.isLoading = state.isFolderContentLoading;
+    });
 
-    const isUserProfileLoadingListener = this.#stateManagementService
-        .addStateListener('isUserProfileLoading', (state) => {
-          if (state.isUserProfileLoading) {
-            fileList.isLoading = true;
-          }
-        });
-    this.#stateListeners.push(isUserProfileLoadingListener);
+    this.addStateListener('isUserProfileLoading', (state) => {
+      if (state.isUserProfileLoading) {
+        fileList.isLoading = true;
+      }
+    });
 
-    const isFolderInfoLoadingListener = this.#stateManagementService
-        .addStateListener('isFolderInfoLoading', (state) => {
-          if (state.isFolderInfoLoading) {
-            fileList.isLoading = true;
-          }
-        });
-    this.#stateListeners.push(isFolderInfoLoadingListener);
+    this.addStateListener('isFolderInfoLoading', (state) => {
+      if (state.isFolderInfoLoading) {
+        fileList.isLoading = true;
+      }
+    });
 
-    const folderContentErrorListener = this.#stateManagementService
-        .addStateListener('folderContentError', (state) => {
-          fileList.hasError = !!state.folderContentError;
-        });
-    this.#stateListeners.push(folderContentErrorListener);
+    this.addStateListener('folderContentError', (state) => {
+      fileList.hasError = !!state.folderContentError;
+    });
   }
 
   /**
@@ -103,15 +94,6 @@ export class FileListWrapper {
   onNavigateToFolder(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT_FOLDER, (event)=>{
       listener(event.detail.folderId);
-    });
-  }
-
-  /**
-   * Deletes all created state listeners.
-   */
-  removeStateListeners() {
-    this.#stateListeners.forEach((stateListener) => {
-      this.#stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
     });
   }
 }

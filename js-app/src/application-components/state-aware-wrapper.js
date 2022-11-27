@@ -4,7 +4,7 @@ import {StateManagementService} from '../state-management/state-management-servi
 /**
  * Base wrapper class to work with {@link StateManagementService}.
  */
-class StateAwareWrapper {
+export class StateAwareWrapper {
   #stateManagementService;
   #stateListeners = [];
 

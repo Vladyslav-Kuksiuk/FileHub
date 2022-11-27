@@ -1,18 +1,19 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {UserInfo} from '../../components/user-info';
 import {ApplicationContext} from '../../application-context';
+import {StateAwareWrapper} from '../state-aware-wrapper';
 
 /**
  * Breadcrumb wrapper for state change listening.
  */
-export class UserInfoWrapper {
+export class UserInfoWrapper extends StateAwareWrapper {
   #stateManagementService;
-  #stateListeners = [];
 
   /**
    * @param {ApplicationContext} applicationContext
    */
   constructor(applicationContext) {
+    super(applicationContext.stateManagementService);
     this.#stateManagementService = applicationContext.stateManagementService;
     const state = applicationContext.stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
@@ -26,30 +27,16 @@ export class UserInfoWrapper {
    * @param {UserInfo} userInfo
    */
   wrap(userInfo) {
-    const userProfileListener = this.#stateManagementService
-        .addStateListener('userProfile', (state) => {
-          userInfo.username = state.userProfile?.username;
-        });
-    this.#stateListeners.push(userProfileListener);
-
-    const isUserProfileLoadingListener = this.#stateManagementService
-        .addStateListener('isUserProfileLoading', (state) => {
-          userInfo.isLoading = state.isUserProfileLoading;
-        });
-    this.#stateListeners.push(isUserProfileLoadingListener);
-
-    const userProfileErrorListener = this.#stateManagementService.addStateListener('userProfileError', (state) => {
-      userInfo.hasError = !!state.userProfileError;
+    this.addStateListener('userProfile', (state) => {
+      userInfo.username = state.userProfile?.username;
     });
-    this.#stateListeners.push(userProfileErrorListener);
-  }
 
-  /**
-   * Deletes all created state listeners.
-   */
-  removeStateListeners() {
-    this.#stateListeners.forEach((stateListener) => {
-      this.#stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
+    this.addStateListener('isUserProfileLoading', (state) => {
+      userInfo.isLoading = state.isUserProfileLoading;
+    });
+
+    this.addStateListener('userProfileError', (state) => {
+      userInfo.hasError = !!state.userProfileError;
     });
   }
 }
