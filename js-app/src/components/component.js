@@ -1,3 +1,5 @@
+import {Observer} from './mutation-observer';
+
 /**
  * Virtual DOM of the element.
  */
@@ -19,14 +21,10 @@ export class Component {
    */
   init() {
     this.render();
-    const observer = new MutationObserver((mutationRecords)=>{
-      if (mutationRecords.filter((record)=>Array.from(record.removedNodes)
-          .includes(this.rootElement)).length > 0) {
-        this.onDestroy();
-      }
-    });
 
-    observer.observe(this.parentElement, {'childList': true});
+    Observer.observe(this.rootElement, ()=>{
+      this.onDestroy();
+    });
   }
 
   /**
@@ -76,7 +74,6 @@ export class Component {
    * @protected
    */
   onDestroy() {
-
   }
 
   /**

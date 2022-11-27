@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {BreadcrumbWrapper} from '../../../src/application-components/table/breadcrumb-wrapper';
 import {Breadcrumb} from '../../../src/components/breadcrumb';
 import {jest} from '@jest/globals';
@@ -184,20 +184,5 @@ describe('BreadcrumbWrapper', () => {
           {name: 'Home', linkListener: ()=>{}},
           {name: '...', linkListener: ()=>{}},
           {name: 'Folder'}]+'');
-  });
-
-  test('Should remove state listeners', function() {
-    expect.assertions(2);
-    const breadcrumbWrapper = new BreadcrumbWrapper(applicationContext);
-
-    const removeStateListenersMock = jest.spyOn(
-        applicationContext.stateManagementService,
-        'removeStateListener')
-        .mockImplementation(()=>{});
-
-    breadcrumbWrapper.removeStateListeners();
-
-    expect(removeStateListenersMock.mock.calls[0][0]).toBe('userProfile');
-    expect(removeStateListenersMock.mock.calls[1][0]).toBe('locationMetadata');
   });
 });

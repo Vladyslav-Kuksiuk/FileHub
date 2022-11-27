@@ -3,16 +3,16 @@ import {UserInfo} from '../../components/user-info';
 import {inject} from '../../registry';
 
 /**
- * Breadcrumb wrapper for state change listening.
+ * UserInfo wrapper for state change listening.
  */
-export class UserInfoWrapper {
+export class UserInfoWrapper extends StateAwareWrapper {
   @inject #stateManagementService;
-  #stateListeners = [];
 
   /**
    * Constructor.
    */
   constructor() {
+    super(this.#stateManagementService)
     const state = this.#stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
       this.#stateManagementService.dispatch(new LoadUserAction());
@@ -25,31 +25,17 @@ export class UserInfoWrapper {
    * @param {UserInfo} userInfo
    */
   wrap(userInfo) {
-    const userProfileListener = this.#stateManagementService
-        .addStateListener('userProfile', (state) => {
-          userInfo.username = state.userProfile?.username;
-        });
-    this.#stateListeners.push(userProfileListener);
+    this.addStateListener('userProfile', (state) => {
+      userInfo.username = state.userProfile?.username;
+    });
 
-    const isUserProfileLoadingListener = this.#stateManagementService
-        .addStateListener('isUserProfileLoading', (state) => {
-          userInfo.isLoading = state.isUserProfileLoading;
-        });
-    this.#stateListeners.push(isUserProfileLoadingListener);
+    this.addStateListener('isUserProfileLoading', (state) => {
+      userInfo.isLoading = state.isUserProfileLoading;
+    });
 
-    const userProfileErrorListener = this.#stateManagementService
-        .addStateListener('userProfileError', (state) => {
+    this.addStateListener('userProfileError', (state) => {
           userInfo.hasError = !!state.userProfileError;
         });
-    this.#stateListeners.push(userProfileErrorListener);
-  }
 
-  /**
-   * Deletes all created state listeners.
-   */
-  removeStateListeners() {
-    this.#stateListeners.forEach((stateListener) => {
-      this.#stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
-    });
   }
 }
