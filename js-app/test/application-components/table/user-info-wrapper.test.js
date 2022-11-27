@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {UserInfoWrapper} from '../../../src/application-components/table/user-info-wrapper';
 import {UserInfo} from '../../../src/components/user-info';

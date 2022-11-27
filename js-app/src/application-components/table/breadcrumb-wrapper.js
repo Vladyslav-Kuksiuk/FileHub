@@ -1,6 +1,6 @@
 import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../application-context';
 import {State} from '../../state-management/state';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 

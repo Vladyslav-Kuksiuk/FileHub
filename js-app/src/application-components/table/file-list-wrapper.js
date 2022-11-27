@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../application-context';
 import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 import {StateAwareWrapper} from '../state-aware-wrapper';

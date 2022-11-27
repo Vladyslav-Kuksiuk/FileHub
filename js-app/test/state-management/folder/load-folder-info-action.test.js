@@ -1,7 +1,7 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {FolderInfo} from '../../../src/state-management/folder/folder-info';
 
 describe('LoadFolderInfoAction', () => {

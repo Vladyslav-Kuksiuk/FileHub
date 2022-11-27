@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {BreadcrumbWrapper} from '../../../src/application-components/table/breadcrumb-wrapper';
 import {Breadcrumb} from '../../../src/components/breadcrumb';
 import {jest} from '@jest/globals';

@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper';
 import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
