@@ -63,21 +63,4 @@ describe('UserInfoWrapper', () => {
     expect(hasErrorMock).toHaveBeenCalledTimes(1);
     expect(pathMock).toHaveBeenCalledTimes(1);
   });
-
-  test('Should remove state listeners', function() {
-    expect.assertions(3);
-    const userInfoWrapper = new UserInfoWrapper(applicationContext);
-    userInfoWrapper.wrap({});
-
-    const removeStateListenersMock = jest.spyOn(
-        applicationContext.stateManagementService,
-        'removeStateListener')
-        .mockImplementation(()=>{});
-
-    userInfoWrapper.removeStateListeners();
-
-    expect(removeStateListenersMock.mock.calls[0][0]).toBe('userProfile');
-    expect(removeStateListenersMock.mock.calls[1][0]).toBe('isUserProfileLoading');
-    expect(removeStateListenersMock.mock.calls[2][0]).toBe('userProfileError');
-  });
 });

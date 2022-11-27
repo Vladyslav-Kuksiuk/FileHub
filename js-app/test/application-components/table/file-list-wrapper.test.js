@@ -95,20 +95,6 @@ describe('FileListWrapper', () => {
     expect(contentMock).toHaveBeenCalledTimes(2);
   });
 
-  test('Should remove state listeners', function() {
-    expect.assertions(1);
-    const fileListWrapper = new FileListWrapper(applicationContext);
-
-    const removeStateListenersMock = jest.spyOn(
-        applicationContext.stateManagementService,
-        'removeStateListener')
-        .mockImplementation(()=>{});
-
-    fileListWrapper.removeStateListeners();
-
-    expect(removeStateListenersMock.mock.calls[0][0]).toBe('folderInfo');
-  });
-
   test('Should trigger onNavigateToFolder listener', function() {
     expect.assertions(2);
 
