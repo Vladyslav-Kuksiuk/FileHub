@@ -1,6 +1,7 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {UserInfo} from '../../components/user-info';
 import {inject} from '../../registry';
+import {StateAwareWrapper} from '../state-aware-wrapper';
 
 /**
  * UserInfo wrapper for state change listening.
@@ -12,7 +13,7 @@ export class UserInfoWrapper extends StateAwareWrapper {
    * Constructor.
    */
   constructor() {
-    super(this.#stateManagementService)
+    super();
     const state = this.#stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
       this.#stateManagementService.dispatch(new LoadUserAction());
@@ -34,8 +35,7 @@ export class UserInfoWrapper extends StateAwareWrapper {
     });
 
     this.addStateListener('userProfileError', (state) => {
-          userInfo.hasError = !!state.userProfileError;
-        });
-
+      userInfo.hasError = !!state.userProfileError;
+    });
   }
 }

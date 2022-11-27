@@ -1,19 +1,12 @@
 import {State} from '../state-management/state';
-import {StateManagementService} from '../state-management/state-management-service';
+import {inject} from '../registry';
 
 /**
  * Base wrapper class to work with {@link StateManagementService}.
  */
 export class StateAwareWrapper {
-  #stateManagementService;
+  @inject #stateManagementService;
   #stateListeners = [];
-
-  /**
-   * @param {StateManagementService} stateManagementService
-   */
-  constructor(stateManagementService) {
-    this.#stateManagementService = stateManagementService;
-  }
 
   /**
    * Adds state listener.

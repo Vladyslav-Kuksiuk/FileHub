@@ -17,8 +17,8 @@ export class BreadcrumbWrapper extends StateAwareWrapper {
    * Constructor.
    */
   constructor() {
-    super(this.#stateManagementService)
-    const userProfileListener = this.#stateManagementService.addStateListener('userProfile', (state)=>{
+    super();
+    this.addStateListener('userProfile', (state)=>{
       this.#triggerFolderLoading(state);
     });
 

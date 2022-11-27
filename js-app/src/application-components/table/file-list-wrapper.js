@@ -17,8 +17,8 @@ export class FileListWrapper extends StateAwareWrapper {
    * Constructor.
    */
   constructor() {
-    super(this.#stateManagementService);
-    const folderInfoListener = this.#stateManagementService.addStateListener('folderInfo', (state) => {
+    super();
+    this.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {
         this.#stateManagementService.dispatch(
             new LoadFolderContentAction(state.folderInfo.id));
@@ -33,42 +33,42 @@ export class FileListWrapper extends StateAwareWrapper {
    */
   wrap(fileList) {
     this.addStateListener('folderContent', (state) => {
-          if (state.folderContent) {
-            const folders = state.folderContent
-                .filter((item) => item.type === 'folder')
-                .map((folder) => {
-                  return {
-                    name: folder.name,
-                    linkListener: ()=>{
-                      this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-                        detail: {
-                          folderId: folder.id,
-                        },
-                      }));
+      if (state.folderContent) {
+        const folders = state.folderContent
+            .filter((item) => item.type === 'folder')
+            .map((folder) => {
+              return {
+                name: folder.name,
+                linkListener: ()=>{
+                  this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                    detail: {
+                      folderId: folder.id,
                     },
-                    deleteListener: () => {
-                      this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
-                    },
-                  };
-                });
+                  }));
+                },
+                deleteListener: () => {
+                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
+                },
+              };
+            });
 
-            const files = state.folderContent
-                .filter((item) => item.type !== 'folder')
-                .map((file) => {
-                  return {
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                    deleteListener: () => {
-                      this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
-                    },
-                  };
-                });
-            fileList.setContent(folders, files);
-          } else {
-            fileList.setContent([], []);
-          }
-        });
+        const files = state.folderContent
+            .filter((item) => item.type !== 'folder')
+            .map((file) => {
+              return {
+                name: file.name,
+                type: file.type,
+                size: file.size,
+                deleteListener: () => {
+                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                },
+              };
+            });
+        fileList.setContent(folders, files);
+      } else {
+        fileList.setContent([], []);
+      }
+    });
 
     this.addStateListener('isFolderContentLoading', (state) => {
       fileList.isLoading = state.isFolderContentLoading;
