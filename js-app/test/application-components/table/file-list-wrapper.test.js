@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper';
 import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
@@ -94,20 +94,6 @@ describe('FileListWrapper', () => {
     expect(hasErrorMock).toHaveBeenCalledTimes(1);
     expect(hasErrorMock).toHaveBeenCalledWith(true);
     expect(contentMock).toHaveBeenCalledTimes(2);
-  });
-
-  test('Should remove state listeners', function() {
-    expect.assertions(1);
-    const fileListWrapper = new FileListWrapper(applicationContext);
-
-    const removeStateListenersMock = jest.spyOn(
-        applicationContext.stateManagementService,
-        'removeStateListener')
-        .mockImplementation(()=>{});
-
-    fileListWrapper.removeStateListeners();
-
-    expect(removeStateListenersMock.mock.calls[0][0]).toBe('folderInfo');
   });
 
   test('Should trigger onNavigateToFolder listener', function() {

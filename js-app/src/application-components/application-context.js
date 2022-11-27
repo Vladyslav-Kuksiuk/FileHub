@@ -1,9 +1,9 @@
 import {TitleService} from './title-service';
-import {RequestService} from './server-connection/request-service';
-import {ApiService} from './server-connection/api-service';
-import {State} from './state-management/state.js';
-import {StateManagementService} from './state-management/state-management-service.js';
-import {MUTATORS} from './state-management/mutators.js';
+import {RequestService} from '../server-connection/request-service';
+import {ApiService} from '../server-connection/api-service';
+import {State} from '../state-management/state';
+import {StateManagementService} from '../state-management/state-management-service';
+import {MUTATORS} from '../state-management/mutators';
 
 /**
  * Application context to create and provide dependencies.

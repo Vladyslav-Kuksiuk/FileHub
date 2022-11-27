@@ -1,7 +1,7 @@
 import {RegistrationPage} from '../../../src/application-components/registration/registration-page';
 import {jest} from '@jest/globals';
 import {UserData} from '../../../src/user-data';
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 
 describe('RegistrationPage', () => {
   let applicationContext;

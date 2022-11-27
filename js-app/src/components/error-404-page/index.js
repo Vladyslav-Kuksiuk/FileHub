@@ -1,6 +1,6 @@
 import {Component} from '../component';
 import {Link} from '../link';
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../../application-components/application-context';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 

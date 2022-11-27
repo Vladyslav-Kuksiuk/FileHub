@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {UserInfoWrapper} from '../../../src/application-components/table/user-info-wrapper';
 import {UserInfo} from '../../../src/components/user-info';
@@ -62,22 +62,5 @@ describe('UserInfoWrapper', () => {
     expect(isLoadingMock).toHaveBeenCalledTimes(1);
     expect(hasErrorMock).toHaveBeenCalledTimes(1);
     expect(pathMock).toHaveBeenCalledTimes(1);
-  });
-
-  test('Should remove state listeners', function() {
-    expect.assertions(3);
-    const userInfoWrapper = new UserInfoWrapper(applicationContext);
-    userInfoWrapper.wrap({});
-
-    const removeStateListenersMock = jest.spyOn(
-        applicationContext.stateManagementService,
-        'removeStateListener')
-        .mockImplementation(()=>{});
-
-    userInfoWrapper.removeStateListeners();
-
-    expect(removeStateListenersMock.mock.calls[0][0]).toBe('userProfile');
-    expect(removeStateListenersMock.mock.calls[1][0]).toBe('isUserProfileLoading');
-    expect(removeStateListenersMock.mock.calls[2][0]).toBe('userProfileError');
   });
 });

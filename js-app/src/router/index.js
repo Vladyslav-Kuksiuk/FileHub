@@ -25,7 +25,9 @@ export class Router {
    */
   #handleRoute(path) {
     if (path === '') {
-      this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
+      setTimeout(()=>{
+        this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
+      });
       this.#currentRoutePath = this.#config.homeRoutePath;
       this.#config.routesMap[this.#config.homeRoutePath]();
       return;
@@ -33,11 +35,13 @@ export class Router {
 
     const parsedRoute = this.#parseWithParams(path);
     if (parsedRoute.routePath) {
-      this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {
-        detail: {
-          metadata: parsedRoute.params,
-        },
-      }));
+      setTimeout(()=>{
+        this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {
+          detail: {
+            metadata: parsedRoute.params,
+          },
+        }));
+      });
 
       if (this.#currentRoutePath !== parsedRoute.routePath) {
         this.#currentRoutePath = parsedRoute.routePath;
@@ -46,7 +50,9 @@ export class Router {
       return;
     }
 
-    this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
+    setTimeout(()=>{
+      this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
+    });
     this.#config.errorRoute();
   }
 

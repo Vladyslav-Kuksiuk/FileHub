@@ -1,4 +1,4 @@
-import {TitleService} from '../src/title-service';
+import {TitleService} from '../src/application-components/title-service';
 
 describe('Title service', () => {
   beforeEach(() => {
