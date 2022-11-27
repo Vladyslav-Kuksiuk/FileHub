@@ -4,7 +4,7 @@ import {ApplicationContext} from '../../application-context';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 
 /**
- * Breadcrumb wrapper for state change listening.
+ * UserInfo wrapper for state change listening.
  */
 export class UserInfoWrapper extends StateAwareWrapper {
   #stateManagementService;
