@@ -1,6 +1,6 @@
 import {Component} from '../../../components/component';
 import {RegistrationForm} from '../registration-form';
-import {ApplicationContext} from '../../../application-context';
+import {ApplicationContext} from '../../application-context';
 import {FieldValidationError} from '../../../server-connection/field-validation-error';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';

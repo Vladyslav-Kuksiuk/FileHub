@@ -1,6 +1,6 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {UserInfo} from '../../components/user-info';
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../application-context';
 
 /**
  * UserInfo wrapper for state change listening.

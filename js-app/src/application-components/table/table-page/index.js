@@ -1,10 +1,10 @@
 import {Component} from '../../../components/component';
 import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
-import {ApplicationContext} from '../../../application-context';
+import {ApplicationContext} from '../../application-context';
 import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
-import {UserInfo} from '../../../components/user-info/index.js';
+import {UserInfo} from '../../../components/user-info/index';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const USER_INFO_SLOT = 'user-info-slot';

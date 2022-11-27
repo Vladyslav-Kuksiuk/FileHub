@@ -1,8 +1,8 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-context';
-import {UserProfile} from '../../../src/state-management/user/user-profile.js';
+import {ApplicationContext} from '../../../src/application-components/application-context';
+import {UserProfile} from '../../../src/state-management/user/user-profile';
 
 describe('LoadUserAction', () => {
   let applicationContext;
