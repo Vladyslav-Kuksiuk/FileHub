@@ -1,4 +1,4 @@
-import {ApplicationContext} from '../../application-context';
+import {ApplicationContext} from '../application-context';
 import {ModalRemove} from '../../components/modal-remove';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {DeleteItemAction} from '../../state-management/folder/delete-item-action';
