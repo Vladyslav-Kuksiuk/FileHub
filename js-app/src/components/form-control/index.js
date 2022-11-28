@@ -1,5 +1,5 @@
 import {Component} from '../component';
-import {IndexService} from '../../index-service';
+import {IndexService} from '../../application-components/index-service';
 
 /**
  * Form control component.

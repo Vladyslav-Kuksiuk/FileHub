@@ -10,15 +10,15 @@ const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
  */
 export class AuthorizationPage extends Component {
   #eventTarget = new EventTarget();
-  @inject #titleService;
-  @inject #apiService;
+  @inject titleService;
+  @inject apiService;
 
   /**
    * @param {HTMLElement} parent
    */
   constructor(parent) {
     super(parent);
-    this.#titleService.setTitles(['Sign In']);
+    this.titleService.setTitles(['Sign In']);
     this.init();
   }
 
@@ -32,7 +32,7 @@ export class AuthorizationPage extends Component {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_REGISTRATION));
     });
     form.onSubmit((data) => {
-      this.#apiService.logIn(data)
+      this.apiService.logIn(data)
           .then(() => {
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
           })

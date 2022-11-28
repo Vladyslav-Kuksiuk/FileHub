@@ -2,30 +2,29 @@ import {Breadcrumb} from '../../components/breadcrumb';
 import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {State} from '../../state-management/state';
 import {inject} from '../../registry';
+import {StateAwareWrapper} from '../state-aware-wrapper';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
 /**
  * Breadcrumb wrapper for state change listening.
  */
-export class BreadcrumbWrapper {
+export class BreadcrumbWrapper extends StateAwareWrapper {
   #eventTarget = new EventTarget();
-  #stateListeners = [];
-  @inject #stateManagementService;
+  @inject stateManagementService;
 
   /**
    * Constructor.
    */
   constructor() {
-    const userProfileListener = this.#stateManagementService.addStateListener('userProfile', (state)=>{
+    super();
+    this.addStateListener('userProfile', (state)=>{
       this.#triggerFolderLoading(state);
     });
-    this.#stateListeners.push(userProfileListener);
 
-    const locationMetadataListener = this.#stateManagementService.addStateListener('locationMetadata', (state)=>{
+    this.addStateListener('locationMetadata', (state)=>{
       this.#triggerFolderLoading(state);
     });
-    this.#stateListeners.push(locationMetadataListener);
   }
 
   /**
@@ -35,7 +34,7 @@ export class BreadcrumbWrapper {
   #triggerFolderLoading(state) {
     if (state.userProfile) {
       if (state.locationMetadata?.folderId) {
-        this.#stateManagementService.dispatch(
+        this.stateManagementService.dispatch(
             new LoadFolderInfoAction(state.locationMetadata.folderId));
       } else {
         this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
@@ -53,59 +52,51 @@ export class BreadcrumbWrapper {
    * @param {Breadcrumb} breadcrumb
    */
   wrap(breadcrumb) {
-    const isFolderInfoLoadingListener =
-        this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
-          breadcrumb.isLoading = state.isFolderInfoLoading;
-        });
-    this.#stateListeners.push(isFolderInfoLoadingListener);
+    this.addStateListener('isFolderInfoLoading', (state) => {
+      breadcrumb.isLoading = state.isFolderInfoLoading;
+    });
 
-    const isUserProfileLoadingListener =
-        this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
-          if (state.isUserProfileLoading) {
-            breadcrumb.isLoading = true;
-          }
-        });
-    this.#stateListeners.push(isUserProfileLoadingListener);
+    this.addStateListener('isUserProfileLoading', (state) => {
+      if (state.isUserProfileLoading) {
+        breadcrumb.isLoading = true;
+      }
+    });
 
-    const folderInfoListener =
-        this.#stateManagementService.addStateListener('folderInfo', (state) => {
-          const toFolderListener = (folderId) =>{
-            return ()=>{
-              this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-                detail: {
-                  folderId: folderId,
-                },
-              }));
-            };
-          };
+    this.addStateListener('folderInfo', (state) => {
+      const toFolderListener = (folderId) =>{
+        return ()=>{
+          this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+            detail: {
+              folderId: folderId,
+            },
+          }));
+        };
+      };
 
-          if (!!state.folderInfo) {
-            let path = [{name: 'Home'}];
-            if (state.folderInfo.parentId === state?.userProfile?.rootFolderId) {
-              path = [
-                {name: 'Home',
-                  linkListener: toFolderListener(state.userProfile.rootFolderId)},
-                {name: state.folderInfo.name}];
-            } else if (state.folderInfo.parentId != null) {
-              path = [
-                {name: 'Home',
-                  linkListener: toFolderListener(state.userProfile.rootFolderId)},
-                {name: '...',
-                  linkListener: toFolderListener(state.folderInfo.parentId)},
-                {name: state.folderInfo.name}];
-            }
-            breadcrumb.path = path;
-          } else {
-            breadcrumb.path = [];
-          }
-        });
-    this.#stateListeners.push(folderInfoListener);
+      if (!!state.folderInfo) {
+        let path = [{name: 'Home'}];
+        if (state.folderInfo.parentId === state?.userProfile?.rootFolderId) {
+          path = [
+            {name: 'Home',
+              linkListener: toFolderListener(state.userProfile.rootFolderId)},
+            {name: state.folderInfo.name}];
+        } else if (state.folderInfo.parentId != null) {
+          path = [
+            {name: 'Home',
+              linkListener: toFolderListener(state.userProfile.rootFolderId)},
+            {name: '...',
+              linkListener: toFolderListener(state.folderInfo.parentId)},
+            {name: state.folderInfo.name}];
+        }
+        breadcrumb.path = path;
+      } else {
+        breadcrumb.path = [];
+      }
+    });
 
-    const folderInfoErrorListener =
-        this.#stateManagementService.addStateListener('folderInfoError', (state) => {
-          breadcrumb.hasError = !!state.folderInfoError;
-        });
-    this.#stateListeners.push(folderInfoErrorListener);
+    this.addStateListener('folderInfoError', (state) => {
+      breadcrumb.hasError = !!state.folderInfoError;
+    });
   }
 
   /**
@@ -116,15 +107,6 @@ export class BreadcrumbWrapper {
   onNavigateToFolder(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT_FOLDER, (event)=>{
       listener(event.detail.folderId);
-    });
-  }
-
-  /**
-   * Deletes all created state listeners.
-   */
-  removeStateListeners() {
-    this.#stateListeners.forEach((stateListener) => {
-      this.#stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
     });
   }
 }

@@ -10,7 +10,6 @@ export const registry = {
   },
 
   getInstance(name) {
-    name = name.replace('#', '');
     if (nameToInstance.has(name)) {
       return nameToInstance.get(name);
     }

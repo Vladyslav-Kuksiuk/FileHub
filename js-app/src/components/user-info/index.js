@@ -1,7 +1,7 @@
 import {Component} from '../component';
 
 /**
- * User panel component.
+ * UserInfo component.
  */
 export class UserInfo extends Component {
   #hasError;

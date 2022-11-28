@@ -11,7 +11,7 @@ export class FileList extends Component {
   #folderCreators = [];
   #fileCreators = [];
   #isLoading;
-  @inject #fileTypeIconFactory;
+  @inject fileTypeIconFactory;
 
   /**
    * @param {HTMLElement} parent

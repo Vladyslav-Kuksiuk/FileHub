@@ -1,9 +1,9 @@
-import {ApplicationContext} from '../../../src/application-context';
+import {ApplicationContext} from '../../../src/application-components/application-context';
 import {jest} from '@jest/globals';
 import {ModalRemove} from '../../../src/components/modal-remove';
 import {ModalRemoveWrapper} from '../../../src/application-components/table/modal-remove-wrapper';
-import {DeleteItemAction} from '../../../src/state-management/folder/delete-item-action.js';
-import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action.js';
+import {DeleteItemAction} from '../../../src/state-management/folder/delete-item-action';
+import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
 
 describe('ModalRemoveWrapper', () => {
   let applicationContext;
