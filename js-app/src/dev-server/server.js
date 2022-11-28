@@ -1,4 +1,5 @@
 import express from 'express';
+import formidable from 'formidable';
 
 const app = express();
 const port = 3001;
@@ -6,6 +7,33 @@ let counterValue = 0;
 const counter = () => {
   return counterValue++;
 };
+
+const convertType = (mimetype) => {
+  mimetype = mimetype.toString();
+  const types = {
+    'application/pdf': 'PDF Document',
+  };
+  return types[mimetype] ?? mimetype;
+};
+
+const convertSize = (size) => {
+  if (size < 999) {
+    return size+' B';
+  }
+
+  if (size < 999999) {
+    return (size/1000).toFixed(1) +' KB';
+  }
+
+  if (size < 999999999) {
+    return (size/1000000).toFixed(1) +' MB';
+  }
+
+  if (size < 999999999999) {
+    return (size/1000000000).toFixed(1) +' GB';
+  }
+};
+
 
 const foldersInfo = {
   'testUser-0': {
@@ -149,13 +177,18 @@ app.get('/folders/:folderId/content', (req, res) => {
 
 app.post('/folders/:folderId/content', (req, res) => {
   setTimeout(() => {
-    foldersContent[req.params.folderId].push({
-      name: 'uploaded-file'+counter(),
-      type: 'PDF Document',
-      size: '13 KB',
-      id: 'testUser-file-'+counter(),
+    const form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+      Object.entries(files).forEach(([key, file])=>{
+        foldersContent[req.params.folderId].push({
+          name: file.originalFilename,
+          type: convertType(file.mimetype),
+          size: convertSize(file.size),
+          id: 'testUser-file-'+counter(),
+        });
+      });
     });
-    res.status(404);
+    res.status(200);
     res.send({});
   }, 500);
 });
