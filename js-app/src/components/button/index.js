@@ -31,9 +31,9 @@ export class Button extends Component {
    */
   constructor(parent, {
     text = '',
-      title = '',
-      type = BUTTON_TYPE.DEFAULT,
-      isDisabled = false,
+    title = '',
+    type = BUTTON_TYPE.DEFAULT,
+    isDisabled = false,
   }) {
     super(parent);
     this.#text = text;

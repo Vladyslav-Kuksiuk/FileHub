@@ -39,7 +39,7 @@ export class ModalRemove extends Component {
    */
   afterRender() {
     const deleteButtonSlot = this.getSlot(DELETE_BUTTON_SLOT);
-    const deleteButton = new Button(deleteButtonSlot,{
+    const deleteButton = new Button(deleteButtonSlot, {
       text: 'Delete',
       title: 'Delete',
       type: BUTTON_TYPE.DANGER,
@@ -50,7 +50,7 @@ export class ModalRemove extends Component {
     this.#deleteButton = deleteButton;
 
     const cancelButtonSlot = this.getSlot(CANCEL_BUTTON_SLOT);
-    const cancelButton = new Button(cancelButtonSlot,{
+    const cancelButton = new Button(cancelButtonSlot, {
       text: 'Cancel',
       title: 'Cancel',
       type: BUTTON_TYPE.DEFAULT,

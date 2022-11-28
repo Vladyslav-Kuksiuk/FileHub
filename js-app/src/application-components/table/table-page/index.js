@@ -16,6 +16,7 @@ const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
 const FILE_LIST_SLOT = 'file-list-slot';
 const MODAL_REMOVE_SLOT = 'modal-remove-slot';
+const BUTTON_GROUP_SLOT = 'button-group-slot';
 
 /**
  * Table page component.
@@ -154,17 +155,7 @@ export class TablePage extends Component {
                     </span>
                 </div>
             </div>
-            <div class="col-xs-4 col-sm-6 tool-bar-buttons">
-                <div aria-label="..." class="btn-group" role="group">
-                    <button class="btn btn-primary" title="Upload file" type="button">
-                        <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                    </button>
-                    <button class="btn btn-primary" data-target="#modal-create-folder" data-toggle="modal"
-                            title="Add folder" type="button">
-                        <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </div>
-            </div>
+            ${this.addSlot(BUTTON_GROUP_SLOT)}
         </div>
         ${this.addSlot(FILE_LIST_SLOT)}
     </main>
