@@ -72,9 +72,9 @@ export class State {
   itemDeletingError = null;
 
   /**
-   * @type {string | null}
+   * @type {string[]}
    */
-  folderToUpload = null;
+  foldersToUpload = [];
 
   /**
    * @typedef FilesUploadingErrorInfo
@@ -83,9 +83,9 @@ export class State {
    */
 
   /**
-   * @type {FilesUploadingErrorInfo | null}
+   * @type {FilesUploadingErrorInfo[]}
    */
-  filesUploadingErrorInfo = null;
+  filesUploadingErrorInfo = [];
 
   /**
    * @param {object} state

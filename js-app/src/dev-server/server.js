@@ -150,11 +150,13 @@ app.get('/folders/:folderId/content', (req, res) => {
 app.post('/folders/:folderId/content', (req, res) => {
   setTimeout(() => {
     foldersContent[req.params.folderId].push({
-      name: 'MyFavouriteText.pdf',
+      name: 'uploaded-file'+counter(),
       type: 'PDF Document',
       size: '13 KB',
       id: 'testUser-file-'+counter(),
     });
+    res.status(200);
+    res.send({});
   }, 500);
 });
 

@@ -1,12 +1,14 @@
 import {Action} from '../action';
 import {MUTATOR_NAMES} from '../mutators';
 import {inject} from '../../registry';
+import {LoadFolderContentAction} from './load-folder-content-action';
 
 /**
  * Action to execute loading information about username.
  */
 export class UploadFilesAction extends Action {
     @inject apiService;
+    @inject stateManagementService;
     #folderId;
     #files;
 
@@ -24,18 +26,22 @@ export class UploadFilesAction extends Action {
      * @param {Function} executor
      */
     execute(executor) {
-      executor(MUTATOR_NAMES.SET_FOLDER_TO_UPLOAD, this.#folderId);
+      executor(MUTATOR_NAMES.ADD_FOLDER_TO_UPLOAD, this.#folderId);
       return this.apiService
           .uploadFiles(this.#folderId, this.#files)
-          .then(() => {})
+          .then(() => {
+            if (this.stateManagementService.state.folderInfo.id === this.#folderId) {
+              this.stateManagementService.dispatch(new LoadFolderContentAction(this.#folderId));
+            }
+          })
           .catch((error) => {
-            executor(MUTATOR_NAMES.SET_FILES_UPLOADING_ERROR_INFO, {
+            executor(MUTATOR_NAMES.ADD_FILES_UPLOADING_ERROR_INFO, {
               folderId: this.#folderId,
               error: error.message,
             });
           })
           .finally(() => {
-            executor(MUTATOR_NAMES.SET_FOLDER_TO_UPLOAD, null);
+            executor(MUTATOR_NAMES.REMOVE_FOLDER_TO_UPLOAD, this.#folderId);
           });
     }
 }

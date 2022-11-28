@@ -67,6 +67,10 @@ export class FileListWrapper extends StateAwareWrapper {
                             input.files));
                   });
                 });
+
+                this.addStateListener('foldersToUpload', (state) => {
+                  folderRow.isUploading = state.foldersToUpload.includes(folder.id);
+                });
               };
             });
 

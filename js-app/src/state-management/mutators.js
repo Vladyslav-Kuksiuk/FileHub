@@ -14,8 +14,10 @@ export const MUTATOR_NAMES = {
   SET_IS_ITEM_DELETING: 'setIsItemDeleting',
   SET_ITEM_DELETING_ERROR: 'setFItemDeletingError',
   SET_LOCATION_METADATA: 'setLocationMetadata',
-  SET_FOLDER_TO_UPLOAD: 'setFolderToUpload',
-  SET_FILES_UPLOADING_ERROR_INFO: 'setFilesUploadingErrorInfo',
+  ADD_FOLDER_TO_UPLOAD: 'addFolderToUpload',
+  REMOVE_FOLDER_TO_UPLOAD: 'removeFolderToUpload',
+  ADD_FILES_UPLOADING_ERROR_INFO: 'addFilesUploadingErrorInfo',
+  REMOVE_FILES_UPLOADING_ERROR_INFO: 'removeFilesUploadingErrorInfo',
 };
 
 export const MUTATORS = {
@@ -99,22 +101,27 @@ export const MUTATORS = {
   [MUTATOR_NAMES.SET_LOCATION_METADATA]: (state, locationMetadata) =>{
     return new State({...state,
       locationMetadata: locationMetadata,
-      filesUploadingErrorInfo: null,
+      filesUploadingErrorInfo: [],
     });
   },
 
-  [MUTATOR_NAMES.SET_FOLDER_TO_UPLOAD]: (state, folderId) => {
-    if (folderId) {
-      return new State({...state,
-        folderToUpload: folderId,
-        filesUploadingErrorInfo: null,
-      });
-    }
-    return new State({...state, folderToUpload: folderId});
-  },
-  [MUTATOR_NAMES.SET_FILES_UPLOADING_ERROR_INFO]: (state, errorInfo) => {
+  [MUTATOR_NAMES.ADD_FOLDER_TO_UPLOAD]: (state, folderId) => {
     return new State({...state,
-      filesUploadingErrorInfo: errorInfo,
+      foldersToUpload: [...state.foldersToUpload, folderId],
+      filesUploadingErrorInfo: state.filesUploadingErrorInfo
+          .filter((error) => {
+            return error.folderId !== folderId;
+          }),
+    });
+  },
+  [MUTATOR_NAMES.REMOVE_FOLDER_TO_UPLOAD]: (state, folderId) => {
+    return new State({...state,
+      foldersToUpload: state.foldersToUpload.filter((folder) => folder !== folderId),
+    });
+  },
+  [MUTATOR_NAMES.ADD_FILES_UPLOADING_ERROR_INFO]: (state, errorInfo) => {
+    return new State({...state,
+      filesUploadingErrorInfo: [...state.filesUploadingErrorInfo, errorInfo],
     });
   },
 };

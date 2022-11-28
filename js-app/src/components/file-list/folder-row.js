@@ -15,6 +15,7 @@ const FOLDER_LINK_SLOT = 'folder-link-slot';
 export class FolderRow extends Component {
   #name;
   #eventTarget = new EventTarget();
+  #isUploading = false;
   @inject fileTypeIconFactory;
 
   /**
@@ -69,6 +70,14 @@ export class FolderRow extends Component {
   }
 
   /**
+   * @param {boolean} isUploading
+   */
+  set isUploading(isUploading) {
+    this.#isUploading = isUploading;
+    this.render();
+  }
+
+  /**
    * Adds listener on remove button click event.
    *
    * @param {function(): void} listener
@@ -81,6 +90,13 @@ export class FolderRow extends Component {
    * @inheritDoc
    */
   markup() {
+    const uploadingButton = this.#isUploading ?
+        `<button ${this.markElement(UPLOAD_BUTTON)} disabled class="icon-button" title="File uploading...">
+            <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
+        </button>` :
+        `<button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="Upload file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+        </button>`;
     return `
     <tr>
         <td class="cell-arrow">
@@ -94,9 +110,7 @@ export class FolderRow extends Component {
         <td class="cell-size">—</td>
         <td class="cell-buttons">
             <div class="data-buttons-container">
-                <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="Upload file.">
-                    <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                </button>
+                ${uploadingButton}
                 <button ${this.markElement(REMOVE_BUTTON)} class="icon-button" title="Delete">
                     <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                 </button>

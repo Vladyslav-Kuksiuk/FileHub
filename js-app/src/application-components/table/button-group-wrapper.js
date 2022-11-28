@@ -56,9 +56,19 @@ export class ButtonGroupWrapper extends StateAwareWrapper {
                         input.files));
               });
             });
+
+            this.addStateListener('foldersToUpload', (state) => {
+              if (state.foldersToUpload.includes(state.folderInfo.id)) {
+                button.isDisabled = true;
+                button.text = '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>';
+              } else {
+                button.isDisabled = false;
+                button.text = '<span aria-hidden="true" class="glyphicon glyphicon-upload"></span>';
+              }
+            });
           });
           buttonCreators.push((slot) => {
-            const button = new Button(slot, {
+            new Button(slot, {
               text: '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span>',
               title: 'Add folder',
               type: BUTTON_TYPE.PRIMARY,
