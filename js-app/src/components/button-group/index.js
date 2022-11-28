@@ -7,6 +7,7 @@ const BUTTONS_SLOT = 'buttons-slot';
  */
 export class ButtonGroup extends Component {
   #buttonCreators;
+  #error;
 
   /**
    * @param {HTMLElement} parent
@@ -35,6 +36,14 @@ export class ButtonGroup extends Component {
    */
   set buttonCreators(buttonCreators) {
     this.#buttonCreators = buttonCreators;
+    this.render();
+  }
+
+    /**
+     * @param {string} error
+     */
+  set error(error) {
+    this.#error = error;
     this.render();
   }
 

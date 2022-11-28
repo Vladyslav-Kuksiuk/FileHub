@@ -9,6 +9,8 @@ import {FileList} from '../../../components/file-list';
 import {ModalRemove} from '../../../components/modal-remove';
 import {ModalRemoveWrapper} from '../modal-remove-wrapper';
 import {inject} from '../../../registry';
+import {ButtonGroupWrapper} from '../button-group-wrapper';
+import {ButtonGroup} from '../../../components/button-group';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
@@ -29,6 +31,7 @@ export class TablePage extends Component {
   #userInfoWrapper;
   #breadcrumbWrapper;
   #fileListWrapper;
+  #buttonGroupWrapper;
 
   /**
    * @param {HTMLElement} parent
@@ -81,6 +84,11 @@ export class TablePage extends Component {
         },
       }));
     });
+
+    const buttonGroupWrapper = new ButtonGroupWrapper();
+    this.#buttonGroupWrapper = buttonGroupWrapper;
+    const buttonGroupSlot = this.getSlot(BUTTON_GROUP_SLOT);
+    buttonGroupWrapper.wrap(new ButtonGroup(buttonGroupSlot));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
