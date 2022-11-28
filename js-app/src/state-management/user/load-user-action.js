@@ -6,14 +6,14 @@ import {inject} from '../../registry';
  * Action to perform user loading.
  */
 export class LoadUserAction extends Action {
-  @inject #apiService;
+  @inject apiService;
 
   /**
    * @inheritDoc
    */
   execute(executor) {
     executor(MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING, true);
-    return this.#apiService
+    return this.apiService
         .loadUser()
         .then((userProfile) => {
           executor(MUTATOR_NAMES.SET_USER_PROFILE, userProfile);

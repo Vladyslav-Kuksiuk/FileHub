@@ -10,15 +10,15 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
-  @inject #apiService;
-  @inject #titleService;
+  @inject apiService;
+  @inject titleService;
 
   /**
    * @param {HTMLElement} parent
    */
   constructor(parent) {
     super(parent);
-    this.#titleService.setTitles(['Sign Up']);
+    this.titleService.setTitles(['Sign Up']);
     this.init();
   }
 
@@ -32,7 +32,7 @@ export class RegistrationPage extends Component {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
     form.onSubmit((data)=>{
-      this.#apiService.register(data)
+      this.apiService.register(data)
           .then(()=>{
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
           })

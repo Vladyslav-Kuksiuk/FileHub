@@ -8,7 +8,7 @@ import {inject} from '../../registry';
  */
 export class ModalRemoveWrapper {
   #stateListeners = [];
-  @inject #stateManagementService;
+  @inject stateManagementService;
 
   /**
    * Adds state listeners to ModalRemove component.
@@ -16,7 +16,7 @@ export class ModalRemoveWrapper {
    * @param {ModalRemove} modal
    */
   wrap(modal) {
-    const itemInRemovingStateListener = this.#stateManagementService
+    const itemInRemovingStateListener = this.stateManagementService
         .addStateListener('itemInRemovingState', (state) => {
           if (state.itemInRemovingState) {
             modal.itemName = state.itemInRemovingState.name;
@@ -32,25 +32,25 @@ export class ModalRemoveWrapper {
         });
     this.#stateListeners.push(itemInRemovingStateListener);
 
-    const isItemDeletingListener = this.#stateManagementService
+    const isItemDeletingListener = this.stateManagementService
         .addStateListener('isItemDeleting', (state) => {
           modal.isLoading = state.isItemDeleting;
         });
     this.#stateListeners.push(isItemDeletingListener);
 
-    const itemDeletingErrorListener = this.#stateManagementService
+    const itemDeletingErrorListener = this.stateManagementService
         .addStateListener('itemDeletingError', (state) => {
           modal.error = state.itemDeletingError;
         });
     this.#stateListeners.push(itemDeletingErrorListener);
 
     modal.onCancel(()=>{
-      this.#stateManagementService.dispatch(new DefineRemovingItemAction(null));
+      this.stateManagementService.dispatch(new DefineRemovingItemAction(null));
     });
 
     modal.onDelete(()=>{
-      this.#stateManagementService.dispatch(
-          new DeleteItemAction(this.#stateManagementService.state.itemInRemovingState));
+      this.stateManagementService.dispatch(
+          new DeleteItemAction(this.stateManagementService.state.itemInRemovingState));
     });
   }
 
@@ -59,7 +59,7 @@ export class ModalRemoveWrapper {
    */
   removeStateListeners() {
     this.#stateListeners.forEach((stateListener) => {
-      this.#stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
+      this.stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
     });
   }
 }

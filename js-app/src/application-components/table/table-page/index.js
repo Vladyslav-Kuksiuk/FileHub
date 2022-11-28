@@ -22,8 +22,8 @@ const MODAL_REMOVE_SLOT = 'modal-remove-slot';
  */
 export class TablePage extends Component {
   #eventTarget = new EventTarget();
-  @inject #stateManagementService;
-  @inject #titleService;
+  @inject stateManagementService;
+  @inject titleService;
   #modalRemoveWrapper;
   #userInfoWrapper;
   #breadcrumbWrapper;
@@ -34,7 +34,7 @@ export class TablePage extends Component {
    */
   constructor(parent) {
     super(parent);
-    this.#titleService.setTitles(['Table']);
+    this.titleService.setTitles(['Table']);
     this.init();
   }
 
@@ -84,7 +84,7 @@ export class TablePage extends Component {
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
-      this.#stateManagementService.dispatch(new LogOutUserAction());
+      this.stateManagementService.dispatch(new LogOutUserAction());
     });
   }
 

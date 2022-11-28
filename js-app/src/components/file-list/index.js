@@ -13,7 +13,7 @@ export class FileList extends Component {
   #folders;
   #files;
   #isLoading;
-  @inject #fileTypeIconFactory;
+  @inject fileTypeIconFactory;
 
   /**
    * @typedef Folder
@@ -131,7 +131,7 @@ export class FileList extends Component {
                         <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
                     </td>
                     <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon ${this.#fileTypeIconFactory.getIcon('folder')}">
+                        <span aria-hidden="true" class="glyphicon ${this.fileTypeIconFactory.getIcon('folder')}">
                         </span>
                     </td>
                     <td class="cell-name">${this.addSlot(FOLDER_LINK + index)}</td>
@@ -158,7 +158,7 @@ export class FileList extends Component {
                 <tr>
                     <td class="cell-arrow"></td>
                     <td class="cell-icon">
-                        <span aria-hidden="true" class="glyphicon ${this.#fileTypeIconFactory.getIcon(file.type)}">
+                        <span aria-hidden="true" class="glyphicon ${this.fileTypeIconFactory.getIcon(file.type)}">
                         </span>
                     </td>
                     <td class="cell-name">${file.name}</td>

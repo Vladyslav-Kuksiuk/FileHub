@@ -7,16 +7,16 @@ import {StateAwareWrapper} from '../state-aware-wrapper';
  * UserInfo wrapper for state change listening.
  */
 export class UserInfoWrapper extends StateAwareWrapper {
-  @inject #stateManagementService;
+  @inject stateManagementService;
 
   /**
    * Constructor.
    */
   constructor() {
     super();
-    const state = this.#stateManagementService.state;
+    const state = this.stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
-      this.#stateManagementService.dispatch(new LoadUserAction());
+      this.stateManagementService.dispatch(new LoadUserAction());
     }
   }
 

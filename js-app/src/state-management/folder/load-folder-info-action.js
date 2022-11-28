@@ -7,7 +7,7 @@ import {inject} from '../../registry';
  */
 export class LoadFolderInfoAction extends Action {
   #folderId;
-  @inject #apiService;
+  @inject apiService;
 
   /**
    * @param {string} folderId
@@ -23,7 +23,7 @@ export class LoadFolderInfoAction extends Action {
   execute(executor) {
     executor(MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, true);
 
-    return this.#apiService
+    return this.apiService
         .loadFolderInfo(this.#folderId)
         .then((folderInfo) => {
           executor(MUTATOR_NAMES.SET_FOLDER_INFO, folderInfo);

@@ -6,13 +6,13 @@ import {inject} from '../../registry';
  * Action to perform user log out.
  */
 export class LogOutUserAction extends Action {
-  @inject #apiService;
+  @inject apiService;
 
   /**
    * @inheritDoc
    */
   execute(executor) {
-    return this.#apiService
+    return this.apiService
         .logOut()
         .then(() => {
           executor(MUTATOR_NAMES.SET_USER_PROFILE, null);

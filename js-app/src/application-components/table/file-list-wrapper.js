@@ -11,7 +11,7 @@ const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
  */
 export class FileListWrapper extends StateAwareWrapper {
   #eventTarget = new EventTarget();
-  @inject #stateManagementService;
+  @inject stateManagementService;
 
   /**
    * Constructor.
@@ -20,7 +20,7 @@ export class FileListWrapper extends StateAwareWrapper {
     super();
     this.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {
-        this.#stateManagementService.dispatch(
+        this.stateManagementService.dispatch(
             new LoadFolderContentAction(state.folderInfo.id));
       }
     });
@@ -47,7 +47,7 @@ export class FileListWrapper extends StateAwareWrapper {
                   }));
                 },
                 deleteListener: () => {
-                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
+                  this.stateManagementService.dispatch(new DefineRemovingItemAction(folder));
                 },
               };
             });
@@ -60,7 +60,7 @@ export class FileListWrapper extends StateAwareWrapper {
                 type: file.type,
                 size: file.size,
                 deleteListener: () => {
-                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                  this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
                 },
               };
             });

@@ -9,14 +9,14 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  */
 export class Error404Page extends Component {
   #eventTarget = new EventTarget();
-  @inject #titleService;
+  @inject titleService;
 
   /**
    * @param {HTMLElement} parent
    */
   constructor(parent) {
     super(parent);
-    this.#titleService.setTitles(['404']);
+    this.titleService.setTitles(['404']);
     this.init();
   }
 

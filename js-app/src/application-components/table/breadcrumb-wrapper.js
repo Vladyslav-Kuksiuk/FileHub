@@ -11,7 +11,7 @@ const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
  */
 export class BreadcrumbWrapper extends StateAwareWrapper {
   #eventTarget = new EventTarget();
-  @inject #stateManagementService;
+  @inject stateManagementService;
 
   /**
    * Constructor.
@@ -34,7 +34,7 @@ export class BreadcrumbWrapper extends StateAwareWrapper {
   #triggerFolderLoading(state) {
     if (state.userProfile) {
       if (state.locationMetadata?.folderId) {
-        this.#stateManagementService.dispatch(
+        this.stateManagementService.dispatch(
             new LoadFolderInfoAction(state.locationMetadata.folderId));
       } else {
         this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
