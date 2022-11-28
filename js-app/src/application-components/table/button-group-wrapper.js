@@ -4,6 +4,7 @@ import {StateAwareWrapper} from '../state-aware-wrapper';
 import {Button, BUTTON_TYPE} from '../../components/button';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action.js';
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
+import {UploadFilesAction} from '../../state-management/folder/upload-files-action.js';
 
 /**
  * ButtonGroup wrapper for state change listening.
@@ -41,6 +42,19 @@ export class ButtonGroupWrapper extends StateAwareWrapper {
               text: '<span aria-hidden="true" class="glyphicon glyphicon-upload"></span>',
               title: 'Upload file',
               type: BUTTON_TYPE.PRIMARY,
+            });
+
+            button.onClick(()=>{
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.setAttribute('multiple', '');
+              input.click();
+              input.addEventListener('change', ()=>{
+                this.stateManagementService.dispatch(
+                    new UploadFilesAction(
+                        state.folderInfo.id,
+                        input.files));
+              });
             });
           });
           buttonCreators.push((slot) => {

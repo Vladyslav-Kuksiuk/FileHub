@@ -30,6 +30,31 @@ export class RequestService {
   }
 
   /**
+   * Sends POST request with {@link FormData} and converts server response.
+   *
+   * @param {string} url
+   * @param {FormData} formData
+   * @param {string} token
+   * @returns {Promise<Response>}
+   */
+  async postFormData(url, formData, token) {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    try {
+      return new Response(response.status, await response.json());
+    } catch (e) {
+      return new Response(response.status);
+    }
+  }
+
+  /**
    * Sends GET request and converts server response.
    *
    * @param {string} url

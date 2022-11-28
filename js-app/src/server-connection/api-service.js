@@ -188,4 +188,30 @@ export class ApiService {
           }
         });
   }
+
+  /**
+   * Uploads files.
+   *
+   * @param {string} folderId
+   * @param {File[]} files
+   * @returns {Promise<ApiServiceError>}
+   */
+  async uploadFiles(folderId, files) {
+    const formData = new FormData();
+    [...files].forEach((file, index)=>{
+      formData.append(`files_${index}`, file);
+    });
+
+    return this.#requestService.postFormData(
+        'api/folders/'+ folderId +'/content',
+        formData)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response)=>{
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
 }

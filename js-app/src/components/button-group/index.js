@@ -39,9 +39,9 @@ export class ButtonGroup extends Component {
     this.render();
   }
 
-    /**
-     * @param {string} error
-     */
+  /**
+   * @param {string} error
+   */
   set error(error) {
     this.#error = error;
     this.render();
