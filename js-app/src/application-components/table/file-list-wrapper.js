@@ -35,32 +35,32 @@ export class FileListWrapper extends StateAwareWrapper {
    */
   wrap(fileList) {
     this.addStateListener('folderContent', (state) => {
-          if (state.folderContent) {
-            const folderCreators = state.folderContent
-                .filter((item) => item.type === 'folder')
-                .map((folder) => {
-                  return (slot) => {
-                    const folderRow = new FolderRow(slot, folder.name);
-                    folderRow.onRemove(()=>{
-                      this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
-                    });
-                    folderRow.onFolderLinkClick(()=>{
-                      this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-                        detail: {
-                          folderId: folder.id,
-                        },
-                      }));
-                    });
-                  };
+      if (state.folderContent) {
+        const folderCreators = state.folderContent
+            .filter((item) => item.type === 'folder')
+            .map((folder) => {
+              return (slot) => {
+                const folderRow = new FolderRow(slot, folder.name);
+                folderRow.onRemove(()=>{
+                  this.stateManagementService.dispatch(new DefineRemovingItemAction(folder));
                 });
+                folderRow.onFolderLinkClick(()=>{
+                  this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                    detail: {
+                      folderId: folder.id,
+                    },
+                  }));
+                });
+              };
+            });
 
         const fileCreators = state.folderContent
             .filter((item) => item.type !== 'folder')
             .map((file) => {
               return (slot) => {
-                    const fileRow = new FileRow(slot, file.name, file.type, file.size);
+                const fileRow = new FileRow(slot, file.name, file.type, file.size);
                 fileRow.onRemove(()=>{
-                      this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                  this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
                 });
               };
             });

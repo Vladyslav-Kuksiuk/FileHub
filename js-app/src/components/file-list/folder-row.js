@@ -15,79 +15,79 @@ const FOLDER_LINK_SLOT = 'folder-link-slot';
 export class FolderRow extends Component {
   #name;
   #eventTarget = new EventTarget();
-    @inject #fileTypeIconFactory;
+  @inject fileTypeIconFactory;
 
-    /**
-     * @param {HTMLElement} parent
-     * @param {string} name
-     */
-    constructor(parent, name) {
-      super(parent);
-      this.#name = name;
-      this.init();
-    }
+  /**
+   * @param {HTMLElement} parent
+   * @param {string} name
+   */
+  constructor(parent, name) {
+    super(parent);
+    this.#name = name;
+    this.init();
+  }
 
-    /**
-     * @inheritDoc
-     */
-    afterRender() {
-      this.rootElement.querySelector(`[data-td="${UPLOAD_BUTTON}"]`)?.addEventListener('click', (event)=>{
-        event.preventDefault();
-        this.#eventTarget.dispatchEvent(new Event(UPLOAD_CLICK_EVENT));
+  /**
+   * @inheritDoc
+   */
+  afterRender() {
+    this.rootElement.querySelector(`[data-td="${UPLOAD_BUTTON}"]`)?.addEventListener('click', (event)=>{
+      event.preventDefault();
+      this.#eventTarget.dispatchEvent(new Event(UPLOAD_CLICK_EVENT));
+    });
+
+    this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`)?.addEventListener('click', (event)=>{
+      event.preventDefault();
+      this.#eventTarget.dispatchEvent(new Event(REMOVE_CLICK_EVENT));
+    });
+
+    const folderLinkSlot = this.getSlot(FOLDER_LINK_SLOT);
+    if (folderLinkSlot) {
+      const link = new Link(folderLinkSlot, this.#name);
+      link.onClick(()=>{
+        this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
       });
-
-      this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`)?.addEventListener('click', (event)=>{
-        event.preventDefault();
-        this.#eventTarget.dispatchEvent(new Event(REMOVE_CLICK_EVENT));
-      });
-
-      const folderLinkSlot = this.getSlot(FOLDER_LINK_SLOT);
-      if (folderLinkSlot) {
-        const link = new Link(folderLinkSlot, this.#name);
-        link.onClick(()=>{
-          this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
-        });
-      }
     }
+  }
 
-    /**
-     * Adds listener on folder link click event.
-     *
-     * @param {function(): void} listener
-     */
-    onFolderLinkClick(listener) {
-      this.#eventTarget.addEventListener(FOLDER_LINK_CLICK_EVENT, listener);
-    }
+  /**
+   * Adds listener on folder link click event.
+   *
+   * @param {function(): void} listener
+   */
+  onFolderLinkClick(listener) {
+    this.#eventTarget.addEventListener(FOLDER_LINK_CLICK_EVENT, listener);
+  }
 
-    /**
-     * Adds listener on upload button click event.
-     *
-     * @param {function(): void} listener
-     */
-    onUpload(listener) {
-      this.#eventTarget.addEventListener(UPLOAD_CLICK_EVENT, listener);
-    }
+  /**
+   * Adds listener on upload button click event.
+   *
+   * @param {function(): void} listener
+   */
+  onUpload(listener) {
+    this.#eventTarget.addEventListener(UPLOAD_CLICK_EVENT, listener);
+  }
 
-    /**
-     * Adds listener on remove button click event.
-     *
-     * @param {function(): void} listener
-     */
-    onRemove(listener) {
-      this.#eventTarget.addEventListener(REMOVE_CLICK_EVENT, listener);
-    }
+  /**
+   * Adds listener on remove button click event.
+   *
+   * @param {function(): void} listener
+   */
+  onRemove(listener) {
+    this.#eventTarget.addEventListener(REMOVE_CLICK_EVENT, listener);
+  }
 
-    /**
-     * @inheritDoc
-     */
-    markup() {
-      return `
+  /**
+   * @inheritDoc
+   */
+  markup() {
+    return `
     <tr>
         <td class="cell-arrow">
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
         <td class="cell-icon">
-            <span aria-hidden="true" class="glyphicon ${this.#fileTypeIconFactory.getIcon('folder')}"></span>
+            <span aria-hidden="true" class="glyphicon ${this.fileTypeIconFactory.getIcon('folder')}"></span>
         </td>
         <td class="cell-name">${this.addSlot(FOLDER_LINK_SLOT)}</td>
         <td class="cell-type">Folder</td>
@@ -104,5 +104,5 @@ export class FolderRow extends Component {
         </td>
     </tr>
     `;
-    }
+  }
 }

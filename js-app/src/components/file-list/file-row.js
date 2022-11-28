@@ -14,7 +14,7 @@ export class FileRow extends Component {
   #type;
   #size;
   #eventTarget = new EventTarget();
-  @inject #fileTypeIconFactory;
+  @inject fileTypeIconFactory;
 
   /**
    * @param {HTMLElement} parent
@@ -71,7 +71,7 @@ export class FileRow extends Component {
     <tr>
        <td class="cell-arrow"></td>
        <td class="cell-icon">
-           <span aria-hidden="true" class="glyphicon ${this.#fileTypeIconFactory.getIcon(this.#type)}"></span>
+           <span aria-hidden="true" class="glyphicon ${this.fileTypeIconFactory.getIcon(this.#type)}"></span>
        </td>
        <td class="cell-name">${this.#name}</td>
        <td class="cell-type">${this.#type}</td>
