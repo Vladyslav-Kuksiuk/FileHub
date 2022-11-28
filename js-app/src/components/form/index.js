@@ -37,7 +37,11 @@ export class Form extends Component {
    */
   afterRender() {
     const buttonSlot = this.getSlot('button');
-    new Button(buttonSlot, this.#buttonText, BUTTON_TYPE.PRIMARY);
+    new Button(buttonSlot,{
+      text: this.#buttonText,
+      title: this.#buttonText,
+      type: BUTTON_TYPE.PRIMARY
+    });
 
     const linkSlot = this.getSlot('link');
     this.#linkCreator?.(linkSlot);

@@ -18,15 +18,26 @@ export class Button extends Component {
   #eventTarget = new EventTarget();
 
   /**
-   * @param {HTMLElement} parent
-   * @param {string} text
-   * @param {string} type
-   * @param {boolean} isDisabled
+   * @typedef ButtonConfig
+   * @property {string} text
+   * @property {string} title
+   * @property {string} type
+   * @property {boolean} isDisabled
    */
-  constructor(parent, text, type = BUTTON_TYPE.DEFAULT, isDisabled = false) {
+
+  /**
+   * @param {HTMLElement} parent
+   * @param {ButtonConfig} config
+   */
+  constructor(parent, {
+    text = '',
+      title = '',
+      type = BUTTON_TYPE.DEFAULT,
+      isDisabled = false,
+  }) {
     super(parent);
     this.#text = text;
-    this.#title = text;
+    this.#title = title;
     this.#type = type;
     this.#isDisabled = isDisabled;
     this.init();

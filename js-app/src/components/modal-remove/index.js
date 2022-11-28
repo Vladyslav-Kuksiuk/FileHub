@@ -39,14 +39,22 @@ export class ModalRemove extends Component {
    */
   afterRender() {
     const deleteButtonSlot = this.getSlot(DELETE_BUTTON_SLOT);
-    const deleteButton = new Button(deleteButtonSlot, 'Delete', BUTTON_TYPE.DANGER, this.#isLoading);
+    const deleteButton = new Button(deleteButtonSlot,{
+      text: 'Delete',
+      title: 'Delete',
+      type: BUTTON_TYPE.DANGER,
+      isDisabled: this.#isLoading});
     deleteButton.onClick(()=>{
       this.#eventTarget.dispatchEvent(new Event(DELETE_EVENT));
     });
     this.#deleteButton = deleteButton;
 
     const cancelButtonSlot = this.getSlot(CANCEL_BUTTON_SLOT);
-    const cancelButton = new Button(cancelButtonSlot, 'Cancel', BUTTON_TYPE.DEFAULT, this.#isLoading);
+    const cancelButton = new Button(cancelButtonSlot,{
+      text: 'Cancel',
+      title: 'Cancel',
+      type: BUTTON_TYPE.DEFAULT,
+      isDisabled: this.#isLoading});
     cancelButton.onClick(()=>{
       this.#eventTarget.dispatchEvent(new Event(CANCEL_EVENT));
     });
