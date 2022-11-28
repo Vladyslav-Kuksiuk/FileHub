@@ -101,17 +101,17 @@ export const MUTATORS = {
   [MUTATOR_NAMES.SET_LOCATION_METADATA]: (state, locationMetadata) =>{
     return new State({...state,
       locationMetadata: locationMetadata,
-      filesUploadingErrorInfo: [],
+      filesUploadingErrorInfo: {},
     });
   },
 
   [MUTATOR_NAMES.ADD_FOLDER_TO_UPLOAD]: (state, folderId) => {
     return new State({...state,
       foldersToUpload: [...state.foldersToUpload, folderId],
-      filesUploadingErrorInfo: state.filesUploadingErrorInfo
-          .filter((error) => {
-            return error.folderId !== folderId;
-          }),
+      filesUploadingErrorInfo: {
+        ...state.filesUploadingErrorInfo,
+        [folderId]: undefined,
+      },
     });
   },
   [MUTATOR_NAMES.REMOVE_FOLDER_TO_UPLOAD]: (state, folderId) => {
@@ -121,7 +121,10 @@ export const MUTATORS = {
   },
   [MUTATOR_NAMES.ADD_FILES_UPLOADING_ERROR_INFO]: (state, errorInfo) => {
     return new State({...state,
-      filesUploadingErrorInfo: [...state.filesUploadingErrorInfo, errorInfo],
+      filesUploadingErrorInfo: {
+        ...state.filesUploadingErrorInfo,
+        [errorInfo.folderId]: errorInfo.error,
+      },
     });
   },
 };

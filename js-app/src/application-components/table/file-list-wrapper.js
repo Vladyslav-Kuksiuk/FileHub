@@ -2,8 +2,8 @@ import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {inject} from '../../registry';
-import {FolderRow} from '../../components/file-list/folder-row.js';
-import {FileRow} from '../../components/file-list/file-row.js';
+import {FolderRow} from '../../components/file-list/folder-row';
+import {FileRow} from '../../components/file-list/file-row';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 import {UploadFilesAction} from '../../state-management/folder/upload-files-action';
 
@@ -70,6 +70,10 @@ export class FileListWrapper extends StateAwareWrapper {
 
                 this.addStateListener('foldersToUpload', (state) => {
                   folderRow.isUploading = state.foldersToUpload.includes(folder.id);
+                });
+
+                this.addStateListener('filesUploadingErrorInfo', (state) => {
+                  folderRow.uploadingError = state.filesUploadingErrorInfo[folder.id] ?? null;
                 });
               };
             });

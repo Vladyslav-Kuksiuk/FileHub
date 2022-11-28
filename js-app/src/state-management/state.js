@@ -77,15 +77,9 @@ export class State {
   foldersToUpload = [];
 
   /**
-   * @typedef FilesUploadingErrorInfo
-   * @property {string} folderId
-   * @property {string} error
+   * @type {Object<string, string>}
    */
-
-  /**
-   * @type {FilesUploadingErrorInfo[]}
-   */
-  filesUploadingErrorInfo = [];
+  filesUploadingErrorInfo = {};
 
   /**
    * @param {object} state

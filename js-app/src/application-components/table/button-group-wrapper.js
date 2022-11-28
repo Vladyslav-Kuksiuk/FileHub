@@ -2,9 +2,9 @@ import {ButtonGroup} from '../../components/button-group';
 import {inject} from '../../registry';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 import {Button, BUTTON_TYPE} from '../../components/button';
-import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action.js';
+import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
-import {UploadFilesAction} from '../../state-management/folder/upload-files-action.js';
+import {UploadFilesAction} from '../../state-management/folder/upload-files-action';
 
 /**
  * ButtonGroup wrapper for state change listening.
@@ -76,6 +76,10 @@ export class ButtonGroupWrapper extends StateAwareWrapper {
           });
         }
         buttonGroup.buttonCreators = buttonCreators;
+      });
+
+      this.addStateListener('filesUploadingErrorInfo', (state) => {
+        buttonGroup.error = state.filesUploadingErrorInfo[state.folderInfo?.id] ?? null;
       });
     }
 }

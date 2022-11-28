@@ -51,10 +51,13 @@ export class ButtonGroup extends Component {
    * @inheritDoc
    */
   markup() {
+    const error = this.#error ? `<p class="help-block text-danger">${this.#error}</p>` : '';
     return `
             <div class="col-xs-4 col-sm-6 tool-bar-buttons">
                 <div aria-label="..." class="btn-group" role="group" ${this.markElement(BUTTONS_SLOT)}>
                 </div>
-            </div>`;
+                ${error}
+            </div>
+            `;
   }
 }

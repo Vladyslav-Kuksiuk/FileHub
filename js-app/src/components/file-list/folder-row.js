@@ -16,6 +16,7 @@ export class FolderRow extends Component {
   #name;
   #eventTarget = new EventTarget();
   #isUploading = false;
+  #uploadingError = false;
   @inject fileTypeIconFactory;
 
   /**
@@ -78,6 +79,14 @@ export class FolderRow extends Component {
   }
 
   /**
+   * @param {string} uploadingError
+   */
+  set uploadingError(uploadingError) {
+    this.#uploadingError = uploadingError;
+    this.render();
+  }
+
+  /**
    * Adds listener on remove button click event.
    *
    * @param {function(): void} listener
@@ -90,13 +99,24 @@ export class FolderRow extends Component {
    * @inheritDoc
    */
   markup() {
-    const uploadingButton = this.#isUploading ?
-        `<button ${this.markElement(UPLOAD_BUTTON)} disabled class="icon-button" title="File uploading...">
-            <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
-        </button>` :
-        `<button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="Upload file.">
+    let uploadingButton = `
+        <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="Upload file.">
             <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
         </button>`;
+    if (this.#isUploading) {
+      uploadingButton = `
+      <button ${this.markElement(UPLOAD_BUTTON)} disabled class="icon-button" title="File uploading...">
+         <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
+      </button>
+      `;
+    }
+
+    if (this.#uploadingError) {
+      uploadingButton = `
+        <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="${this.#uploadingError}">
+            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
+        </button>`;
+    }
     return `
     <tr>
         <td class="cell-arrow">

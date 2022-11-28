@@ -155,7 +155,7 @@ app.post('/folders/:folderId/content', (req, res) => {
       size: '13 KB',
       id: 'testUser-file-'+counter(),
     });
-    res.status(200);
+    res.status(404);
     res.send({});
   }, 500);
 });
