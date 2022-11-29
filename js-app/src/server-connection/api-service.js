@@ -11,8 +11,8 @@ export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
-const DELETE_FOLDER_PATH = 'api/folder/';
-const DELETE_FILE_PATH = 'api/file/';
+const FOLDER_PATH = 'api/folder/';
+const FILE_PATH = 'api/file/';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
 
@@ -151,7 +151,7 @@ export class ApiService {
    */
   async deleteItem(item) {
     if (item.type === 'folder') {
-      return this.#requestService.delete(DELETE_FOLDER_PATH+item.id, this.#userToken)
+      return this.#requestService.delete(FOLDER_PATH+item.id, this.#userToken)
           .catch(() => {
             throw new ApiServiceError();
           })
@@ -161,11 +161,45 @@ export class ApiService {
             }
           });
     }
-    return this.#requestService.delete(DELETE_FILE_PATH+item.id, this.#userToken)
+    return this.#requestService.delete(FILE_PATH+item.id, this.#userToken)
         .catch(() => {
           throw new ApiServiceError();
         })
         .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
+
+  /**
+   * Renames item.
+   *
+   * @param {FolderContentItem} item
+   */
+  async renameItem(item) {
+    if (item.type === 'folder') {
+      return this.#requestService.put(FOLDER_PATH+item.id, this.#userToken)
+          .catch(() => {
+            throw new ApiServiceError();
+          })
+          .then((response) => {
+            if (response.status === 422) {
+              throw new FieldValidationError(response.body.errors);
+            }
+            if (response.status !== 200) {
+              throw new ApiServiceError();
+            }
+          });
+    }
+    return this.#requestService.put(FILE_PATH+item.id, this.#userToken)
+        .catch(() => {
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 422) {
+            throw new FieldValidationError(response.body.errors);
+          }
           if (response.status !== 200) {
             throw new ApiServiceError();
           }

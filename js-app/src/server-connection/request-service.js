@@ -30,6 +30,31 @@ export class RequestService {
   }
 
   /**
+   * Sends PUT request with JSON body and converts server response.
+   *
+   * @param {string} url
+   * @param {object} body
+   * @param {string} token
+   * @returns {Promise<Response>}
+   */
+  async put(url, body, token) {
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    try {
+      return new Response(response.status, await response.json());
+    } catch (e) {
+      return new Response(response.status);
+    }
+  }
+
+  /**
    * Sends POST request with {@link FormData} and converts server response.
    *
    * @param {string} url
