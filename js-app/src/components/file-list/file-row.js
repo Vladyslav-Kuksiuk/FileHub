@@ -61,11 +61,13 @@ export class FileRow extends Component {
       }
     });
 
-    this.rootElement.querySelector(`[data-td="${RENAME_FORM}"]`)?.addEventListener('submit', (event)=>{
+    const renameForm = this.rootElement.querySelector(`[data-td="${RENAME_FORM}"]`);
+    renameForm?.addEventListener('submit', (event)=>{
       event.preventDefault();
       this.#temporaryName = new FormData(event.target).get('renameField');
       this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
     });
+    renameForm?.querySelector('input').focus();
   }
 
   /**

@@ -171,7 +171,19 @@ app.put('/file/:id', ((req, res) => {
     });
     res.status(200);
     res.send({});
-  }, 5000);
+  }, 200);
+}));
+
+app.put('/folder/:id', ((req, res) => {
+  setTimeout(() => {
+    res.status(422);
+    res.send({
+      errors: [
+        {fieldName: 'renameField', errorText: 'Why are you renaming me :('},
+        {fieldName: 'renameField', errorText: 'Am I that bad?'},
+      ],
+    });
+  }, 200);
 }));
 
 app.delete('/folder/:id', ((req, res) => {

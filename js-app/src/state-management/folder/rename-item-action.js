@@ -39,7 +39,7 @@ export class RenameItemAction extends Action {
         .catch((error) => {
           if (error instanceof FieldValidationError) {
             executor(MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS,
-                Object.values(error.fieldErrors));
+                error.fieldErrors.map((error)=> error.errorText));
           } else {
             executor(MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS, [error.message]);
           }

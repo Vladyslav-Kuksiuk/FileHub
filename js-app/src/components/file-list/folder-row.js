@@ -5,18 +5,30 @@ import {Link} from '../link';
 const REMOVE_CLICK_EVENT = 'REMOVE_CLICK_EVENT';
 const UPLOAD_CLICK_EVENT = 'UPLOAD_CLICK_EVENT';
 const FOLDER_LINK_CLICK_EVENT = 'FOLDER_LINK_CLICK_EVENT';
+const OPEN_RENAME_FORM_EVENT = 'OPEN_RENAME_FORM_EVENT';
+const RENAME_EVENT = 'RENAME_EVENT';
 const REMOVE_BUTTON = 'remove-button';
 const UPLOAD_BUTTON = 'upload-button';
 const FOLDER_LINK_SLOT = 'folder-link-slot';
+const NAME_CELL = 'name-cell';
+const RENAME_FORM = 'rename-form';
 
 /**
  * FolderRow component.
  */
 export class FolderRow extends Component {
   #name;
+
+  #temporaryName;
   #eventTarget = new EventTarget();
   #isUploading = false;
   #uploadingError = false;
+
+  #isRenameFormOpen;
+
+  #isRenaming;
+
+  #renamingErrors = [];
   @inject fileTypeIconFactory;
 
   /**
@@ -50,6 +62,20 @@ export class FolderRow extends Component {
         this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
       });
     }
+
+    this.rootElement.querySelector(`[data-td="${NAME_CELL}"]`)?.addEventListener('dblclick', ()=>{
+      if (!this.#isRenameFormOpen) {
+        this.#eventTarget.dispatchEvent(new Event(OPEN_RENAME_FORM_EVENT));
+      }
+    });
+
+    const renameForm = this.rootElement.querySelector(`[data-td="${RENAME_FORM}"]`);
+    renameForm?.addEventListener('submit', (event)=>{
+      event.preventDefault();
+      this.#temporaryName = new FormData(event.target).get('renameField');
+      this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
+    });
+    renameForm?.querySelector('input').focus();
   }
 
   /**
@@ -87,12 +113,63 @@ export class FolderRow extends Component {
   }
 
   /**
+   * @param {boolean} isRenameFormOpen
+   */
+  set isRenameFormOpen(isRenameFormOpen) {
+    if (this.#isRenameFormOpen === isRenameFormOpen) {
+      return;
+    }
+
+    this.#isRenameFormOpen = isRenameFormOpen;
+    if (!isRenameFormOpen) {
+      this.#temporaryName = this.#name;
+    }
+    this.render();
+  }
+
+  /**
+   * @param {boolean} isRenaming
+   */
+  set isRenaming(isRenaming) {
+    this.#isRenaming = isRenaming;
+    this.render();
+  }
+
+  /**
+   * @param {string[]} errors
+   */
+  set renamingErrors(errors) {
+    this.#renamingErrors = errors;
+    this.render();
+  }
+
+  /**
    * Adds listener on remove button click event.
    *
    * @param {function(): void} listener
    */
   onRemove(listener) {
     this.#eventTarget.addEventListener(REMOVE_CLICK_EVENT, listener);
+  }
+
+  /**
+   * Adds listener on name cell doubleclick event.
+   *
+   * @param {function(): void} listener
+   */
+  onRenameFormOpen(listener) {
+    this.#eventTarget.addEventListener(OPEN_RENAME_FORM_EVENT, listener);
+  }
+
+  /**
+   * Adds listener on rename event.
+   *
+   * @param {function(string): void} listener
+   */
+  onRename(listener) {
+    this.#eventTarget.addEventListener(RENAME_EVENT, ()=>{
+      listener(this.#temporaryName);
+    });
   }
 
   /**
@@ -111,6 +188,32 @@ export class FolderRow extends Component {
       `;
     }
 
+    let nameCellContent = this.addSlot(FOLDER_LINK_SLOT);
+    let renameErrors = '';
+
+    this.#renamingErrors.forEach((error) => {
+      renameErrors += `<p class="help-block text-danger">${error}</p>`;
+    });
+
+    if (this.#isRenameFormOpen) {
+      nameCellContent = `
+      <form ${this.markElement(RENAME_FORM)} class="name-edit-form">
+          <input class="form-control ${renameErrors.length>0 ? 'input-error' : '' }" name="renameField"
+          placeholder="Enter file name..." type="text" value="${this.#temporaryName}">
+          ${renameErrors}
+      </form> `;
+    }
+
+    if (this.#isRenaming) {
+      nameCellContent = `
+      <form class="name-edit-form">
+          <input class="form-control" disabled placeholder="Enter file name..."
+                 type="text" value="${this.#temporaryName}">
+          <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
+      </form>
+      `;
+    }
+
     if (this.#uploadingError) {
       uploadingButton = `
         <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="${this.#uploadingError}">
@@ -125,7 +228,7 @@ export class FolderRow extends Component {
         <td class="cell-icon">
             <span aria-hidden="true" class="glyphicon ${this.fileTypeIconFactory.getIcon('folder')}"></span>
         </td>
-        <td class="cell-name">${this.addSlot(FOLDER_LINK_SLOT)}</td>
+        <td class="cell-name" ${this.markElement(NAME_CELL)}>${nameCellContent}</td>
         <td class="cell-type">Folder</td>
         <td class="cell-size">—</td>
         <td class="cell-buttons">

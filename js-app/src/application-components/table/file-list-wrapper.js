@@ -77,6 +77,41 @@ export class FileListWrapper extends StateAwareWrapper {
                 this.addStateListener('filesUploadingErrorInfo', (state) => {
                   folderRow.uploadingError = state.filesUploadingErrorInfo[folder.id] ?? null;
                 });
+
+                folderRow.onRenameFormOpen(() => {
+                  if (!this.stateManagementService.state.isItemRenaming) {
+                    this.stateManagementService.dispatch(new DefineRenamingItemAction(folder));
+                    folderRow.isRenameFormOpen = true;
+                  }
+                });
+
+                folderRow.onRename((newName) => {
+                  if (!(newName === folder.name)) {
+                    this.stateManagementService.dispatch(new RenameItemAction(folder, newName));
+                  } else {
+                    folderRow.isRenameFormOpen = false;
+                  }
+                });
+
+                this.addStateListener('renamingItem', (state) => {
+                  if (!(state.renamingItem?.id === folder.id)) {
+                    folderRow.isRenameFormOpen = false;
+                  }
+                });
+
+                this.addStateListener('isItemRenaming', (state) => {
+                  if (state.renamingItem?.id === folder.id) {
+                    folderRow.isRenaming = state.isItemRenaming;
+                  }
+                });
+
+                this.addStateListener('itemRenamingErrors', (state) => {
+                  if (state.renamingItem?.id === folder.id) {
+                    folderRow.renamingErrors = state.itemRenamingErrors;
+                  } else {
+                    folderRow.renamingErrors = [];
+                  }
+                });
               };
             });
 
@@ -97,7 +132,11 @@ export class FileListWrapper extends StateAwareWrapper {
                 });
 
                 fileRow.onRename((newName) => {
-                  this.stateManagementService.dispatch(new RenameItemAction(file, newName));
+                  if (!(newName === file.name)) {
+                    this.stateManagementService.dispatch(new RenameItemAction(file, newName));
+                  } else {
+                    fileRow.isRenameFormOpen = false;
+                  }
                 });
 
                 this.addStateListener('renamingItem', (state) => {
