@@ -5,7 +5,7 @@ import {FolderContentItem} from './folder-content-item';
 /**
  * Action to perform renaming item defining.
  */
-export class DefineRemovingItemAction extends Action {
+export class DefineRenamingItemAction extends Action {
   #item;
 
   /**

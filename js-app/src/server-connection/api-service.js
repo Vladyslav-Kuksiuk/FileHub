@@ -176,10 +176,15 @@ export class ApiService {
    * Renames item.
    *
    * @param {FolderContentItem} item
+   * @param {string} newName
    */
-  async renameItem(item) {
+  async renameItem(item, newName) {
     if (item.type === 'folder') {
-      return this.#requestService.put(FOLDER_PATH+item.id, this.#userToken)
+      return this.#requestService.put(FOLDER_PATH+item.id,
+          {
+            name: newName,
+          },
+          this.#userToken)
           .catch(() => {
             throw new ApiServiceError();
           })
@@ -192,7 +197,11 @@ export class ApiService {
             }
           });
     }
-    return this.#requestService.put(FILE_PATH+item.id, this.#userToken)
+    return this.#requestService.put(FILE_PATH+item.id,
+        {
+          name: newName,
+        },
+        this.#userToken)
         .catch(() => {
           throw new ApiServiceError();
         })

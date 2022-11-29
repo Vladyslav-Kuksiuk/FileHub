@@ -103,6 +103,7 @@ const foldersContent = {
   ],
 };
 
+app.use(express.json());
 app.post('/login', (req, res) => {
   res.status(200);
   res.send({token: 'testToken'});
@@ -157,6 +158,20 @@ app.delete('/file/:id', ((req, res) => {
     res.status(200);
     res.send({});
   }, 500);
+}));
+
+app.put('/file/:id', ((req, res) => {
+  setTimeout(() => {
+    Object.entries(foldersContent).forEach(([folderId, content]) => {
+      content.forEach((item) => {
+        if (item.id === req.params.id) {
+          item.name = req.body.name;
+        }
+      });
+    });
+    res.status(200);
+    res.send({});
+  }, 5000);
 }));
 
 app.delete('/folder/:id', ((req, res) => {

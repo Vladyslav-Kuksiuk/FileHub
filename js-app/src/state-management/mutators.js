@@ -138,9 +138,15 @@ export const MUTATORS = {
     });
   },
   [MUTATOR_NAMES.SET_IS_ITEM_RENAMING]: (state, isRenaming) => {
+    if (isRenaming) {
+      return new State({...state,
+        isItemRenaming: isRenaming,
+        itemRenamingErrors: [],
+      });
+    }
+
     return new State({...state,
       isItemRenaming: isRenaming,
-      itemRenamingErrors: [],
     });
   },
   [MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS]: (state, errors) => {

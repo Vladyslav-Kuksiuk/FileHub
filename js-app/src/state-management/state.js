@@ -82,7 +82,7 @@ export class State {
   filesUploadingErrorInfo = {};
 
   /**
-   * @type {string | null}
+   * @type {FolderContentItem | null}
    */
   renamingItem = null;
 

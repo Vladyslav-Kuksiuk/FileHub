@@ -6,6 +6,8 @@ import {FolderRow} from '../../components/file-list/folder-row';
 import {FileRow} from '../../components/file-list/file-row';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 import {UploadFilesAction} from '../../state-management/folder/upload-files-action';
+import {DefineRenamingItemAction} from '../../state-management/folder/define-renaming-item-action';
+import {RenameItemAction} from '../../state-management/folder/rename-item-action';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -85,6 +87,37 @@ export class FileListWrapper extends StateAwareWrapper {
                 const fileRow = new FileRow(slot, file.name, file.type, file.size);
                 fileRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                });
+
+                fileRow.onRenameFormOpen(() => {
+                  if (!this.stateManagementService.state.isItemRenaming) {
+                    this.stateManagementService.dispatch(new DefineRenamingItemAction(file));
+                    fileRow.isRenameFormOpen = true;
+                  }
+                });
+
+                fileRow.onRename((newName) => {
+                  this.stateManagementService.dispatch(new RenameItemAction(file, newName));
+                });
+
+                this.addStateListener('renamingItem', (state) => {
+                  if (!(state.renamingItem?.id === file.id)) {
+                    fileRow.isRenameFormOpen = false;
+                  }
+                });
+
+                this.addStateListener('isItemRenaming', (state) => {
+                  if (state.renamingItem?.id === file.id) {
+                    fileRow.isRenaming = state.isItemRenaming;
+                  }
+                });
+
+                this.addStateListener('itemRenamingErrors', (state) => {
+                  if (state.renamingItem?.id === file.id) {
+                    fileRow.renamingErrors = state.itemRenamingErrors;
+                  } else {
+                    fileRow.renamingErrors = [];
+                  }
                 });
               };
             });

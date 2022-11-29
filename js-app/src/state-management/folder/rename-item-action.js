@@ -3,20 +3,24 @@ import {MUTATOR_NAMES} from '../mutators';
 import {FolderContentItem} from './folder-content-item';
 import {LoadFolderContentAction} from './load-folder-content-action';
 import {inject} from '../../registry';
+import {FieldValidationError} from '../../server-connection/field-validation-error';
 
 /**
  * Action to perform item renaming.
  */
 export class RenameItemAction extends Action {
   #item;
+  #newName;
   @inject apiService;
 
   /**
    * @param {FolderContentItem} item
+   * @param {string} newName
    */
-  constructor(item) {
+  constructor(item, newName) {
     super();
     this.#item = item;
+    this.#newName = newName;
   }
 
   /**
@@ -26,7 +30,7 @@ export class RenameItemAction extends Action {
     executor(MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
 
     return this.apiService
-        .renameItem(this.#item)
+        .renameItem(this.#item, this.#newName)
         .then(() => {
           executor(MUTATOR_NAMES.SET_RENAMING_ITEM, null);
           stateManagementService.dispatch(
