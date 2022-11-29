@@ -118,7 +118,7 @@ export class FolderRow extends Component {
         </button>`;
     }
     return `
-    <tr>
+    <tr class="folder-row">
         <td class="cell-arrow">
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>

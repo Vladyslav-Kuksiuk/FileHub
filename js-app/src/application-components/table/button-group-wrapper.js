@@ -58,7 +58,7 @@ export class ButtonGroupWrapper extends StateAwareWrapper {
             });
 
             this.addStateListener('foldersToUpload', (state) => {
-              if (state.foldersToUpload.includes(state.folderInfo.id)) {
+              if (state.foldersToUpload.includes(state.folderInfo?.id)) {
                 button.isDisabled = true;
                 button.text = '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>';
               } else {

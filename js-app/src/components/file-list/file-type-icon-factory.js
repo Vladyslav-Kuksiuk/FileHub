@@ -7,6 +7,7 @@ export class FileTypeIconFactory {
     'PDF Document': 'glyphicon-book',
     'Excel Workbook': 'glyphicon-list-alt',
     'JPEG Image': 'glyphicon-picture',
+    'PNG Image': 'glyphicon-picture',
     'AVI Movie': 'glyphicon-film',
     'MP3 Audio': 'glyphicon-music',
   };

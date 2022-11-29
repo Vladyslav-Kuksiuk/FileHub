@@ -12,6 +12,9 @@ const convertType = (mimetype) => {
   mimetype = mimetype.toString();
   const types = {
     'application/pdf': 'PDF Document',
+    'image/png': 'PNG Image',
+    'image/jpeg': 'JPEG Image',
+    'audio/mpeg': 'MP3 Audio',
   };
   return types[mimetype] ?? mimetype;
 };
