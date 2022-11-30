@@ -13,7 +13,7 @@ export class ButtonGroupWrapper extends StateAwareWrapper {
     @inject stateManagementService;
 
     /**
-     * Adds state listeners to UserInfo component.
+     * Adds state listeners to ButtonGroup component.
      *
      * @param {ButtonGroup} buttonGroup
      */

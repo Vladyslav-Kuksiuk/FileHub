@@ -4,7 +4,7 @@ import {inject} from '../../registry';
 import {LoadFolderContentAction} from './load-folder-content-action';
 
 /**
- * Action to execute loading information about username.
+ * Action to upload files.
  */
 export class UploadFilesAction extends Action {
     @inject apiService;
