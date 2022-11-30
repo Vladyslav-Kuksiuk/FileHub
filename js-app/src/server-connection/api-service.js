@@ -140,6 +140,7 @@ export class ApiService {
               item.id,
               item.name,
               item.size,
+              folderId,
           ));
         });
   }

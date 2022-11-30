@@ -33,8 +33,9 @@ export class RenameItemAction extends Action {
         .renameItem(this.#item, this.#newName)
         .then(() => {
           executor(MUTATOR_NAMES.SET_RENAMING_ITEM, null);
-          stateManagementService.dispatch(
-              new LoadFolderContentAction(stateManagementService.state.folderInfo.id));
+          if (this.#item.parentId === stateManagementService.state.folderInfo.id) {
+            stateManagementService.dispatch(new LoadFolderContentAction(this.#item.parentId));
+          }
         })
         .catch((error) => {
           if (error instanceof FieldValidationError) {
