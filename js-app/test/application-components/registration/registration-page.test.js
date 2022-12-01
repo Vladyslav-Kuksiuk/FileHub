@@ -1,26 +1,38 @@
 import {RegistrationPage} from '../../../src/application-components/registration/registration-page';
 import {jest} from '@jest/globals';
 import {UserData} from '../../../src/user-data';
-import {ApplicationContext} from '../../../src/application-components/application-context';
+import {clearRegistry, registry} from '../../../src/registry';
+import {ApiService} from '../../../src/server-connection/api-service';
 
 describe('RegistrationPage', () => {
-  let applicationContext;
+  let apiService;
   let titleServiceMock;
 
   beforeEach(() => {
+    clearRegistry();
     document.body.innerHTML = '';
+    const titleService = {
+      setTitles: () => {},
+    };
+    apiService = new ApiService({});
 
-    applicationContext = new ApplicationContext();
+    registry.register('apiService', () => {
+      return apiService;
+    });
+
+    registry.register('titleService', ()=>{
+      return titleService;
+    });
 
     titleServiceMock = jest
-        .spyOn(applicationContext.titleService, 'setTitles')
+        .spyOn(titleService, 'setTitles')
         .mockImplementation(() => {});
   });
 
   test('Should create and render RegistrationPage component', function() {
     expect.assertions(4);
 
-    new RegistrationPage(document.body, applicationContext);
+    new RegistrationPage(document.body);
     expect(document.body.querySelectorAll('[data-td="form-component"]').length).toBe(1);
     expect(document.body.querySelector('main h1').textContent).toBe('Sign up to FileHub');
     expect(titleServiceMock).toHaveBeenCalledTimes(1);
@@ -31,7 +43,7 @@ describe('RegistrationPage', () => {
     return new Promise((done) => {
       expect.assertions(1);
 
-      const page = new RegistrationPage(document.body, applicationContext);
+      const page = new RegistrationPage(document.body);
 
       page.onNavigateToAuthorization(() => {
         expect(true).toBeTruthy();
@@ -46,10 +58,10 @@ describe('RegistrationPage', () => {
       expect.assertions(2);
 
       const apiServiceMock = jest
-          .spyOn(applicationContext.apiService, 'register')
+          .spyOn(apiService, 'register')
           .mockImplementation(async () => {});
 
-      const page = new RegistrationPage(document.body, applicationContext);
+      const page = new RegistrationPage(document.body);
 
       page.onNavigateToAuthorization(() => {
         expect(apiServiceMock).toHaveBeenCalledTimes(1);
@@ -68,12 +80,12 @@ describe('RegistrationPage', () => {
       expect.assertions(3);
 
       const apiServiceMock = jest
-          .spyOn(applicationContext.apiService, 'register')
+          .spyOn(apiService, 'register')
           .mockImplementation( async () => {
             throw new Error('Error message');
           });
 
-      new RegistrationPage(document.body, applicationContext);
+      new RegistrationPage(document.body);
 
       document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
       document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';

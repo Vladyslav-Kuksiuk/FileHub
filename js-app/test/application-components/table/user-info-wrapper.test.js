@@ -1,19 +1,30 @@
-import {ApplicationContext} from '../../../src/application-components/application-context';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {UserInfoWrapper} from '../../../src/application-components/table/user-info-wrapper';
 import {UserInfo} from '../../../src/components/user-info';
 import {jest} from '@jest/globals';
+import {ApiService} from '../../../src/server-connection/api-service';
+import {StateManagementService} from '../../../src/state-management/state-management-service';
+import {clearRegistry, registry} from '../../../src/registry';
 
 describe('UserInfoWrapper', () => {
-  let applicationContext;
   let stateListeners = {};
   let dispatchMock;
 
   beforeEach(() => {
-    applicationContext = new ApplicationContext();
+    clearRegistry();
+    const apiService = new ApiService({});
+    const stateManagementService = new StateManagementService({}, {});
+
+    registry.register('apiService', () => {
+      return apiService;
+    });
+
+    registry.register('stateManagementService', () => {
+      return stateManagementService;
+    });
 
     stateListeners = {};
-    jest.spyOn(applicationContext.stateManagementService, 'addStateListener')
+    jest.spyOn(stateManagementService, 'addStateListener')
         .mockImplementation((field, listener)=>{
           stateListeners[field] = listener;
           return {
@@ -21,23 +32,23 @@ describe('UserInfoWrapper', () => {
             listener: listener,
           };
         });
-    dispatchMock = jest.spyOn(applicationContext.stateManagementService, 'dispatch')
+    dispatchMock = jest.spyOn(stateManagementService, 'dispatch')
         .mockImplementation(()=>{});
   });
 
   test(`Should dispatch LoadUserAction`, function() {
     expect.assertions(2);
 
-    new UserInfoWrapper(applicationContext);
+    new UserInfoWrapper();
 
     expect(dispatchMock).toHaveBeenCalledTimes(1);
-    expect(dispatchMock).toHaveBeenCalledWith(new LoadUserAction(applicationContext.apiService));
+    expect(dispatchMock).toHaveBeenCalledWith(new LoadUserAction());
   });
 
   test(`Should add state listeners`, function() {
     expect.assertions(6);
 
-    const wrapper = new UserInfoWrapper(applicationContext);
+    const wrapper = new UserInfoWrapper();
     const userInfo = new UserInfo(document.body, false, null, false);
 
     const isLoadingMock = jest.spyOn(userInfo, 'isLoading', 'set').mockImplementation(()=>{});

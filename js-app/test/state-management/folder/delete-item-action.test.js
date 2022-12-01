@@ -1,30 +1,42 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {DeleteItemAction} from '../../../src/state-management/folder/delete-item-action';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-components/application-context';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
-import {registry, clearRegistry} from "../../../src/registry";
+import {registry, clearRegistry} from '../../../src/registry';
+import {ApiService} from '../../../src/server-connection/api-service';
+import {StateManagementService} from '../../../src/state-management/state-management-service';
 
 describe('DeleteItemAction', () => {
   let apiService;
+  let stateManagementService;
 
   beforeEach(()=>{
     clearRegistry();
-    new ApplicationContext();
+
+    apiService = new ApiService({});
+    stateManagementService = new StateManagementService({}, {});
+
+    registry.register('apiService', () => {
+      return apiService;
+    });
+
+    registry.register('stateManagementService', () => {
+      return stateManagementService;
+    });
   });
 
   test(`Should return expected successfully sequence of mutator calls`, function() {
     expect.assertions(7);
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'deleteItem')
+        .spyOn(apiService, 'deleteItem')
         .mockImplementation(async ()=>{});
 
     const dispatchActionMock = jest
-        .spyOn(applicationContext.stateManagementService, 'dispatch')
+        .spyOn(stateManagementService, 'dispatch')
         .mockImplementation(()=>{});
 
-    jest.spyOn(applicationContext.stateManagementService, 'state', 'get')
+    jest.spyOn(stateManagementService, 'state', 'get')
         .mockImplementation(()=>{
           return {
             folderInfo: {
@@ -53,7 +65,7 @@ describe('DeleteItemAction', () => {
     expect.assertions(5);
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'deleteItem')
+        .spyOn(apiService, 'deleteItem')
         .mockImplementation(async ()=>{
           throw new Error('error');
         });

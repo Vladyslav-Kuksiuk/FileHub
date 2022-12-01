@@ -45,6 +45,10 @@ describe('FileListWrapper', () => {
 
   test('Should dispatch LoadFolderContentAction', function() {
     expect.assertions(2);
+    registry.register('apiService', ()=> {
+      return {};
+    });
+
     new FileListWrapper();
 
     stateListeners['folderInfo']({
@@ -60,6 +64,12 @@ describe('FileListWrapper', () => {
 
   test(`Should add state listeners`, function() {
     expect.assertions(11);
+
+    registry.register('fileTypeIconFactory', ()=>{
+      return {
+        getIcon: ()=>{},
+      };
+    });
 
     const wrapper = new FileListWrapper();
     const folderContent = new FileList(document.body, false, false, [], []);

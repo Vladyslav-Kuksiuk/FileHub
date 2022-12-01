@@ -1,8 +1,10 @@
 import {jest} from '@jest/globals';
 import {StateAwareWrapper} from '../../src/application-components/state-aware-wrapper';
+import {clearRegistry, registry} from '../../src/registry';
 
 describe('StateAwareWrapper', () => {
   test('Should add and remove state listener', function() {
+    clearRegistry();
     expect.assertions(4);
 
     const addStateListenerMock = jest.fn((field, listener)=>{
@@ -18,7 +20,11 @@ describe('StateAwareWrapper', () => {
       removeStateListener: removeStateListenerMock,
     };
 
-    const wrapper = new StateAwareWrapper(stateManagementService);
+    registry.register('stateManagementService', ()=>{
+      return stateManagementService;
+    });
+
+    const wrapper = new StateAwareWrapper();
     const field = 'field';
     const listener = ()=>{};
 
