@@ -1,8 +1,13 @@
 {
+  "presets": [
+    "@babel/preset-env"
+  ],
   "plugins": [
-    ["@babel/plugin-proposal-decorators", { "version": "legacy" }],
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-private-methods",
-    "@babel/plugin-proposal-class-static-block"
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "version": "2022-03"
+      }
+    ]
   ]
 }
