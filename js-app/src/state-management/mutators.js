@@ -66,7 +66,16 @@ export const MUTATORS = {
     return new State({...state, isFolderContentLoading: isLoading});
   },
   [MUTATOR_NAMES.SET_FOLDER_CONTENT]: (state, folderContent) =>{
-    return new State({...state, folderContent: folderContent});
+    let newState = {...state,
+      folderContent: folderContent,
+      filesUploadingErrorInfo: {},
+      itemRenamingErrors: []};
+
+    if (!state.isItemRenaming) {
+      newState = {...newState, renamingItem: null};
+    }
+
+    return new State(newState);
   },
   [MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR]: (state, error) =>{
     return new State({...state, folderContentError: error});
@@ -104,7 +113,6 @@ export const MUTATORS = {
   [MUTATOR_NAMES.SET_LOCATION_METADATA]: (state, locationMetadata) =>{
     return new State({...state,
       locationMetadata: locationMetadata,
-      filesUploadingErrorInfo: {},
     });
   },
 
