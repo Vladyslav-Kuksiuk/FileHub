@@ -3,12 +3,14 @@ import {DeleteItemAction} from '../../../src/state-management/folder/delete-item
 import {jest} from '@jest/globals';
 import {ApplicationContext} from '../../../src/application-components/application-context';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
+import {registry, clearRegistry} from "../../../src/registry";
 
 describe('DeleteItemAction', () => {
-  let applicationContext;
+  let apiService;
 
   beforeEach(()=>{
-    applicationContext = new ApplicationContext();
+    clearRegistry();
+    new ApplicationContext();
   });
 
   test(`Should return expected successfully sequence of mutator calls`, function() {
@@ -31,11 +33,11 @@ describe('DeleteItemAction', () => {
           };
         });
 
-    const action = new DeleteItemAction({}, applicationContext.apiService);
+    const action = new DeleteItemAction({});
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext.stateManagementService).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_ITEM_DELETING, true);
@@ -43,7 +45,7 @@ describe('DeleteItemAction', () => {
       expect(executor).toHaveBeenNthCalledWith(3, MUTATOR_NAMES.SET_IS_ITEM_DELETING, false);
       expect(dispatchActionMock).toHaveBeenCalledTimes(1);
       expect(dispatchActionMock).toHaveBeenCalledWith(
-          new LoadFolderContentAction('123', applicationContext.apiService));
+          new LoadFolderContentAction('123'));
     });
   });
 
@@ -56,11 +58,11 @@ describe('DeleteItemAction', () => {
           throw new Error('error');
         });
 
-    const action = new DeleteItemAction({}, applicationContext.apiService);
+    const action = new DeleteItemAction({});
 
     const executor = jest.fn(()=>{});
 
-    return action.execute(executor, applicationContext.stateManagementService).then(()=>{
+    return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
       expect(executor).toHaveBeenCalledTimes(3);
       expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_ITEM_DELETING, true);
