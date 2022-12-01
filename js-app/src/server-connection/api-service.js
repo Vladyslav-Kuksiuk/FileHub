@@ -177,13 +177,12 @@ export class ApiService {
    * Renames item.
    *
    * @param {FolderContentItem} item
-   * @param {string} newName
    */
-  async renameItem(item, newName) {
+  async renameItem(item) {
     if (item.type === 'folder') {
       return this.#requestService.put(FOLDER_PATH+item.id,
           {
-            name: newName,
+            name: item.name,
           },
           this.#userToken)
           .catch(() => {
@@ -200,7 +199,7 @@ export class ApiService {
     }
     return this.#requestService.put(FILE_PATH+item.id,
         {
-          name: newName,
+          name: item.name,
         },
         this.#userToken)
         .catch(() => {

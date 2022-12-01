@@ -11,33 +11,33 @@ const REMOVE_BUTTON = 'remove-button';
 const UPLOAD_BUTTON = 'upload-button';
 const FOLDER_LINK_SLOT = 'folder-link-slot';
 const NAME_CELL = 'name-cell';
-const RENAME_FORM = 'rename-form';
+const RENAME_INPUT = 'rename-input';
 
 /**
  * FolderRow component.
  */
 export class FolderRow extends Component {
   #name;
-
   #temporaryName;
   #eventTarget = new EventTarget();
   #isUploading = false;
   #uploadingError = false;
-
   #isRenameFormOpen;
-
   #isRenaming;
-
   #renamingErrors = [];
   @inject fileTypeIconFactory;
+  #blurListener;
+  #renameInput;
 
   /**
    * @param {HTMLElement} parent
    * @param {string} name
+   * @param {string} temporaryName
    */
-  constructor(parent, name) {
+  constructor(parent, name, temporaryName = name) {
     super(parent);
     this.#name = name;
+    this.#temporaryName = temporaryName;
     this.init();
   }
 
@@ -69,13 +69,32 @@ export class FolderRow extends Component {
       }
     });
 
-    const renameForm = this.rootElement.querySelector(`[data-td="${RENAME_FORM}"]`);
-    renameForm?.addEventListener('submit', (event)=>{
+    let isChaneEventDispatched = false;
+    const renameInput = this.rootElement.querySelector(`[data-td="${RENAME_INPUT}"]`);
+    this.#renameInput = renameInput;
+    renameInput?.focus();
+    renameInput?.addEventListener('change', (event)=>{
       event.preventDefault();
-      this.#temporaryName = new FormData(event.target).get('renameField');
-      this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
+      isChaneEventDispatched = true;
+      if (renameInput.value === this.#name) {
+        this.isRenameFormOpen = false;
+      } else {
+        this.#temporaryName = renameInput.value;
+        this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
+      }
     });
-    renameForm?.querySelector('input').focus();
+    this.#blurListener = ()=>{
+      if (!isChaneEventDispatched && !this.#isRenaming) {
+        this.isRenameFormOpen = false;
+      }
+    };
+    renameInput?.addEventListener('blur', this.#blurListener);
+    renameInput?.parentElement?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!isChaneEventDispatched) {
+        renameInput.blur();
+      }
+    });
   }
 
   /**
@@ -101,6 +120,7 @@ export class FolderRow extends Component {
    */
   set isUploading(isUploading) {
     this.#isUploading = isUploading;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -109,6 +129,7 @@ export class FolderRow extends Component {
    */
   set uploadingError(uploadingError) {
     this.#uploadingError = uploadingError;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -124,6 +145,7 @@ export class FolderRow extends Component {
     if (!isRenameFormOpen) {
       this.#temporaryName = this.#name;
     }
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -132,6 +154,7 @@ export class FolderRow extends Component {
    */
   set isRenaming(isRenaming) {
     this.#isRenaming = isRenaming;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -140,6 +163,7 @@ export class FolderRow extends Component {
    */
   set renamingErrors(errors) {
     this.#renamingErrors = errors;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -197,9 +221,10 @@ export class FolderRow extends Component {
 
     if (this.#isRenameFormOpen) {
       nameCellContent = `
-      <form ${this.markElement(RENAME_FORM)} class="name-edit-form">
+      <form class="name-edit-form">
           <input class="form-control ${renameErrors.length>0 ? 'input-error' : '' }" name="renameField"
-          placeholder="Enter file name..." type="text" value="${this.#temporaryName}">
+          placeholder="Enter file name..." type="text" value="${this.#temporaryName}"
+          ${this.markElement(RENAME_INPUT)}>
           ${renameErrors}
       </form> `;
     }

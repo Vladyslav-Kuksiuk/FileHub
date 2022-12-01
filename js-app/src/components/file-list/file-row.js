@@ -8,7 +8,7 @@ const RENAME_EVENT = 'RENAME_EVENT';
 const REMOVE_BUTTON = 'remove-button';
 const DOWNLOAD_BUTTON = 'download-button';
 const NAME_CELL = 'name-cell';
-const RENAME_FORM = 'rename-form';
+const RENAME_INPUT = 'rename-input';
 
 /**
  * FileRow component.
@@ -18,26 +18,30 @@ export class FileRow extends Component {
   #temporaryName;
   #type;
   #size;
-  #isRenameFormOpen;
+  #isRenameFormOpen = false;
 
-  #isRenaming;
+  #isRenaming = false;
 
   #renamingErrors = [];
   #eventTarget = new EventTarget();
   @inject fileTypeIconFactory;
+
+  #blurListener;
+  #renameInput;
 
   /**
    * @param {HTMLElement} parent
    * @param {string} name
    * @param {string} type
    * @param {string} size
+   * @param {string} temporaryName
    */
-  constructor(parent, name, type, size) {
+  constructor(parent, name, type, size, temporaryName = name) {
     super(parent);
     this.#name = name;
-    this.#temporaryName = name;
     this.#type = type;
     this.#size = size;
+    this.#temporaryName = temporaryName;
     this.init();
   }
 
@@ -61,13 +65,32 @@ export class FileRow extends Component {
       }
     });
 
-    const renameForm = this.rootElement.querySelector(`[data-td="${RENAME_FORM}"]`);
-    renameForm?.addEventListener('submit', (event)=>{
+    let isChaneEventDispatched = false;
+    const renameInput = this.rootElement.querySelector(`[data-td="${RENAME_INPUT}"]`);
+    this.#renameInput = renameInput;
+    renameInput?.focus();
+    renameInput?.addEventListener('change', (event)=>{
       event.preventDefault();
-      this.#temporaryName = new FormData(event.target).get('renameField');
-      this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
+      isChaneEventDispatched = true;
+      if (renameInput.value === this.#name) {
+        this.isRenameFormOpen = false;
+      } else {
+        this.#temporaryName = renameInput.value;
+        this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
+      }
     });
-    renameForm?.querySelector('input').focus();
+    this.#blurListener = ()=>{
+      if (!isChaneEventDispatched && !this.#isRenaming) {
+        this.isRenameFormOpen = false;
+      }
+    };
+    renameInput?.addEventListener('blur', this.#blurListener);
+    renameInput?.parentElement?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!isChaneEventDispatched) {
+        renameInput.blur();
+      }
+    });
   }
 
   /**
@@ -112,14 +135,11 @@ export class FileRow extends Component {
    * @param {boolean} isRenameFormOpen
    */
   set isRenameFormOpen(isRenameFormOpen) {
-    if (this.#isRenameFormOpen === isRenameFormOpen) {
-      return;
-    }
-
     this.#isRenameFormOpen = isRenameFormOpen;
     if (!isRenameFormOpen) {
       this.#temporaryName = this.#name;
     }
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -128,6 +148,7 @@ export class FileRow extends Component {
    */
   set isRenaming(isRenaming) {
     this.#isRenaming = isRenaming;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -136,6 +157,7 @@ export class FileRow extends Component {
    */
   set renamingErrors(errors) {
     this.#renamingErrors = errors;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
     this.render();
   }
 
@@ -152,9 +174,10 @@ export class FileRow extends Component {
 
     if (this.#isRenameFormOpen) {
       nameCellContent = `
-      <form ${this.markElement(RENAME_FORM)} class="name-edit-form">
+      <form class="name-edit-form">
           <input class="form-control ${errors.length>0 ? 'input-error' : '' }" name="renameField"
-          placeholder="Enter file name..." type="text" value="${this.#temporaryName}">
+          placeholder="Enter file name..." type="text" value="${this.#temporaryName}"
+          ${this.markElement(RENAME_INPUT)}>
           ${errors}
       </form> `;
     }

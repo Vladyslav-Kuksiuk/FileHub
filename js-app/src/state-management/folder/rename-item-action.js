@@ -15,22 +15,21 @@ export class RenameItemAction extends Action {
 
   /**
    * @param {FolderContentItem} item
-   * @param {string} newName
    */
-  constructor(item, newName) {
+  constructor(item) {
     super();
     this.#item = item;
-    this.#newName = newName;
   }
 
   /**
    * @inheritDoc
    */
   execute(executor, stateManagementService) {
+    executor(MUTATOR_NAMES.SET_RENAMING_ITEM, this.#item);
     executor(MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
 
     return this.apiService
-        .renameItem(this.#item, this.#newName)
+        .renameItem(this.#item)
         .then(() => {
           executor(MUTATOR_NAMES.SET_RENAMING_ITEM, null);
           if (this.#item.parentId === stateManagementService.state.folderInfo.id) {

@@ -171,7 +171,7 @@ app.put('/file/:id', ((req, res) => {
     });
     res.status(200);
     res.send({});
-  }, 200);
+  }, 1000);
 }));
 
 app.put('/folder/:id', ((req, res) => {

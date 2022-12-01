@@ -8,6 +8,7 @@ import {StateAwareWrapper} from '../state-aware-wrapper';
 import {UploadFilesAction} from '../../state-management/folder/upload-files-action';
 import {DefineRenamingItemAction} from '../../state-management/folder/define-renaming-item-action';
 import {RenameItemAction} from '../../state-management/folder/rename-item-action';
+import {FolderContentItem} from '../../state-management/folder/folder-content-item';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -43,7 +44,9 @@ export class FileListWrapper extends StateAwareWrapper {
             .filter((item) => item.type === 'folder')
             .map((folder) => {
               return (slot) => {
-                const folderRow = new FolderRow(slot, folder.name);
+                const temporaryName = (state.renamingItem?.id === folder.id) ? state.renamingItem.name : folder.name;
+
+                const folderRow = new FolderRow(slot, folder.name, temporaryName);
 
                 folderRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(folder));
@@ -87,16 +90,20 @@ export class FileListWrapper extends StateAwareWrapper {
 
                 folderRow.onRename((newName) => {
                   if (!(newName === folder.name)) {
-                    this.stateManagementService.dispatch(new RenameItemAction(folder, newName));
+                    this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
+                        folder.type,
+                        folder.id,
+                        newName,
+                        folder.size,
+                        state.folderInfo.id,
+                    )));
                   } else {
                     folderRow.isRenameFormOpen = false;
                   }
                 });
 
                 this.addStateListener('renamingItem', (state) => {
-                  if (!(state.renamingItem?.id === folder.id)) {
-                    folderRow.isRenameFormOpen = false;
-                  }
+                  folderRow.isRenameFormOpen = state.renamingItem?.id === folder.id;
                 });
 
                 this.addStateListener('isItemRenaming', (state) => {
@@ -119,7 +126,10 @@ export class FileListWrapper extends StateAwareWrapper {
             .filter((item) => item.type !== 'folder')
             .map((file) => {
               return (slot) => {
-                const fileRow = new FileRow(slot, file.name, file.type, file.size);
+                const temporaryName = (state.renamingItem?.id === file.id) ? state.renamingItem.name : file.name;
+
+                const fileRow = new FileRow(slot, file.name, file.type, file.size, temporaryName);
+
                 fileRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
                 });
@@ -133,16 +143,20 @@ export class FileListWrapper extends StateAwareWrapper {
 
                 fileRow.onRename((newName) => {
                   if (!(newName === file.name)) {
-                    this.stateManagementService.dispatch(new RenameItemAction(file, newName));
+                    this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
+                        file.type,
+                        file.id,
+                        newName,
+                        file.size,
+                        state.folderInfo.id,
+                    )));
                   } else {
                     fileRow.isRenameFormOpen = false;
                   }
                 });
 
                 this.addStateListener('renamingItem', (state) => {
-                  if (!(state.renamingItem?.id === file.id)) {
-                    fileRow.isRenameFormOpen = false;
-                  }
+                  fileRow.isRenameFormOpen = state.renamingItem?.id === file.id;
                 });
 
                 this.addStateListener('isItemRenaming', (state) => {
