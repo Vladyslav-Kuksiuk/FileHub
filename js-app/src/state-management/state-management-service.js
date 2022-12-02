@@ -18,7 +18,7 @@ export class StateManagementService {
       throw new Error('Initial state is not valid');
     }
     this.#eventTarget = new EventTarget();
-    this.#mutators = mutators || {};
+    this.#mutators = mutators;
     this.#state = state;
   }
 

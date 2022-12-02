@@ -97,8 +97,14 @@ describe('FileListWrapper', () => {
     stateListeners.isUserProfileLoading({
       isUserProfileLoading: true,
     });
+    stateListeners.isUserProfileLoading({
+      isUserProfileLoading: false,
+    });
     stateListeners.isFolderInfoLoading({
       isFolderInfoLoading: true,
+    });
+    stateListeners.isFolderInfoLoading({
+      isFolderInfoLoading: false,
     });
     stateListeners.folderContent({});
     stateListeners.folderContent(folderContentState);

@@ -3,6 +3,7 @@ import {jest} from '@jest/globals';
 import {UserData} from '../../../src/user-data';
 import {clearRegistry, registry} from '../../../src/registry';
 import {ApiService} from '../../../src/server-connection/api-service';
+import {FieldValidationError} from '../../../src/server-connection/field-validation-error';
 
 describe('RegistrationPage', () => {
   let apiService;
@@ -96,6 +97,38 @@ describe('RegistrationPage', () => {
         expect(apiServiceMock).toHaveBeenCalledTimes(1);
         expect(apiServiceMock).toHaveBeenCalledWith(new UserData('email', 'password'));
         expect(document.body.querySelector('[data-td="head-error"] p').textContent).toMatch('Error message');
+        done();
+      });
+    });
+  });
+
+  test('Should set validation errors', function() {
+    return new Promise((done) => {
+      expect.assertions(4);
+
+      const apiServiceMock = jest
+          .spyOn(apiService, 'register')
+          .mockImplementation( async () => {
+            throw new FieldValidationError([
+              {fieldName: 'email', errorText: 'EmailError'},
+              {fieldName: 'password', errorText: 'PasswordError'},
+            ]);
+          });
+
+      new RegistrationPage(document.body);
+
+      document.body.querySelectorAll('[data-td="form-control"] input')[0].value = 'email';
+      document.body.querySelectorAll('[data-td="form-control"] input')[1].value = 'password';
+      document.body.querySelectorAll('[data-td="form-control"] input')[2].value = 'password';
+      document.body.querySelector('[data-td="form-component"]').submit();
+
+      setTimeout(()=>{
+        expect(apiServiceMock).toHaveBeenCalledTimes(1);
+        expect(apiServiceMock).toHaveBeenCalledWith(new UserData('email', 'password'));
+        expect(document.body.querySelectorAll('[data-td="error-message"]')[0].textContent)
+            .toMatch('EmailError');
+        expect(document.body.querySelectorAll('[data-td="error-message"]')[1].textContent)
+            .toMatch('PasswordError');
         done();
       });
     });

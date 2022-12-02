@@ -101,7 +101,7 @@ describe('BreadcrumbWrapper', () => {
   });
 
   test(`Should add state listeners.`, function() {
-    expect.assertions(10);
+    expect.assertions(12);
 
     const wrapper = new BreadcrumbWrapper();
     const breadcrumb = new Breadcrumb(document.body, false, false, []);
@@ -109,6 +109,13 @@ describe('BreadcrumbWrapper', () => {
     const isLoadingMock = jest.spyOn(breadcrumb, 'isLoading', 'set').mockImplementation(()=>{});
     const hasErrorMock = jest.spyOn(breadcrumb, 'hasError', 'set').mockImplementation(()=>{});
     const pathMock = jest.spyOn(breadcrumb, 'path', 'set').mockImplementation(()=>{});
+
+    expect(Object.keys(stateListeners)).toContain('userProfile');
+    expect(Object.keys(stateListeners)).toContain('locationMetadata');
+
+    stateListeners.userProfile({
+      userProfile: null,
+    });
 
     wrapper.wrap(breadcrumb);
     expect(Object.keys(stateListeners)).toContain('isFolderInfoLoading');
@@ -122,6 +129,9 @@ describe('BreadcrumbWrapper', () => {
     stateListeners.isUserProfileLoading?.({
       isUserProfileLoading: true,
     });
+    stateListeners.isUserProfileLoading?.({
+      isUserProfileLoading: false,
+    });
     stateListeners.folderInfo?.({});
     stateListeners.folderInfoError?.({
       folderInfoError: 'error',
@@ -133,6 +143,35 @@ describe('BreadcrumbWrapper', () => {
     expect(hasErrorMock).toHaveBeenCalledTimes(1);
     expect(hasErrorMock).toHaveBeenCalledWith(true);
     expect(pathMock).toHaveBeenCalledTimes(1);
+  });
+
+  test(`Should set breadcrumb path as Home.`, function() {
+    expect.assertions(2);
+
+    const wrapper = new BreadcrumbWrapper();
+    const breadcrumb = new Breadcrumb(document.body, false, false, []);
+
+    const pathMock = jest.spyOn(breadcrumb, 'path', 'set').mockImplementation(()=>{});
+
+    const navigateListenerMock = jest.fn();
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    wrapper.wrap(breadcrumb);
+
+    stateListeners.folderInfo?.({
+      userProfile: {
+        rootFolderId: '123',
+      },
+      folderInfo: {
+        parentId: null,
+        name: 'Folder',
+      },
+    });
+
+    expect(pathMock).toHaveBeenCalledTimes(1);
+    expect(pathMock.mock.calls[0][0]+'').toStrictEqual(
+        [
+          {name: 'Home'}]+'');
   });
 
   test(`Should set breadcrumb path as Home/Folder.`, function() {

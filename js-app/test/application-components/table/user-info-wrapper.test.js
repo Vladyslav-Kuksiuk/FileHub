@@ -9,11 +9,12 @@ import {clearRegistry, registry} from '../../../src/registry';
 describe('UserInfoWrapper', () => {
   let stateListeners = {};
   let dispatchMock;
+  let stateManagementService;
 
   beforeEach(() => {
     clearRegistry();
     const apiService = new ApiService({});
-    const stateManagementService = new StateManagementService({}, {});
+    stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {
       return apiService;
@@ -43,6 +44,22 @@ describe('UserInfoWrapper', () => {
 
     expect(dispatchMock).toHaveBeenCalledTimes(1);
     expect(dispatchMock).toHaveBeenCalledWith(new LoadUserAction());
+  });
+
+  test(`Shouldn't dispatch LoadUserAction`, function() {
+    expect.assertions(1);
+
+    stateListeners = {};
+    jest.spyOn(stateManagementService, 'state', 'get')
+        .mockImplementation(()=>{
+          return {
+            userProfile: {},
+          };
+        });
+
+    new UserInfoWrapper();
+
+    expect(dispatchMock).toHaveBeenCalledTimes(0);
   });
 
   test(`Should add state listeners`, function() {
