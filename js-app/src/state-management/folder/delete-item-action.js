@@ -10,6 +10,7 @@ import {inject} from '../../registry';
 export class DeleteItemAction extends Action {
   #item;
   @inject apiService;
+  @inject stateManagementService;
 
   /**
    * @param {FolderContentItem} item
@@ -22,15 +23,15 @@ export class DeleteItemAction extends Action {
   /**
    * @inheritDoc
    */
-  execute(executor, stateManagementService) {
+  execute(executor) {
     executor(MUTATOR_NAMES.SET_IS_ITEM_DELETING, true);
 
     return this.apiService
         .deleteItem(this.#item)
         .then(() => {
           executor(MUTATOR_NAMES.SET_REMOVING_ITEM, null);
-          stateManagementService.dispatch(
-              new LoadFolderContentAction(stateManagementService.state.folderInfo.id));
+          this.stateManagementService.dispatch(
+              new LoadFolderContentAction(this.stateManagementService.state.folderInfo.id));
         })
         .catch((error) => {
           executor(MUTATOR_NAMES.SET_ITEM_DELETING_ERROR, error.message);

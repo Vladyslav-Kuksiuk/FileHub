@@ -1,20 +1,32 @@
-import {ApplicationContext} from '../../../src/application-components/application-context';
 import {jest} from '@jest/globals';
 import {ModalRemove} from '../../../src/components/modal-remove';
 import {ModalRemoveWrapper} from '../../../src/application-components/table/modal-remove-wrapper';
 import {DeleteItemAction} from '../../../src/state-management/folder/delete-item-action';
 import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
+import {clearRegistry, registry} from '../../../src/registry';
+import {ApiService} from '../../../src/server-connection/api-service';
+import {StateManagementService} from '../../../src/state-management/state-management-service';
 
 describe('ModalRemoveWrapper', () => {
-  let applicationContext;
+  let stateManagementService;
   let stateListeners = {};
   let dispatchMock;
 
   beforeEach(() => {
-    applicationContext = new ApplicationContext();
+    clearRegistry();
+    const apiService = new ApiService({});
+    stateManagementService = new StateManagementService({}, {});
+
+    registry.register('apiService', () => {
+      return apiService;
+    });
+
+    registry.register('stateManagementService', () => {
+      return stateManagementService;
+    });
 
     stateListeners = {};
-    jest.spyOn(applicationContext.stateManagementService, 'addStateListener')
+    jest.spyOn(stateManagementService, 'addStateListener')
         .mockImplementation((field, listener)=>{
           stateListeners[field] = listener;
           return {
@@ -22,14 +34,14 @@ describe('ModalRemoveWrapper', () => {
             listener: listener,
           };
         });
-    dispatchMock = jest.spyOn(applicationContext.stateManagementService, 'dispatch')
+    dispatchMock = jest.spyOn(stateManagementService, 'dispatch')
         .mockImplementation(()=>{});
   });
 
   test(`Should add state listeners and trigger them`, function() {
     expect.assertions(17);
 
-    const wrapper = new ModalRemoveWrapper(applicationContext);
+    const wrapper = new ModalRemoveWrapper();
     const modalRemove = new ModalRemove(document.body, 'name', 'type', null);
 
     const itemTypeMock = jest.spyOn(modalRemove, 'itemType', 'set').mockImplementation(()=>{});
@@ -96,9 +108,9 @@ describe('ModalRemoveWrapper', () => {
   test('Should trigger delete event', ()=>{
     expect.assertions(2);
 
-    const modalWrapper = new ModalRemoveWrapper(applicationContext);
+    const modalWrapper = new ModalRemoveWrapper();
     let onDeleteListener;
-    jest.spyOn(applicationContext.stateManagementService, 'state', 'get')
+    jest.spyOn(stateManagementService, 'state', 'get')
         .mockImplementation(()=>{
           return {
             itemInRemovingState: {},
@@ -115,13 +127,13 @@ describe('ModalRemoveWrapper', () => {
     onDeleteListener();
 
     expect(dispatchMock).toHaveBeenCalledTimes(1);
-    expect(dispatchMock).toHaveBeenCalledWith(new DeleteItemAction({}, applicationContext.apiService));
+    expect(dispatchMock).toHaveBeenCalledWith(new DeleteItemAction({}));
   });
 
   test('Should trigger cancel event', ()=>{
     expect.assertions(2);
 
-    const modalWrapper = new ModalRemoveWrapper(applicationContext);
+    const modalWrapper = new ModalRemoveWrapper();
     let onCancelListener;
 
     modalWrapper.wrap({
@@ -139,14 +151,14 @@ describe('ModalRemoveWrapper', () => {
 
   test('Should remove state listeners', function() {
     expect.assertions(3);
-    const modalWrapper = new ModalRemoveWrapper(applicationContext);
+    const modalWrapper = new ModalRemoveWrapper();
     modalWrapper.wrap({
       onCancel: ()=>{},
       onDelete: ()=>{},
     });
 
     const removeStateListenersMock = jest.spyOn(
-        applicationContext.stateManagementService,
+        stateManagementService,
         'removeStateListener')
         .mockImplementation(()=>{});
 

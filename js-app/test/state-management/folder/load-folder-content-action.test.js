@@ -1,25 +1,31 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-components/application-context';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
+import {ApiService} from '../../../src/server-connection/api-service.js';
+import {clearRegistry, registry} from '../../../src/registry.js';
 
 describe('LoadFolderContentAction', () => {
-  let applicationContext;
+  let apiService;
 
   beforeEach(()=>{
-    applicationContext = new ApplicationContext();
+    clearRegistry();
+    apiService = new ApiService({});
+
+    registry.register('apiService', () => {
+      return apiService;
+    });
   });
 
   test(`Should return expected successfully sequence of mutator calls`, function() {
     expect.assertions(5);
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'loadFolderContent')
+        .spyOn(apiService, 'loadFolderContent')
         .mockImplementation(async ()=>{
           return {};
         });
 
-    const action = new LoadFolderContentAction('id', applicationContext.apiService);
+    const action = new LoadFolderContentAction('id');
 
     const executor = jest.fn(()=>{});
 
@@ -38,12 +44,12 @@ describe('LoadFolderContentAction', () => {
     const error = 'testError';
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'loadFolderContent')
+        .spyOn(apiService, 'loadFolderContent')
         .mockImplementation(async ()=>{
           throw new Error(error);
         });
 
-    const action = new LoadFolderContentAction('id', applicationContext.apiService);
+    const action = new LoadFolderContentAction('id');
 
     const executor = jest.fn(()=>{});
 
