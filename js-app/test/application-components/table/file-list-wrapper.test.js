@@ -2,7 +2,6 @@ import {FileListWrapper} from '../../../src/application-components/table/file-li
 import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
-import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
 import {registry, clearRegistry} from '../../../src/registry';
 
 describe('FileListWrapper', () => {
@@ -118,51 +117,5 @@ describe('FileListWrapper', () => {
     expect(hasErrorMock).toHaveBeenCalledTimes(1);
     expect(hasErrorMock).toHaveBeenCalledWith(true);
     expect(contentMock).toHaveBeenCalledTimes(2);
-  });
-
-  test('Should trigger onNavigateToFolder listener', function() {
-    expect.assertions(5);
-
-    const fileListWrapper = new FileListWrapper();
-    const folderContent = [{
-      type: 'folder',
-      name: 'myFolder',
-      id: '123',
-    },
-    {
-      type: 'file',
-      name: 'file',
-      id: '123',
-    },
-    ];
-
-    let folders;
-    let files;
-    const setContentMock = jest.fn((givenFolders, givenFiles)=>{
-      folders = givenFolders;
-      files = givenFiles;
-    });
-
-    const navigateListenerMock = jest.fn();
-    fileListWrapper.wrap({
-      setContent: setContentMock,
-    });
-    fileListWrapper.onNavigateToFolder(navigateListenerMock);
-
-    stateListeners['folderContent']({
-      folderContent: folderContent,
-    });
-
-    folders[0].linkListener();
-    folders[0].deleteListener();
-    files[0].deleteListener();
-
-
-    expect(navigateListenerMock).toHaveBeenCalledTimes(1);
-    expect(navigateListenerMock)
-        .toHaveBeenCalledWith(folderContent[0].id);
-    expect(dispatchMock).toHaveBeenCalledTimes(2);
-    expect(dispatchMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[0]));
-    expect(dispatchMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[1]));
   });
 });
