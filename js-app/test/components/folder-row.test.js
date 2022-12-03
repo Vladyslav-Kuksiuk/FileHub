@@ -21,7 +21,7 @@ describe('FolderRow', () => {
     new FolderRow(document.body, name);
 
     expect(document.body.innerHTML).toBe(
-        `<tr>
+        `<tr class="folder-row">
         <td class="cell-arrow">
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
@@ -35,9 +35,10 @@ describe('FolderRow', () => {
         <td class="cell-size">—</td>
         <td class="cell-buttons">
             <div class="data-buttons-container">
-                <button data-td="upload-button" class="icon-button" title="Upload file.">
-                    <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                </button>
+                
+        <button data-td="upload-button" class="icon-button" title="Upload file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+        </button>
                 <button data-td="remove-button" class="icon-button" title="Delete">
                     <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                 </button>
