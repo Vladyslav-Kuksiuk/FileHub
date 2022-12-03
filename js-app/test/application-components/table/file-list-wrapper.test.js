@@ -1,36 +1,45 @@
 import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper';
 import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
+import {StateManagementService} from '../../../src/state-management/state-management-service';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
-import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
 import {registry, clearRegistry} from '../../../src/registry';
+import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
 
 describe('FileListWrapper', () => {
+  let stateManagementService;
   let stateListeners = {};
   let dispatchMock;
   let addStateListenerMock;
-  let removeStateListenerMock;
 
   beforeEach(() => {
+    document.body.innerHTML = '';
     clearRegistry();
     stateListeners = {};
-    addStateListenerMock = jest.fn((field, listener)=>{
-      stateListeners[field] = listener;
-      return {
-        field: field,
-        listener: listener,
-      };
-    });
+    stateManagementService = new StateManagementService({}, {});
 
-    dispatchMock = jest.fn();
+    addStateListenerMock = jest.spyOn(stateManagementService, 'addStateListener')
+        .mockImplementation((field, listener)=>{
+          stateListeners[field] = listener;
+          return {
+            field: field,
+            listener: listener,
+          };
+        });
 
-    removeStateListenerMock = jest.fn();
+    dispatchMock = jest.spyOn(stateManagementService, 'dispatch')
+        .mockImplementation(()=>{});
+
+    jest.spyOn(stateManagementService, 'removeStateListener')
+        .mockImplementation(()=>{});
 
     registry.register('stateManagementService', ()=>{
+      return stateManagementService;
+    });
+
+    registry.register('fileTypeIconFactory', ()=>{
       return {
-        addStateListener: addStateListenerMock,
-        dispatch: dispatchMock,
-        removeStateListener: removeStateListenerMock,
+        getIcon: ()=>{},
       };
     });
   });
@@ -45,6 +54,10 @@ describe('FileListWrapper', () => {
 
   test('Should dispatch LoadFolderContentAction', function() {
     expect.assertions(2);
+    registry.register('apiService', ()=> {
+      return {};
+    });
+
     new FileListWrapper();
 
     stateListeners['folderInfo']({
@@ -60,6 +73,12 @@ describe('FileListWrapper', () => {
 
   test(`Should add state listeners`, function() {
     expect.assertions(11);
+
+    registry.register('fileTypeIconFactory', ()=>{
+      return {
+        getIcon: ()=>{},
+      };
+    });
 
     const wrapper = new FileListWrapper();
     const folderContent = new FileList(document.body, false, false, [], []);
@@ -87,13 +106,22 @@ describe('FileListWrapper', () => {
     stateListeners.isUserProfileLoading({
       isUserProfileLoading: true,
     });
+    stateListeners.isUserProfileLoading({
+      isUserProfileLoading: false,
+    });
     stateListeners.isFolderInfoLoading({
       isFolderInfoLoading: true,
+    });
+    stateListeners.isFolderInfoLoading({
+      isFolderInfoLoading: false,
     });
     stateListeners.folderContent({});
     stateListeners.folderContent(folderContentState);
     stateListeners.folderContentError({
       folderContentError: 'error',
+    });
+    stateListeners.folderInfo({
+      folderInfo: null,
     });
 
     expect(isLoadingMock).toHaveBeenCalledTimes(3);
@@ -104,49 +132,74 @@ describe('FileListWrapper', () => {
     expect(contentMock).toHaveBeenCalledTimes(2);
   });
 
-  test('Should trigger onNavigateToFolder listener', function() {
-    expect.assertions(5);
+  test('Should render folder row and trigger events', () => {
+    expect.assertions(3);
 
-    const fileListWrapper = new FileListWrapper();
-    const folderContent = [{
-      type: 'folder',
-      name: 'myFolder',
-      id: '123',
-    },
-    {
-      type: 'file',
-      name: 'file',
-      id: '123',
-    },
-    ];
-
-    let folders;
-    let files;
-    const setContentMock = jest.fn((givenFolders, givenFiles)=>{
-      folders = givenFolders;
-      files = givenFiles;
+    const wrapper = new FileListWrapper();
+    let folderCreator;
+    const setContentMock = jest.fn((folderCreators) => {
+      folderCreator = folderCreators[0];
     });
 
     const navigateListenerMock = jest.fn();
-    fileListWrapper.wrap({
+
+    wrapper.wrap({
       setContent: setContentMock,
     });
-    fileListWrapper.onNavigateToFolder(navigateListenerMock);
+    wrapper.onNavigateToFolder(navigateListenerMock);
 
-    stateListeners['folderContent']({
-      folderContent: folderContent,
+    const folder = {
+      type: 'folder',
+      name: 'name',
+      id: 'id',
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        folder,
+      ],
     });
 
-    folders[0].linkListener();
-    folders[0].deleteListener();
-    files[0].deleteListener();
+    folderCreator(document.body);
 
+    document.body.querySelector('[data-td="remove-button"]').click();
+    document.body.querySelector('[data-td="folder-link-slot"] a').click();
 
+    expect(dispatchMock).toHaveBeenCalledTimes(1);
+    expect(dispatchMock).toHaveBeenCalledWith( new DefineRemovingItemAction(folder));
     expect(navigateListenerMock).toHaveBeenCalledTimes(1);
-    expect(navigateListenerMock)
-        .toHaveBeenCalledWith(folderContent[0].id);
-    expect(dispatchMock).toHaveBeenCalledTimes(2);
-    expect(dispatchMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[0]));
-    expect(dispatchMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[1]));
+  });
+
+  test('Should render file row and trigger events', () => {
+    expect.assertions(2);
+
+    const wrapper = new FileListWrapper();
+    let fileCreator;
+    const setContentMock = jest.fn((folderCreators, fileCreators) => {
+      fileCreator = fileCreators[0];
+    });
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+
+    const file = {
+      type: 'mp3',
+      name: 'name',
+      id: 'id',
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        file,
+      ],
+    });
+
+    fileCreator(document.body);
+
+    document.body.querySelector('[data-td="remove-button"]').click();
+
+    expect(dispatchMock).toHaveBeenCalledTimes(1);
+    expect(dispatchMock).toHaveBeenCalledWith( new DefineRemovingItemAction(file));
   });
 });

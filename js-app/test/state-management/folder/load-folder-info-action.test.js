@@ -1,14 +1,20 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-components/application-context';
 import {FolderInfo} from '../../../src/state-management/folder/folder-info';
+import {ApiService} from '../../../src/server-connection/api-service.js';
+import {clearRegistry, registry} from '../../../src/registry.js';
 
 describe('LoadFolderInfoAction', () => {
-  let applicationContext;
+  let apiService;
 
   beforeEach(()=>{
-    applicationContext = new ApplicationContext();
+    clearRegistry();
+    apiService = new ApiService({});
+
+    registry.register('apiService', () => {
+      return apiService;
+    });
   });
 
   test(`Should return expected successfully sequence of mutator calls`, function() {
@@ -22,12 +28,12 @@ describe('LoadFolderInfoAction', () => {
     );
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'loadFolderInfo')
+        .spyOn(apiService, 'loadFolderInfo')
         .mockImplementation(async ()=>{
           return folderInfo;
         });
 
-    const action = new LoadFolderInfoAction(folderInfo.id, applicationContext.apiService);
+    const action = new LoadFolderInfoAction(folderInfo.id);
 
     const executor = jest.fn(()=>{});
 
@@ -46,12 +52,12 @@ describe('LoadFolderInfoAction', () => {
     const error = 'testError';
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'loadFolderInfo')
+        .spyOn(apiService, 'loadFolderInfo')
         .mockImplementation(async ()=>{
           throw new Error(error);
         });
 
-    const action = new LoadFolderInfoAction('id', applicationContext.apiService);
+    const action = new LoadFolderInfoAction('id');
 
     const executor = jest.fn(()=>{});
 
