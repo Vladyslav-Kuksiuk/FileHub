@@ -3,15 +3,11 @@ import {clearRegistry, registry} from '../../src/registry';
 import {jest} from '@jest/globals';
 
 describe('FileRow', () => {
-  let getIconMock;
-
   beforeEach(()=>{
     clearRegistry();
-    getIconMock = jest.fn();
-
     registry.register('fileTypeIconFactory', ()=>{
       return {
-        getIcon: getIconMock,
+        getIcon: ()=>{},
       };
     });
     document.body.innerHTML = '';
