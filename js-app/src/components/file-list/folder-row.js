@@ -105,8 +105,7 @@ export class FolderRow extends Component {
       uploadingButton = `
       <button ${this.markElement(UPLOAD_BUTTON)} disabled class="icon-button" title="File uploading...">
          <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
-      </button>
-      `;
+      </button>`;
     }
 
     if (this.#uploadingError) {
