@@ -20,20 +20,20 @@ const convertType = (mimetype) => {
 };
 
 const convertSize = (size) => {
-  if (size < 999) {
+  if (size < 1023) {
     return size+' B';
   }
 
-  if (size < 999999) {
-    return (size/1000).toFixed(1) +' KB';
+  if (size < 1048575) {
+    return (size/1024).toFixed(1) +' KB';
   }
 
-  if (size < 999999999) {
-    return (size/1000000).toFixed(1) +' MB';
+  if (size < 1073741823) {
+    return (size/1048576).toFixed(1) +' MB';
   }
 
-  if (size < 999999999999) {
-    return (size/1000000000).toFixed(1) +' GB';
+  if (size < 1099511627776) {
+    return (size/1073741824).toFixed(1) +' GB';
   }
 };
 
