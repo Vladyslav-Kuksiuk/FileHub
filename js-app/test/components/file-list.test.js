@@ -1,68 +1,30 @@
 import {FileList} from '../../src/components/file-list';
 import {jest} from '@jest/globals';
+import {clearRegistry} from '../../src/registry';
+import {registry} from '../../src/registry';
 
 describe('FileList', () => {
   beforeEach(() => {
+    clearRegistry();
     document.body.innerHTML = '';
+    registry.register('fileTypeIconFactory', ()=>{
+      return {
+        getIcon: ()=>{},
+      };
+    });
   });
 
-  test(`Should render FolderContent component with 2 folders and 2 files`, function() {
-    expect.assertions(13);
+  test(`Should  call folderCreators and fileCreators`, function() {
+    expect.assertions(2);
 
-    const folders = [
-      {
-        name: 'folder1',
-        linkListener: jest.fn(),
-      },
-      {
-        name: 'folder2',
-        linkListener: jest.fn(),
-      },
-    ];
+    const folderCreator = jest.fn();
+    const fileCreator = jest.fn();
 
-    const files = [
-      {
-        name: 'file1',
-        type: 'type1',
-        size: 'size1',
-      },
-      {
-        name: 'file2',
-        type: 'type2',
-        size: 'size2',
-      },
-    ];
-    new FileList(document.body, false, false, folders, files);
+    const fileList = new FileList(document.body, false, false);
+    fileList.setContent([folderCreator], [fileCreator]);
 
-    expect(document.body.querySelectorAll('tr').length).toBe(4);
-
-    expect(document.body.querySelectorAll('tr')[0].querySelectorAll('td')[2].textContent)
-        .toBe(folders[0].name);
-    expect(document.body.querySelectorAll('tr')[0].querySelectorAll('td')[3].textContent)
-        .toBe('Folder');
-    expect(document.body.querySelectorAll('tr')[0].querySelectorAll('td')[4].textContent)
-        .toBe('—');
-
-    expect(document.body.querySelectorAll('tr')[1].querySelectorAll('td')[2].textContent)
-        .toBe(folders[1].name);
-    expect(document.body.querySelectorAll('tr')[1].querySelectorAll('td')[3].textContent)
-        .toBe('Folder');
-    expect(document.body.querySelectorAll('tr')[1].querySelectorAll('td')[4].textContent)
-        .toBe('—');
-
-    expect(document.body.querySelectorAll('tr')[2].querySelectorAll('td')[2].textContent)
-        .toBe(files[0].name);
-    expect(document.body.querySelectorAll('tr')[2].querySelectorAll('td')[3].textContent)
-        .toBe(files[0].type);
-    expect(document.body.querySelectorAll('tr')[2].querySelectorAll('td')[4].textContent)
-        .toBe(files[0].size);
-
-    expect(document.body.querySelectorAll('tr')[3].querySelectorAll('td')[2].textContent)
-        .toBe(files[1].name);
-    expect(document.body.querySelectorAll('tr')[3].querySelectorAll('td')[3].textContent)
-        .toBe(files[1].type);
-    expect(document.body.querySelectorAll('tr')[3].querySelectorAll('td')[4].textContent)
-        .toBe(files[1].size);
+    expect(folderCreator).toHaveBeenCalledTimes(1);
+    expect(fileCreator).toHaveBeenCalledTimes(1);
   });
 
   test(`Should render FolderContent component with loading`, function() {
@@ -86,8 +48,8 @@ describe('FileList', () => {
     expect(document.body.querySelectorAll('[data-td="folder-content-empty"]').length).toBe(1);
   });
 
-  test('Should change states empty->loading->error->folder', function() {
-    expect.assertions(4);
+  test('Should change states empty->loading->error', function() {
+    expect.assertions(3);
     const folderContent = new FileList(document.body, false, false, [], []);
     expect(document.body.querySelectorAll('[data-td="folder-content-empty"]').length).toBe(1);
 
@@ -97,9 +59,5 @@ describe('FileList', () => {
     folderContent.isLoading = false;
     folderContent.hasError = true;
     expect(document.body.querySelectorAll('[data-td="folder-content-error"]').length).toBe(1);
-
-    folderContent.hasError = false;
-    folderContent.setContent([{name: 'hello'}], []);
-    expect(document.body.querySelectorAll('tr').length).toBe(1);
   } );
 });

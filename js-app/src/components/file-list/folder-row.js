@@ -56,12 +56,10 @@ export class FolderRow extends Component {
     });
 
     const folderLinkSlot = this.getSlot(FOLDER_LINK_SLOT);
-    if (folderLinkSlot) {
-      const link = new Link(folderLinkSlot, this.#name);
-      link.onClick(()=>{
-        this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
-      });
-    }
+    const link = new Link(folderLinkSlot, this.#name);
+    link.onClick(()=>{
+      this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
+    });
 
     this.rootElement.querySelector(`[data-td="${NAME_CELL}"]`)?.addEventListener('dblclick', ()=>{
       if (!this.#isRenameFormOpen) {
@@ -208,8 +206,7 @@ export class FolderRow extends Component {
       uploadingButton = `
       <button ${this.markElement(UPLOAD_BUTTON)} disabled class="icon-button" title="File uploading...">
          <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
-      </button>
-      `;
+      </button>`;
     }
 
     let nameCellContent = this.addSlot(FOLDER_LINK_SLOT);

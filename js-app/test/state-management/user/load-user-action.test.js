@@ -1,14 +1,20 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadUserAction} from '../../../src/state-management/user/load-user-action';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-components/application-context';
 import {UserProfile} from '../../../src/state-management/user/user-profile';
+import {clearRegistry, registry} from '../../../src/registry.js';
+import {ApiService} from '../../../src/server-connection/api-service.js';
 
 describe('LoadUserAction', () => {
-  let applicationContext;
+  let apiService;
 
   beforeEach(()=>{
-    applicationContext = new ApplicationContext();
+    clearRegistry();
+    apiService = new ApiService({});
+
+    registry.register('apiService', () => {
+      return apiService;
+    });
   });
 
   test(`Should return expected sequence of successfully mutator calls`, function() {
@@ -20,12 +26,12 @@ describe('LoadUserAction', () => {
     );
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'loadUser')
+        .spyOn(apiService, 'loadUser')
         .mockImplementation(async ()=>{
           return userProfile;
         });
 
-    const action = new LoadUserAction(applicationContext.apiService);
+    const action = new LoadUserAction();
 
     const executor = jest.fn(()=>{});
 
@@ -44,12 +50,12 @@ describe('LoadUserAction', () => {
     const error = 'testError';
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'loadUser')
+        .spyOn(apiService, 'loadUser')
         .mockImplementation(async ()=>{
           throw new Error(error);
         });
 
-    const action = new LoadUserAction(applicationContext.apiService);
+    const action = new LoadUserAction();
 
     const executor = jest.fn(()=>{});
 

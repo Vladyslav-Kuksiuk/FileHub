@@ -247,7 +247,8 @@ export class ApiService {
 
     return this.#requestService.postFormData(
         'api/folders/'+ folderId +'/content',
-        formData)
+        formData,
+        this.#userToken)
         .catch(()=>{
           throw new ApiServiceError();
         })
