@@ -276,4 +276,56 @@ describe('Mutators', () => {
 
     expect(newState).toStrictEqual(expectedState);
   });
+
+  test(`Should return new state with added foldersToUpload`, function() {
+    expect.assertions(1);
+
+    const folderId = '123';
+
+    const expectedState = new State({
+      foldersToUpload: [folderId],
+      filesUploadingErrorInfo: {
+        [folderId]: undefined,
+      },
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.ADD_FOLDER_TO_UPLOAD](state, folderId);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with removed foldersToUpload`, function() {
+    expect.assertions(1);
+
+    const folderId = '123';
+
+    state = new State({
+      foldersToUpload: [folderId],
+    });
+
+    const expectedState = new State({
+      foldersToUpload: [],
+    });
+
+    const newState = MUTATORS[MUTATOR_NAMES.REMOVE_FOLDER_TO_UPLOAD](state, folderId);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with added filesUploadingErrorInfo`, function() {
+    expect.assertions(1);
+
+    const errorInfo = {
+      folderId: '123',
+      error: 'error',
+    };
+
+    const expectedState = new State({
+      filesUploadingErrorInfo: {
+        [errorInfo.folderId]: errorInfo.error,
+      },
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.ADD_FILES_UPLOADING_ERROR_INFO](state, errorInfo);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
 });
