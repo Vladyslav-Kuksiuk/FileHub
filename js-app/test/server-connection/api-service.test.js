@@ -554,4 +554,54 @@ describe('ApiService', () => {
       await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, undefined);
     });
   });
+
+  describe('uploadFiles', () => {
+    test(`Should successfully upload files`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const folderId = 'folderId';
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'postFormData')
+          .mockImplementation(async () => {
+            return new Response(200);
+          });
+
+      const formData = new FormData();
+      formData.append('files_0', {});
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.uploadFiles(folderId, [{}])).resolves.toBeUndefined();
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith('api/folders/'+folderId+'/content', formData, undefined);
+    });
+
+    test(`Should return error after upload files`, async function() {
+      expect.assertions(1);
+      const requestService = new RequestService();
+
+      jest.spyOn(requestService, 'postFormData')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.uploadFiles('folderId', [])).rejects.toEqual(new ApiServiceError());
+    });
+
+    test(`Should return error after upload files fetch error`, async function() {
+      expect.assertions(1);
+      const requestService = new RequestService();
+
+      jest.spyOn(requestService, 'postFormData')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.uploadFiles('folderId', [])).rejects.toEqual(new ApiServiceError());
+    });
+  });
 });

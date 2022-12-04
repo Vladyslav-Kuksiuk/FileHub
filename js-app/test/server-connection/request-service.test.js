@@ -84,6 +84,86 @@ describe('RequestService', () => {
     return expect(responsePromise).rejects.toThrow(Error);
   });
 
+  test(`Should correctly send POST request with FormData and handle response with json body`, function() {
+    expect.assertions(4);
+    const url = 'MyUrl';
+    const requestBody = new FormData();
+    const responseBody = {answer: 'answer'};
+
+    global.fetch = jest.fn(async () => {
+      return {
+        status: 200,
+        json: async () => {
+          return responseBody;
+        },
+      };
+    });
+
+    const requestService = new RequestService();
+    const token = 'myToken';
+    const responsePromise = requestService.postFormData(url, requestBody, token);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: requestBody,
+    });
+
+    return responsePromise.then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.body).toBe(responseBody);
+    });
+  });
+
+  test(`Should correctly send POST request with FormData and handle response without json body`, function() {
+    expect.assertions(4);
+    const url = 'MyUrl';
+    const requestBody = new FormData();
+
+    global.fetch = jest.fn(async () => {
+      return {
+        status: 200,
+        json: async () => {
+          throw new Error();
+        },
+      };
+    });
+
+    const requestService = new RequestService();
+    const token = 'myToken';
+    const responsePromise = requestService.postFormData(url, requestBody, token);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: requestBody,
+    });
+
+    return responsePromise.then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual({});
+    });
+  });
+
+  test(`Should fail POST request with FormData and handle error`, function() {
+    expect.assertions(1);
+
+    global.fetch = jest.fn(async () => {
+      throw new Error();
+    });
+
+    const requestService = new RequestService();
+    const responsePromise = requestService.postFormData('myUrl', {}, 'token');
+
+    return expect(responsePromise).rejects.toThrow(Error);
+  });
+
   test(`Should correctly send GET request and handle response with json body`, function() {
     expect.assertions(4);
     const url = 'MyUrl';
