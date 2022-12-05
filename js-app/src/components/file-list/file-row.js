@@ -72,24 +72,18 @@ export class FileRow extends Component {
     renameInput?.addEventListener('change', (event)=>{
       event.preventDefault();
       isChaneEventDispatched = true;
-      if (renameInput.value === this.#name) {
-        this.isRenameFormOpen = false;
-      } else {
-        this.#temporaryName = renameInput.value;
-        this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
-      }
+      this.#temporaryName = renameInput.value;
+      this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
     });
     this.#blurListener = ()=>{
-      if (!isChaneEventDispatched && !this.#isRenaming) {
+      if (!isChaneEventDispatched) {
         this.isRenameFormOpen = false;
       }
     };
     renameInput?.addEventListener('blur', this.#blurListener);
     renameInput?.parentElement?.addEventListener('submit', (event) => {
       event.preventDefault();
-      if (!isChaneEventDispatched) {
-        renameInput.blur();
-      }
+      renameInput.blur();
     });
   }
 
