@@ -56,10 +56,12 @@ export class FolderRow extends Component {
     });
 
     const folderLinkSlot = this.getSlot(FOLDER_LINK_SLOT);
-    const link = new Link(folderLinkSlot, this.#name);
-    link.onClick(()=>{
-      this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
-    });
+    if (folderLinkSlot) {
+      const link = new Link(folderLinkSlot, this.#name);
+      link.onClick(()=>{
+        this.#eventTarget.dispatchEvent(new Event(FOLDER_LINK_CLICK_EVENT));
+      });
+    }
 
     this.rootElement.querySelector(`[data-td="${NAME_CELL}"]`)?.addEventListener('dblclick', ()=>{
       if (!this.#isRenameFormOpen) {

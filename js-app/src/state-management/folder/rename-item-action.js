@@ -13,6 +13,8 @@ export class RenameItemAction extends Action {
   #newName;
   @inject apiService;
 
+  @inject stateManagementService;
+
   /**
    * @param {FolderContentItem} item
    */
@@ -24,16 +26,15 @@ export class RenameItemAction extends Action {
   /**
    * @inheritDoc
    */
-  execute(executor, stateManagementService) {
+  execute(executor) {
     executor(MUTATOR_NAMES.SET_RENAMING_ITEM, this.#item);
-    executor(MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
 
     return this.apiService
         .renameItem(this.#item)
         .then(() => {
           executor(MUTATOR_NAMES.SET_RENAMING_ITEM, null);
-          if (this.#item.parentId === stateManagementService.state.folderInfo.id) {
-            stateManagementService.dispatch(new LoadFolderContentAction(this.#item.parentId));
+          if (this.#item.parentId === this.stateManagementService.state.folderInfo.id) {
+            this.stateManagementService.dispatch(new LoadFolderContentAction(this.#item.parentId));
           }
         })
         .catch((error) => {
@@ -43,9 +44,6 @@ export class RenameItemAction extends Action {
           } else {
             executor(MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS, [error.message]);
           }
-        })
-        .finally(() => {
-          executor(MUTATOR_NAMES.SET_IS_ITEM_RENAMING, false);
         });
   }
 }

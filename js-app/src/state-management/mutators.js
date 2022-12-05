@@ -139,26 +139,23 @@ export const MUTATORS = {
     });
   },
 
-  [MUTATOR_NAMES.SET_RENAMING_ITEM]: (state, itemId) => {
-    return new State({...state,
-      renamingItem: itemId,
-      itemRenamingErrors: [],
-    });
-  },
-  [MUTATOR_NAMES.SET_IS_ITEM_RENAMING]: (state, isRenaming) => {
-    if (isRenaming) {
+  [MUTATOR_NAMES.SET_RENAMING_ITEM]: (state, item) => {
+    if (item) {
       return new State({...state,
-        isItemRenaming: isRenaming,
+        isItemRenaming: true,
+        renamingItem: item,
         itemRenamingErrors: [],
       });
     }
 
     return new State({...state,
-      isItemRenaming: isRenaming,
+      renamingItem: item,
+      itemRenamingErrors: [],
     });
   },
   [MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS]: (state, errors) => {
     return new State({...state,
+      isItemRenaming: false,
       itemRenamingErrors: errors,
     });
   },
