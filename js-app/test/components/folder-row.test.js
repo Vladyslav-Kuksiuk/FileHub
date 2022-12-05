@@ -28,7 +28,7 @@ describe('FolderRow', () => {
         <td class="cell-icon">
             <span aria-hidden="true" class="glyphicon undefined"></span>
         </td>\n`+
-        '        <td class="cell-name"><slot data-td="folder-link-slot"><a class="form-link"' +
+        '        <td class="cell-name" data-td="name-cell"><slot data-td="folder-link-slot"><a class="form-link"' +
         ' data-td="link-component" href="#" title="myName">myName</a></slot></td>' +
         `
         <td class="cell-type">Folder</td>
@@ -62,7 +62,7 @@ describe('FolderRow', () => {
         <td class="cell-icon">
             <span aria-hidden="true" class="glyphicon undefined"></span>
         </td>\n`+
-        '        <td class="cell-name"><slot data-td="folder-link-slot"><a class="form-link"' +
+        '        <td class="cell-name" data-td="name-cell"><slot data-td="folder-link-slot"><a class="form-link"' +
         ' data-td="link-component" href="#" title="myName">myName</a></slot></td>' +
         `
         <td class="cell-type">Folder</td>
@@ -96,7 +96,7 @@ describe('FolderRow', () => {
         <td class="cell-icon">
             <span aria-hidden="true" class="glyphicon undefined"></span>
         </td>\n`+
-        '        <td class="cell-name"><slot data-td="folder-link-slot"><a class="form-link"' +
+        '        <td class="cell-name" data-td="name-cell"><slot data-td="folder-link-slot"><a class="form-link"' +
         ' data-td="link-component" href="#" title="myName">myName</a></slot></td>' +
         `
         <td class="cell-type">Folder</td>

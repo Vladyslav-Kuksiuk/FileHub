@@ -27,7 +27,7 @@ describe('FileRow', () => {
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon undefined"></span>
        </td>
-       <td class="cell-name">${name}</td>
+       <td class="cell-name" data-td="name-cell">${name}</td>
        <td class="cell-type">${type}</td>
        <td class="cell-size">${size}</td>
        <td class="cell-buttons">

@@ -364,13 +364,14 @@ describe('ApiService', () => {
       expect.assertions(3);
       const requestService = new RequestService();
 
+      const folderId = 'folderId';
       const folderContent = [new FolderContentItem(
           'type',
           'id',
           'name',
           'size',
+          'folderId',
       )];
-      const folderId = 'folderId';
 
       const requestServiceMock = jest
           .spyOn(requestService, 'get')
