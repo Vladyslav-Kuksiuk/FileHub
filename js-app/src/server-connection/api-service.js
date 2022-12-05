@@ -179,25 +179,9 @@ export class ApiService {
    * @param {FolderContentItem} item
    */
   async renameItem(item) {
-    if (item.type === 'folder') {
-      return this.#requestService.put(FOLDER_PATH+item.id,
-          {
-            name: item.name,
-          },
-          this.#userToken)
-          .catch(() => {
-            throw new ApiServiceError();
-          })
-          .then((response) => {
-            if (response.status === 422) {
-              throw new FieldValidationError(response.body.errors);
-            }
-            if (response.status !== 200) {
-              throw new ApiServiceError();
-            }
-          });
-    }
-    return this.#requestService.put(FILE_PATH+item.id,
+    const path = item.type === 'folder' ? FOLDER_PATH : FILE_PATH;
+
+    return this.#requestService.put(path+item.id,
         {
           name: item.name,
         },

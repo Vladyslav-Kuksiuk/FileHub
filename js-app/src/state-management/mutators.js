@@ -142,14 +142,20 @@ export const MUTATORS = {
   [MUTATOR_NAMES.SET_RENAMING_ITEM]: (state, item) => {
     if (item) {
       return new State({...state,
-        isItemRenaming: true,
         renamingItem: item,
         itemRenamingErrors: [],
       });
     }
 
     return new State({...state,
+      isItemRenaming: false,
       renamingItem: item,
+      itemRenamingErrors: [],
+    });
+  },
+  [MUTATOR_NAMES.SET_IS_ITEM_RENAMING]: (state, isRenaming) => {
+    return new State({...state,
+      isItemRenaming: isRenaming,
       itemRenamingErrors: [],
     });
   },

@@ -27,6 +27,7 @@ export class RenameItemAction extends Action {
    * @inheritDoc
    */
   execute(executor) {
+    executor(MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
     executor(MUTATOR_NAMES.SET_RENAMING_ITEM, this.#item);
 
     return this.apiService

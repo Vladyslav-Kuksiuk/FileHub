@@ -350,7 +350,6 @@ describe('Mutators', () => {
     expect.assertions(1);
 
     const expectedState = new State({
-      isItemRenaming: true,
       renamingItem: {},
       itemRenamingErrors: [],
     });
@@ -363,6 +362,7 @@ describe('Mutators', () => {
     expect.assertions(1);
 
     const expectedState = new State({
+      isItemRenaming: false,
       renamingItem: null,
       itemRenamingErrors: [],
     });
@@ -379,6 +379,17 @@ describe('Mutators', () => {
       itemRenamingErrors: {},
     });
     const newState = MUTATORS[MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS](state, {});
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed isItemRenaming`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      isItemRenaming: true,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_ITEM_RENAMING](state, true);
 
     expect(newState).toStrictEqual(expectedState);
   });

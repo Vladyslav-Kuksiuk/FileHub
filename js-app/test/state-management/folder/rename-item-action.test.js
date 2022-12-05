@@ -5,7 +5,7 @@ import {LoadFolderContentAction} from '../../../src/state-management/folder/load
 import {registry, clearRegistry} from '../../../src/registry';
 import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
-import {FieldValidationError} from '../../../src/server-connection/field-validation-error.js';
+import {FieldValidationError} from '../../../src/server-connection/field-validation-error';
 
 describe('RenameItemAction', () => {
   let apiService;
@@ -28,7 +28,7 @@ describe('RenameItemAction', () => {
 
   test(`Should return expected successfully sequence of mutator calls with LoadFolderContentAction dispatching`,
       function() {
-        expect.assertions(6);
+        expect.assertions(7);
 
         const folderId = '123';
 
@@ -57,11 +57,12 @@ describe('RenameItemAction', () => {
 
         return action.execute(executor).then(()=>{
           expect(apiServiceMock).toHaveBeenCalledTimes(1);
-          expect(executor).toHaveBeenCalledTimes(2);
-          expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_RENAMING_ITEM, {
+          expect(executor).toHaveBeenCalledTimes(3);
+          expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
+          expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_RENAMING_ITEM, {
             parentId: folderId,
           });
-          expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_RENAMING_ITEM, null);
+          expect(executor).toHaveBeenNthCalledWith(3, MUTATOR_NAMES.SET_RENAMING_ITEM, null);
           expect(dispatchActionMock).toHaveBeenCalledTimes(1);
           expect(dispatchActionMock).toHaveBeenCalledWith(
               new LoadFolderContentAction(folderId));
@@ -70,7 +71,7 @@ describe('RenameItemAction', () => {
 
   test(`Should return expected successfully sequence of mutator calls without LoadFolderContentAction dispatching`,
       function() {
-        expect.assertions(5);
+        expect.assertions(6);
 
         const folderId = '123';
 
@@ -99,17 +100,18 @@ describe('RenameItemAction', () => {
 
         return action.execute(executor).then(()=>{
           expect(apiServiceMock).toHaveBeenCalledTimes(1);
-          expect(executor).toHaveBeenCalledTimes(2);
-          expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_RENAMING_ITEM, {
+          expect(executor).toHaveBeenCalledTimes(3);
+          expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
+          expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_RENAMING_ITEM, {
             parentId: folderId,
           });
-          expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_RENAMING_ITEM, null);
+          expect(executor).toHaveBeenNthCalledWith(3, MUTATOR_NAMES.SET_RENAMING_ITEM, null);
           expect(dispatchActionMock).toHaveBeenCalledTimes(0);
         });
       });
 
   test(`Should return expected failed sequence of mutator calls with ApiServiceError`, function() {
-    expect.assertions(4);
+    expect.assertions(5);
 
     const apiServiceMock = jest
         .spyOn(apiService, 'renameItem')
@@ -123,14 +125,15 @@ describe('RenameItemAction', () => {
 
     return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
-      expect(executor).toHaveBeenCalledTimes(2);
-      expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_RENAMING_ITEM, {});
-      expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS, ['error']);
+      expect(executor).toHaveBeenCalledTimes(3);
+      expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
+      expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_RENAMING_ITEM, {});
+      expect(executor).toHaveBeenNthCalledWith(3, MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS, ['error']);
     });
   });
 
   test(`Should return expected failed sequence of mutator calls with FieldValidationError`, function() {
-    expect.assertions(4);
+    expect.assertions(5);
 
     const error = {errorText: 'errorText'};
 
@@ -146,9 +149,10 @@ describe('RenameItemAction', () => {
 
     return action.execute(executor).then(()=>{
       expect(apiServiceMock).toHaveBeenCalledTimes(1);
-      expect(executor).toHaveBeenCalledTimes(2);
-      expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_RENAMING_ITEM, {});
-      expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS, [error.errorText]);
+      expect(executor).toHaveBeenCalledTimes(3);
+      expect(executor).toHaveBeenNthCalledWith(1, MUTATOR_NAMES.SET_IS_ITEM_RENAMING, true);
+      expect(executor).toHaveBeenNthCalledWith(2, MUTATOR_NAMES.SET_RENAMING_ITEM, {});
+      expect(executor).toHaveBeenNthCalledWith(3, MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS, [error.errorText]);
     });
   });
 });
