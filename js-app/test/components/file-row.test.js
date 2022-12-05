@@ -1,7 +1,6 @@
 import {FileRow} from '../../src/components/file-list/file-row';
 import {clearRegistry, registry} from '../../src/registry';
 import {jest} from '@jest/globals';
-import {FolderRow} from '../../src/components/file-list/folder-row.js';
 
 describe('FileRow', () => {
   beforeEach(()=>{
@@ -148,15 +147,15 @@ describe('FileRow', () => {
   test('Should open and close renaming form by blur', () => {
     expect.assertions(2);
 
-    const folderRow = new FolderRow(document.body, 'name');
+    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
     const openFormListener = jest.fn();
 
-    folderRow.onRenameFormOpen(openFormListener);
+    fileRow.onRenameFormOpen(openFormListener);
 
     const nameCell = document.body.querySelector('[data-td="name-cell"]');
     nameCell.dispatchEvent(new Event('dblclick'));
     expect(openFormListener).toHaveBeenCalledTimes(1);
-    folderRow.isRenameFormOpen = true;
+    fileRow.isRenameFormOpen = true;
 
     const input = document.body.querySelector('[data-td="rename-input"]');
     input.dispatchEvent(new Event('blur'));
