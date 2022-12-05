@@ -89,17 +89,13 @@ export class FileListWrapper extends StateAwareWrapper {
                 });
 
                 folderRow.onRename((newName) => {
-                  if (!(newName === folder.name)) {
-                    this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
-                        folder.type,
-                        folder.id,
-                        newName,
-                        folder.size,
-                        state.folderInfo.id,
-                    )));
-                  } else {
-                    folderRow.isRenameFormOpen = false;
-                  }
+                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
+                      folder.type,
+                      folder.id,
+                      newName,
+                      folder.size,
+                      folder.parentId,
+                  )));
                 });
 
                 this.addStateListener('renamingItem', (state) => {
@@ -142,17 +138,13 @@ export class FileListWrapper extends StateAwareWrapper {
                 });
 
                 fileRow.onRename((newName) => {
-                  if (!(newName === file.name)) {
-                    this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
-                        file.type,
-                        file.id,
-                        newName,
-                        file.size,
-                        state.folderInfo.id,
-                    )));
-                  } else {
-                    fileRow.isRenameFormOpen = false;
-                  }
+                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
+                      file.type,
+                      file.id,
+                      newName,
+                      file.size,
+                      file.parentId,
+                  )));
                 });
 
                 this.addStateListener('renamingItem', (state) => {

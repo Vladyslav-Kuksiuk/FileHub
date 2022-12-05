@@ -6,6 +6,8 @@ import {LoadFolderContentAction} from '../../../src/state-management/folder/load
 import {registry, clearRegistry} from '../../../src/registry';
 import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
 import {UploadFilesAction} from '../../../src/state-management/folder/upload-files-action';
+import {DefineRenamingItemAction} from '../../../src/state-management/folder/define-renaming-item-action';
+import {RenameItemAction} from '../../../src/state-management/folder/rename-item-action';
 
 describe('FileListWrapper', () => {
   let stateManagementService;
@@ -229,7 +231,308 @@ describe('FileListWrapper', () => {
     expect(dispatchMock).toHaveBeenCalledWith(new UploadFilesAction(folder.id, input.files));
   });
 
-  test('Should render file row and trigger events', () => {
+  test('Should render folder row and trigger renaming state events', () => {
+    expect.assertions(3);
+
+    const wrapper = new FileListWrapper();
+    let folderCreator;
+    const setContentMock = jest.fn((folderCreators) => {
+      folderCreator = folderCreators[0];
+    });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const folder = {
+      type: 'folder',
+      name: 'name',
+      id: 'id',
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        folder,
+      ],
+    });
+
+    folderCreator(document.body);
+
+    stateListeners.renamingItem({
+      renamingItem: {
+        id: 'notId',
+      },
+    });
+    stateListeners.renamingItem({
+      renamingItem: folder,
+    });
+    expect(document.body.querySelectorAll('[data-td="rename-input"]').length).toBe(1);
+
+    stateListeners.isItemRenaming({
+      renamingItem: {
+        id: 'notId',
+      },
+    });
+    stateListeners.isItemRenaming({
+      renamingItem: folder,
+      isItemRenaming: true,
+    });
+    expect(document.body.querySelectorAll('[class="glyphicon glyphicon-repeat"]').length).toBe(1);
+    stateListeners.isItemRenaming({
+      renamingItem: folder,
+      isItemRenaming: false,
+    });
+
+    stateListeners.itemRenamingErrors({
+      renamingItem: {
+        id: 'notId',
+      },
+    });
+    stateListeners.itemRenamingErrors({
+      renamingItem: folder,
+      itemRenamingErrors: ['error'],
+    });
+    expect(document.body.querySelector('[class="help-block text-danger"]').textContent).toBe('error');
+  });
+
+  test('Shouldn`t open rename form on folder row', () => {
+    expect.assertions(1);
+
+    const wrapper = new FileListWrapper();
+    let folderCreator;
+    const setContentMock = jest.fn((folderCreators) => {
+      folderCreator = folderCreators[0];
+    });
+    const state = {};
+    jest.spyOn(stateManagementService, 'state', 'get')
+        .mockImplementation(() => {
+          return state;
+        });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const folder = {
+      type: 'folder',
+      name: 'name',
+      id: 'id',
+    };
+    state.renamingItem = folder;
+    state.isItemRenaming = true;
+
+    stateListeners.folderContent({
+      folderContent: [
+        folder,
+      ],
+      renamingItem: folder,
+    });
+
+    folderCreator(document.body);
+    document.body.querySelector('[data-td="name-cell"]').dispatchEvent(new Event('dblclick'));
+    expect(document.body.querySelectorAll('[data-td="rename-input"]').length).toBe(0);
+  });
+
+  test('Should render folder row and trigger renaming user events', () => {
+    expect.assertions(2);
+
+    const wrapper = new FileListWrapper();
+    let folderCreator;
+    const setContentMock = jest.fn((folderCreators) => {
+      folderCreator = folderCreators[0];
+    });
+    const state = {};
+    jest.spyOn(stateManagementService, 'state', 'get')
+        .mockImplementation(() => {
+          return state;
+        });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const folder = {
+      type: 'folder',
+      name: 'name',
+      id: 'id',
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        folder,
+      ],
+    });
+
+    folderCreator(document.body);
+    document.body.querySelector('[data-td="name-cell"]').dispatchEvent(new Event('dblclick'));
+    state.isItemRenaming = false;
+    expect(dispatchMock).toHaveBeenCalledWith(new DefineRenamingItemAction(folder));
+
+    document.body.querySelector('[data-td="rename-input"]').dispatchEvent(new Event('change'));
+    expect(dispatchMock).toHaveBeenCalledWith(new DefineRenamingItemAction(new RenameItemAction(folder)));
+  });
+
+  test('Should render file row and trigger renaming state events', () => {
+    expect.assertions(3);
+
+    const wrapper = new FileListWrapper();
+    let fileCreator;
+    const setContentMock = jest.fn((folderCreators, fileCreators) => {
+      fileCreator = fileCreators[0];
+    });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const file = {
+      type: 'mp3',
+      name: 'name',
+      id: 'id',
+      size: 'size',
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        file,
+      ],
+    });
+
+    fileCreator(document.body);
+
+    stateListeners.renamingItem({
+      renamingItem: {
+        id: 'notId',
+      },
+    });
+    stateListeners.renamingItem({
+      renamingItem: file,
+    });
+    expect(document.body.querySelectorAll('[data-td="rename-input"]').length).toBe(1);
+
+    stateListeners.isItemRenaming({
+      renamingItem: {
+        id: 'notId',
+      },
+    });
+    stateListeners.isItemRenaming({
+      renamingItem: file,
+      isItemRenaming: true,
+    });
+    expect(document.body.querySelectorAll('[class="glyphicon glyphicon-repeat"]').length).toBe(1);
+    stateListeners.isItemRenaming({
+      renamingItem: file,
+      isItemRenaming: false,
+    });
+
+    stateListeners.itemRenamingErrors({
+      renamingItem: {
+        id: 'notId',
+      },
+    });
+    stateListeners.itemRenamingErrors({
+      renamingItem: file,
+      itemRenamingErrors: ['error'],
+    });
+    expect(document.body.querySelector('[class="help-block text-danger"]').textContent).toBe('error');
+  });
+
+  test('Should render file row and trigger renaming user events', () => {
+    expect.assertions(2);
+
+    const wrapper = new FileListWrapper();
+    let fileCreator;
+    const setContentMock = jest.fn((folderCreators, fileCreators) => {
+      fileCreator = fileCreators[0];
+    });
+    const state = {};
+    jest.spyOn(stateManagementService, 'state', 'get')
+        .mockImplementation(() => {
+          return state;
+        });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const file = {
+      type: 'mp3',
+      name: 'name',
+      id: 'id',
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        file,
+      ],
+    });
+
+    fileCreator(document.body);
+    document.body.querySelector('[data-td="name-cell"]').dispatchEvent(new Event('dblclick'));
+    state.isItemRenaming = false;
+    expect(dispatchMock).toHaveBeenCalledWith(new DefineRenamingItemAction(file));
+
+    document.body.querySelector('[data-td="rename-input"]').dispatchEvent(new Event('change'));
+    expect(dispatchMock).toHaveBeenCalledWith(new DefineRenamingItemAction(new RenameItemAction(file)));
+  });
+
+  test('Shouldn`t open rename form on file row', () => {
+    expect.assertions(1);
+
+    const wrapper = new FileListWrapper();
+    let fileCreator;
+    const setContentMock = jest.fn((folderCreators, fileCreators) => {
+      fileCreator = fileCreators[0];
+    });
+    const state = {};
+    jest.spyOn(stateManagementService, 'state', 'get')
+        .mockImplementation(() => {
+          return state;
+        });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const file = {
+      type: 'file',
+      name: 'name',
+      id: 'id',
+    };
+    state.renamingItem = file;
+    state.isItemRenaming = true;
+
+    stateListeners.folderContent({
+      folderContent: [
+        file,
+      ],
+      renamingItem: file,
+    });
+
+    fileCreator(document.body);
+    document.body.querySelector('[data-td="name-cell"]').dispatchEvent(new Event('dblclick'));
+    expect(document.body.querySelectorAll('[data-td="rename-input"]').length).toBe(0);
+  });
+
+  test('Should render file row and trigger removing events', () => {
     expect.assertions(2);
 
     const wrapper = new FileListWrapper();
