@@ -22,8 +22,8 @@ export class FolderRow extends Component {
   #eventTarget = new EventTarget();
   #isUploading = false;
   #uploadingError = false;
-  #isRenameFormOpen;
-  #isRenaming;
+  #isRenameFormOpen = false;
+  #isRenaming = false;
   #renamingErrors = [];
   @inject fileTypeIconFactory;
   #blurListener;
@@ -76,24 +76,18 @@ export class FolderRow extends Component {
     renameInput?.addEventListener('change', (event)=>{
       event.preventDefault();
       isChaneEventDispatched = true;
-      if (renameInput.value === this.#name) {
-        this.isRenameFormOpen = false;
-      } else {
-        this.#temporaryName = renameInput.value;
-        this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
-      }
+      this.#temporaryName = renameInput.value;
+      this.#eventTarget.dispatchEvent(new Event(RENAME_EVENT));
     });
     this.#blurListener = ()=>{
-      if (!isChaneEventDispatched && !this.#isRenaming) {
+      if (!isChaneEventDispatched) {
         this.isRenameFormOpen = false;
       }
     };
     renameInput?.addEventListener('blur', this.#blurListener);
     renameInput?.parentElement?.addEventListener('submit', (event) => {
       event.preventDefault();
-      if (!isChaneEventDispatched) {
-        renameInput.blur();
-      }
+      renameInput.blur();
     });
   }
 
@@ -234,8 +228,7 @@ export class FolderRow extends Component {
           <input class="form-control" disabled placeholder="Enter file name..."
                  type="text" value="${this.#temporaryName}">
           <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
-      </form>
-      `;
+      </form>`;
     }
 
     if (this.#uploadingError) {
