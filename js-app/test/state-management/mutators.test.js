@@ -171,6 +171,23 @@ describe('Mutators', () => {
     expect(newState).toStrictEqual(expectedState);
   });
 
+  test(`Should return new state with changed folderContent without renamingItem`, function() {
+    expect.assertions(1);
+
+    state = {
+      isItemRenaming: true,
+    };
+
+    const expectedState = new State({
+      folderContent: {},
+      renamingItem: null,
+      isItemRenaming: true,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_CONTENT](state, {});
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
   test(`Should return new state with changed folderContentError`, function() {
     expect.assertions(1);
 
@@ -325,6 +342,43 @@ describe('Mutators', () => {
       },
     });
     const newState = MUTATORS[MUTATOR_NAMES.ADD_FILES_UPLOADING_ERROR_INFO](state, errorInfo);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed renamingItem with loading`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      isItemRenaming: true,
+      renamingItem: {},
+      itemRenamingErrors: [],
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_RENAMING_ITEM](state, {});
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed renamingItem without loading`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      renamingItem: null,
+      itemRenamingErrors: [],
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_RENAMING_ITEM](state, null);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed itemRenamingErrors`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      isItemRenaming: false,
+      itemRenamingErrors: {},
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS](state, {});
 
     expect(newState).toStrictEqual(expectedState);
   });
