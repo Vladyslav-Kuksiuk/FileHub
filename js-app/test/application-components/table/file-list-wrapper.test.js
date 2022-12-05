@@ -398,7 +398,7 @@ describe('FileListWrapper', () => {
     wrapper.onNavigateToFolder(navigateListenerMock);
 
     const file = {
-      type: 'mp3',
+      type: 'file',
       name: 'name',
       id: 'id',
       size: 'size',
@@ -471,7 +471,7 @@ describe('FileListWrapper', () => {
     wrapper.onNavigateToFolder(navigateListenerMock);
 
     const file = {
-      type: 'mp3',
+      type: 'file',
       name: 'name',
       id: 'id',
     };
@@ -546,7 +546,7 @@ describe('FileListWrapper', () => {
     });
 
     const file = {
-      type: 'mp3',
+      type: 'file',
       name: 'name',
       id: 'id',
     };

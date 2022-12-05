@@ -89,13 +89,13 @@ export class FileListWrapper extends StateAwareWrapper {
                 });
 
                 folderRow.onRename((newName) => {
-                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
-                      folder.type,
-                      folder.id,
-                      newName,
-                      folder.size,
-                      folder.parentId,
-                  )));
+                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem({
+                    type: folder.type,
+                    parentId: folder.parentId,
+                    id: folder.id,
+                    name: newName,
+                    itemsAmount: folder.itemsAmount,
+                  })));
                 });
 
                 this.addStateListener('renamingItem', (state) => {
@@ -119,12 +119,12 @@ export class FileListWrapper extends StateAwareWrapper {
             });
 
         const fileCreators = state.folderContent
-            .filter((item) => item.type !== 'folder')
+            .filter((item) => item.type === 'file')
             .map((file) => {
               return (slot) => {
                 const temporaryName = (state.renamingItem?.id === file.id) ? state.renamingItem.name : file.name;
 
-                const fileRow = new FileRow(slot, file.name, file.type, file.size, temporaryName);
+                const fileRow = new FileRow(slot, file.name, file.mimetype, file.size, temporaryName);
 
                 fileRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
@@ -138,13 +138,14 @@ export class FileListWrapper extends StateAwareWrapper {
                 });
 
                 fileRow.onRename((newName) => {
-                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
-                      file.type,
-                      file.id,
-                      newName,
-                      file.size,
-                      file.parentId,
-                  )));
+                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem({
+                    type: file.type,
+                    parentId: file.parentId,
+                    id: file.id,
+                    name: newName,
+                    size: file.size,
+                    mimetype: file.mimetype,
+                  })));
                 });
 
                 this.addStateListener('renamingItem', (state) => {

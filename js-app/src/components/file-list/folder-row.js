@@ -1,5 +1,4 @@
 import {Component} from '../component';
-import {inject} from '../../registry';
 import {Link} from '../link';
 
 const REMOVE_CLICK_EVENT = 'REMOVE_CLICK_EVENT';
@@ -25,7 +24,6 @@ export class FolderRow extends Component {
   #isRenameFormOpen = false;
   #isRenaming = false;
   #renamingErrors = [];
-  @inject fileTypeIconFactory;
   #blurListener;
   #renameInput;
 
@@ -243,7 +241,7 @@ export class FolderRow extends Component {
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
         <td class="cell-icon">
-            <span aria-hidden="true" class="glyphicon ${this.fileTypeIconFactory.getIcon('folder')}"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
         </td>
         <td class="cell-name" ${this.markElement(NAME_CELL)}>${nameCellContent}</td>
         <td class="cell-type">Folder</td>

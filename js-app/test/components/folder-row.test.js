@@ -26,7 +26,7 @@ describe('FolderRow', () => {
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
         <td class="cell-icon">
-            <span aria-hidden="true" class="glyphicon undefined"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
         </td>\n`+
         '        <td class="cell-name" data-td="name-cell"><slot data-td="folder-link-slot"><a class="form-link"' +
         ' data-td="link-component" href="#" title="myName">myName</a></slot></td>' +
@@ -60,7 +60,7 @@ describe('FolderRow', () => {
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
         <td class="cell-icon">
-            <span aria-hidden="true" class="glyphicon undefined"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
         </td>\n`+
         '        <td class="cell-name" data-td="name-cell"><slot data-td="folder-link-slot"><a class="form-link"' +
         ' data-td="link-component" href="#" title="myName">myName</a></slot></td>' +
@@ -94,7 +94,7 @@ describe('FolderRow', () => {
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
         <td class="cell-icon">
-            <span aria-hidden="true" class="glyphicon undefined"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
         </td>\n`+
         '        <td class="cell-name" data-td="name-cell"><slot data-td="folder-link-slot"><a class="form-link"' +
         ' data-td="link-component" href="#" title="myName">myName</a></slot></td>' +
@@ -129,7 +129,7 @@ describe('FolderRow', () => {
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
         <td class="cell-icon">
-            <span aria-hidden="true" class="glyphicon undefined"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
         </td>
         <td class="cell-name" data-td="name-cell">
       <form class="name-edit-form">\n`+
@@ -166,7 +166,7 @@ describe('FolderRow', () => {
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
         <td class="cell-icon">
-            <span aria-hidden="true" class="glyphicon undefined"></span>
+            <span aria-hidden="true" class="glyphicon glyphicon-folder-close"></span>
         </td>
         <td class="cell-name" data-td="name-cell">
       <form class="name-edit-form">\n`+
