@@ -13,6 +13,9 @@ export const MUTATOR_NAMES = {
   SET_REMOVING_ITEM: 'setRemovingItem',
   SET_IS_ITEM_DELETING: 'setIsItemDeleting',
   SET_ITEM_DELETING_ERROR: 'setFItemDeletingError',
+  SET_IS_FOLDER_CREATION_MODAL_OPEN: 'setIsFolderCreationModalOpen',
+  SET_FOLDER_IN_CREATION_STATE: 'setFolderInCreationState',
+  SET_FOLDER_CREATION_ERROR: 'setFolderCreationError',
   SET_LOCATION_METADATA: 'setLocationMetadata',
   ADD_FOLDER_TO_UPLOAD: 'addFolderToUpload',
   REMOVE_FOLDER_TO_UPLOAD: 'removeFolderToUpload',
@@ -108,6 +111,35 @@ export const MUTATORS = {
   },
   [MUTATOR_NAMES.SET_ITEM_DELETING_ERROR]: (state, error) =>{
     return new State({...state, itemDeletingError: error});
+  },
+
+  [MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE]: (state, folder) =>{
+    if (folder) {
+      return new State({...state,
+        folderInCreationState: folder,
+        folderCreationError: null,
+      });
+    }
+
+    if (!folder && state.folderCreationError) {
+      return new State({...state,
+        folderInCreationState: folder,
+      });
+    }
+
+    return new State({...state,
+      folderInCreationState: folder,
+      isFolderCreationModalOpen: false,
+    });
+  },
+  [MUTATOR_NAMES.SET_IS_FOLDER_CREATION_MODAL_OPEN]: (state, isOpen) =>{
+    return new State({...state,
+      isFolderCreationModalOpen: isOpen,
+      folderCreationError: null,
+    });
+  },
+  [MUTATOR_NAMES.SET_FOLDER_CREATION_ERROR]: (state, error) =>{
+    return new State({...state, folderCreationError: error});
   },
 
   [MUTATOR_NAMES.SET_LOCATION_METADATA]: (state, locationMetadata) =>{
