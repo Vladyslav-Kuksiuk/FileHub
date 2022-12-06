@@ -35,6 +35,7 @@ const foldersContent = {
       name: 'FirstFolder',
       type: 'folder',
       id: 'testUser-1',
+      parentId: 'testUser-0',
     },
     {
       name: 'MyFavouriteTrack.mp3',
@@ -42,7 +43,7 @@ const foldersContent = {
       mimetype: 'audio/mp3',
       size: 1405091,
       id: 'testUser-file-'+counter(),
-
+      parentId: 'testUser-0',
     },
   ],
   'testUser-1': [
@@ -50,6 +51,7 @@ const foldersContent = {
       name: 'SecondFolder',
       type: 'folder',
       id: 'testUser-2',
+      parentId: 'testUser-1',
     },
     {
       name: 'MyFavouriteVideo.avi',
@@ -57,6 +59,7 @@ const foldersContent = {
       mimetype: 'video/x-msvideo',
       size: 3650722201,
       id: 'testUser-file-'+counter(),
+      parentId: 'testUser-1',
     },
     {
       name: 'MyFavouriteText.pdf',
@@ -64,13 +67,14 @@ const foldersContent = {
       mimetype: 'application/pdf',
       size: 13312,
       id: 'testUser-file-'+counter(),
+      parentId: 'testUser-1',
     },
   ],
   'testUser-2': [
     {
       name: 'SecondFolder',
       id: 'testUser-2',
-      parentId: 'testUser-1',
+      parentId: 'testUser-2',
       itemsAmount: 1,
     },
   ],
