@@ -5,7 +5,7 @@ import {StateManagementService} from '../state-management/state-management-servi
 import {State} from '../state-management/state';
 import {MUTATORS} from '../state-management/mutators';
 import {registry} from '../registry';
-import {FileTypeFactory} from '../components/file-list/file-type-factory.js';
+import {FileTypeFactory} from '../components/file-list/file-type-factory';
 
 
 /**
