@@ -9,35 +9,35 @@ import {inject} from '../../registry';
  */
 export class CreateFolderAction extends Action {
   #folder;
-    @inject apiService;
-    @inject stateManagementService;
+  @inject apiService;
+  @inject stateManagementService;
 
-    /**
-     * @param {FolderContentItem} folder
-     */
-    constructor(folder) {
-      super();
-      this.#folder = folder;
-    }
+  /**
+   * @param {FolderContentItem} folder
+   */
+  constructor(folder) {
+    super();
+    this.#folder = folder;
+  }
 
-    /**
-     * @inheritDoc
-     */
-    execute(executor) {
-      executor(MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE, this.#folder);
+  /**
+   * @inheritDoc
+   */
+  execute(executor) {
+    executor(MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE, this.#folder);
 
-      return this.apiService
-          .createFolder(this.#folder)
-          .then(() => {
-            executor(MUTATOR_NAMES.SET_IS_FOLDER_CREATION_MODAL_OPEN, false);
-            this.stateManagementService.dispatch(
-                new LoadFolderContentAction(this.stateManagementService.state.folderInfo.id));
-          })
-          .catch((error) => {
-            executor(MUTATOR_NAMES.SET_FOLDER_CREATION_ERROR, error.message);
-          })
-          .finally(() => {
-            executor(MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE, null);
-          });
-    }
+    return this.apiService
+        .createFolder(this.#folder)
+        .then(() => {
+          executor(MUTATOR_NAMES.SET_IS_FOLDER_CREATION_MODAL_OPEN, false);
+          this.stateManagementService.dispatch(
+              new LoadFolderContentAction(this.stateManagementService.state.folderInfo.id));
+        })
+        .catch((error) => {
+          executor(MUTATOR_NAMES.SET_FOLDER_CREATION_ERROR, error.message);
+        })
+        .finally(() => {
+          executor(MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE, null);
+        });
+  }
 }
