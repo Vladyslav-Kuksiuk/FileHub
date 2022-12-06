@@ -42,13 +42,19 @@ export class ModalCreate extends Component {
       type: BUTTON_TYPE.PRIMARY,
       isDisabled: this.#isLoading});
     createButton.onClick(()=>{
-      const name = this.rootElement.querySelector(`[data-td="${NAME_INPUT}"]`).value;
-      this.#inputValue = name;
-      this.#eventTarget.dispatchEvent(new CustomEvent(CREATE_EVENT, {
-        detail: {
-          name: name,
-        },
-      }));
+      const name = this.rootElement.querySelector(`[data-td="${NAME_INPUT}"]`).value.trim();
+      if (name) {
+        this.#error = null;
+        this.#inputValue = name;
+        this.#eventTarget.dispatchEvent(new CustomEvent(CREATE_EVENT, {
+          detail: {
+            name: name,
+          },
+        }));
+      } else {
+        this.#error = 'Directory name can`t be empty';
+        this.render();
+      }
     });
     this.#createButton = createButton;
 
