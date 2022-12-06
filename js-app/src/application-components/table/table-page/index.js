@@ -11,6 +11,8 @@ import {ModalRemoveWrapper} from '../modal-remove-wrapper';
 import {inject} from '../../../registry';
 import {ButtonGroupWrapper} from '../button-group-wrapper';
 import {ButtonGroup} from '../../../components/button-group';
+import {ModalCreate} from '../../../components/modal-create';
+import {ModalCreateWrapper} from '../modal-create-wrapper';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
@@ -19,6 +21,7 @@ const BREADCRUMB_SLOT = 'breadcrumb-slot';
 const FILE_LIST_SLOT = 'file-list-slot';
 const MODAL_REMOVE_SLOT = 'modal-remove-slot';
 const BUTTON_GROUP_SLOT = 'button-group-slot';
+const MODAL_CREATE_SLOT = 'modal-create-slot';
 
 /**
  * Table page component.
@@ -28,6 +31,7 @@ export class TablePage extends Component {
   @inject stateManagementService;
   @inject titleService;
   #modalRemoveWrapper;
+  #modalCreateWrapper;
   #userInfoWrapper;
   #breadcrumbWrapper;
   #fileListWrapper;
@@ -49,6 +53,10 @@ export class TablePage extends Component {
     const modalRemoveSlot = this.getSlot(MODAL_REMOVE_SLOT);
     this.#modalRemoveWrapper = new ModalRemoveWrapper();
     this.#modalRemoveWrapper.wrap(new ModalRemove(modalRemoveSlot, '', '', null));
+
+    const modalCreateSlot = this.getSlot(MODAL_CREATE_SLOT);
+    this.#modalCreateWrapper = new ModalCreateWrapper();
+    this.#modalCreateWrapper.wrap(new ModalCreate(modalCreateSlot, null));
 
     const userInfoWrapper = new UserInfoWrapper();
     this.#userInfoWrapper = userInfoWrapper;
@@ -105,6 +113,7 @@ export class TablePage extends Component {
     this.#breadcrumbWrapper.removeStateListeners();
     this.#fileListWrapper.removeStateListeners();
     this.#modalRemoveWrapper.removeStateListeners();
+    this.#modalCreateWrapper.removeStateListeners();
   }
 
   /**
@@ -191,6 +200,7 @@ export class TablePage extends Component {
         </p>
     </footer>
 ${this.addSlot(MODAL_REMOVE_SLOT)}
+${this.addSlot(MODAL_CREATE_SLOT)}
 </div>
     `;
   }

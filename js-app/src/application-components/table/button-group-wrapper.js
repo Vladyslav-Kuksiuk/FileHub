@@ -5,6 +5,7 @@ import {Button, BUTTON_TYPE} from '../../components/button';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
 import {UploadFilesAction} from '../../state-management/folder/upload-files-action';
+import {ChangeCreationModalAction} from '../../state-management/folder/change-creation-modal-action';
 
 /**
  * ButtonGroup wrapper for state change listening.
@@ -70,10 +71,14 @@ export class ButtonGroupWrapper extends StateAwareWrapper {
             });
           });
           buttonCreators.push((slot) => {
-            new Button(slot, {
+            const button = new Button(slot, {
               text: '<span aria-hidden="true" class="glyphicon glyphicon-plus"></span>',
               title: 'Add folder',
               type: BUTTON_TYPE.PRIMARY,
+            });
+
+            button.onClick(()=>{
+              this.stateManagementService.dispatch(new ChangeCreationModalAction(true));
             });
           });
         }

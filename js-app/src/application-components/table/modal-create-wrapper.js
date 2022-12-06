@@ -2,9 +2,11 @@ import {inject} from '../../registry';
 import {ModalCreate} from '../../components/modal-create';
 import {ChangeCreationModalAction} from '../../state-management/folder/change-creation-modal-action';
 import {CreateFolderAction} from '../../state-management/folder/create-folder-action';
+import {StateAwareWrapper} from '../state-aware-wrapper';
+import {FolderContentItem} from '../../state-management/folder/folder-content-item';
 
 /**
- * ModalRemove wrapper for state change listening.
+ * ModalCreate wrapper for state change listening.
  */
 export class ModalCreateWrapper extends StateAwareWrapper {
     @inject stateManagementService;

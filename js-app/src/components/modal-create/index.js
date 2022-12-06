@@ -37,12 +37,12 @@ export class ModalCreate extends Component {
   afterRender() {
     const createButtonSlot = this.getSlot(CREATE_BUTTON_SLOT);
     const createButton = new Button(createButtonSlot, {
-      text: 'Create',
+      text: this.#isLoading ? '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span> Create' : 'Create',
       title: 'Create',
       type: BUTTON_TYPE.PRIMARY,
       isDisabled: this.#isLoading});
     createButton.onClick(()=>{
-      const name = this.rootElement.querySelector(`[data-td="${NAME_INPUT}"]`);
+      const name = this.rootElement.querySelector(`[data-td="${NAME_INPUT}"]`).value;
       this.#inputValue = name;
       this.#eventTarget.dispatchEvent(new CustomEvent(CREATE_EVENT, {
         detail: {
@@ -82,6 +82,7 @@ export class ModalCreate extends Component {
     } else {
       this.#createButton.text = `Create`;
     }
+    this.render();
   }
 
   /**
@@ -135,7 +136,7 @@ export class ModalCreate extends Component {
               </header>
               <div class="modal-body">
                 <div class="form-row-input">
-                    <input class="input-text input-error" id="directory-name-input"
+                    <input class="form-control ${this.#error ? 'input-error' : ''}" id="directory-name-input"
                        name="directory-name"
                        value="${this.#inputValue}"
                        placeholder="Enter directory name..."
