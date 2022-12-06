@@ -44,9 +44,9 @@ describe('FileListWrapper', () => {
       return {};
     });
 
-    registry.register('fileTypeIconFactory', ()=>{
+    registry.register('fileTypeFactory', ()=>{
       return {
-        getIcon: ()=>{},
+        getType: ()=>{},
       };
     });
   });
@@ -81,9 +81,9 @@ describe('FileListWrapper', () => {
   test(`Should add state listeners`, function() {
     expect.assertions(11);
 
-    registry.register('fileTypeIconFactory', ()=>{
+    registry.register('fileTypeFactory', ()=>{
       return {
-        getIcon: ()=>{},
+        getType: ()=>{},
       };
     });
 
@@ -401,7 +401,7 @@ describe('FileListWrapper', () => {
       type: 'file',
       name: 'name',
       id: 'id',
-      size: 'size',
+      size: 1,
     };
 
     stateListeners.folderContent({
@@ -474,6 +474,7 @@ describe('FileListWrapper', () => {
       type: 'file',
       name: 'name',
       id: 'id',
+      size: 1,
     };
 
     stateListeners.folderContent({
@@ -516,6 +517,7 @@ describe('FileListWrapper', () => {
       type: 'file',
       name: 'name',
       id: 'id',
+      size: 1,
     };
     state.renamingItem = file;
     state.isItemRenaming = true;
@@ -549,6 +551,7 @@ describe('FileListWrapper', () => {
       type: 'file',
       name: 'name',
       id: 'id',
+      size: 1,
     };
 
     stateListeners.folderContent({

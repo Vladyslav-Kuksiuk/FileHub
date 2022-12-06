@@ -5,7 +5,7 @@ import {StateManagementService} from '../state-management/state-management-servi
 import {State} from '../state-management/state';
 import {MUTATORS} from '../state-management/mutators';
 import {registry} from '../registry';
-import {FileTypeIconFactory} from '../components/file-list/file-type-icon-factory.js';
+import {FileTypeFactory} from '../components/file-list/file-type-factory.js';
 
 
 /**
@@ -28,8 +28,8 @@ export class ApplicationContext {
       return new StateManagementService(MUTATORS, new State());
     });
 
-    registry.register('fileTypeIconFactory', ()=>{
-      return new FileTypeIconFactory();
+    registry.register('fileTypeFactory', ()=>{
+      return new FileTypeFactory();
     });
 
     Object.freeze(this);

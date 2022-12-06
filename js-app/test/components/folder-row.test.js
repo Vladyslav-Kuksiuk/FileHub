@@ -5,9 +5,9 @@ import {jest} from '@jest/globals';
 describe('FolderRow', () => {
   beforeEach(()=>{
     clearRegistry();
-    registry.register('fileTypeIconFactory', ()=>{
+    registry.register('fileTypeFactory', ()=>{
       return {
-        getIcon: ()=>{},
+        getType: ()=>{},
       };
     });
 
