@@ -19,6 +19,8 @@ export class ModalCreate extends Component {
   #isHidden = true;
   #eventTarget = new EventTarget();
 
+  #inputValue = '';
+
   /**
    * @param {HTMLElement} parent
    * @param {string} error
@@ -41,6 +43,7 @@ export class ModalCreate extends Component {
       isDisabled: this.#isLoading});
     createButton.onClick(()=>{
       const name = this.rootElement.querySelector(`[data-td="${NAME_INPUT}"]`);
+      this.#inputValue = name;
       this.#eventTarget.dispatchEvent(new CustomEvent(CREATE_EVENT, {
         detail: {
           name: name,
@@ -86,6 +89,7 @@ export class ModalCreate extends Component {
    */
   set isHidden(isHidden) {
     this.#isHidden = isHidden;
+    this.#inputValue = '';
     this.render();
   }
 
@@ -133,6 +137,7 @@ export class ModalCreate extends Component {
                 <div class="form-row-input">
                     <input class="input-text input-error" id="directory-name-input"
                        name="directory-name"
+                       value="${this.#inputValue}"
                        placeholder="Enter directory name..."
                        type="text" ${this.markElement(NAME_INPUT)}
                        ${this.#isLoading ? 'disabled' : ''}>
