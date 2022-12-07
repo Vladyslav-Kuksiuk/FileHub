@@ -1,5 +1,6 @@
 import {inject} from '../registry';
 import {FolderContentItem} from '../state-management/folder/folder-content-item';
+import {ApiServiceError} from './api-service-error';
 
 /**
  * Service to perform file downloading in browser.
@@ -8,11 +9,12 @@ export class DownloadService {
     @inject apiService;
 
     /**
-     * Downloads file.
+     * Downloads files.
      *
      * @param {FolderContentItem} file
+     * @returns {Promise<ApiServiceError>}
      */
-    download(file) {
+    async download(file) {
       this.apiService
           .downloadFile(file.id)
           .then((data) => {
