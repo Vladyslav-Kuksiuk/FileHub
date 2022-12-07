@@ -268,4 +268,23 @@ export class ApiService {
           }
         });
   }
+
+  /**
+   * Downloads file.
+   *
+   * @param {string} fileId
+   * @returns {Promise<Blob | ApiServiceError>}
+   */
+  async downloadFile(fileId) {
+    return this.#requestService.get('api/files/' + fileId, this.#userToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body;
+        });
+  }
 }

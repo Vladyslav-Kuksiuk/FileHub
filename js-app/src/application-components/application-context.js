@@ -1,6 +1,7 @@
 import {TitleService} from './title-service';
 import {RequestService} from '../server-connection/request-service';
 import {ApiService} from '../server-connection/api-service';
+import {DownloadService} from '../server-connection/download-service';
 import {StateManagementService} from '../state-management/state-management-service';
 import {State} from '../state-management/state';
 import {MUTATORS} from '../state-management/mutators';
@@ -22,6 +23,10 @@ export class ApplicationContext {
 
     registry.register('apiService', ()=>{
       return new ApiService(new RequestService());
+    });
+
+    registry.register('downloadService', ()=>{
+      return new DownloadService();
     });
 
     registry.register('stateManagementService', ()=>{

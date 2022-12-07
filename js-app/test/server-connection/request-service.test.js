@@ -262,14 +262,13 @@ describe('RequestService', () => {
 
     const requestService = new RequestService();
     const token = 'myToken';
-    const responsePromise = requestService.get(url, token);
+    const responsePromise = requestService.getJson(url, token);
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(url, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json',
       },
     });
 
@@ -294,14 +293,13 @@ describe('RequestService', () => {
 
     const requestService = new RequestService();
     const token = 'myToken';
-    const responsePromise = requestService.get(url, token);
+    const responsePromise = requestService.getJson(url, token);
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(url, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json',
       },
     });
 
@@ -319,7 +317,7 @@ describe('RequestService', () => {
     });
 
     const requestService = new RequestService();
-    const responsePromise = requestService.get('myUrl', 'myToken');
+    const responsePromise = requestService.getJson('myUrl', 'myToken');
 
     return expect(responsePromise).rejects.toThrow(Error);
   });

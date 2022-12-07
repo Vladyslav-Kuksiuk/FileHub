@@ -79,23 +79,44 @@ export class RequestService {
   }
 
   /**
-   * Sends GET request and converts server response.
+   * Sends GET request and converts server response with json.
    *
    * @param {string} url
    * @param {string} token
    * @returns {Promise<Response>}
    */
-  async get(url, token) {
+  async getJson(url, token) {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json',
       },
     });
 
     try {
       return new Response(response.status, await response.json());
+    } catch (e) {
+      return new Response(response.status);
+    }
+  }
+
+  /**
+   * Sends GET request and converts server response with blob.
+   *
+   * @param {string} url
+   * @param {string} token
+   * @returns {Promise<Response>}
+   */
+  async getBlob(url, token) {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+    });
+
+    try {
+      return new Response(response.status, await response.blob());
     } catch (e) {
       return new Response(response.status);
     }
