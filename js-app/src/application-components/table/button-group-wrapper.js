@@ -30,12 +30,12 @@ export class ButtonGroupWrapper extends StateAwareWrapper {
               });
               button.onClick(() => {
                 this.stateManagementService.dispatch(new DefineRemovingItemAction(
-                    new FolderContentItem('folder',
-                        state.folderInfo.id,
-                        state.folderInfo.name,
-                        null,
-                        state.folderInfo.parentId),
-                ));
+                    new FolderContentItem({
+                      type: 'folder',
+                      name: state.folderInfo.name,
+                      id: state.folderInfo.id,
+                      parentId: state.folderInfo.parentId,
+                    })));
               });
             });
           }

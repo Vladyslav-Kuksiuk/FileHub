@@ -193,6 +193,7 @@ app.post('/folders/:folderId/content', (req, res) => {
           mimetype: file.mimetype,
           size: file.size,
           id: 'testUser-file-'+counter(),
+          parentId: req.params.folderId,
         });
       });
     });
