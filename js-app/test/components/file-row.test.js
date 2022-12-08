@@ -44,6 +44,32 @@ describe('FileRow', () => {
     </tr>`);
   });
 
+  test(`Should create and render FileRow component in downloading state`, function() {
+    expect.assertions(1);
+
+    const name = 'myName';
+    const type = 'myType';
+    const size = 1;
+    const fileRow = new FileRow(document.body, name, type, size);
+    fileRow.isDownloading = true;
+
+    expect(document.body.querySelector('[data-td="download-button"]').innerHTML.trim()).toBe(
+        `<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>`);
+  });
+
+  test(`Should create and render FileRow component in download error state`, function() {
+    expect.assertions(1);
+
+    const name = 'myName';
+    const type = 'myType';
+    const size = 1;
+    const fileRow = new FileRow(document.body, name, type, size);
+    fileRow.downloadingError = 'error';
+
+    expect(document.body.querySelector('[data-td="download-button"]').innerHTML.trim()).toBe(
+        `<span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>`);
+  });
+
   test(`Should create and render FileRow component in renameFormOpen state with errors`, function() {
     expect.assertions(1);
 

@@ -176,7 +176,7 @@ export class FileListWrapper extends StateAwareWrapper {
                 });
 
                 this.addStateListener('filesDownloadingError', (state) => {
-                  fileRow.downloadingError = state.filesDownloadingError[file.id] ?? null;
+                  fileRow.downloadingError = state.filesDownloadingError[file.id];
                 });
               };
             });
