@@ -322,6 +322,81 @@ describe('RequestService', () => {
     return expect(responsePromise).rejects.toThrow(Error);
   });
 
+  test(`Should correctly send GET request and handle response with blob body`, function() {
+    expect.assertions(4);
+    const url = 'MyUrl';
+
+    global.fetch = jest.fn(async () => {
+      return {
+        status: 200,
+        blob: async () => {
+          return {};
+        },
+      };
+    });
+
+    const requestService = new RequestService();
+    const token = 'myToken';
+    const responsePromise = requestService.getBlob(url, token);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+    });
+
+    return responsePromise.then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual({});
+    });
+  });
+
+  test(`Should correctly send GET request and handle response without blob body`, function() {
+    expect.assertions(4);
+    const url = 'MyUrl';
+
+    global.fetch = jest.fn(async () => {
+      return {
+        status: 200,
+        json: async () => {
+          throw new Error();
+        },
+      };
+    });
+
+    const requestService = new RequestService();
+    const token = 'myToken';
+    const responsePromise = requestService.getBlob(url, token);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+    });
+
+    return responsePromise.then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual({});
+    });
+  });
+
+  test(`Should fail GET request for blob and handle error`, function() {
+    expect.assertions(1);
+
+    global.fetch = jest.fn(async () => {
+      throw new Error();
+    });
+
+    const requestService = new RequestService();
+    const responsePromise = requestService.getBlob('myUrl', 'myToken');
+
+    return expect(responsePromise).rejects.toThrow(Error);
+  });
+
   test('Should correctly send DELETE request  and handle response', function() {
     const url = 'MyUrl';
 
