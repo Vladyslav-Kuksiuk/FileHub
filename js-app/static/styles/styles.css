@@ -73,7 +73,8 @@ a:hover {
     color: #6ab0f3;
 }
 
-.icon-button:hover .glyphicon-download {
+.icon-button:hover .glyphicon-download,
+.file-row .icon-button .glyphicon-repeat{
     color: #115281;
 }
 

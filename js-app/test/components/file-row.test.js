@@ -22,7 +22,7 @@ describe('FileRow', () => {
     new FileRow(document.body, name, type, size);
 
     expect(document.body.innerHTML).toBe(
-        `<tr>
+        `<tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon undefined"></span>
@@ -81,7 +81,7 @@ describe('FileRow', () => {
     fileRow.renamingErrors = ['error'];
 
     expect(document.body.innerHTML).toBe(
-        `<tr>
+        `<tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon undefined"></span>
@@ -118,7 +118,7 @@ describe('FileRow', () => {
     fileRow.isRenaming = true;
 
     expect(document.body.innerHTML).toBe(
-        `<tr>
+        `<tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon undefined"></span>

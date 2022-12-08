@@ -240,7 +240,7 @@ export class FileRow extends Component {
     }
 
     return `
-    <tr>
+    <tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon ${type?.icon}"></span>
