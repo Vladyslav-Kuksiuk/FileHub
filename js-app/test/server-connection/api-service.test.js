@@ -187,7 +187,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {});
           });
@@ -204,7 +204,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -221,7 +221,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });
@@ -245,7 +245,7 @@ describe('ApiService', () => {
       );
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
               userProfile: {
@@ -267,7 +267,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -283,7 +283,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });
@@ -308,7 +308,7 @@ describe('ApiService', () => {
       );
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
               folderInfo: {
@@ -331,7 +331,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -347,7 +347,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });
@@ -374,7 +374,7 @@ describe('ApiService', () => {
       )];
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
               folderContent: [{
@@ -398,7 +398,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -414,7 +414,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });

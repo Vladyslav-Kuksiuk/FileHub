@@ -32,9 +32,10 @@ describe('FileRow', () => {
        <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button data-td="download-button" class="icon-button" title="Download file.">
-                   <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
-               </button>
+               
+        <button data-td="download-button" class="icon-button" title="Download file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
+        </button>
                <button data-td="remove-button" class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>
@@ -69,9 +70,10 @@ describe('FileRow', () => {
        <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button data-td="download-button" class="icon-button" title="Download file.">
-                   <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
-               </button>
+               
+        <button data-td="download-button" class="icon-button" title="Download file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
+        </button>
                <button data-td="remove-button" class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>
@@ -107,9 +109,10 @@ describe('FileRow', () => {
        <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button data-td="download-button" class="icon-button" title="Download file.">
-                   <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
-               </button>
+               
+        <button data-td="download-button" class="icon-button" title="Download file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
+        </button>
                <button data-td="remove-button" class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>
