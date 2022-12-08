@@ -9,7 +9,7 @@ import {UploadFilesAction} from '../../state-management/folder/upload-files-acti
 import {DefineRenamingItemAction} from '../../state-management/folder/define-renaming-item-action';
 import {RenameItemAction} from '../../state-management/folder/rename-item-action';
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
-import {DownloadFileAction} from '../../state-management/folder/download-file-action.js';
+import {DownloadFileAction} from '../../state-management/folder/download-file-action';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
