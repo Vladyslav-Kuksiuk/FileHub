@@ -27,11 +27,6 @@ export class DownloadFileAction extends Action {
       executor(MUTATOR_NAMES.ADD_DOWNLOADING_FILE, this.#file.id);
       return this.downloadService
           .download(this.#file)
-          .then(() => {
-            if (this.stateManagementService.state.folderInfo.id === this.#file.parentId) {
-              this.stateManagementService.dispatch(new LoadFolderContentAction(this.#file.parentId));
-            }
-          })
           .catch((error) => {
             executor(MUTATOR_NAMES.ADD_FILE_DOWNLOADING_ERROR, {
               fileId: this.#file.id,
