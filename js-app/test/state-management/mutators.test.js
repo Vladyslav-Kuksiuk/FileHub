@@ -423,6 +423,58 @@ describe('Mutators', () => {
     expect(newState).toStrictEqual(expectedState);
   });
 
+  test(`Should return new state with added downloadingFiles`, function() {
+    expect.assertions(1);
+
+    const fileId = '123';
+
+    const expectedState = new State({
+      downloadingFiles: [fileId],
+      filesDownloadingError: {
+        [fileId]: undefined,
+      },
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.ADD_DOWNLOADING_FILE](state, fileId);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with removed downloadingFiles`, function() {
+    expect.assertions(1);
+
+    const fileId = '123';
+
+    state = new State({
+      downloadingFiles: [fileId],
+    });
+
+    const expectedState = new State({
+      downloadingFiles: [],
+    });
+
+    const newState = MUTATORS[MUTATOR_NAMES.REMOVE_DOWNLOADING_FILE](state, fileId);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with added filesDownloadingError`, function() {
+    expect.assertions(1);
+
+    const errorInfo = {
+      fileId: '123',
+      error: 'error',
+    };
+
+    const expectedState = new State({
+      filesDownloadingError: {
+        [errorInfo.fileId]: errorInfo.error,
+      },
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.ADD_FILE_DOWNLOADING_ERROR](state, errorInfo);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
   test(`Should return new state with changed renamingItem with loading`, function() {
     expect.assertions(1);
 

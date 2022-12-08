@@ -1,7 +1,6 @@
 import {Action} from '../action';
 import {MUTATOR_NAMES} from '../mutators';
 import {inject} from '../../registry';
-import {LoadFolderContentAction} from './load-folder-content-action';
 import {FolderContentItem} from './folder-content-item';
 
 /**
