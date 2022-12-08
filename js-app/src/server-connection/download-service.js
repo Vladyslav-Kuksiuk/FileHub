@@ -15,8 +15,11 @@ export class DownloadService {
      * @returns {Promise<ApiServiceError>}
      */
     async download(file) {
-      this.apiService
+      return this.apiService
           .downloadFile(file.id)
+          .catch((error)=>{
+            throw error;
+          })
           .then((data) => {
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(data);

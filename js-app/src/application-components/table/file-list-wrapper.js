@@ -9,6 +9,7 @@ import {UploadFilesAction} from '../../state-management/folder/upload-files-acti
 import {DefineRenamingItemAction} from '../../state-management/folder/define-renaming-item-action';
 import {RenameItemAction} from '../../state-management/folder/rename-item-action';
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
+import {DownloadFileAction} from '../../state-management/folder/download-file-action.js';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -164,6 +165,18 @@ export class FileListWrapper extends StateAwareWrapper {
                   } else {
                     fileRow.renamingErrors = [];
                   }
+                });
+
+                fileRow.onDownload(() => {
+                  this.stateManagementService.dispatch(new DownloadFileAction(file));
+                });
+
+                this.addStateListener('downloadingFiles', (state) => {
+                  fileRow.isDownloading = state.downloadingFiles.includes(file.id);
+                });
+
+                this.addStateListener('filesDownloadingError', (state) => {
+                  fileRow.downloadingError = state.filesDownloadingError[file.id] ?? null;
                 });
               };
             });
