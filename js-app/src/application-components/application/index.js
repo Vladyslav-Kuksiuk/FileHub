@@ -64,7 +64,9 @@ export class Application extends Component {
         })
         .addHomeRoutePath(ROUTE.FILE_LIST_FOLDER)
         .build();
-
+    registry.getInstance('apiService').redirectToLogin = ()=>{
+      router.redirect(ROUTE.LOGIN);
+    };
     const router = new Router(routerConfig);
   }
 

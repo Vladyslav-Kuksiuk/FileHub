@@ -8,6 +8,8 @@ const counter = () => {
   return counterValue++;
 };
 
+let authToken = Math.random().toString();
+
 const foldersInfo = {
   'testUser-0': {
     name: 'Home',
@@ -83,7 +85,7 @@ const foldersContent = {
 app.use(express.json());
 app.post('/login', (req, res) => {
   res.status(200);
-  res.send({token: 'testToken'});
+  res.send({token: authToken});
 });
 
 app.post('/register', (req, res) => {
@@ -98,13 +100,18 @@ app.post('/register', (req, res) => {
 
 app.get('/user', (req, res) => {
   setTimeout(() => {
-    res.status(200);
-    res.send({
-      userProfile: {
-        username: 'testUser',
-        rootFolderId: 'testUser-0',
-      },
-    });
+    if (req.headers.authorization.split(' ')[1] === authToken) {
+      res.status(200);
+      res.send({
+        userProfile: {
+          username: 'testUser',
+          rootFolderId: 'testUser-0',
+        },
+      });
+    } else {
+      res.status(401);
+      res.send();
+    }
   }, 1000);
 });
 
@@ -233,6 +240,7 @@ app.post('/folders', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
+  authToken = Math.random().toString();
   res.status(200);
   res.send({});
 });
