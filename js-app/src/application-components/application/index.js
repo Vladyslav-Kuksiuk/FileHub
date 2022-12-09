@@ -9,6 +9,7 @@ import {ApplicationContext} from '../application-context';
 import {ROUTE} from '../../router/routes';
 import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action';
 import {registry} from '../../registry.js';
+import {ResetStateAction} from '../../state-management/reset-state-action';
 /**
  * Application component.
  */
@@ -40,6 +41,7 @@ export class Application extends Component {
           page.onNavigateToTable(()=>{
             router.redirect(ROUTE.FILE_LIST);
           });
+          registry.getInstance('stateManagementService').dispatch(new ResetStateAction());
         })
         .addRoute(ROUTE.REGISTRATION, () => {
           this.rootElement.innerHTML = '';

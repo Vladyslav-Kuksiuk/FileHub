@@ -26,6 +26,7 @@ export const MUTATOR_NAMES = {
   SET_RENAMING_ITEM: 'setRenamingItem',
   SET_IS_ITEM_RENAMING: 'setIsItemRenaming',
   SET_ITEM_RENAMING_ERRORS: 'setItemRenamingErrors',
+  RESET_STATE: 'resetState',
 };
 
 export const MUTATORS = {
@@ -221,5 +222,9 @@ export const MUTATORS = {
       isItemRenaming: false,
       itemRenamingErrors: errors,
     });
+  },
+
+  [MUTATOR_NAMES.RESET_STATE]: () => {
+    return new State();
   },
 };
