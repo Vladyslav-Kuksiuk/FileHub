@@ -2,7 +2,6 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 import {registry, clearRegistry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 import {UploadFilesAction} from '../../../src/state-management/folder/upload-files-action';
 
@@ -13,7 +12,9 @@ describe('UploadFilesAction', () => {
   beforeEach(()=>{
     clearRegistry();
 
-    apiService = new ApiService({});
+    apiService = {
+      uploadFiles: () => {},
+    };
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {

@@ -21,8 +21,12 @@ export class ApplicationContext {
       return new TitleService('FileHub', ' - ');
     });
 
+    registry.register('requestService', () => {
+      return new RequestService();
+    });
+
     registry.register('apiService', ()=>{
-      return new ApiService(new RequestService());
+      return new ApiService();
     });
 
     registry.register('downloadService', ()=>{

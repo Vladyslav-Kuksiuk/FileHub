@@ -3,7 +3,6 @@ import {DeleteItemAction} from '../../../src/state-management/folder/delete-item
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 import {registry, clearRegistry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 
 describe('DeleteItemAction', () => {
@@ -13,7 +12,9 @@ describe('DeleteItemAction', () => {
   beforeEach(()=>{
     clearRegistry();
 
-    apiService = new ApiService({});
+    apiService = {
+      deleteItem: () => {},
+    };
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {

@@ -3,14 +3,15 @@ import {LoadUserAction} from '../../../src/state-management/user/load-user-actio
 import {jest} from '@jest/globals';
 import {UserProfile} from '../../../src/state-management/user/user-profile';
 import {clearRegistry, registry} from '../../../src/registry.js';
-import {ApiService} from '../../../src/server-connection/api-service.js';
 
 describe('LoadUserAction', () => {
   let apiService;
 
   beforeEach(()=>{
     clearRegistry();
-    apiService = new ApiService({});
+    apiService = {
+      loadUser: () => {},
+    };
 
     registry.register('apiService', () => {
       return apiService;

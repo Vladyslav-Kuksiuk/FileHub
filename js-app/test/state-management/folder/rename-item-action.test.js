@@ -3,7 +3,6 @@ import {RenameItemAction} from '../../../src/state-management/folder/rename-item
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 import {registry, clearRegistry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 import {FieldValidationError} from '../../../src/server-connection/field-validation-error';
 
@@ -14,7 +13,9 @@ describe('RenameItemAction', () => {
   beforeEach(()=>{
     clearRegistry();
 
-    apiService = new ApiService({});
+    apiService = {
+      renameItem: () => {},
+    };
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {

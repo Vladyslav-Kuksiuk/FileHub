@@ -3,7 +3,6 @@ import {ModalCreate} from '../../../src/components/modal-create';
 import {ModalCreateWrapper} from '../../../src/application-components/table/modal-create-wrapper';
 import {CreateFolderAction} from '../../../src/state-management/folder/create-folder-action';
 import {clearRegistry, registry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 import {ChangeCreationModalAction} from '../../../src/state-management/folder/change-creation-modal-action';
 
@@ -14,11 +13,10 @@ describe('ModalCreateWrapper', () => {
 
   beforeEach(() => {
     clearRegistry();
-    const apiService = new ApiService({});
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {
-      return apiService;
+      return {};
     });
 
     registry.register('stateManagementService', () => {

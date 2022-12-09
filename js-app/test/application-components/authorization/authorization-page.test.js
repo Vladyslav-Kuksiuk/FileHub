@@ -1,7 +1,6 @@
 import {AuthorizationPage} from '../../../src/application-components/authorization/authorization-page';
 import {UserData} from '../../../src/user-data';
 import {jest} from '@jest/globals';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {clearRegistry, registry} from '../../../src/registry';
 
 describe('AuthorizationPage', () => {
@@ -14,7 +13,9 @@ describe('AuthorizationPage', () => {
     const titleService = {
       setTitles: () => {},
     };
-    apiService = new ApiService({});
+    apiService = {
+      logIn: ()=>{},
+    };
 
     registry.register('apiService', () => {
       return apiService;

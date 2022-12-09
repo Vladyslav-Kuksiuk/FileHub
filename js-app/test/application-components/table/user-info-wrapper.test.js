@@ -13,11 +13,10 @@ describe('UserInfoWrapper', () => {
 
   beforeEach(() => {
     clearRegistry();
-    const apiService = new ApiService({});
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {
-      return apiService;
+      return {};
     });
 
     registry.register('stateManagementService', () => {
