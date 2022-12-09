@@ -2,7 +2,6 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 import {registry, clearRegistry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 import {CreateFolderAction} from '../../../src/state-management/folder/create-folder-action';
 
@@ -13,7 +12,9 @@ describe('CreateFolderAction', () => {
   beforeEach(()=>{
     clearRegistry();
 
-    apiService = new ApiService({});
+    apiService = {
+      createFolder: ()=>{},
+    };
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {

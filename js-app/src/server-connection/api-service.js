@@ -1,4 +1,3 @@
-import {RequestService} from './request-service';
 import {FieldValidationError} from './field-validation-error';
 import {UserData} from '../user-data';
 import {ApiServiceError} from './api-service-error';
@@ -23,16 +22,10 @@ const TOKEN = 'user-token';
  * Service to handle server request and response.
  */
 export class ApiService {
-  #requestService;
+  @inject requestService;
   @inject storageService;
   #redirectToLogin;
-
-  /**
-   * @param {RequestService} requestService
-   */
-  constructor(requestService) {
-    this.#requestService = requestService;
-  }
+  #userToken;
 
   /**
    * @param {function(): void} redirectToLogin
@@ -48,7 +41,7 @@ export class ApiService {
    * @returns {Promise<ApiServiceError>}
    */
   async logIn(data) {
-    return this.#requestService.postJson(LOG_IN_USER_PATH, {
+    return this.requestService.postJson(LOG_IN_USER_PATH, {
       username: data.login,
       password: data.password,
     }).catch(()=>{
@@ -71,7 +64,7 @@ export class ApiService {
    * @returns {Promise<ApiServiceError | FieldValidationError>}
    */
   async register(data) {
-    return this.#requestService.postJson(REGISTER_USER_PATH, {
+    return this.requestService.postJson(REGISTER_USER_PATH, {
       username: data.login,
       password: data.password,
     }).catch(()=>{
@@ -92,7 +85,7 @@ export class ApiService {
    * @returns {Promise<UserProfile | ApiServiceError>}
    */
   async loadUser() {
-    return this.#requestService.getJson(LOAD_USER_PATH, this.storageService.get(TOKEN)).catch(()=>{
+    return this.requestService.getJson(LOAD_USER_PATH, this.storageService.get(TOKEN)).catch(()=>{
       throw new ApiServiceError();
     }).then((response) => {
       if (response.status === 401) {
@@ -119,7 +112,7 @@ export class ApiService {
    * @returns {Promise<FolderInfo | ApiServiceError>}
    */
   async loadFolderInfo(folderId) {
-    return this.#requestService.getJson(LOAD_FOLDER_PATH+folderId, this.storageService.get(TOKEN))
+    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId, this.storageService.get(TOKEN))
         .catch(()=>{
           throw new ApiServiceError();
         })
@@ -148,7 +141,7 @@ export class ApiService {
    * @returns {Promise<FolderContentItem[] | ApiServiceError>}
    */
   async loadFolderContent(folderId) {
-    return this.#requestService.getJson(LOAD_FOLDER_PATH+folderId+'/content', this.storageService.get(TOKEN))
+    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId+'/content', this.storageService.get(TOKEN))
         .catch(()=>{
           throw new ApiServiceError();
         })
@@ -180,7 +173,7 @@ export class ApiService {
    */
   async deleteItem(item) {
     if (item.type === 'folder') {
-      return this.#requestService.delete(FOLDER_PATH+item.id, this.storageService.get(TOKEN))
+      return this.requestService.delete(FOLDER_PATH+item.id, this.storageService.get(TOKEN))
           .catch(() => {
             throw new ApiServiceError();
           })
@@ -190,7 +183,7 @@ export class ApiService {
             }
           });
     }
-    return this.#requestService.delete(FILE_PATH+item.id, this.storageService.get(TOKEN))
+    return this.requestService.delete(FILE_PATH+item.id, this.storageService.get(TOKEN))
         .catch(() => {
           throw new ApiServiceError();
         })
@@ -209,7 +202,7 @@ export class ApiService {
   async renameItem(item) {
     const path = item.type === 'folder' ? FOLDER_PATH : FILE_PATH;
 
-    return this.#requestService.put(path+item.id,
+    return this.requestService.put(path+item.id,
         {
           name: item.name,
         },
@@ -238,7 +231,7 @@ export class ApiService {
    * @returns {Promise<ApiServiceError>}
    */
   async logOut() {
-    return this.#requestService.getJson(LOG_OUT_USER_PATH, this.storageService.get(TOKEN))
+    return this.requestService.getJson(LOG_OUT_USER_PATH, this.storageService.get(TOKEN))
         .catch(()=>{
         })
         .finally(() => {
@@ -260,7 +253,7 @@ export class ApiService {
       formData.append(`files_${index}`, file);
     });
 
-    return this.#requestService.postFormData(
+    return this.requestService.postFormData(
         'api/folders/'+ folderId +'/content',
         formData,
         this.storageService.get(TOKEN))
@@ -286,7 +279,7 @@ export class ApiService {
    * @returns {Promise<ApiServiceError>}
    */
   async createFolder(folder) {
-    return this.#requestService.postJson(
+    return this.requestService.postJson(
         'api/folders/',
         {
           name: folder.name,
@@ -315,7 +308,7 @@ export class ApiService {
    * @returns {Promise<Blob | ApiServiceError>}
    */
   async downloadFile(fileId) {
-    return this.#requestService.getBlob('api/files/' + fileId, this.storageService.get(TOKEN))
+    return this.requestService.getBlob('api/files/' + fileId, this.storageService.get(TOKEN))
         .catch(()=>{
           throw new ApiServiceError();
         })

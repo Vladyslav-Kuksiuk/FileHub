@@ -2,7 +2,6 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {jest} from '@jest/globals';
 import {FolderInfo} from '../../../src/state-management/folder/folder-info';
-import {ApiService} from '../../../src/server-connection/api-service.js';
 import {clearRegistry, registry} from '../../../src/registry.js';
 
 describe('LoadFolderInfoAction', () => {
@@ -10,7 +9,9 @@ describe('LoadFolderInfoAction', () => {
 
   beforeEach(()=>{
     clearRegistry();
-    apiService = new ApiService({});
+    apiService = {
+      loadFolderInfo: () => {},
+    };
 
     registry.register('apiService', () => {
       return apiService;
