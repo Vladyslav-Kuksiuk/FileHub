@@ -25,7 +25,6 @@ export class ApiService {
   @inject requestService;
   @inject storageService;
   #redirectToLogin;
-  #userToken;
 
   /**
    * @param {function(): void} redirectToLogin
@@ -231,9 +230,9 @@ export class ApiService {
    * @returns {Promise<ApiServiceError>}
    */
   async logOut() {
-    return this.requestService.getJson(LOG_OUT_USER_PATH, this.storageService.get(TOKEN))
-        .catch(()=>{
-        })
+    return this.requestService.postJson(LOG_OUT_USER_PATH, this.storageService.get(TOKEN))
+        .catch(()=>{})
+        .then(()=>{})
         .finally(() => {
           this.storageService.put(TOKEN, null);
           this.#redirectToLogin();

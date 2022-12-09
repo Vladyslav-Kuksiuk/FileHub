@@ -239,7 +239,7 @@ app.post('/folders', (req, res) => {
   }, 500);
 });
 
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
   authToken = Math.random().toString();
   res.status(200);
   res.send({});
