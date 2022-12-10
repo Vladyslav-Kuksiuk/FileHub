@@ -626,4 +626,58 @@ describe('FileListWrapper', () => {
     expect(dispatchMock).toHaveBeenCalledTimes(1);
     expect(dispatchMock).toHaveBeenCalledWith( new DefineRemovingItemAction(file));
   });
+
+  test('Should sort folder and file by name', () => {
+    expect.assertions(6);
+
+    const wrapper = new FileListWrapper();
+    let fileCreators;
+    let folderCreators;
+    const setContentMock = jest.fn((_folderCreators, _fileCreators) => {
+      folderCreators = _folderCreators;
+      fileCreators = _fileCreators;
+    });
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+
+    const file = {
+      type: 'file',
+      id: 'id',
+      size: 1,
+    };
+    const folder = {
+      type: 'folder',
+      id: 'id',
+    };
+
+    const fileA = {...file, name: 'fileA'};
+    const fileB = {...file, name: 'fileB'};
+    const fileC = {...file, name: 'fileC'};
+    const folderA = {...folder, name: 'folderA'};
+    const folderB = {...folder, name: 'folderB'};
+    const folderC = {...folder, name: 'folderC'};
+
+
+    stateListeners.folderContent({
+      folderContent: [
+        fileB,
+        folderB,
+        fileA,
+        folderA,
+        fileC,
+        folderC,
+      ],
+    });
+
+    [...folderCreators, ...fileCreators].forEach((creator) => creator(document.body));
+
+    expect(document.body.querySelectorAll('[data-td="name-cell"]')[0].textContent).toBe(folderA.name);
+    expect(document.body.querySelectorAll('[data-td="name-cell"]')[1].textContent).toBe(folderB.name);
+    expect(document.body.querySelectorAll('[data-td="name-cell"]')[2].textContent).toBe(folderC.name);
+    expect(document.body.querySelectorAll('[data-td="name-cell"]')[3].textContent).toBe(fileA.name);
+    expect(document.body.querySelectorAll('[data-td="name-cell"]')[4].textContent).toBe(fileB.name);
+    expect(document.body.querySelectorAll('[data-td="name-cell"]')[5].textContent).toBe(fileC.name);
+  });
 });
