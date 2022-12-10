@@ -6,7 +6,7 @@ const BUTTONS_SLOT = 'buttons-slot';
  * ButtonGroup component.
  */
 export class ButtonGroup extends Component {
-  #buttonCreators;
+  #buttonCreators = [];
   #error;
 
   /**
@@ -52,10 +52,14 @@ export class ButtonGroup extends Component {
    */
   markup() {
     const error = this.#error ? `<p class="help-block text-danger">${this.#error}</p>` : '';
+    const loading = this.#buttonCreators.length === 0 ?
+        '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>' :
+        '';
     return `
             <div class="col-xs-4 col-sm-6 tool-bar-buttons">
                 <div aria-label="..." class="btn-group" role="group" ${this.markElement(BUTTONS_SLOT)}>
                 </div>
+                ${loading}
                 ${error}
             </div>
             `;
