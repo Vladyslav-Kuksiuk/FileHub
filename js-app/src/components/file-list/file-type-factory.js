@@ -11,13 +11,45 @@ export class FileTypeFactory {
       type: 'JPEG Image',
       icon: 'glyphicon-picture',
     },
-    'video/x-msvideo': {
+    'image/bmp': {
+      type: 'BMP Image',
+      icon: 'glyphicon-picture',
+    },
+    'image/png': {
+      type: 'PNG Image',
+      icon: 'glyphicon-picture',
+    },
+    'video/avi': {
       type: 'AVI Movie',
       icon: 'glyphicon-film',
     },
-    'audio/mp3': {
+    'video/mp4': {
+      type: 'MP4 Movie',
+      icon: 'glyphicon-film',
+    },
+    'video/x-matroska': {
+      type: 'MKV Movie',
+      icon: 'glyphicon-film',
+    },
+    'audio/mpeg': {
       type: 'MP3 Audio',
       icon: 'glyphicon-music',
+    },
+    'audio/wav': {
+      type: 'WAV Audio',
+      icon: 'glyphicon-music',
+    },
+    'text/plain': {
+      type: 'TXT Text',
+      icon: 'glyphicon-book',
+    },
+    'application/vnd.ms-excel': {
+      type: 'Excel Workbook',
+      icon: 'glyphicon-list-alt',
+    },
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+      type: 'Excel Workbook',
+      icon: 'glyphicon-list-alt',
     },
   };
 
