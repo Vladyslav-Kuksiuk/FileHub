@@ -13,7 +13,7 @@ export class StorageService {
   }
 
   /**
-   * Gets value from storage by key.
+   * Gives value from storage by key.
    *
    * @param {string} key
    * @returns {string}

@@ -100,18 +100,17 @@ app.post('/register', (req, res) => {
 
 app.get('/user', (req, res) => {
   setTimeout(() => {
-    if (req.headers.authorization.split(' ')[1] === authToken) {
-      res.status(200);
-      res.send({
-        userProfile: {
-          username: 'testUser',
-          rootFolderId: 'testUser-0',
-        },
-      });
-    } else {
+    if (req.headers.authorization.split(' ')[1] !== authToken) {
       res.status(401);
       res.send();
     }
+    res.status(200);
+    res.send({
+      userProfile: {
+        username: 'testUser',
+        rootFolderId: 'testUser-0',
+      },
+    });
   }, 1000);
 });
 
