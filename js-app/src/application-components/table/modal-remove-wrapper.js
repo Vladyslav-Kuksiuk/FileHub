@@ -2,12 +2,12 @@ import {ApplicationContext} from '../application-context';
 import {ModalRemove} from '../../components/modal-remove';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {DeleteItemAction} from '../../state-management/folder/delete-item-action';
+import {StateAwareWrapper} from '../state-aware-wrapper';
 
 /**
  * ModalRemove wrapper for state change listening.
  */
-export class ModalRemoveWrapper {
-  #stateListeners = [];
+export class ModalRemoveWrapper extends StateAwareWrapper {
   #stateManagementService;
   #applicationContext;
 
@@ -15,6 +15,7 @@ export class ModalRemoveWrapper {
    * @param {ApplicationContext} applicationContext
    */
   constructor(applicationContext) {
+    super(applicationContext.stateManagementService);
     this.#applicationContext = applicationContext;
     this.#stateManagementService = applicationContext.stateManagementService;
   }
@@ -25,33 +26,27 @@ export class ModalRemoveWrapper {
    * @param {ModalRemove} modal
    */
   wrap(modal) {
-    const itemInRemovingStateListener = this.#stateManagementService
-        .addStateListener('itemInRemovingState', (state) => {
-          if (state.itemInRemovingState) {
-            modal.itemName = state.itemInRemovingState.name;
-            if (state.itemInRemovingState.type === 'folder') {
-              modal.itemType = 'Folder';
-            } else {
-              modal.itemType = 'File';
-            }
-            modal.isHidden = false;
-          } else {
-            modal.isHidden = true;
-          }
-        });
-    this.#stateListeners.push(itemInRemovingStateListener);
+    this.addStateListener('itemInRemovingState', (state) => {
+      if (state.itemInRemovingState) {
+        modal.itemName = state.itemInRemovingState.name;
+        if (state.itemInRemovingState.type === 'folder') {
+          modal.itemType = 'Folder';
+        } else {
+          modal.itemType = 'File';
+        }
+        modal.isHidden = false;
+      } else {
+        modal.isHidden = true;
+      }
+    });
 
-    const isItemDeletingListener = this.#stateManagementService
-        .addStateListener('isItemDeleting', (state) => {
-          modal.isLoading = state.isItemDeleting;
-        });
-    this.#stateListeners.push(isItemDeletingListener);
+    this.addStateListener('isItemDeleting', (state) => {
+      modal.isLoading = state.isItemDeleting;
+    });
 
-    const itemDeletingErrorListener = this.#stateManagementService
-        .addStateListener('itemDeletingError', (state) => {
-          modal.error = state.itemDeletingError;
-        });
-    this.#stateListeners.push(itemDeletingErrorListener);
+    this.addStateListener('itemDeletingError', (state) => {
+      modal.error = state.itemDeletingError;
+    });
 
     modal.onCancel(()=>{
       this.#stateManagementService.dispatch(new DefineRemovingItemAction(null));
@@ -61,15 +56,6 @@ export class ModalRemoveWrapper {
       this.#stateManagementService.dispatch(
           new DeleteItemAction(this.#stateManagementService.state.itemInRemovingState,
               this.#applicationContext.apiService));
-    });
-  }
-
-  /**
-   * Deletes all created state listeners.
-   */
-  removeStateListeners() {
-    this.#stateListeners.forEach((stateListener) => {
-      this.#stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
     });
   }
 }
