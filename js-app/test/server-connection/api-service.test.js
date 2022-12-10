@@ -435,6 +435,7 @@ describe('ApiService', () => {
                 id: folderContent[0].id,
                 name: folderContent[0].name,
                 size: folderContent[0].size,
+                parentId: folderContent[0].parentId,
               }],
             });
           });

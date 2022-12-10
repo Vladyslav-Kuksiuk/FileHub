@@ -43,6 +43,9 @@ export class FileListWrapper extends StateAwareWrapper {
       if (state.folderContent) {
         const folderCreators = state.folderContent
             .filter((item) => item.type === 'folder')
+            .sort((first, second) => {
+              return first.name > second.name ? 1 : -1;
+            })
             .map((folder) => {
               return (slot) => {
                 const temporaryName = (state.renamingItem?.id === folder.id) ? state.renamingItem.name : folder.name;
@@ -121,6 +124,9 @@ export class FileListWrapper extends StateAwareWrapper {
 
         const fileCreators = state.folderContent
             .filter((item) => item.type === 'file')
+            .sort((first, second) => {
+              return first.name > second.name ? 1 : -1;
+            })
             .map((file) => {
               return (slot) => {
                 const temporaryName = (state.renamingItem?.id === file.id) ? state.renamingItem.name : file.name;

@@ -42,7 +42,7 @@ const foldersContent = {
     {
       name: 'MyFavouriteTrack.mp3',
       type: 'file',
-      mimetype: 'audio/mp3',
+      mimetype: 'audio/mpeg',
       size: 1405091,
       id: 'testUser-file-'+counter(),
       parentId: 'testUser-0',
