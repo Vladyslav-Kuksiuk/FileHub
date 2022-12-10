@@ -150,18 +150,8 @@ export class ApiService {
    * @param {FolderContentItem} item
    */
   async deleteItem(item) {
-    if (item.type === 'folder') {
-      return this.#requestService.delete(DELETE_FOLDER_PATH+item.id, this.#userToken)
-          .catch(() => {
-            throw new ApiServiceError();
-          })
-          .then((response) => {
-            if (response.status !== 200) {
-              throw new ApiServiceError();
-            }
-          });
-    }
-    return this.#requestService.delete(DELETE_FILE_PATH+item.id, this.#userToken)
+    const path = item.type === 'folder' ? DELETE_FOLDER_PATH : DELETE_FILE_PATH;
+    return this.#requestService.delete(path+item.id, this.#userToken)
         .catch(() => {
           throw new ApiServiceError();
         })
