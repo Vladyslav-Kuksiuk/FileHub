@@ -140,6 +140,7 @@ export class ApiService {
               item.id,
               item.name,
               item.size,
+              item.parentId,
           ));
         });
   }
@@ -156,6 +157,32 @@ export class ApiService {
           throw new ApiServiceError();
         })
         .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
+
+  /**
+   * Renames item.
+   *
+   * @param {FolderContentItem} item
+   */
+  async renameItem(item) {
+    const path = item.type === 'folder' ? FOLDER_PATH : FILE_PATH;
+
+    return this.#requestService.put(path+item.id,
+        {
+          name: item.name,
+        },
+        this.#userToken)
+        .catch(() => {
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 422) {
+            throw new FieldValidationError(response.body.errors);
+          }
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
