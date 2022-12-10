@@ -560,6 +560,29 @@ describe('ApiService', () => {
       await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, undefined);
     });
 
+    test(`Should redirect to login at 401 error after folder deleting`, async function() {
+      expect.assertions(3);
+
+      const item = {
+        type: 'folder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.deleteItem(item);
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
+      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+    });
+
     test(`Should return error after deleting file`, async function() {
       expect.assertions(3);
 
