@@ -1,4 +1,3 @@
-import {RequestService} from './request-service';
 import {FieldValidationError} from './field-validation-error';
 import {UserData} from '../user-data';
 import {ApiServiceError} from './api-service-error';
