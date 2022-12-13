@@ -41,7 +41,6 @@ export class Application extends Component {
           page.onNavigateToTable(()=>{
             router.redirect(ROUTE.FILE_LIST);
           });
-          registry.getInstance('stateManagementService').dispatch(new ResetStateAction());
         })
         .addRoute(ROUTE.REGISTRATION, () => {
           this.rootElement.innerHTML = '';
@@ -67,6 +66,7 @@ export class Application extends Component {
         .addHomeRoutePath(ROUTE.FILE_LIST_FOLDER)
         .build();
     registry.getInstance('apiService').redirectToLogin = ()=>{
+      registry.getInstance('stateManagementService').dispatch(new ResetStateAction());
       router.redirect(ROUTE.LOGIN);
     };
     const router = new Router(routerConfig);

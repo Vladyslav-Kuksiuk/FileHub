@@ -315,7 +315,7 @@ describe('ApiService', () => {
       await apiService.loadUser();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after request error`, async function() {
@@ -394,7 +394,7 @@ describe('ApiService', () => {
       await apiService.loadFolderInfo();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test('Should return error after request error', async function() {
@@ -477,7 +477,7 @@ describe('ApiService', () => {
       await apiService.loadFolderContent('notID');
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test('Should return error after request error', async function() {
@@ -580,7 +580,7 @@ describe('ApiService', () => {
       await apiService.deleteItem(item);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after deleting file`, async function() {
@@ -698,7 +698,7 @@ describe('ApiService', () => {
       await apiService.uploadFiles('folderId', []);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after upload files fetch error`, async function() {
@@ -776,7 +776,7 @@ describe('ApiService', () => {
       await apiService.renameItem({type: 'file'});
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return FieldValidationError after renaming file`, async function() {
@@ -878,7 +878,7 @@ describe('ApiService', () => {
       await apiService.createFolder({});
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after folder creation request fetch error`, async function() {
@@ -946,7 +946,7 @@ describe('ApiService', () => {
       await apiService.downloadFile({});
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('user-token', null);
+      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after request error`, async function() {

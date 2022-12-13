@@ -1,3 +1,5 @@
+export const AUTH_TOKEN = 'auth-token';
+
 /**
  * Service to store data between sessions.
  */
