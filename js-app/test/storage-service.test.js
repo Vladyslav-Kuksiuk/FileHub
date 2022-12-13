@@ -24,4 +24,15 @@ describe('Storage service', () => {
 
     expect(storageService.get(key)).toBe(value);
   });
+
+  test(`Should clear localStorage`, function() {
+    expect.assertions(1);
+    const storage = new StorageService();
+    const key = 'key';
+    storage.put(key, 'value');
+
+    storage.clear();
+
+    expect(storage.get(key)).toBeNull();
+  });
 });

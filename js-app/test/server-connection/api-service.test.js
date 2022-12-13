@@ -215,7 +215,7 @@ describe('ApiService', () => {
 
       await expect(apiService.logOut()).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, {}, undefined);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
@@ -234,7 +234,7 @@ describe('ApiService', () => {
 
       await expect(apiService.logOut()).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, {}, undefined);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
@@ -253,7 +253,7 @@ describe('ApiService', () => {
 
       await expect(apiService.logOut()).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, {}, undefined);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
   });
@@ -301,7 +301,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after user loading`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -315,7 +315,6 @@ describe('ApiService', () => {
       await apiService.loadUser();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after request error`, async function() {
@@ -380,7 +379,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after folder info loading`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -394,7 +393,6 @@ describe('ApiService', () => {
       await apiService.loadFolderInfo();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test('Should return error after request error', async function() {
@@ -463,7 +461,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after folder content loading`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -477,7 +475,6 @@ describe('ApiService', () => {
       await apiService.loadFolderContent('notID');
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test('Should return error after request error', async function() {
@@ -561,7 +558,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after folder deleting`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const item = {
         type: 'folder',
@@ -580,7 +577,6 @@ describe('ApiService', () => {
       await apiService.deleteItem(item);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after deleting file`, async function() {
@@ -684,7 +680,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after files uploading`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postFormData')
@@ -698,7 +694,6 @@ describe('ApiService', () => {
       await apiService.uploadFiles('folderId', []);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after upload files fetch error`, async function() {
@@ -762,7 +757,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after file renaming`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const requestServiceMock = jest
           .spyOn(requestService, 'put')
@@ -776,7 +771,6 @@ describe('ApiService', () => {
       await apiService.renameItem({type: 'file'});
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return FieldValidationError after renaming file`, async function() {
@@ -864,7 +858,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after folder creation`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -878,7 +872,6 @@ describe('ApiService', () => {
       await apiService.createFolder({});
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after folder creation request fetch error`, async function() {
@@ -932,7 +925,7 @@ describe('ApiService', () => {
     });
 
     test(`Should redirect to login at 401 error after file downloading`, async function() {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getBlob')
@@ -946,7 +939,6 @@ describe('ApiService', () => {
       await apiService.downloadFile({});
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(redirectMock).toHaveBeenCalledTimes(1);
-      expect(storageService.put).toHaveBeenCalledWith('auth-token', null);
     });
 
     test(`Should return error after request error`, async function() {
