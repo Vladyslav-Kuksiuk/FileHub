@@ -102,7 +102,8 @@ app.get('/user', (req, res) => {
   setTimeout(() => {
     if (req.headers.authorization.split(' ')[1] !== authToken) {
       res.status(401);
-      res.send();
+      res.send({});
+      return;
     }
     res.status(200);
     res.send({

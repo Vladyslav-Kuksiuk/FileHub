@@ -100,7 +100,6 @@ export class TablePage extends Component {
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
       this.stateManagementService.dispatch(new LogOutUserAction());
     });
   }

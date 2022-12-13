@@ -23,4 +23,11 @@ export class StorageService {
   get(key) {
     return window.localStorage.getItem(key);
   }
+
+  /**
+   * Clears storage.
+   */
+  clear() {
+    window.localStorage.clear();
+  }
 }
