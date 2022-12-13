@@ -69,9 +69,6 @@ export class Application extends Component {
             return;
           }
           const page = new TablePage(this.rootElement);
-          page.onNavigateToAuthorization(() => {
-            router.redirect(ROUTE.LOGIN);
-          });
           page.onNavigateToFolder((folderId)=>{
             router.redirect(ROUTE.FILE_LIST+'/'+folderId);
           });
