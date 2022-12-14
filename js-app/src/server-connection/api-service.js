@@ -162,6 +162,39 @@ export class ApiService {
   }
 
   /**
+   * Loads folder content by search.
+   *
+   * @param {string} folderId
+   * @param {string} searchValue
+   * @returns {Promise<FolderContentItem[] | ApiServiceError>}
+   */
+  async searchInFolder(folderId, searchValue) {
+    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId+'/content/'+searchValue,
+        this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body.folderContent.map((item)=>new FolderContentItem({
+            type: item.type,
+            id: item.id,
+            parentId: item.parentId,
+            name: item.name,
+            size: item.size,
+            mimetype: item.mimetype,
+            itemsAmount: item.itemsAmount,
+          }));
+        });
+  }
+
+  /**
    * Deletes item.
    *
    * @param {FolderContentItem} item
