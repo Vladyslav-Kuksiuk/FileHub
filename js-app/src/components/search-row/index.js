@@ -9,6 +9,8 @@ const INPUT = 'search-input';
  */
 export class SearchRow extends Component {
   #isLoading = false;
+  #error;
+  #inputValue = '';
   #eventTarget = new EventTarget();
 
   /**
@@ -25,6 +27,7 @@ export class SearchRow extends Component {
   afterRender() {
     this.rootElement.querySelector(`[data-td="${BUTTON}"]`).addEventListener('click', (event)=>{
       event.preventDefault();
+      this.#inputValue = this.rootElement.querySelector(`[data-td="${INPUT}"]`).value;
       this.#eventTarget.dispatchEvent(new Event(BUTTON_CLICK_EVENT));
     });
   }
@@ -34,6 +37,16 @@ export class SearchRow extends Component {
    */
   set isLoading(isLoading) {
     this.#isLoading = isLoading;
+    this.#error = null;
+    this.#inputValue = '';
+    this.render();
+  }
+
+  /**
+   * @param {string} error
+   */
+  set error(error) {
+    this.#error = error;
     this.render();
   }
 
@@ -42,7 +55,7 @@ export class SearchRow extends Component {
    *
    * @param {function(string)} listener
    */
-  onClick(listener) {
+  onSearchClick(listener) {
     this.#eventTarget.addEventListener(BUTTON_CLICK_EVENT, () => {
       const inputValue = this.rootElement.querySelector(`[data-td="${INPUT}"]`).value;
       listener(inputValue);
@@ -53,9 +66,11 @@ export class SearchRow extends Component {
    * @inheritDoc
    */
   markup() {
-    return `
+    const error = `<p class="help-block text-danger">${this.#error}</p>`;
+    return `<div>
   <div class="input-group search-line">
-    <input ${this.markElement(INPUT)} class="form-control" id="search" name="Search" 
+    <input ${this.markElement(INPUT)} class="form-control ${this.#error ? 'input-error' : ''}" 
+           id="search" name="Search" value="${this.#inputValue}"
            placeholder="Enter entity name..." type="text"
            ${this.#isLoading ? 'disabled' : ''}>
     <span class="input-group-btn">
@@ -64,6 +79,8 @@ export class SearchRow extends Component {
           ${this.#isLoading ? '<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>' : ''}Search
       </button>
     </span>
-  </div>`;
+  </div>
+  ${this.#error ? error : ''}
+</div>`;
   }
 }
