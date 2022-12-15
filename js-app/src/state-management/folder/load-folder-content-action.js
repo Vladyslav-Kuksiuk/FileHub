@@ -7,6 +7,8 @@ import {inject} from '../../registry';
  */
 export class LoadFolderContentAction extends Action {
   #folderId;
+
+  @inject stateManagementService;
   @inject apiService;
 
   /**
@@ -23,8 +25,12 @@ export class LoadFolderContentAction extends Action {
   execute(executor) {
     executor(MUTATOR_NAMES.SET_IS_FOLDER_CONTENT_LOADING, true);
 
-    return this.apiService
-        .loadFolderContent(this.#folderId)
+    const metadata = this.stateManagementService.state.locationMetadata;
+
+    const apiPromise = metadata.search ? this.apiService.searchInFolder(this.#folderId, metadata.search) :
+        this.apiService.loadFolderContent(this.#folderId);
+
+    return apiPromise
         .then((folderContent) => {
           executor(MUTATOR_NAMES.SET_FOLDER_CONTENT, folderContent);
         })

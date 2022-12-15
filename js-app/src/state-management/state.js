@@ -54,7 +54,7 @@ export class State {
   /**
    * @type {object}
    */
-  locationMetadata = null;
+  locationMetadata = {};
 
   /**
    * @type {FolderContentItem}

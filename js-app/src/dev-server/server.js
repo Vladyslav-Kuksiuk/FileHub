@@ -196,12 +196,12 @@ app.get('/folders/:folderId/content', (req, res) => {
   }, 500);
 });
 
-app.get('/folders/:folderId/content/:searchValue', (req, res) => {
+app.get('/folders/:folderId/search/:searchValue', (req, res) => {
   setTimeout(() => {
     if (foldersContent[req.params['folderId']]) {
       res.status(200);
       res.send({folderContent: foldersContent[req.params['folderId']].filter((content) => {
-        return content.name.includes(req.params['searchValue']);
+        return content.name.toLowerCase().includes(req.params['searchValue'].toLowerCase());
       })});
     } else {
       res.status(404);

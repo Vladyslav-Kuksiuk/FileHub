@@ -169,7 +169,7 @@ export class ApiService {
    * @returns {Promise<FolderContentItem[] | ApiServiceError>}
    */
   async searchInFolder(folderId, searchValue) {
-    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId+'/content/'+searchValue,
+    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId+'/search/'+searchValue,
         this.storageService.get(AUTH_TOKEN))
         .catch(()=>{
           throw new ApiServiceError();

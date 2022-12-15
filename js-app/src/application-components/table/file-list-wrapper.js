@@ -10,7 +10,7 @@ import {DefineRenamingItemAction} from '../../state-management/folder/define-ren
 import {RenameItemAction} from '../../state-management/folder/rename-item-action';
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
 import {DownloadFileAction} from '../../state-management/folder/download-file-action';
-import {SearchAction} from '../../state-management/folder/search-action';
+import {State} from '../../state-management/state';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -27,17 +27,23 @@ export class FileListWrapper extends StateAwareWrapper {
   constructor() {
     super();
     this.addStateListener('folderInfo', (state) => {
-      if (!(state.folderInfo && !state.isFolderContentLoading)) {
-        return;
-      }
-
-      if (state.locationMetadata.search) {
-        this.stateManagementService.dispatch(new SearchAction(state.folderInfo.id, state.locationMetadata.search));
-        return;
-      }
-
-      this.stateManagementService.dispatch(new LoadFolderContentAction(state.folderInfo.id));
+      this.#loadContent(state);
     });
+
+    this.addStateListener('locationMetadata', (state) => {
+      this.#loadContent(state);
+    });
+  }
+
+  /**
+   * @param {State} state
+   * @private
+   */
+  #loadContent(state) {
+    if (!(state.folderInfo && !state.isFolderContentLoading)) {
+      return;
+    }
+    this.stateManagementService.dispatch(new LoadFolderContentAction(state.locationMetadata.folderId));
   }
 
   /**
