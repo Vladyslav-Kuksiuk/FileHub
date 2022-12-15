@@ -30,27 +30,27 @@ describe('FileList', () => {
   test(`Should render FolderContent component with loading`, function() {
     expect.assertions(1);
 
-    new FileList(document.body, true, false, [], []);
+    new FileList(document.body, true, false);
     expect(document.body.querySelectorAll('[data-td="folder-content-loading"]').length).toBe(1);
   });
 
   test(`Should render FolderContent component with error`, function() {
     expect.assertions(1);
 
-    new FileList(document.body, false, true, [], []);
+    new FileList(document.body, false, true);
     expect(document.body.querySelectorAll('[data-td="folder-content-error"]').length).toBe(1);
   });
 
   test(`Should render FolderContent empty state`, function() {
     expect.assertions(1);
 
-    new FileList(document.body, false, false, [], []);
+    new FileList(document.body, false, false);
     expect(document.body.querySelectorAll('[data-td="folder-content-empty"]').length).toBe(1);
   });
 
   test('Should change states empty->loading->error', function() {
     expect.assertions(3);
-    const folderContent = new FileList(document.body, false, false, [], []);
+    const folderContent = new FileList(document.body, false, false);
     expect(document.body.querySelectorAll('[data-td="folder-content-empty"]').length).toBe(1);
 
     folderContent.isLoading = true;
@@ -60,4 +60,13 @@ describe('FileList', () => {
     folderContent.hasError = true;
     expect(document.body.querySelectorAll('[data-td="folder-content-error"]').length).toBe(1);
   } );
+
+  test('Should change `empty table text`', () => {
+    expect.assertions(1);
+    const folderContent = new FileList(document.body, false, false);
+
+    const text = 'myText';
+    folderContent.emptyTableText = text;
+    expect(document.body.querySelector('[data-td="folder-content-empty"] p').textContent.trim()).toBe(text);
+  });
 });
