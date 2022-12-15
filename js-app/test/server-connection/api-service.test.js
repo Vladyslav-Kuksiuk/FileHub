@@ -493,6 +493,97 @@ describe('ApiService', () => {
     });
   });
 
+  describe('searchInFolder', () => {
+    test(`Should successfully load folder content with search`, async function() {
+      expect.assertions(3);
+
+      const folderId = 'folderId';
+      const searchValue = 'searchValue';
+      const folderContent = [new FolderContentItem(
+          'type',
+          'id',
+          'name',
+          'size',
+          'folderId',
+      )];
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getJson')
+          .mockImplementation(async () => {
+            return new Response(200, {
+              folderContent: [{
+                type: folderContent[0].type,
+                id: folderContent[0].id,
+                name: folderContent[0].name,
+                size: folderContent[0].size,
+                parentId: folderContent[0].parentId,
+              }],
+            });
+          });
+
+      const apiService = new ApiService();
+      await expect(apiService.searchInFolder(folderId, searchValue)).resolves.toStrictEqual(folderContent);
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith(LOAD_FOLDER_PATH + folderId + '/search/'+searchValue, undefined);
+    });
+
+    test(`Should return error after loading folder content with search`, async function() {
+      expect.assertions(3);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getJson')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+      const id = 'id';
+      const searchValue = 'searchValue';
+
+      const apiService = new ApiService();
+      await expect(apiService.searchInFolder(id, searchValue))
+          .rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith(LOAD_FOLDER_PATH + id+'/search/'+searchValue, undefined);
+    });
+
+    test(`Should redirect to login at 401 error after folder content loading with search`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getJson')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.searchInFolder('notID', 'search...');
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
+    });
+
+    test('Should return error after request error', async function() {
+      expect.assertions(3);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getJson')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const id = 'notId';
+      const searchValue = 'searchValue';
+
+      const apiService = new ApiService();
+      await expect(apiService.searchInFolder(id, searchValue)).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith(LOAD_FOLDER_PATH + id+ '/search/'+ searchValue, undefined);
+    });
+  });
+
   describe('deleteItem', () => {
     test(`Should successfully delete folder`, async function() {
       expect.assertions(3);
