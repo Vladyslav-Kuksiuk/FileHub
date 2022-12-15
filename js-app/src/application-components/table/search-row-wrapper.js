@@ -19,7 +19,7 @@ export class SearchRowWrapper extends StateAwareWrapper {
         searchRow.isLoading = !state.folderInfo;
       });
 
-      this.addStateListener('folderContent', (state) => {
+      this.addStateListener('folderContent', () => {
         searchRow.error = null;
       });
 

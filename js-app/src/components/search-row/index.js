@@ -42,7 +42,7 @@ export class SearchRow extends Component {
   }
 
   /**
-   * @param {string} error
+   * @param {string | null} error
    */
   set error(error) {
     this.#error = error;
