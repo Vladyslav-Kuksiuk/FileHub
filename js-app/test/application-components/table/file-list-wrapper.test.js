@@ -56,15 +56,16 @@ describe('FileListWrapper', () => {
     });
   });
 
-  test('Should add folderInfo state listeners', function() {
-    expect.assertions(2);
+  test('Should add folderInfo and locationMetadata state listeners', function() {
+    expect.assertions(3);
     new FileListWrapper();
 
-    expect(addStateListenerMock).toHaveBeenCalledTimes(1);
+    expect(addStateListenerMock).toHaveBeenCalledTimes(2);
     expect(addStateListenerMock.mock.calls[0][0]).toBe('folderInfo');
+    expect(addStateListenerMock.mock.calls[1][0]).toBe('locationMetadata');
   });
 
-  test('Should dispatch LoadFolderContentAction', function() {
+  test('Should dispatch LoadFolderContentAction by folderInfo listener', function() {
     expect.assertions(2);
     registry.register('apiService', ()=> {
       return {};
@@ -72,15 +73,42 @@ describe('FileListWrapper', () => {
 
     new FileListWrapper();
 
+    const id = '123';
     stateListeners['folderInfo']({
+      locationMetadata: {
+        folderId: id,
+      },
       folderInfo: {
-        id: '123',
+        id: id,
       },
     });
 
     expect(dispatchMock).toHaveBeenCalledTimes(1);
     expect(dispatchMock)
-        .toHaveBeenCalledWith(new LoadFolderContentAction('123'));
+        .toHaveBeenCalledWith(new LoadFolderContentAction(id));
+  });
+
+  test('Should dispatch LoadFolderContentAction by locationMetadata listener', function() {
+    expect.assertions(2);
+    registry.register('apiService', ()=> {
+      return {};
+    });
+
+    new FileListWrapper();
+
+    const id = '123';
+    stateListeners['locationMetadata']({
+      locationMetadata: {
+        folderId: id,
+      },
+      folderInfo: {
+        id: id,
+      },
+    });
+
+    expect(dispatchMock).toHaveBeenCalledTimes(1);
+    expect(dispatchMock)
+        .toHaveBeenCalledWith(new LoadFolderContentAction(id));
   });
 
   test(`Should add state listeners`, function() {

@@ -36,7 +36,7 @@ export class BreadcrumbWrapper extends StateAwareWrapper {
       return;
     }
 
-    if (state.locationMetadata.folderId != null && state.locationMetadata.folderId === state.folderInfo?.id) {
+    if (state.locationMetadata?.folderId != null && state.locationMetadata.folderId === state.folderInfo?.id) {
       return;
     }
 
