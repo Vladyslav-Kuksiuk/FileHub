@@ -224,6 +224,14 @@ export class FileListWrapper extends StateAwareWrapper {
     this.addStateListener('folderContentError', (state) => {
       fileList.hasError = !!state.folderContentError;
     });
+
+    this.addStateListener('locationMetadata', (state) => {
+      if (!!state.locationMetadata.search) {
+        fileList.emptyTableText = 'No items found in this directory.';
+      } else {
+        fileList.emptyTableText = 'There are no files/directories created yet.';
+      }
+    });
   }
 
   /**

@@ -19,6 +19,10 @@ export class SearchRowWrapper extends StateAwareWrapper {
         searchRow.isLoading = !state.folderInfo;
       });
 
+      this.addStateListener('folderContent', (state) => {
+        searchRow.error = null;
+      });
+
       searchRow.onSearchClick((searchInput) => {
         const metadata = this.stateManagementService.state.locationMetadata;
         if (searchInput.length === 0 && metadata.search != null) {

@@ -37,7 +37,6 @@ export class SearchRow extends Component {
    */
   set isLoading(isLoading) {
     this.#isLoading = isLoading;
-    this.#error = null;
     this.#inputValue = '';
     this.render();
   }

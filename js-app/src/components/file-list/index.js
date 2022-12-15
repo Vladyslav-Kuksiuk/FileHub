@@ -11,6 +11,8 @@ export class FileList extends Component {
   #folderCreators = [];
   #fileCreators = [];
   #isLoading;
+
+  #emptyTableText = '';
   @inject fileTypeFactory;
 
   /**
@@ -59,6 +61,14 @@ export class FileList extends Component {
   }
 
   /**
+   * @param {string} text
+   */
+  set emptyTableText(text) {
+    this.#emptyTableText = text;
+    this.render();
+  }
+
+  /**
    * Set folder content.
    *
    * @param {function({HTMLElement}): void} folderCreators
@@ -93,7 +103,7 @@ export class FileList extends Component {
     if (this.#folderCreators.length === 0 && this.#fileCreators.length === 0) {
       return `<div ${this.markElement('folder-content-empty')} class="table-wrapper">
                         <p class="centered-in-table">
-                            There are no files/directories created yet.
+                            ${this.#emptyTableText}
                         </p>
                     </div>`;
     }
