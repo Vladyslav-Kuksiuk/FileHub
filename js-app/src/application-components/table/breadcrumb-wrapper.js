@@ -40,7 +40,7 @@ export class BreadcrumbWrapper extends StateAwareWrapper {
       return;
     }
 
-    if (state.locationMetadata?.folderId) {
+    if (!!state.locationMetadata.folderId) {
       this.stateManagementService.dispatch(new LoadFolderInfoAction(state.locationMetadata.folderId));
       return;
     }

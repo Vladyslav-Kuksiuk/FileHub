@@ -112,7 +112,7 @@ describe('FileListWrapper', () => {
   });
 
   test(`Should add state listeners`, function() {
-    expect.assertions(11);
+    expect.assertions(14);
 
     registry.register('fileTypeFactory', ()=>{
       return {
@@ -126,6 +126,7 @@ describe('FileListWrapper', () => {
     const isLoadingMock = jest.spyOn(folderContent, 'isLoading', 'set').mockImplementation(()=>{});
     const hasErrorMock = jest.spyOn(folderContent, 'hasError', 'set').mockImplementation(()=>{});
     const contentMock = jest.spyOn(folderContent, 'setContent').mockImplementation(()=>{});
+    const emptyTableTextMock = jest.spyOn(folderContent, 'emptyTableText', 'set').mockImplementation(()=>{});
 
     wrapper.wrap(folderContent);
     expect(Object.keys(stateListeners)).toContain('isFolderContentLoading');
@@ -163,6 +164,16 @@ describe('FileListWrapper', () => {
     stateListeners.folderInfo({
       folderInfo: null,
     });
+    stateListeners.locationMetadata({
+      locationMetadata: {
+        search: '123',
+      },
+    });
+    stateListeners.locationMetadata({
+      locationMetadata: {
+        search: null,
+      },
+    });
 
     expect(isLoadingMock).toHaveBeenCalledTimes(3);
     expect(isLoadingMock).toHaveBeenCalledWith(false);
@@ -170,6 +181,9 @@ describe('FileListWrapper', () => {
     expect(hasErrorMock).toHaveBeenCalledTimes(1);
     expect(hasErrorMock).toHaveBeenCalledWith(true);
     expect(contentMock).toHaveBeenCalledTimes(2);
+    expect(emptyTableTextMock).toHaveBeenCalledTimes(2);
+    expect(emptyTableTextMock).toHaveBeenNthCalledWith(1, 'No items found in this directory.');
+    expect(emptyTableTextMock).toHaveBeenNthCalledWith(2, 'There are no files/directories created yet.');
   });
 
   test('Should render folder row and trigger navigation and removing events', () => {
