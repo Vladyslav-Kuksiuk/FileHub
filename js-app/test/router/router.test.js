@@ -121,7 +121,7 @@ describe('Router', () => {
     });
   });
 
-  test('Should trigger metadata listener', function() {
+  test('Should trigger metadata listener with dynamic part and without parameters', function() {
     return new Promise((done) => {
       expect.assertions(4);
 
@@ -136,17 +136,49 @@ describe('Router', () => {
           .build();
 
       const router = new Router(config);
-      router.handleUrlPath();
       router.redirect('path/123');
 
       setTimeout(()=>{
-        expect(metadataListenerMock).toHaveBeenCalledTimes(2);
+        expect(metadataListenerMock).toHaveBeenCalledTimes(1);
         expect(metadataListenerMock).toHaveBeenCalledWith({
           id: '123',
         });
         expect(pathRouteMock).toHaveBeenCalledTimes(1);
         expect(pathRouteMock).toHaveBeenCalledWith({
           id: '123',
+        });
+        done();
+      }, 200);
+    });
+  });
+
+  test('Should trigger metadata listener with dynamic part and parameters', function() {
+    return new Promise((done) => {
+      expect.assertions(4);
+
+      const pathRouteMock = jest.fn();
+      const metadataListenerMock = jest.fn();
+      const config = new RouterConfigBuilder()
+          .addRoute('path/:id', pathRouteMock)
+          .addRoute('home', ()=>{})
+          .addErrorRoute(()=>{})
+          .addHomeRoutePath('home')
+          .addMetadataChangeListener(metadataListenerMock)
+          .build();
+
+      const router = new Router(config);
+      router.redirect('path/123?search=123');
+
+      setTimeout(()=>{
+        expect(metadataListenerMock).toHaveBeenCalledTimes(1);
+        expect(metadataListenerMock).toHaveBeenCalledWith({
+          id: '123',
+          search: '123',
+        });
+        expect(pathRouteMock).toHaveBeenCalledTimes(1);
+        expect(pathRouteMock).toHaveBeenCalledWith({
+          id: '123',
+          search: '123',
         });
         done();
       }, 200);
