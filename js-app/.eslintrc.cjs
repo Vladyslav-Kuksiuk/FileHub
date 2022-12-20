@@ -10,7 +10,14 @@ module.exports = {
     'google',
     'plugin:jest/recommended',
   ],
-  'overrides': [],
+  'overrides': [
+    {
+      'files': ['*.{ts,tsx}'],
+      'parser': '@typescript-eslint/parser',
+      'plugins': ['@typescript-eslint'],
+      'extends': []
+    }
+  ],
   'parserOptions': {
     'requireConfigFile': false,
     'ecmaVersion': 'latest',
