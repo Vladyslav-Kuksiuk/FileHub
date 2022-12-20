@@ -15,10 +15,7 @@ export default {
   },
   plugins: [
     ts({
-      transpiler: {
-        typescriptSyntax: 'typescript',
-        otherSyntax: 'babel',
-      },
+      transpiler: 'babel',
     }),
     babel({
       babelHelpers: 'bundled',
