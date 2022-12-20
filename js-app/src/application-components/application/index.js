@@ -36,6 +36,7 @@ export class Application extends Component {
           this.rootElement.innerHTML = '';
           const storage = registry.getInstance('storageService');
           if (storage.get(AUTH_TOKEN) != null) {
+            registry.getInstance('stateManagementService').dispatch(new ResetStateAction());
             router.redirect(ROUTE.FILE_LIST);
             return;
           }
@@ -61,7 +62,7 @@ export class Application extends Component {
             router.redirect(ROUTE.LOGIN);
           });
         })
-        .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
+        .addRoute(ROUTE.FILE_LIST_FOLDER, () => {
           this.rootElement.innerHTML = '';
           const storage = registry.getInstance('storageService');
           if (storage.get(AUTH_TOKEN) == null) {
