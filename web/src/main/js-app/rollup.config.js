@@ -19,13 +19,13 @@ export default {
     terser(),
     htmlTemplate({
       template: 'index.html',
-      target: 'dist/index.html',
+      target: '../resources/web-client/index.html',
     }),
     copy({
       targets: [
-        {src: 'static/styles', dest: 'dist/static'},
-        {src: 'static/images', dest: 'dist/static'},
-        {src: 'static/fonts', dest: 'dist/static'},
+        {src: 'static/styles', dest: '../resources/web-client/static'},
+        {src: 'static/images', dest: '../resources/web-client/static'},
+        {src: 'static/fonts', dest: '../resources/web-client/static'},
       ],
     }),
   ],

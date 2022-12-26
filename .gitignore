@@ -62,3 +62,4 @@ web/src/main/js-app/node_modules
 web/src/main/js-app/coverage
 web/src/main/js-app/dist
 web/src/main/js-app/manifest.hash.json
+/web/src/main/resources/web-client/
