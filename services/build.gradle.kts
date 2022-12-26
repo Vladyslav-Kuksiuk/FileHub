@@ -55,7 +55,7 @@ dependencies {
 
     implementation("javax.validation:validation-api:2.0.1.Final")
 
-    compileOnly("com.google.errorprone:error_prone_core:2.15.0")
+    compileOnly("com.google.errorprone:error_prone_core:2.9.0")
 
     implementation("org.jasypt:jasypt:1.9.3")
 
