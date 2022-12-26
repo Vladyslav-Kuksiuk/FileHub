@@ -60,6 +60,8 @@ dependencies {
 
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 
+    implementation("com.sparkjava:spark-core:2.9.4")
+
 }
 
 application {
