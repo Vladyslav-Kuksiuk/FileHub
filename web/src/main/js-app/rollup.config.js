@@ -6,7 +6,7 @@ import copy from 'rollup-plugin-copy';
 export default {
   input: 'src/index.js',
   output: {
-    dir: 'dist',
+    dir: '../resources/web-client/',
     entryFileNames: 'app-[hash].js',
     manualChunks(id) {
       if (id.includes('node_modules')) {
