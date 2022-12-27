@@ -5,12 +5,15 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/7.5.1/userguide/building_java_projects.html
  */
+import com.github.gradle.node.npm.task.NpmTask
 import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     id("net.ltgt.errorprone") version "2.0.2"
+    id("com.github.node-gradle.node") version "3.5.1"
+
 }
 
 repositories {
@@ -24,6 +27,14 @@ java {
     }
 }
 
+node {
+    download.set(false)
+    npmVersion.set("")
+    nodeProjectDir.set(file("${project.projectDir}/src/main/js-app"))
+    workDir.set(file("${project.projectDir}/src/main/js-app"))
+    npmWorkDir.set(file("${project.projectDir}/src/main/js-app"))
+}
+
 buildscript {
 
     repositories {
@@ -34,11 +45,13 @@ buildscript {
 
     dependencies {
         classpath("net.ltgt.gradle:gradle-errorprone-plugin:2.0.2")
+        classpath("com.github.node-gradle:gradle-node-plugin:3.5.1")
     }
 
 }
 
 apply(plugin = "net.ltgt.errorprone")
+apply(plugin = "com.github.node-gradle.node")
 
 dependencies {
     // Use JUnit Jupiter for testing.
@@ -74,8 +87,14 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
+tasks.register<NpmTask>("buildNpm") {
+    dependsOn(tasks.npmInstall)
+    npmCommand.set(listOf("run", "build"))
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone.disableWarningsInGeneratedCode.set(true)
+
 }
 
 tasks.named<JavaCompile>("compileTestJava") {
