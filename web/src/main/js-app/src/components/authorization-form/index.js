@@ -5,15 +5,17 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateLength} from '../../validation/value-validations';
 import {ValidationService} from '../../validation/validation-service';
 import {Link} from '../link';
+import {UserData} from '../../user-data';
 
-const EMAIL = 'email';
-const PASSWORD = 'password';
+export const EMAIL = 'email';
+export const PASSWORD = 'password';
 const EMAIL_MIN_LENGTH = 5;
 const PASSWORD_MIN_LENGTH = 6;
 export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
 export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+const SUBMIT_EVENT = 'SUBMIT_EVENT';
 
 /**
  * Authorization form component.
@@ -25,6 +27,7 @@ export class AuthorizationForm extends Component {
     [EMAIL]: [],
     [PASSWORD]: [],
   };
+  #headError;
   #eventTarget = new EventTarget();
 
   /**
@@ -83,13 +86,19 @@ export class AuthorizationForm extends Component {
     form.onSubmit((formData) => {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
-      this.#validateForm(formData, configCreator);
+      this.#headError = null;
+
+      this.#validateForm(formData, configCreator)
+          .then(()=>{
+            this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+          })
+          .catch(()=>{});
     });
   }
 
   /**
-   * @private
    * @param {object} errors
+   * @private
    */
   #setFormErrors(errors) {
     this.#formErrors = errors;
@@ -97,25 +106,50 @@ export class AuthorizationForm extends Component {
   }
 
   /**
-   * Adds event listener on navigate to registration.
+   * Sets head error.
    *
-   * @param {function(): void} listener
+   * @param {string} error
+   */
+  setHeadError(error) {
+    this.#headError = error;
+    this.render();
+  }
+
+  /**
+   * Adds listener on navigate to registration event.
+   *
+   * @param {Function} listener
    */
   onNavigateToRegistration(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
   }
 
   /**
-   * @private
+   * Adds listener on form submit event.
+   *
+   * @param {function(UserData)} listener
+   */
+  onSubmit(listener) {
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, () =>{
+      listener(new UserData(
+          this.#emailValue,
+          this.#passwordValue,
+      ));
+    });
+  }
+
+  /**
    * @param {FormData} formData
-   * @param {function(FormData): config} configCreator
+   * @param {Function} configCreator
+   * @returns {Promise<void>}
+   * @private
    */
   #validateForm(formData, configCreator) {
     this.#setFormErrors({
       [EMAIL]: [],
       [PASSWORD]: [],
     });
-    new ValidationService()
+    return new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
           const errorsByField = result.errors.reduce((tempErrors, error) => {
@@ -125,6 +159,7 @@ export class AuthorizationForm extends Component {
             return tempErrors;
           }, {});
           this.#setFormErrors(errorsByField);
+          throw new Error();
         });
   }
 
@@ -132,6 +167,10 @@ export class AuthorizationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    return this.addSlot('auth-form');
+    const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : '';
+    return `
+    <slot ${this.markElement('head-error')}>${error}</slot>
+    ${this.addSlot('auth-form')}
+    `;
   }
 }

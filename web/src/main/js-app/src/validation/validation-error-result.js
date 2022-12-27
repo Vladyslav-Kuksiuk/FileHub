@@ -1,12 +1,14 @@
+import {ValidationError} from './validation-error.js';
+
 /**
- * {@link Error} which holds all {@link ValidationError}
+ * {@link Error} Which holds all {@link ValidationError}.
  */
 export class ValidationErrorResult extends Error {
   errors = [];
 
   /**
    * ValidationErrorResult constructor.
-   * @param {[ValidationError]} errors
+   * @param {ValidationError[]} errors
    */
   constructor(errors) {
     super();

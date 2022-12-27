@@ -1,5 +1,6 @@
 import {Component} from '../component';
 import {Link} from '../link';
+import {TitleService} from '../../title-service';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -11,9 +12,11 @@ export class Error404Page extends Component {
 
   /**
    * @param {HTMLElement} parent
+   * @param {TitleService} titleService
    */
-  constructor(parent) {
+  constructor(parent, titleService) {
     super(parent);
+    titleService.setTitles(['404']);
     this.init();
   }
 
@@ -30,9 +33,9 @@ export class Error404Page extends Component {
   }
 
   /**
-   * Adds event listener on navigate to registration.
+   * Adds listener on navigate to home event.
    *
-   * @param {function(): void} listener
+   * @param {Function} listener
    */
   onNavigateToHome(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);

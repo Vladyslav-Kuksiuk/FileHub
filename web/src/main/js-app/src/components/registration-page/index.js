@@ -1,5 +1,8 @@
 import {Component} from '../component';
 import {RegistrationForm} from '../registration-form';
+import {TitleService} from '../../title-service';
+import {ApiService} from '../../server-connection/api-service';
+import {FieldValidationError} from '../../server-connection/field-validation-error';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -8,17 +11,22 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
+  #apiService;
 
   /**
    * @param {HTMLElement} parent
+   * @param {TitleService} titleService
+   * @param {ApiService} apiService
    */
-  constructor(parent) {
+  constructor(parent, titleService, apiService) {
     super(parent);
+    titleService.setTitles(['Sign Up']);
+    this.#apiService = apiService;
     this.init();
   }
 
   /**
-   * @inheritDoc.
+   * @inheritDoc
    */
   afterRender() {
     const formSlot = this.getSlot('form');
@@ -26,11 +34,30 @@ export class RegistrationPage extends Component {
     form.onNavigateToAuthorization(()=>{
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
+    form.onSubmit((data)=>{
+      this.#apiService.register(data)
+          .then(()=>{
+            this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+          })
+          .catch((error)=>{
+            if (error instanceof FieldValidationError) {
+              const errors = {};
+              error.fieldErrors.forEach((fieldError) =>{
+                const prevErrors = errors[fieldError.fieldName] || [];
+                errors[fieldError.fieldName] = [...prevErrors, fieldError.errorText];
+              });
+              form.formErrors = errors;
+            } else {
+              form.setHeadError(error.message);
+            }
+          });
+    });
   }
 
   /**
-   * Adds event listener on navigate to authorization.
-   * @param {function} listener
+   * Adds listener on navigate to authorization event.
+   *
+   * @param {Function} listener
    */
   onNavigateToAuthorization(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);

@@ -5,12 +5,13 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations';
 import {ValidationService} from '../../validation/validation-service';
 import {Link} from '../link';
+import {UserData} from '../../user-data';
 
-const EMAIL = 'email';
-const PASSWORD = 'password';
+export const EMAIL = 'email';
+export const PASSWORD = 'password';
+export const CONFIRM_PASSWORD = 'confirm-password';
 const EMAIL_MIN_LENGTH = 5;
 const PASSWORD_MIN_LENGTH = 6;
-const CONFIRM_PASSWORD = 'confirm-password';
 const EMAIL_VALIDATION_REGEX = /^[a-zA-Z\d+.\-_@]+$/;
 export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
 export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
@@ -18,6 +19,7 @@ export const EMAIL_VALIDATION_ERROR = 'Allowed only a-Z and +.-_@ .';
 export const PASSWORD_MATCH_ERROR = 'Passwords don\'t match.';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+const SUBMIT_EVENT = 'SUBMIT_EVENT';
 
 /**
  * Registration form component.
@@ -32,6 +34,7 @@ export class RegistrationForm extends Component {
     [CONFIRM_PASSWORD]: [],
   };
   #eventTarget = new EventTarget();
+  #headError;
 
   /**
    * @param {HTMLElement} parent
@@ -42,7 +45,7 @@ export class RegistrationForm extends Component {
   }
 
   /**
-   * @inheritDoc.
+   * @inheritDoc
    */
   afterRender() {
     const linkCreator = (slot) => {
@@ -106,40 +109,70 @@ export class RegistrationForm extends Component {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
       this.#confirmValue = formData.get(CONFIRM_PASSWORD);
-      this.#validateForm(formData, configCreator);
+      this.#headError = null;
+
+      this.#validateForm(formData, configCreator)
+          .then(() => {
+            this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+          })
+          .catch(()=>{});
     });
   }
 
   /**
-   * @private
    * @param {object} errors
    */
-  #setFormErrors(errors) {
+  set formErrors(errors) {
     this.#formErrors = errors;
     this.render();
   }
 
   /**
-   * Adds event listener on navigate to authorization.
+   * Adds listener on navigate to authorization event.
    *
-   * @param {function} listener
+   * @param {Function} listener
    */
   onNavigateToAuthorization(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
   }
 
   /**
-   * @private
+   * Adds listener on form submit event.
+   *
+   * @param {Function} listener
+   */
+  onSubmit(listener) {
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, ()=>{
+      listener(new UserData(
+          this.#emailValue,
+          this.#passwordValue,
+      ));
+    });
+  }
+
+  /**
+   * Sets head error.
+   *
+   * @param {string} error
+   */
+  setHeadError(error) {
+    this.#headError = error;
+    this.render();
+  }
+
+  /**
    * @param {FormData} formData
-   * @param {function(FormData)} configCreator
+   * @param {Function} configCreator
+   * @returns {Promise<void>}
+   * @private
    */
   #validateForm(formData, configCreator) {
-    this.#setFormErrors({
+    this.formErrors ={
       [EMAIL]: [],
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
-    });
-    new ValidationService()
+    };
+    return new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
           const errorsByField = result.errors.reduce((tempErrors, error)=>{
@@ -148,7 +181,8 @@ export class RegistrationForm extends Component {
             tempErrors[fieldName] = [...prevErrors, error.message];
             return tempErrors;
           }, {});
-          this.#setFormErrors(errorsByField);
+          this.formErrors = errorsByField;
+          throw new Error();
         });
   }
 
@@ -156,7 +190,11 @@ export class RegistrationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    return this.addSlot('form');
+    const error = this.#headError ? `<p class="text-danger"> ${this.#headError} </p>` : '';
+    return `
+    <slot ${this.markElement('head-error')} >${error}</slot>
+    ${this.addSlot('form')}
+    `;
   }
 }
 
