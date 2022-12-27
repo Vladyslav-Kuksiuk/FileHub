@@ -3,7 +3,7 @@ import {Component} from '../component';
 const CLICK_EVENT = 'CLICK_EVENT';
 
 /**
- * Button component.
+ * Link component.
  */
 export class Link extends Component {
   #text;
@@ -30,9 +30,9 @@ export class Link extends Component {
   }
 
   /**
-   * Adds onClick event listener.
+   * Adds listener on click event.
    *
-   * @param {function} listener
+   * @param {Function} listener
    */
   onClick(listener) {
     this.#eventTarget.addEventListener(CLICK_EVENT, listener);

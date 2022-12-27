@@ -13,7 +13,7 @@ export class Form extends Component {
   #eventTarget = new EventTarget();
 
   /**
-   * @typedef {Object} FormConfig
+   * @typedef {object} FormConfig
    * @property {string} buttonText
    * @property {function(HTMLElement)} linkCreator
    */
@@ -65,7 +65,7 @@ export class Form extends Component {
   }
 
   /**
-   * Adds onSubmit event to form.
+   * Adds listener on form submit event.
    *
    * @param {function(FormData): void} listener
    */

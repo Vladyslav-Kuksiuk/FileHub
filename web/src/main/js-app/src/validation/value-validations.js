@@ -3,7 +3,7 @@ import {Preconditions} from '../preconditions';
 /**
  * Validates the minimum length of value.
  *
- * @param {int} minLength
+ * @param {number} minLength
  * @param {string} errorMessage
  * @returns {function(*): Promise<void | Error>}
  */
@@ -51,6 +51,7 @@ export function validateByRegexp(regex, errorMessage) {
 
 /**
  * Validates the consistency of input values.
+ *
  * @param {any} referencedValue
  * @param {string} errorMessage
  * @returns {function(*): Promise<void | Error>}
