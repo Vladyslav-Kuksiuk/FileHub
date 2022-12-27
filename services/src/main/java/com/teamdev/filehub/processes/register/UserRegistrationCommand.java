@@ -24,10 +24,6 @@ public class UserRegistrationCommand implements Command {
         Preconditions.checkNotNull(password);
         Preconditions.checkNotNull(email);
 
-        Preconditions.checkState(!login.isEmpty());
-        Preconditions.checkState(!password.isEmpty());
-        Preconditions.checkState(EmailValidator.validate(email));
-
         this.login = login;
         this.password = password;
         this.email = email;

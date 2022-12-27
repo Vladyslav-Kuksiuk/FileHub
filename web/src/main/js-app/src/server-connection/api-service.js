@@ -33,7 +33,7 @@ export class ApiService {
    */
   async logIn(data) {
     return this.#requestService.postJson(LOG_IN_USER_PATH, {
-      username: data.login,
+      login: data.login,
       password: data.password,
     }).then((response) => {
       if (response.status === 401) {
@@ -54,7 +54,7 @@ export class ApiService {
    */
   async register(data) {
     return this.#requestService.postJson(REGISTER_USER_PATH, {
-      username: data.login,
+      login: data.login,
       password: data.password,
     }).then((response) => {
       if (response.status === 422) {

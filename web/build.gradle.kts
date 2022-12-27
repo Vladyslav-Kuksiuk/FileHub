@@ -54,6 +54,8 @@ apply(plugin = "net.ltgt.errorprone")
 apply(plugin = "com.github.node-gradle.node")
 
 dependencies {
+    implementation(project(":services"))
+    implementation(project(":persistent"))
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
@@ -74,6 +76,8 @@ dependencies {
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 
     implementation("com.sparkjava:spark-core:2.9.4")
+
+    implementation("com.google.code.gson:gson:2.10")
 
 }
 
