@@ -33,7 +33,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     @Override
     public RecordId<String> handle(@Nonnull UserRegistrationCommand command)
             throws UserAlreadyRegisteredException, InvalidEmailException {
-        if (!EmailValidator.validate(command.email())) {
+        if (!EmailValidator.validate(command.login())) {
             throw new InvalidEmailException();
         }
         logger.atInfo()
@@ -43,8 +43,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
 
         UserRecord userRecord = new UserRecord(userId,
                 command.login(),
-                StringEncryptor.encrypt(command.password()),
-                command.email());
+                StringEncryptor.encrypt(command.password()));
 
         if (userDao.findByLogin(command.login())
                 .isPresent()) {

@@ -13,8 +13,7 @@ class UserRegistrationCommandTest {
         assertThrows(IllegalStateException.class, () -> {
             UserRegistrationCommand command =
                     new UserRegistrationCommand("",
-                                                "password",
-                                                "email@email.com");
+                                                "password");
         }, "User registration command creation with illegal login passed.");
 
     }
@@ -25,21 +24,8 @@ class UserRegistrationCommandTest {
         assertThrows(IllegalStateException.class, () -> {
             UserRegistrationCommand command =
                     new UserRegistrationCommand("Hellamb",
-                                                "",
-                                                "email@email.com");
+                                                "");
         }, "User registration command creation with illegal password passed.");
-
-    }
-
-    @Test
-    void invalidEmailTest() {
-
-        assertThrows(IllegalStateException.class, () -> {
-            UserRegistrationCommand command =
-                    new UserRegistrationCommand("Hellamb",
-                                                "password",
-                                                "email.com");
-        }, "User registration command creation with illegal email passed.");
 
     }
 

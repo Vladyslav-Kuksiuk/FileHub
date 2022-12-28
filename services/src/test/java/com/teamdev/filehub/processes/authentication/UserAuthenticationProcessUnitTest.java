@@ -30,13 +30,11 @@ public class UserAuthenticationProcessUnitTest {
 
         registeredUser = new UserRecord(new RecordId<>("user1"),
                                         "user1",
-                                        StringEncryptor.encrypt("password1"),
-                                        "email1@email.com");
+                                        StringEncryptor.encrypt("password1"));
 
         notRegisteredUser = new UserRecord(new RecordId<>("user2"),
                                            "user2",
-                                           StringEncryptor.encrypt("password2"),
-                                           "email2@email.com");
+                                           StringEncryptor.encrypt("password2"));
 
         userDao.create(registeredUser);
 

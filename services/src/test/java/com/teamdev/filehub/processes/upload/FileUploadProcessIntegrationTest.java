@@ -1,17 +1,17 @@
 package com.teamdev.filehub.processes.upload;
 
+import com.teamdev.filehub.ApplicationContext;
 import com.teamdev.filehub.InMemoryDatabase;
-import com.teamdev.filehub.ServiceLocator;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.filestorage.FileStorage;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationResponse;
 import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
+import com.teamdev.filehub.processes.register.InvalidEmailException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
-import com.teamdev.filehub.servicelocator.ServiceLocatorImpl;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -26,9 +26,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileUploadProcessIntegrationTest {
 
     @Test
-    void fileUploadTest() throws IOException,
-                                 InterruptedException, FileUploadException,
-                                 UserAlreadyRegisteredException, UserDataMismatchException {
+    void fileUploadTest() throws IOException, FileUploadException,
+            UserAlreadyRegisteredException, UserDataMismatchException, InvalidEmailException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
 
@@ -49,19 +48,17 @@ class FileUploadProcessIntegrationTest {
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
 
-        ServiceLocator locator = new ServiceLocatorImpl();
+        ApplicationContext context = new ApplicationContext();
 
-        UserRegistrationProcess registrationProcess = locator.locate(UserRegistrationProcess.class);
-        UserAuthenticationProcess authenticationProcess = locator.locate(
-                UserAuthenticationProcess.class);
-        FileUploadProcess uploadProcess = locator.locate(FileUploadProcess.class);
+        UserRegistrationProcess registrationProcess = context.getUserRegistrationProcess();
+        UserAuthenticationProcess authenticationProcess =context.getUserAuthenticationProcess();
+        FileUploadProcess uploadProcess = context.getFileUploadProcess();
 
         RecordId<String> userId = registrationProcess.handle(
-                new UserRegistrationCommand("user",
-                                            "password",
-                                            "email@email.com"));
+                new UserRegistrationCommand("email@email.com",
+                                            "password"));
         UserAuthenticationResponse authResp = authenticationProcess.handle(
-                new UserAuthenticationCommand("user",
+                new UserAuthenticationCommand("email@email.com",
                                               "password"));
 
         InputStream inputStream = new FileInputStream(
@@ -69,7 +66,7 @@ class FileUploadProcessIntegrationTest {
 
         RecordId<String> fileId = uploadProcess.handle(new FileUploadCommand(userId,
                                                                              new RecordId<>(
-                                                                                     "user_root"),
+                                                                                     "email@email.com_root"),
                                                                              "hello",
                                                                              "txt",
                                                                              inputStream));
