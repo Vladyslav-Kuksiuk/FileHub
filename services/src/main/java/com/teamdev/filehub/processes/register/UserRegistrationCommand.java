@@ -2,7 +2,6 @@ package com.teamdev.filehub.processes.register;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.processes.Command;
-import com.teamdev.util.EmailValidator;
 
 import javax.annotation.Nonnull;
 

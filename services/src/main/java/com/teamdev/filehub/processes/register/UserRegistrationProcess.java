@@ -10,5 +10,5 @@ public interface UserRegistrationProcess extends ApplicationProcess<UserRegistra
 
     @Override
     RecordId<String> handle(UserRegistrationCommand command) throws
-                                                             UserAlreadyRegisteredException, InvalidEmailException;
+            UserAlreadyRegisteredException, InvalidEmailException;
 }

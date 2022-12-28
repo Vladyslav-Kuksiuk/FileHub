@@ -10,9 +10,11 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Route to handle user registration process.
+ */
 public class UserRegisterRoute implements Route {
     Gson gson = new Gson();
     UserRegistrationProcess process;
@@ -23,7 +25,7 @@ public class UserRegisterRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        Map<String, String> responseBodyMap = gson.fromJson(request.body(), HashMap.class);
+        Map<String, String> responseBodyMap = gson.fromJson(request.body(), Map.class);
         try {
             UserRegistrationCommand command =
                     new UserRegistrationCommand(responseBodyMap.get("login"),
@@ -34,8 +36,8 @@ public class UserRegisterRoute implements Route {
             return gson.toJson(userId);
 
         } catch (UserAlreadyRegisteredException | InvalidEmailException e) {
-            ValidationErrors errors = new ValidationErrors();
-            errors.addError(new ValidationError("email", e.getMessage()));
+            FieldErrors errors = new FieldErrors();
+            errors.addError(new FieldError("email", e.getMessage()));
             System.out.println(gson.toJson(errors));
             response.status(422);
             return gson.toJson(errors);

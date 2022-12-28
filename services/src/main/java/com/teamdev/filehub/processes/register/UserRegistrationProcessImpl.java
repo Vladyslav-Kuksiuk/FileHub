@@ -33,24 +33,23 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     @Override
     public RecordId<String> handle(@Nonnull UserRegistrationCommand command)
             throws UserAlreadyRegisteredException, InvalidEmailException {
-        if(!EmailValidator.validate(command.email())){
+        if (!EmailValidator.validate(command.email())) {
             throw new InvalidEmailException();
         }
         logger.atInfo()
-              .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
+                .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
 
         RecordId<String> userId = new RecordId<>(command.login());
 
         UserRecord userRecord = new UserRecord(userId,
-                                               command.login(),
-                                               StringEncryptor.encrypt(command.password()),
-                                               command.email());
+                command.login(),
+                StringEncryptor.encrypt(command.password()),
+                command.email());
 
         if (userDao.findByLogin(command.login())
-                   .isPresent()) {
+                .isPresent()) {
             throw new UserAlreadyRegisteredException("User already registered.");
         }
-        ;
 
         userDao.create(userRecord);
 
@@ -63,7 +62,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
         folderDao.create(userRootFolder);
 
         logger.atInfo()
-              .log("[PROCESS FINISHED] - User registration - login: %s.", command.login());
+                .log("[PROCESS FINISHED] - User registration - login: %s.", command.login());
 
         return userId;
 
