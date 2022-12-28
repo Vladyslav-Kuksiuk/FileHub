@@ -15,11 +15,11 @@ import java.util.Map;
 /**
  * Route to handle user registration process.
  */
-public class UserRegisterRoute implements Route {
+public class RegistrationRoute implements Route {
     Gson gson = new Gson();
     UserRegistrationProcess process;
 
-    public UserRegisterRoute(UserRegistrationProcess process) {
+    public RegistrationRoute(UserRegistrationProcess process) {
         this.process = process;
     }
 

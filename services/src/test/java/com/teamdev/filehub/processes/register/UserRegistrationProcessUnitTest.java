@@ -43,7 +43,7 @@ class UserRegistrationProcessUnitTest {
     }
 
     @Test
-    void registerTest() throws UserAlreadyRegisteredException {
+    void registerTest() throws UserAlreadyRegisteredException, InvalidEmailException {
 
         UserRegistrationCommand command = new UserRegistrationCommand(toRegisterUser.login(),
                                                                       "password2",

@@ -15,6 +15,6 @@ public class Application {
         staticFiles.location("/web-client");
         ServiceLocator serviceLocator = new ServiceLocatorImpl();
 
-        post("api/register", new UserRegisterRoute(serviceLocator.locate(UserRegistrationProcess.class)));
+        post("api/register", new RegistrationRoute(serviceLocator.locate(UserRegistrationProcess.class)));
     }
 }
