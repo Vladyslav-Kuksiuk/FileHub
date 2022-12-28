@@ -1,6 +1,7 @@
 package com.teamdev.server;
 
 import com.teamdev.filehub.ServiceLocator;
+import com.teamdev.filehub.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
 import com.teamdev.filehub.servicelocator.ServiceLocatorImpl;
 
@@ -16,5 +17,6 @@ public class Application {
         ServiceLocator serviceLocator = new ServiceLocatorImpl();
 
         post("api/register", new RegistrationRoute(serviceLocator.locate(UserRegistrationProcess.class)));
+        post("api/login", new AuthenticationRoute(serviceLocator.locate(UserAuthenticationProcess.class)));
     }
 }
