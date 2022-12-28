@@ -1,8 +1,6 @@
 package com.teamdev.server;
 
-import com.teamdev.filehub.ServiceLocator;
-import com.teamdev.filehub.processes.register.UserRegistrationProcess;
-import com.teamdev.filehub.servicelocator.ServiceLocatorImpl;
+import com.teamdev.filehub.ApplicationContext;
 
 import static spark.Spark.post;
 import static spark.Spark.staticFiles;
@@ -13,8 +11,8 @@ import static spark.Spark.staticFiles;
 public class Application {
     public static void main(String[] args) {
         staticFiles.location("/web-client");
-        ServiceLocator serviceLocator = new ServiceLocatorImpl();
+        ApplicationContext context = new ApplicationContext();
 
-        post("api/register", new RegistrationRoute(serviceLocator.locate(UserRegistrationProcess.class)));
+        post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
     }
 }

@@ -29,8 +29,7 @@ public class RegistrationRoute implements Route {
         try {
             UserRegistrationCommand command =
                     new UserRegistrationCommand(responseBodyMap.get("login"),
-                            responseBodyMap.get("password"),
-                            responseBodyMap.get("login"));
+                            responseBodyMap.get("password"));
             RecordId<String> userId = process.handle(command);
             response.status(200);
             return gson.toJson(userId);
