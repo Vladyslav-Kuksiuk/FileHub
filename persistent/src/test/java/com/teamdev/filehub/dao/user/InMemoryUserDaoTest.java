@@ -19,12 +19,10 @@ class InMemoryUserDaoTest {
 
     private final UserRecord USER_RECORD = new UserRecord(new RecordId<>("real_user"),
                                                           "real_user",
-                                                          "real_password",
-                                                          "real@email.com");
+                                                          "real_password");
     private final UserData USER_DATA = new UserData("real_user",
                                                     "real_user",
-                                                    "real_password",
-                                                    "real@email.com");
+                                                    "real_password");
     @Mock
     private UserTable userTable;
     private UserDao userDao;

@@ -32,16 +32,15 @@ class UserRegistrationProcessIntegrationTest {
 
     @Test
     void registerTest() throws InterruptedException, ProcessException {
-        UserRegistrationCommand command = new UserRegistrationCommand("Hellamb",
-                                                                      "password",
-                                                                      "email@email.com");
+        UserRegistrationCommand command = new UserRegistrationCommand("email@email.com",
+                                                                      "password");
 
         registerProcess.handle(command);
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
-                              .findById("Hellamb")
+                              .findById("email@email.com")
                               .get()
-                              .email())
+                              .login())
                 .matches("email@email.com");
 
         Thread.sleep(1500);
@@ -51,9 +50,8 @@ class UserRegistrationProcessIntegrationTest {
     void registerManyTest() throws InterruptedException, ProcessException {
 
         for (int i = 0; i < 100; i++) {
-            UserRegistrationCommand command = new UserRegistrationCommand("user" + i,
-                                                                          "password",
-                                                                          "email@email.com");
+            UserRegistrationCommand command = new UserRegistrationCommand("email@email.com" + i,
+                                                                          "password");
 
             registerProcess.handle(command);
 
@@ -64,10 +62,10 @@ class UserRegistrationProcessIntegrationTest {
         }
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
-                              .findById("user99")
+                              .findById("email@email.com99")
                               .get()
-                              .email())
-                .matches("email@email.com");
+                              .login())
+                .matches("email@email.com99");
 
         Thread.sleep(1500);
     }

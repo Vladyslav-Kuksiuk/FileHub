@@ -14,9 +14,6 @@ import java.util.Optional;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Дуже файно, дуже подобається.
- */
 class UserLogoutProcessUnitTest {
 
     private AuthenticationDao authDao;

@@ -25,9 +25,8 @@ class ServiceLocatorImplTest {
         UserRegistrationProcess registrationProcess = locator.locate(UserRegistrationProcess.class);
 
         try {
-            registrationProcess.handle(new UserRegistrationCommand("SLuser",
-                                                                   "SLpassword",
-                                                                   "email@email.com"));
+            registrationProcess.handle(new UserRegistrationCommand("email@email.com",
+                                                                   "SLpassword"));
         } catch (UserAlreadyRegisteredException exception) {
 
         }
@@ -35,7 +34,7 @@ class ServiceLocatorImplTest {
         UserAuthenticationProcess authProcess = locator.locate(UserAuthenticationProcess.class);
 
         UserAuthenticationResponse authResponse = authProcess.handle(
-                new UserAuthenticationCommand("SLuser", "SLpassword"));
+                new UserAuthenticationCommand("email@email.com", "SLpassword"));
 
         Thread.sleep(3000);
 
@@ -45,7 +44,7 @@ class ServiceLocatorImplTest {
                 "User registration and authentication process, picket from ServiceLocator failed.")
                 .that(authResponse.authenticationToken())
                 .isEqualTo(database.authenticationTable()
-                                   .findByUserId("SLuser")
+                                   .findByUserId("email@email.com")
                                    .get()
                                    .authenticationToken());
 

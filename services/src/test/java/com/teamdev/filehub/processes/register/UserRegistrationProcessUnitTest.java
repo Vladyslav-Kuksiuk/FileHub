@@ -28,15 +28,13 @@ class UserRegistrationProcessUnitTest {
         folderDao = new FolderDaoFake();
         registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
 
-        registeredUser = new UserRecord(new RecordId<>("user1"),
-                                        "user1",
-                                        StringEncryptor.encrypt("password1"),
-                                        "email1@email.com");
+        registeredUser = new UserRecord(new RecordId<>("email1@email.com"),
+                                        "email1@email.com",
+                                        StringEncryptor.encrypt("password1"));
 
-        toRegisterUser = new UserRecord(new RecordId<>("user2"),
-                                        "user2",
-                                        StringEncryptor.encrypt("password2"),
-                                        "email2@email.com");
+        toRegisterUser = new UserRecord(new RecordId<>("email2@email.com"),
+                                        "email2@email.com",
+                                        StringEncryptor.encrypt("password2"));
 
         userDao.create(registeredUser);
 
@@ -46,8 +44,7 @@ class UserRegistrationProcessUnitTest {
     void registerTest() throws UserAlreadyRegisteredException {
 
         UserRegistrationCommand command = new UserRegistrationCommand(toRegisterUser.login(),
-                                                                      "password2",
-                                                                      toRegisterUser.email());
+                                                                      "password2");
 
         registrationProcess.handle(command);
 
@@ -63,12 +60,6 @@ class UserRegistrationProcessUnitTest {
                              .password())
                 .matches(toRegisterUser.password());
 
-        assertWithMessage("Registered user email not match.")
-                .that(userDao.find(toRegisterUser.id())
-                             .get()
-                             .email())
-                .matches(toRegisterUser.email());
-
         assertWithMessage("Registered user root folder not exists.")
                 .that(folderDao.find(new RecordId<>(toRegisterUser.login() + "_root"))
                                .get()
@@ -80,8 +71,7 @@ class UserRegistrationProcessUnitTest {
     void registerExistingUserTest() {
 
         UserRegistrationCommand command = new UserRegistrationCommand(registeredUser.login(),
-                                                                      "password1",
-                                                                      registeredUser.email());
+                                                                      "password1");
 
         assertThrows(UserAlreadyRegisteredException.class,
                      () -> registrationProcess.handle(command),

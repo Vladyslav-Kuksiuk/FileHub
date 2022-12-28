@@ -39,8 +39,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
 
         UserRecord userRecord = new UserRecord(userId,
                                                command.login(),
-                                               StringEncryptor.encrypt(command.password()),
-                                               command.email());
+                                               StringEncryptor.encrypt(command.password()));
 
         if (userDao.findByLogin(command.login())
                    .isPresent()) {

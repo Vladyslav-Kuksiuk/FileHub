@@ -42,8 +42,7 @@ public class InMemoryUserDao implements UserDao {
 
             return Optional.of(new UserRecord(new RecordId<>(userData.id()),
                                               userData.login(),
-                                              userData.password(),
-                                              userData.email()));
+                                              userData.password()));
 
         }
 
@@ -78,8 +77,7 @@ public class InMemoryUserDao implements UserDao {
         UserData userData = new UserData(record.id()
                                                .value(),
                                          record.login(),
-                                         record.password(),
-                                         record.email());
+                                         record.password());
 
         userTable.create(userData);
 
@@ -99,8 +97,7 @@ public class InMemoryUserDao implements UserDao {
         UserData userData = new UserData(record.id()
                                                .value(),
                                          record.login(),
-                                         record.password(),
-                                         record.email());
+                                         record.password());
 
         userTable.update(userData);
 
@@ -127,8 +124,7 @@ public class InMemoryUserDao implements UserDao {
 
             return Optional.of(new UserRecord(new RecordId<>(userData.id()),
                                               userData.login(),
-                                              userData.password(),
-                                              userData.email()));
+                                              userData.password()));
         }
 
         return Optional.empty();

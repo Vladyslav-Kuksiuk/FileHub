@@ -27,8 +27,7 @@ class UserAuthenticationProcessIntegrationTest {
     void authenticationTest() throws UserDataMismatchException {
         database.clean();
 
-        UserData user = new UserData("user", "user", StringEncryptor.encrypt("password"),
-                                     "email@email.com");
+        UserData user = new UserData("user", "user", StringEncryptor.encrypt("password"));
 
         database.userTable()
                 .create(user);

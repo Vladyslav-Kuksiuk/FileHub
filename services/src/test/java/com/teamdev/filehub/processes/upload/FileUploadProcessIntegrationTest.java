@@ -26,8 +26,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileUploadProcessIntegrationTest {
 
     @Test
-    void fileUploadTest() throws IOException,
-                                 InterruptedException, FileUploadException,
+    void fileUploadTest() throws IOException, FileUploadException,
                                  UserAlreadyRegisteredException, UserDataMismatchException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
@@ -57,11 +56,10 @@ class FileUploadProcessIntegrationTest {
         FileUploadProcess uploadProcess = locator.locate(FileUploadProcess.class);
 
         RecordId<String> userId = registrationProcess.handle(
-                new UserRegistrationCommand("user",
-                                            "password",
-                                            "email@email.com"));
+                new UserRegistrationCommand("email@email.com",
+                                            "password"));
         UserAuthenticationResponse authResp = authenticationProcess.handle(
-                new UserAuthenticationCommand("user",
+                new UserAuthenticationCommand("email@email.com",
                                               "password"));
 
         InputStream inputStream = new FileInputStream(
@@ -69,7 +67,7 @@ class FileUploadProcessIntegrationTest {
 
         RecordId<String> fileId = uploadProcess.handle(new FileUploadCommand(userId,
                                                                              new RecordId<>(
-                                                                                     "user_root"),
+                                                                                     "email@email.com_root"),
                                                                              "hello",
                                                                              "txt",
                                                                              inputStream));

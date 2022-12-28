@@ -14,25 +14,20 @@ public class UserRecord extends DatabaseRecord<String> {
 
     private final String login;
     private final String password;
-    private final String email;
 
     public UserRecord(@Nonnull RecordId<String> id,
                       @Nonnull String login,
-                      @Nonnull String password,
-                      @Nonnull String email) {
+                      @Nonnull String password) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(login);
         Preconditions.checkNotNull(password);
-        Preconditions.checkNotNull(email);
 
         Preconditions.checkState(!login.isEmpty());
         Preconditions.checkState(!password.isEmpty());
-        Preconditions.checkState(EmailValidator.validate(email));
 
         this.login = login;
         this.password = password;
-        this.email = email;
     }
 
     public String login() {
@@ -41,9 +36,5 @@ public class UserRecord extends DatabaseRecord<String> {
 
     public String password() {
         return password;
-    }
-
-    public String email() {
-        return email;
     }
 }
