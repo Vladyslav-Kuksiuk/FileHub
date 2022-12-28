@@ -13,8 +13,7 @@ class UserDataTest {
 
         UserData userData = new UserData("user",
                                          "user",
-                                         "password",
-                                         "email@email.com");
+                                         "password");
 
         Truth.assertWithMessage("User id reading failed.")
              .that(userData.id())
@@ -28,10 +27,6 @@ class UserDataTest {
              .that(userData.password())
              .matches("password");
 
-        Truth.assertWithMessage("User email reading failed.")
-             .that(userData.email())
-             .matches("email@email.com");
-
     }
 
     @Test
@@ -40,8 +35,7 @@ class UserDataTest {
         assertThrows(IllegalStateException.class, () -> {
             UserData userData = new UserData("user",
                                              "",
-                                             "password",
-                                             "email@email.com");
+                                             "password");
         }, "User data creation with illegal login passed.");
 
     }
@@ -52,21 +46,8 @@ class UserDataTest {
         assertThrows(IllegalStateException.class, () -> {
             UserData userData = new UserData("user",
                                              "user",
-                                             "",
-                                             "email@email.com");
+                                             "");
         }, "User data creation with illegal password passed.");
-
-    }
-
-    @Test
-    void illegalEmailTest() {
-
-        assertThrows(IllegalStateException.class, () -> {
-            UserData userData = new UserData("user",
-                                             "user",
-                                             "password",
-                                             "email.com");
-        }, "User data creation with illegal email passed.");
 
     }
 
