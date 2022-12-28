@@ -1,7 +1,7 @@
 package com.teamdev.filehub.processes.upload;
 
+import com.teamdev.filehub.ApplicationContext;
 import com.teamdev.filehub.InMemoryDatabase;
-import com.teamdev.filehub.ServiceLocator;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.filestorage.FileStorage;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationCommand;
@@ -11,7 +11,6 @@ import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
-import com.teamdev.filehub.servicelocator.ServiceLocatorImpl;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -48,12 +47,11 @@ class FileUploadProcessIntegrationTest {
         InMemoryDatabase database = new InMemoryDatabase();
         database.clean();
 
-        ServiceLocator locator = new ServiceLocatorImpl();
+        ApplicationContext context = new ApplicationContext();
 
-        UserRegistrationProcess registrationProcess = locator.locate(UserRegistrationProcess.class);
-        UserAuthenticationProcess authenticationProcess = locator.locate(
-                UserAuthenticationProcess.class);
-        FileUploadProcess uploadProcess = locator.locate(FileUploadProcess.class);
+        UserRegistrationProcess registrationProcess = context.getUserRegistrationProcess();
+        UserAuthenticationProcess authenticationProcess =context.getUserAuthenticationProcess();
+        FileUploadProcess uploadProcess = context.getFileUploadProcess();
 
         RecordId<String> userId = registrationProcess.handle(
                 new UserRegistrationCommand("email@email.com",
