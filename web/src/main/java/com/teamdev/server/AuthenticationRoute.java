@@ -27,7 +27,7 @@ public class AuthenticationRoute implements Route {
 
         } catch (UserDataMismatchException e) {
             response.status(401);
-            return gson.toJson(e.getMessage());
+            return e.getMessage();
         }
     }
 }
