@@ -8,6 +8,7 @@ import com.teamdev.filehub.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationResponse;
 import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
+import com.teamdev.filehub.processes.register.InvalidEmailException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
@@ -26,7 +27,7 @@ class FileUploadProcessIntegrationTest {
 
     @Test
     void fileUploadTest() throws IOException, FileUploadException,
-                                 UserAlreadyRegisteredException, UserDataMismatchException {
+            UserAlreadyRegisteredException, UserDataMismatchException, InvalidEmailException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
 

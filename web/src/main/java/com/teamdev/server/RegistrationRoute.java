@@ -16,8 +16,8 @@ import java.util.Map;
  * Route to handle user registration process.
  */
 public class RegistrationRoute implements Route {
-    Gson gson = new Gson();
-    UserRegistrationProcess process;
+    private final Gson gson = new Gson();
+    private final UserRegistrationProcess process;
 
     public RegistrationRoute(UserRegistrationProcess process) {
         this.process = process;
@@ -34,12 +34,14 @@ public class RegistrationRoute implements Route {
             response.status(200);
             return gson.toJson(userId);
 
-        } catch (UserAlreadyRegisteredException | InvalidEmailException e) {
+        } catch (InvalidEmailException e) {
             FieldErrors errors = new FieldErrors();
             errors.addError(new FieldError("email", e.getMessage()));
-            System.out.println(gson.toJson(errors));
             response.status(422);
             return gson.toJson(errors);
+        } catch (UserAlreadyRegisteredException e) {
+            response.status(409);
+            return e.getMessage();
         }
     }
 }

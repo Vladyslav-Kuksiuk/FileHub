@@ -79,6 +79,8 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10")
 
+    testImplementation("org.mockito:mockito-core:4.7.0")
+
 }
 
 application {

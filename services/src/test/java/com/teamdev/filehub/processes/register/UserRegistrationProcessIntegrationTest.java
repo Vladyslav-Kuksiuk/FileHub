@@ -50,7 +50,7 @@ class UserRegistrationProcessIntegrationTest {
     void registerManyTest() throws InterruptedException, ProcessException {
 
         for (int i = 0; i < 100; i++) {
-            UserRegistrationCommand command = new UserRegistrationCommand("email@email.com" + i,
+            UserRegistrationCommand command = new UserRegistrationCommand("email@email" + i+".com",
                                                                           "password");
 
             registerProcess.handle(command);
@@ -62,10 +62,10 @@ class UserRegistrationProcessIntegrationTest {
         }
         assertWithMessage("User registration failed.")
                 .that(database.userTable()
-                              .findById("email@email.com99")
+                              .findById("email@email99.com")
                               .get()
                               .login())
-                .matches("email@email.com99");
+                .matches("email@email99.com");
 
         Thread.sleep(1500);
     }
