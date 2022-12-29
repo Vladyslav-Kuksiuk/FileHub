@@ -5,6 +5,7 @@ import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.authentication.AuthenticationData;
 import com.teamdev.filehub.authentication.AuthenticationTable;
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.dao.user.UserRecord;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
@@ -97,5 +98,24 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
         authTable.update(data);
 
+    }
+
+    @Override
+    public Optional<AuthenticationRecord> findByToken(String token) {
+        Preconditions.checkNotNull(token);
+
+        Optional<AuthenticationData> optionalAuthData = authTable.findByToken(token);
+
+        if (optionalAuthData.isPresent()) {
+
+            AuthenticationData authData = optionalAuthData.get();
+
+            return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
+                    authData.authenticationToken(),
+                    LocalDateTime.parse(
+                            authData.expireTime())));
+        }
+
+        return Optional.empty();
     }
 }

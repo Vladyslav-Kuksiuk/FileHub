@@ -21,15 +21,32 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
     /**
      * Method to get {@link AuthenticationData} from table.
      *
-     * @param userId
-     *         Authenticated user id.
-     * @return {@link AuthenticationData}.
+     * @param userId Authenticated user id.
+     * @return {@link Optional<AuthenticationData>}.
      */
 
     public Optional<AuthenticationData> findByUserId(@Nonnull String userId) {
         Preconditions.checkNotNull(userId);
 
         return Optional.ofNullable(tableMap().get(userId));
+
+    }
+
+    /**
+     * Method to get {@link AuthenticationData} from table by token.
+     *
+     * @param token Authenticated user token.
+     * @return {@link Optional<AuthenticationData>}.
+     */
+
+    public Optional<AuthenticationData> findByToken(@Nonnull String token) {
+        Preconditions.checkNotNull(token);
+
+        return tableMap().values()
+                .stream()
+                .filter(auth -> auth.authenticationToken()
+                        .equals(token))
+                .findFirst();
 
     }
 

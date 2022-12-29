@@ -58,4 +58,8 @@ public class AuthenticationDaoFake implements AuthenticationDao {
 
     }
 
+    @Override
+    public Optional<AuthenticationRecord> findByToken(String token) {
+        return Optional.empty();
+    }
 }
