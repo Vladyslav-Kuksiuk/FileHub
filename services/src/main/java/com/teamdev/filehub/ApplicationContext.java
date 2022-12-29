@@ -19,6 +19,8 @@ import com.teamdev.filehub.processes.register.UserRegistrationProcess;
 import com.teamdev.filehub.processes.register.UserRegistrationProcessImpl;
 import com.teamdev.filehub.processes.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.upload.FileUploadProcessImpl;
+import com.teamdev.filehub.views.authorization.UserAuthorizationView;
+import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
 
@@ -29,6 +31,7 @@ public class ApplicationContext {
     private final UserRegistrationProcess userRegistrationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
+    private final UserAuthorizationView userAuthorizationView;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
@@ -47,6 +50,7 @@ public class ApplicationContext {
         userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
         userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
+        userAuthorizationView = new UserAuthorizationViewImpl(authDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
@@ -77,5 +81,9 @@ public class ApplicationContext {
 
     public FileUploadProcess getFileUploadProcess() {
         return fileUploadProcess;
+    }
+
+    public UserAuthorizationView getUserAuthorizationView() {
+        return userAuthorizationView;
     }
 }

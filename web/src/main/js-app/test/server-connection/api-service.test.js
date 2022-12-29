@@ -23,7 +23,7 @@ describe('ApiService', () => {
         .spyOn(requestService, 'postJson')
         .mockImplementation( async (url, body) => {
           expect(url).toBe(LOG_IN_USER_PATH);
-          expect(body.username).toBe(login);
+          expect(body.login).toBe(login);
           expect(body.password).toBe(password);
           return new Response(200, {token: 'myToken'});
         });
@@ -87,7 +87,7 @@ describe('ApiService', () => {
         .spyOn(requestService, 'postJson')
         .mockImplementation(async (url, body) => {
           expect(url).toBe(REGISTER_USER_PATH);
-          expect(body.username).toBe(login);
+          expect(body.login).toBe(login);
           expect(body.password).toBe(password);
           return new Response(200, {token: 'myToken'});
         });

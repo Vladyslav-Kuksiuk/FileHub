@@ -1,6 +1,5 @@
 import {Action} from '../action';
 import {MUTATOR_NAMES} from '../mutators';
-import {STATE} from '../state';
 
 /**
  * Action to perform user loading.
@@ -17,7 +16,7 @@ export class LoadUserAction extends Action {
     return applicationContext.apiService
         .loadUser()
         .then((body) => {
-          executor(MUTATOR_NAMES.SET_USER_PROFILE, body[STATE.USER_PROFILE]);
+          executor(MUTATOR_NAMES.SET_USER_PROFILE, body);
         })
         .catch((error)=>{
           executor(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, error.message);

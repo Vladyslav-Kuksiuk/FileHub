@@ -1,5 +1,5 @@
 import express from 'express';
-import {STATE, USER_PROFILE} from '../state-management/state.js';
+import {USER_PROFILE} from '../state-management/state';
 
 const app = express();
 const port = 3001;
@@ -23,10 +23,8 @@ app.get('/user', (req, res) => {
   setTimeout(() => {
     res.status(200);
     res.send({
-      [STATE.USER_PROFILE]: {
-        [USER_PROFILE.USERNAME]: 'testUser',
-        [USER_PROFILE.ROOT_FOLDER_ID]: 'testUser-0',
-      },
+      [USER_PROFILE.USERNAME]: 'testUser',
+      [USER_PROFILE.ROOT_FOLDER_ID]: 'testUser-0',
     });
   }, 1000);
 });

@@ -30,7 +30,7 @@ describe('LoadUserAction', () => {
     const apiServiceMock = jest
         .spyOn(applicationContext.apiService, 'loadUser')
         .mockImplementation(async ()=>{
-          return {[STATE.USER_PROFILE]: userProfile};
+          return userProfile;
         });
 
     const action = new LoadUserAction();
