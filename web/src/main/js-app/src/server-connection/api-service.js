@@ -42,7 +42,7 @@ export class ApiService {
       if (response.status !== 200) {
         throw new ApiServiceError();
       }
-      this.#userToken = response.body.token;
+      this.#userToken = response.body.authenticationToken;
     });
   }
 

@@ -35,10 +35,10 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
      */
     @Override
     public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command) throws
-                                                                                         UserDataMismatchException {
+            UserDataMismatchException {
 
         logger.atInfo()
-              .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
+                .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
 
         Optional<UserRecord> optionalUserRecord = userDao.findByLogin(command.login());
 
@@ -48,13 +48,13 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         UserRecord userRecord = optionalUserRecord.get();
 
         boolean isPasswordMatch = StringEncryptor.encrypt(command.password())
-                                                 .equals(userRecord.password());
+                .equals(userRecord.password());
 
         if (!isPasswordMatch) {
 
             logger.atWarning()
-                  .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: Password incorrect.",
-                       command.login());
+                    .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: Password incorrect.",
+                            command.login());
 
             throw new UserDataMismatchException("Authentication data incorrect.");
         }
@@ -67,16 +67,20 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
 
         AuthenticationRecord authenticationRecord =
                 new AuthenticationRecord(userRecord.id(),
-                                         authenticationToken,
-                                         expireDateTime);
+                        authenticationToken,
+                        expireDateTime);
 
-        authenticationDao.create(authenticationRecord);
+        if (authenticationDao.find(userRecord.id()).isPresent()) {
+            authenticationDao.update(authenticationRecord);
+        } else {
+            authenticationDao.create(authenticationRecord);
+        }
 
         UserAuthenticationResponse response =
                 new UserAuthenticationResponse(authenticationToken);
 
         logger.atInfo()
-              .log("[PROCESS FINISHED] - User authentication - login: %s.", command.login());
+                .log("[PROCESS FINISHED] - User authentication - login: %s.", command.login());
 
         return response;
     }
