@@ -95,7 +95,8 @@ public class InMemoryFolderDao implements FolderDao {
 
             FolderData data = optionalData.get();
 
-            return Optional.of(new FolderRecord(userId,
+            return Optional.of(
+                    new FolderRecord(new RecordId<>(data.id()),
                     new RecordId<>(data.ownerId()),
                     new RecordId<>(data.parentFolderId()),
                     data.name()));

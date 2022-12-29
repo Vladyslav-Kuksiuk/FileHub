@@ -1,5 +1,6 @@
 package com.teamdev.server;
 
+import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UnauthorizedUserException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationQuery;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
@@ -23,14 +24,13 @@ public abstract class AuthorizedRoute implements Route {
         System.out.println("token: " + token);
 
         try {
-            authorizationView.handle(new UserAuthorizationQuery(token));
+            RecordId<String> userId = authorizationView.handle(new UserAuthorizationQuery(token));
+            return authorizedHandle(request, response, userId);
         } catch (UnauthorizedUserException e) {
             response.status(401);
             return e.getMessage();
         }
-
-        return authorizedHandle(request, response);
     }
 
-    public abstract Object authorizedHandle(Request request, Response response);
+    public abstract Object authorizedHandle(Request request, Response response, RecordId<String> userId);
 }

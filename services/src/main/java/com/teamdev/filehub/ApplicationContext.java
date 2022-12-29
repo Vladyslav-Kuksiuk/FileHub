@@ -23,6 +23,8 @@ import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
+import com.teamdev.filehub.views.userprofile.UserProfileView;
+import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 
 /**
  * Class which intended to configure services implementations.
@@ -32,6 +34,7 @@ public class ApplicationContext {
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
+    private final UserProfileView userProfileView;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
@@ -51,6 +54,7 @@ public class ApplicationContext {
         userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
+        userProfileView = new UserProfileViewImpl(userDao, folderDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
@@ -73,6 +77,10 @@ public class ApplicationContext {
 
     public FileDownloadView getFileDownloadView() {
         return fileDownloadView;
+    }
+
+    public UserProfileView getUserProfileView() {
+        return userProfileView;
     }
 
     public FolderCreateProcess getFolderCreateProcess() {

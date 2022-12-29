@@ -15,6 +15,6 @@ public class Application {
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
 
-        get("api/user", new LoadUserRoute(context.getUserAuthorizationView()));
+        get("api/user", new LoadUserRoute(context.getUserAuthorizationView(), context.getUserProfileView()));
     }
 }
