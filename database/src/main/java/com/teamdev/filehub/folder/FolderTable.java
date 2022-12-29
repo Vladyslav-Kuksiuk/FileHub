@@ -1,8 +1,11 @@
 package com.teamdev.filehub.folder;
 
 import com.teamdev.filehub.InMemoryDatabaseTable;
+import com.teamdev.filehub.user.UserData;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -23,10 +26,24 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
         }
 
         return tableMap().values()
-                         .stream()
-                         .filter(data -> data.parentFolderId()
-                                             .equals(parentId))
-                         .collect(Collectors.toList());
+                .stream()
+                .filter(data -> data.parentFolderId().equals(parentId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Method to get users root folder by user id.
+     *
+     * @param userId User id.
+     * @return {@link UserData}.
+     */
+    public Optional<FolderData> findUserRootFolder(@NotNull String userId) {
+
+        return tableMap().values()
+                .stream()
+                .filter(folder -> folder.ownerId().equals(userId) && folder.parentFolderId() == null)
+                .findFirst();
+
     }
 
 }

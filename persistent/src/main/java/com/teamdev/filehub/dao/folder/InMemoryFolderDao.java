@@ -86,4 +86,21 @@ public class InMemoryFolderDao implements FolderDao {
                           .collect(Collectors.toList());
 
     }
+
+    @Override
+    public Optional<FolderRecord> findUserRootFolder(RecordId<String> userId) {
+        Optional<FolderData> optionalData = folderTable.findUserRootFolder(userId.value());
+
+        if (optionalData.isPresent()) {
+
+            FolderData data = optionalData.get();
+
+            return Optional.of(new FolderRecord(userId,
+                    new RecordId<>(data.ownerId()),
+                    new RecordId<>(data.parentFolderId()),
+                    data.name()));
+        }
+
+        return Optional.empty();
+    }
 }
