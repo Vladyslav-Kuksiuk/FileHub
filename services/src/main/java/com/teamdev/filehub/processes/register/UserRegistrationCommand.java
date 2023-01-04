@@ -1,5 +1,6 @@
 package com.teamdev.filehub.processes.register;
 
+import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.processes.Command;
 
 import javax.annotation.Nonnull;
@@ -11,6 +12,8 @@ import java.util.regex.Pattern;
  * data about user registration.
  */
 public class UserRegistrationCommand implements Command {
+
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private final String login;
     private final String password;
@@ -25,6 +28,9 @@ public class UserRegistrationCommand implements Command {
         Matcher loginMatcher = loginPattern.matcher(login);
 
         if (!loginMatcher.matches()) {
+            logger.atInfo()
+                  .log("[COMMAND VALIDATION FAILED] - User registration - login: '%s' invalid.",
+                       login);
             throw new FieldValidationException("email", "Email validation failed.");
         }
 
@@ -33,6 +39,9 @@ public class UserRegistrationCommand implements Command {
         Matcher passwordMatcher = passwordPattern.matcher(password);
 
         if (!passwordMatcher.matches()) {
+            logger.atInfo()
+                  .log("[COMMAND VALIDATION FAILED] - User registration - password: '%s' invalid.",
+                       password);
             throw new FieldValidationException("password", "Password validation failed.");
         }
 

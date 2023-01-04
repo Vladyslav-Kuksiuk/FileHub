@@ -12,7 +12,7 @@ import spark.Response;
 import spark.Route;
 
 /**
- * Route to handle user registration process.
+ * {@link Route} to handle user registration path.
  */
 public class RegistrationRoute implements Route {
     private final Gson gson = new Gson();
@@ -22,6 +22,14 @@ public class RegistrationRoute implements Route {
         this.process = process;
     }
 
+    /**
+     * Parses the {@link UserRegistrationCommand} from the request body
+     * and handle it with the {@link UserRegistrationProcess}.
+     *
+     * @param request  - HTTP request
+     * @param response - HTTP response
+     * @return - user id as JSON
+     */
     @Override
     public Object handle(Request request, Response response) {
 
