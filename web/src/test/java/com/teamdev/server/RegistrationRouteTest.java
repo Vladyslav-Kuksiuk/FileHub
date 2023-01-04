@@ -2,7 +2,6 @@ package com.teamdev.server;
 
 import com.google.gson.Gson;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.register.InvalidEmailException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,8 @@ import spark.Response;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class RegistrationRouteTest {
+class RegistrationRouteTest {
+
     private final Gson gson = new Gson();
 
     @Test
@@ -24,35 +24,36 @@ public class RegistrationRouteTest {
         Request request = Mockito.mock(Request.class);
         Response response = Mockito.mock(Response.class);
 
-        Mockito.when(request.body()).thenReturn("{\"login\": \"user@gmail.com\", \"password\": \"password\"}");
+        Mockito.when(request.body())
+               .thenReturn("{\"login\": \"user@gmail.com\", \"password\": \"password1\"}");
 
         assertWithMessage("User registration route failed.")
                 .that(route.handle(request, response))
                 .isEqualTo(gson.toJson(userId));
 
         Mockito.verify(response, Mockito.times(1))
-                .status(200);
+               .status(200);
 
     }
 
     @Test
-    @DisplayName("Should fail user registration with InvalidEmailException | code 422")
+    @DisplayName("Should fail user registration with InvalidFieldException | code 422")
     void shouldFailUserRegistrationWithInvalidEmail() {
-        RegistrationRoute route = new RegistrationRoute(command -> {
-            throw new InvalidEmailException();
-        });
+        RegistrationRoute route = new RegistrationRoute(command -> null);
 
         Request request = Mockito.mock(Request.class);
         Response response = Mockito.mock(Response.class);
 
-        Mockito.when(request.body()).thenReturn("{\"login\": \"user\", \"password\": \"password\"}");
+        Mockito.when(request.body())
+               .thenReturn("{\"login\": \"user\", \"password\": \"password\"}");
 
         assertWithMessage("User registration route failed.")
                 .that(route.handle(request, response))
-                .isEqualTo("{\"errors\":[{\"fieldName\":\"email\",\"errorText\":\"Invalid email.\"}]}");
+                .isEqualTo(
+                        "{\"errors\":[{\"fieldName\":\"email\",\"errorText\":\"Email validation failed.\"}]}");
 
         Mockito.verify(response, Mockito.times(1))
-                .status(422);
+               .status(422);
 
     }
 
@@ -68,14 +69,15 @@ public class RegistrationRouteTest {
         Request request = Mockito.mock(Request.class);
         Response response = Mockito.mock(Response.class);
 
-        Mockito.when(request.body()).thenReturn("{\"login\": \"user@gmail.com\", \"password\": \"password\"}");
+        Mockito.when(request.body())
+               .thenReturn("{\"login\": \"user@gmail.com\", \"password\": \"password1\"}");
 
         assertWithMessage("User registration route failed.")
                 .that(route.handle(request, response))
                 .isEqualTo(errorMessage);
 
         Mockito.verify(response, Mockito.times(1))
-                .status(409);
+               .status(409);
 
     }
 }

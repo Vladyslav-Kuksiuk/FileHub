@@ -9,6 +9,7 @@ import static spark.Spark.staticFiles;
  * Class to configure and start server.
  */
 public class Application {
+
     public static void main(String[] args) {
         staticFiles.location("/web-client");
         ApplicationContext context = new ApplicationContext();
