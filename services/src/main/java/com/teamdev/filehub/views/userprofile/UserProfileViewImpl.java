@@ -11,7 +11,8 @@ import java.util.Optional;
 /**
  * {@link UserProfileView} implementation.
  */
-public class UserProfileViewImpl implements UserProfileView{
+public class UserProfileViewImpl implements UserProfileView {
+
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private final UserDao userDao;
@@ -25,21 +26,28 @@ public class UserProfileViewImpl implements UserProfileView{
     @Override
     public UserProfile handle(UserProfileQuery query) {
         logger.atInfo()
-                .log("[VIEW QUERIED] - User profile - userId: %s.", query.userId().value());
+              .log("[VIEW QUERIED] - User profile - userId: %s.", query.userId()
+                                                                       .value());
         Optional<UserRecord> optionalUserRecord = userDao.find(query.userId());
-        if(optionalUserRecord.isEmpty()) {
+        if (optionalUserRecord.isEmpty()) {
             logger.atInfo()
-                    .log("[VIEW FAILED] - User profile - user not found");
+                  .log("[VIEW FAILED] - User profile - user not found");
             throw new RuntimeException("User not found.");
         }
 
         Optional<FolderRecord> optionalFolderRecord = folderDao.findUserRootFolder(query.userId());
-        if(optionalFolderRecord.isEmpty()) {
+        if (optionalFolderRecord.isEmpty()) {
             logger.atInfo()
-                    .log("[VIEW FAILED] - User profile - user root folder not found");
+                  .log("[VIEW FAILED] - User profile - user root folder not found");
             throw new RuntimeException("User root folder not found.");
         }
 
-        return new UserProfile(optionalUserRecord.get().login(), optionalFolderRecord.get().id().value());
+        logger.atInfo()
+              .log("[VIEW QUERIED SUCCESSFUL] - User profile - userId: %s.", query.userId()
+                                                                                  .value());
+        return new UserProfile(optionalUserRecord.get()
+                                                 .login(), optionalFolderRecord.get()
+                                                                               .id()
+                                                                               .value());
     }
 }

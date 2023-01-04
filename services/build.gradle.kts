@@ -66,6 +66,8 @@ dependencies {
     implementation("com.google.flogger:flogger-log4j2-backend:0.7.4")
 
     implementation("com.google.code.findbugs:jsr305:3.0.2")
+
+    testImplementation("org.mockito:mockito-core:4.7.0")
 }
 
 application {

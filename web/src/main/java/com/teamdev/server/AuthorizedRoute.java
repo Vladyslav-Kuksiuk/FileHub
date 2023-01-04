@@ -17,11 +17,9 @@ public abstract class AuthorizedRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) {
+    public final Object handle(Request request, Response response) {
         String authorizationHeader = request.headers("Authorization");
-        System.out.println("header: " + authorizationHeader);
         String token = authorizationHeader.split(" ")[1];
-        System.out.println("token: " + token);
 
         try {
             RecordId<String> userId = authorizationView.handle(new UserAuthorizationQuery(token));
@@ -32,5 +30,6 @@ public abstract class AuthorizedRoute implements Route {
         }
     }
 
-    public abstract Object authorizedHandle(Request request, Response response, RecordId<String> userId);
+    public abstract Object authorizedHandle(Request request, Response response,
+                                            RecordId<String> userId);
 }

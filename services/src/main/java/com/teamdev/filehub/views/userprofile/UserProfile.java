@@ -5,6 +5,7 @@ package com.teamdev.filehub.views.userprofile;
  * information about the user profile.
  */
 public class UserProfile {
+
     private final String username;
     private final String rootFolderId;
 

@@ -8,6 +8,7 @@ import com.teamdev.filehub.views.Query;
  * data about user profile query.
  */
 public class UserProfileQuery implements Query {
+
     private final RecordId<String> userId;
 
     public UserProfileQuery(RecordId<String> userId) {

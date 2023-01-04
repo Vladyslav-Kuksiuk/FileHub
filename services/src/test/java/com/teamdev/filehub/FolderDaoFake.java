@@ -67,6 +67,11 @@ public class FolderDaoFake implements FolderDao {
                       .collect(Collectors.toList());
     }
 
+    @Override
+    public Optional<FolderRecord> findUserRootFolder(RecordId<String> userId) {
+        return Optional.empty();
+    }
+
     public Map<RecordId<String>, FolderRecord> foldersMap() {
         return folders;
     }

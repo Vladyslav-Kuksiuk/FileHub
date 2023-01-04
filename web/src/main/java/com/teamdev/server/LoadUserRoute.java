@@ -10,9 +10,9 @@ import spark.Request;
 import spark.Response;
 
 public class LoadUserRoute extends AuthorizedRoute {
+
     private final Gson gson = new Gson();
     private final UserProfileView userProfileView;
-
 
     public LoadUserRoute(UserAuthorizationView authorizationView,
                          UserProfileView userProfileView) {
