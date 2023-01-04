@@ -33,16 +33,16 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     public RecordId<String> handle(@Nonnull UserRegistrationCommand command)
             throws UserAlreadyRegisteredException {
         logger.atInfo()
-                .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
+              .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
 
         RecordId<String> userId = new RecordId<>(command.login());
 
         UserRecord userRecord = new UserRecord(userId,
-                command.login(),
-                StringEncryptor.encrypt(command.password()));
+                                               command.login(),
+                                               StringEncryptor.encrypt(command.password()));
 
         if (userDao.findByLogin(command.login())
-                .isPresent()) {
+                   .isPresent()) {
             throw new UserAlreadyRegisteredException("User already registered.");
         }
 
@@ -57,7 +57,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
         folderDao.create(userRootFolder);
 
         logger.atInfo()
-                .log("[PROCESS FINISHED] - User registration - login: %s.", command.login());
+              .log("[PROCESS FINISHED] - User registration - login: %s.", command.login());
 
         return userId;
 

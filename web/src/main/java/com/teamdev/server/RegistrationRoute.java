@@ -15,6 +15,7 @@ import spark.Route;
  * {@link Route} to handle user registration path.
  */
 public class RegistrationRoute implements Route {
+
     private final Gson gson = new Gson();
     private final UserRegistrationProcess process;
 
@@ -26,8 +27,10 @@ public class RegistrationRoute implements Route {
      * Parses the {@link UserRegistrationCommand} from the request body
      * and handle it with the {@link UserRegistrationProcess}.
      *
-     * @param request  - HTTP request
-     * @param response - HTTP response
+     * @param request
+     *         - HTTP request
+     * @param response
+     *         - HTTP response
      * @return - user id as JSON
      */
     @Override
@@ -37,8 +40,10 @@ public class RegistrationRoute implements Route {
             JsonObject requestBody = gson.fromJson(request.body(), JsonObject.class);
 
             UserRegistrationCommand command = new UserRegistrationCommand(
-                    requestBody.get("login").getAsString(),
-                    requestBody.get("password").getAsString());
+                    requestBody.get("login")
+                               .getAsString(),
+                    requestBody.get("password")
+                               .getAsString());
 
             RecordId<String> userId = process.handle(command);
             response.status(200);
