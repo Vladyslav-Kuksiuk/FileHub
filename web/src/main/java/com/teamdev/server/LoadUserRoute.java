@@ -1,5 +1,6 @@
 package com.teamdev.server;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
@@ -17,11 +18,11 @@ public class LoadUserRoute extends AuthorizedRoute {
     private final Gson gson = new Gson();
     private final UserProfileView userProfileView;
 
-    public LoadUserRoute(UserAuthorizationView authorizationView,
-                         UserProfileView userProfileView) {
+    LoadUserRoute(UserAuthorizationView authorizationView,
+                  UserProfileView userProfileView) {
 
-        super(authorizationView);
-        this.userProfileView = userProfileView;
+        super(Preconditions.checkNotNull(authorizationView));
+        this.userProfileView = Preconditions.checkNotNull(userProfileView);
     }
 
     /**

@@ -12,6 +12,7 @@ import spark.Response;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AuthenticationRouteTest {
+
     private final Gson gson = new Gson();
 
     @Test
@@ -23,14 +24,15 @@ public class AuthenticationRouteTest {
         Request request = Mockito.mock(Request.class);
         Response response = Mockito.mock(Response.class);
 
-        Mockito.when(request.body()).thenReturn("{\"login\": \"user@gmail.com\", \"password\": \"password\"}");
+        Mockito.when(request.body())
+               .thenReturn("{\"login\": \"user@gmail.com\", \"password\": \"password\"}");
 
         assertWithMessage("User authentication route failed.")
                 .that(route.handle(request, response))
                 .isEqualTo(gson.toJson(authResponse));
 
         Mockito.verify(response, Mockito.times(1))
-                .status(200);
+               .status(200);
 
     }
 
@@ -45,14 +47,15 @@ public class AuthenticationRouteTest {
         Request request = Mockito.mock(Request.class);
         Response response = Mockito.mock(Response.class);
 
-        Mockito.when(request.body()).thenReturn("{\"login\": \"user\", \"password\": \"password\"}");
+        Mockito.when(request.body())
+               .thenReturn("{\"login\": \"user\", \"password\": \"password\"}");
 
         assertWithMessage("User authentication route failed.")
                 .that(route.handle(request, response))
                 .isEqualTo(errorMessage);
 
         Mockito.verify(response, Mockito.times(1))
-                .status(401);
+               .status(401);
 
     }
 }
