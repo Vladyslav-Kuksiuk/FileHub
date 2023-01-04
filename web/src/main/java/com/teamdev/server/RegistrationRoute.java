@@ -1,16 +1,15 @@
 package com.teamdev.server;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.register.InvalidEmailException;
+import com.teamdev.filehub.processes.register.FieldValidationException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import java.util.Map;
 
 /**
  * Route to handle user registration process.
@@ -25,22 +24,29 @@ public class RegistrationRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        Map<String, String> responseBodyMap = gson.fromJson(request.body(), Map.class);
+
         try {
-            UserRegistrationCommand command =
-                    new UserRegistrationCommand(responseBodyMap.get("login"),
-                            responseBodyMap.get("password"));
+            JsonObject requestBody = gson.fromJson(request.body(), JsonObject.class);
+
+            UserRegistrationCommand command = new UserRegistrationCommand(
+                    requestBody.get("login").getAsString(),
+                    requestBody.get("password").getAsString());
+
             RecordId<String> userId = process.handle(command);
             response.status(200);
+
             return gson.toJson(userId);
 
-        } catch (InvalidEmailException e) {
+        } catch (FieldValidationException exception) {
             FieldErrors errors = new FieldErrors();
-            errors.addError(new FieldError("email", e.getMessage()));
+            errors.addError(new FieldErrorMessage(exception.getField(), exception.getMessage()));
             response.status(422);
+
             return gson.toJson(errors);
+
         } catch (UserAlreadyRegisteredException e) {
             response.status(409);
+
             return e.getMessage();
         }
     }

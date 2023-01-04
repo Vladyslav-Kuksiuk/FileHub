@@ -41,7 +41,7 @@ class UserRegistrationProcessUnitTest {
     }
 
     @Test
-    void registerTest() throws UserAlreadyRegisteredException, InvalidEmailException {
+    void registerTest() throws UserAlreadyRegisteredException, FieldValidationException{
 
         UserRegistrationCommand command = new UserRegistrationCommand(toRegisterUser.login(),
                                                                       "password2");
@@ -68,7 +68,7 @@ class UserRegistrationProcessUnitTest {
     }
 
     @Test
-    void registerExistingUserTest() {
+    void registerExistingUserTest() throws FieldValidationException {
 
         UserRegistrationCommand command = new UserRegistrationCommand(registeredUser.login(),
                                                                       "password1");

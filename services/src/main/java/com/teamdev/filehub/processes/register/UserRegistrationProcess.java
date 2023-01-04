@@ -9,6 +9,5 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 public interface UserRegistrationProcess extends ApplicationProcess<UserRegistrationCommand, RecordId<String>> {
 
     @Override
-    RecordId<String> handle(UserRegistrationCommand command) throws
-            UserAlreadyRegisteredException, InvalidEmailException;
+    RecordId<String> handle(UserRegistrationCommand command) throws UserAlreadyRegisteredException;
 }

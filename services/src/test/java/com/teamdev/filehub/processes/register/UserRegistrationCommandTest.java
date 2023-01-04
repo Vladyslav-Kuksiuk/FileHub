@@ -10,7 +10,7 @@ class UserRegistrationCommandTest {
     @Test
     void invalidLoginTest() {
 
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(FieldValidationException.class, () -> {
             UserRegistrationCommand command =
                     new UserRegistrationCommand("",
                                                 "password");
@@ -21,7 +21,7 @@ class UserRegistrationCommandTest {
     @Test
     void invalidPasswordTest() {
 
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(FieldValidationException.class, () -> {
             UserRegistrationCommand command =
                     new UserRegistrationCommand("Hellamb",
                                                 "");
@@ -30,7 +30,7 @@ class UserRegistrationCommandTest {
     }
 
     @Test
-    void nullTest() throws NoSuchMethodException {
+    void nullTest(){
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(String.class, "email@email.com");

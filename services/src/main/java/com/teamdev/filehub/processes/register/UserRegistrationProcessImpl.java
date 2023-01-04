@@ -6,7 +6,6 @@ import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.dao.user.UserRecord;
-import com.teamdev.util.EmailValidator;
 import com.teamdev.util.StringEncryptor;
 
 import javax.annotation.Nonnull;
@@ -32,10 +31,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
 
     @Override
     public RecordId<String> handle(@Nonnull UserRegistrationCommand command)
-            throws UserAlreadyRegisteredException, InvalidEmailException {
-        if (!EmailValidator.validate(command.login())) {
-            throw new InvalidEmailException();
-        }
+            throws UserAlreadyRegisteredException {
         logger.atInfo()
                 .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
 

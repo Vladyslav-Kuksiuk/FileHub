@@ -6,13 +6,13 @@ import java.util.ArrayList;
  * Data transfer object with info about all field errors.
  */
 public class FieldErrors {
-    private final ArrayList<FieldError> errors = new ArrayList<>();
+    private final ArrayList<FieldErrorMessage> errors = new ArrayList<>();
 
-    public void addError(FieldError error) {
+    public void addError(FieldErrorMessage error) {
         errors.add(error);
     }
 
-    public ArrayList<FieldError> getErrors() {
+    public ArrayList<FieldErrorMessage> getErrors() {
         return errors;
     }
 }

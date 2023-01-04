@@ -3,11 +3,11 @@ package com.teamdev.server;
 /**
  * Data transfer object with info about some field error.
  */
-public class FieldError {
+public class FieldErrorMessage {
     private final String fieldName;
     private final String errorText;
 
-    public FieldError(String field, String error) {
+    public FieldErrorMessage(String field, String error) {
         this.fieldName = field;
         this.errorText = error;
     }
