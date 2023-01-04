@@ -7,6 +7,7 @@ import com.teamdev.filehub.views.Query;
  * data about user authorization.
  */
 public class UserAuthorizationQuery implements Query {
+
     private final String authorizationToken;
 
     public UserAuthorizationQuery(String authorizationToken) {

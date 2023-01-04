@@ -8,6 +8,7 @@ import com.teamdev.filehub.views.View;
  * user authorization.
  */
 public interface UserAuthorizationView extends View<UserAuthorizationQuery, RecordId<String>> {
+
     @Override
     RecordId<String> handle(UserAuthorizationQuery query) throws UnauthorizedUserException;
 }

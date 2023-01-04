@@ -12,6 +12,7 @@ import java.util.Optional;
  * {@link UserAuthorizationView} implementation.
  */
 public class UserAuthorizationViewImpl implements UserAuthorizationView {
+
     private final AuthenticationDao authenticationDao;
 
     public UserAuthorizationViewImpl(AuthenticationDao authenticationDao) {
@@ -21,7 +22,8 @@ public class UserAuthorizationViewImpl implements UserAuthorizationView {
     @Override
     public RecordId<String> handle(UserAuthorizationQuery query) throws UnauthorizedUserException {
 
-        Optional<AuthenticationRecord> optionalAuthRecord = authenticationDao.findByToken(query.authorizationToken());
+        Optional<AuthenticationRecord> optionalAuthRecord = authenticationDao.findByToken(
+                query.authorizationToken());
 
         if (optionalAuthRecord.isEmpty()) {
             throw new UnauthorizedUserException("Authorization token not found");

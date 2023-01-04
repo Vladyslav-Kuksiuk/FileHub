@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
  * Exception thrown in case of user authorization failed.
  */
 public class UnauthorizedUserException extends ViewException {
+
     public UnauthorizedUserException(@Nonnull String message) {
         super(message);
     }
