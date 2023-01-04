@@ -31,9 +31,9 @@ class UserRegistrationProcessIntegrationTest {
     }
 
     @Test
-    void registerTest() throws InterruptedException, ProcessException {
-        UserRegistrationCommand command = new UserRegistrationCommand("email@email.com",
-                                                                      "password");
+    void registerTest() throws InterruptedException, ProcessException, FieldValidationException {
+        UserRegistrationCommand command =
+                new UserRegistrationCommand("email@email.com", "password1");
 
         registerProcess.handle(command);
         assertWithMessage("User registration failed.")
@@ -47,11 +47,13 @@ class UserRegistrationProcessIntegrationTest {
     }
 
     @Test
-    void registerManyTest() throws InterruptedException, ProcessException {
+    void registerManyTest() throws InterruptedException, ProcessException,
+                                   FieldValidationException {
 
         for (int i = 0; i < 100; i++) {
-            UserRegistrationCommand command = new UserRegistrationCommand("email@email" + i+".com",
-                                                                          "password");
+            UserRegistrationCommand command = new UserRegistrationCommand(
+                    "email@email" + i + ".com",
+                    "password1");
 
             registerProcess.handle(command);
 

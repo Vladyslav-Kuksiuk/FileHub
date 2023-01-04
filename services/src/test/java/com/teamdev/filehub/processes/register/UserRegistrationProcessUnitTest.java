@@ -41,7 +41,7 @@ class UserRegistrationProcessUnitTest {
     }
 
     @Test
-    void registerTest() throws UserAlreadyRegisteredException, InvalidEmailException {
+    void registerTest() throws UserAlreadyRegisteredException, FieldValidationException {
 
         UserRegistrationCommand command = new UserRegistrationCommand(toRegisterUser.login(),
                                                                       "password2");
@@ -68,10 +68,10 @@ class UserRegistrationProcessUnitTest {
     }
 
     @Test
-    void registerExistingUserTest() {
+    void registerExistingUserTest() throws FieldValidationException {
 
-        UserRegistrationCommand command = new UserRegistrationCommand(registeredUser.login(),
-                                                                      "password1");
+        UserRegistrationCommand command =
+                new UserRegistrationCommand(registeredUser.login(), "password1");
 
         assertThrows(UserAlreadyRegisteredException.class,
                      () -> registrationProcess.handle(command),
@@ -81,8 +81,8 @@ class UserRegistrationProcessUnitTest {
 
     @Test
     void nullTest() throws NoSuchMethodException {
-        UserRegistrationProcessImpl registrationProcess = new UserRegistrationProcessImpl(userDao,
-                                                                                          folderDao);
+        UserRegistrationProcessImpl registrationProcess =
+                new UserRegistrationProcessImpl(userDao, folderDao);
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registrationProcess,
