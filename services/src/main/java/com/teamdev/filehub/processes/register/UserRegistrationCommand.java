@@ -1,5 +1,6 @@
 package com.teamdev.filehub.processes.register;
 
+import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.processes.Command;
 
@@ -20,6 +21,8 @@ public class UserRegistrationCommand implements Command {
 
     public UserRegistrationCommand(@Nonnull String login,
                                    @Nonnull String password) throws FieldValidationException {
+        Preconditions.checkNotNull(login);
+        Preconditions.checkNotNull(password);
 
         String loginPatternRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
                 "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";

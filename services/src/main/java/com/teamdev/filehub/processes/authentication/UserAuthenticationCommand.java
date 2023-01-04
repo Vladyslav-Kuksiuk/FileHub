@@ -19,9 +19,6 @@ public class UserAuthenticationCommand implements Command {
         Preconditions.checkNotNull(login);
         Preconditions.checkNotNull(password);
 
-        Preconditions.checkState(!login.isEmpty());
-        Preconditions.checkState(!password.isEmpty());
-
         this.login = login;
         this.password = password;
     }
