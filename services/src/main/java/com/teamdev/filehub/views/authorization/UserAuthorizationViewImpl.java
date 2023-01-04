@@ -1,5 +1,6 @@
 package com.teamdev.filehub.views.authorization;
 
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
@@ -16,7 +17,7 @@ public class UserAuthorizationViewImpl implements UserAuthorizationView {
     private final AuthenticationDao authenticationDao;
 
     public UserAuthorizationViewImpl(AuthenticationDao authenticationDao) {
-        this.authenticationDao = authenticationDao;
+        this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
     }
 
     @Override
