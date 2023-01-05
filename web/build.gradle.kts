@@ -48,9 +48,14 @@ buildscript {
         classpath("com.github.node-gradle:gradle-node-plugin:3.5.1")
     }
 
+    extra.apply{
+        set("javaMainClass", "com.teamdev.server.Application")
+    }
+
 }
 
 apply(plugin = "net.ltgt.errorprone")
+apply(plugin = "java")
 apply(plugin = "com.github.node-gradle.node")
 
 dependencies {
@@ -85,7 +90,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("filehub.App")
+    mainClass.set("com.teamdev.server.Application")
 }
 
 tasks.named<Test>("test") {
