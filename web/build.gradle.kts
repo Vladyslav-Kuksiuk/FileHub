@@ -111,3 +111,9 @@ tasks.withType<JavaCompile>().configureEach {
 tasks.named<JavaCompile>("compileTestJava") {
     options.errorprone.isEnabled.set(false)
 }
+
+tasks.register<JavaExec>("runApplication") {
+    dependsOn("buildNpm")
+    mainClass.set("com.teamdev.server.Application")
+    classpath = sourceSets["main"].runtimeClasspath
+}
