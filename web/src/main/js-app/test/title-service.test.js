@@ -1,11 +1,11 @@
-import {TitleService} from '../src/title-service';
+import {TitleService} from '../src/application-components/title-service';
 
 describe('Title service', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });
 
-  test(`Should render title`, function(done) {
+  test(`Should render title`, function() {
     expect.assertions(1);
 
     const mainTitle = 'myTitle';
@@ -15,9 +15,6 @@ describe('Title service', () => {
 
     titleService.setTitles(titles);
 
-    setTimeout(()=>{
-      expect(document.title).toBe(mainTitle+separator+titles[0]+separator+titles[1]);
-      done();
-    });
+    expect(document.title).toBe(mainTitle+separator+titles[0]+separator+titles[1]);
   });
 });
