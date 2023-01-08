@@ -1,4 +1,4 @@
-package com.teamdev.filehub.views.folderinfo;
+package com.teamdev.filehub.views.folder.info;
 
 /**
  * Server response which is intended to store

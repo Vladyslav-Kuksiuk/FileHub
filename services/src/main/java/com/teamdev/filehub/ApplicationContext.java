@@ -23,8 +23,8 @@ import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
-import com.teamdev.filehub.views.folderinfo.FolderInfoView;
-import com.teamdev.filehub.views.folderinfo.FolderInfoViewImpl;
+import com.teamdev.filehub.views.folder.info.FolderInfoView;
+import com.teamdev.filehub.views.folder.info.FolderInfoViewImpl;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 

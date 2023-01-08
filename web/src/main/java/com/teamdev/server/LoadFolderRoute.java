@@ -5,9 +5,9 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.AccessDeniedException;
 import com.teamdev.filehub.views.DataNotFoundException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
-import com.teamdev.filehub.views.folderinfo.FolderInfo;
-import com.teamdev.filehub.views.folderinfo.FolderInfoQuery;
-import com.teamdev.filehub.views.folderinfo.FolderInfoView;
+import com.teamdev.filehub.views.folder.info.FolderInfo;
+import com.teamdev.filehub.views.folder.info.FolderInfoQuery;
+import com.teamdev.filehub.views.folder.info.FolderInfoView;
 import spark.Request;
 import spark.Response;
 

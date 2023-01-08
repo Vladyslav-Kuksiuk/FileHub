@@ -1,4 +1,4 @@
-package com.teamdev.filehub.views.folderinfo;
+package com.teamdev.filehub.views.folder.info;
 
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.Query;
