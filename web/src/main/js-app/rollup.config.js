@@ -1,5 +1,4 @@
 import {nodeResolve} from '@rollup/plugin-node-resolve';
-import {terser} from 'rollup-plugin-terser';
 import htmlTemplate from 'rollup-plugin-generate-html-template';
 import copy from 'rollup-plugin-copy';
 import babel from '@rollup/plugin-babel';
@@ -25,7 +24,6 @@ export default {
       ],
     }),
     nodeResolve(),
-    terser(),
     htmlTemplate({
       template: 'index.html',
       target: '../resources/web-client/index.html',
