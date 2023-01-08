@@ -94,8 +94,8 @@ export class ApiService {
         throw new ApiServiceError();
       }
       return new UserProfile(
-          response.body.userProfile.username,
-          response.body.userProfile.rootFolderId,
+          response.body.login,
+          response.body.rootFolderId,
       );
     }).catch(()=>{
       throw new ApiServiceError();
