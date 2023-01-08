@@ -1,5 +1,9 @@
 package com.teamdev.filehub.views.folder;
 
+/**
+ * Server response which is intended to store
+ * information about the folder content item.
+ */
 public class FolderContentItem {
 
     private final String type;

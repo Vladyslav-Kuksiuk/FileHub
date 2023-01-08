@@ -1,5 +1,7 @@
 package com.teamdev.filehub.views.folder.info;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Server response which is intended to store
  * information about the folder.
@@ -13,9 +15,9 @@ public class FolderInfo {
     private final String parentId;
 
     public FolderInfo(String name, String id, int itemsAmount, String parentId) {
-        this.name = name;
-        this.id = id;
-        this.itemsAmount = itemsAmount;
+        this.name = Preconditions.checkNotNull(name);
+        this.id = Preconditions.checkNotNull(id);
+        this.itemsAmount = Preconditions.checkNotNull(itemsAmount);
         this.type = "folder";
         this.parentId = parentId;
     }

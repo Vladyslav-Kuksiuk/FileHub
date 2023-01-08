@@ -8,12 +8,14 @@ import com.teamdev.filehub.dao.folder.FolderRecord;
 import com.teamdev.filehub.views.AccessDeniedException;
 import com.teamdev.filehub.views.DataNotFoundException;
 import com.teamdev.filehub.views.folder.FileItem;
-import com.teamdev.filehub.views.folder.FolderContent;
 import com.teamdev.filehub.views.folder.FolderItem;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@link FolderContentView} implementation.
+ */
 public class FolderContentViewImpl implements FolderContentView {
 
     private final FolderDao folderDao;
@@ -27,6 +29,7 @@ public class FolderContentViewImpl implements FolderContentView {
     @Override
     public FolderContent handle(FolderContentQuery query) throws AccessDeniedException,
                                                                  DataNotFoundException {
+        Preconditions.checkNotNull(query);
 
         Optional<FolderRecord> optionalFolderRecord = folderDao.find(query.folderId());
 

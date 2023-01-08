@@ -1,5 +1,9 @@
 package com.teamdev.filehub.views.folder;
 
+/**
+ * Server response which is intended to store
+ * information about file as {@link FolderContentItem}.
+ */
 public class FileItem extends FolderContentItem {
 
     private final long size;
