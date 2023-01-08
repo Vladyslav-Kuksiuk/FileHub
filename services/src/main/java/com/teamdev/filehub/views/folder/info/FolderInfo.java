@@ -17,7 +17,7 @@ public class FolderInfo {
     public FolderInfo(String name, String id, int itemsAmount, String parentId) {
         this.name = Preconditions.checkNotNull(name);
         this.id = Preconditions.checkNotNull(id);
-        this.itemsAmount = Preconditions.checkNotNull(itemsAmount);
+        this.itemsAmount = itemsAmount;
         this.type = "folder";
         this.parentId = parentId;
     }

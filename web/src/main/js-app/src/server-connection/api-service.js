@@ -149,7 +149,7 @@ export class ApiService {
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
-          return response.body.folderContent.map((item)=>new FolderContentItem({
+          return response.body.items.map((item)=>new FolderContentItem({
             type: item.type,
             id: item.id,
             parentId: item.parentId,

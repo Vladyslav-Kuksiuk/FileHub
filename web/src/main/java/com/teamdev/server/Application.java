@@ -22,5 +22,8 @@ public class Application {
             new LoadUserRoute(context.getUserAuthorizationView(), context.getUserProfileView()));
         get("api/folders/:id",
             new LoadFolderRoute(context.getUserAuthorizationView(), context.getFolderInfoView()));
+        get("api/folders/:id/content",
+            new LoadFolderContentRoute(context.getUserAuthorizationView(),
+                                       context.getFolderContentView()));
     }
 }

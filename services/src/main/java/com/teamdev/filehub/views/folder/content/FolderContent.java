@@ -20,7 +20,7 @@ public class FolderContent {
         items.add(item);
     }
 
-    public List<FolderContentItem> getItems() {
+    public List<FolderContentItem> items() {
         return Collections.unmodifiableList(items);
     }
 }

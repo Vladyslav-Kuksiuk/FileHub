@@ -23,6 +23,8 @@ import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
+import com.teamdev.filehub.views.folder.content.FolderContentView;
+import com.teamdev.filehub.views.folder.content.FolderContentViewImpl;
 import com.teamdev.filehub.views.folder.info.FolderInfoView;
 import com.teamdev.filehub.views.folder.info.FolderInfoViewImpl;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
@@ -32,12 +34,14 @@ import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
  * Class which intended to configure services implementations.
  */
 public class ApplicationContext {
+
     private final UserRegistrationProcess userRegistrationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
     private final UserProfileView userProfileView;
     private final FolderInfoView folderInfoView;
+    private final FolderContentView folderContentView;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
@@ -59,6 +63,7 @@ public class ApplicationContext {
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
         folderInfoView = new FolderInfoViewImpl(folderDao, fileDao);
+        folderContentView = new FolderContentViewImpl(folderDao, fileDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
@@ -101,5 +106,9 @@ public class ApplicationContext {
 
     public UserAuthorizationView getUserAuthorizationView() {
         return userAuthorizationView;
+    }
+
+    public FolderContentView getFolderContentView() {
+        return folderContentView;
     }
 }
