@@ -1,13 +1,19 @@
-import {RequestService} from './request-service';
 import {FieldValidationError} from './field-validation-error';
-import {Response} from './response';
 import {UserData} from '../user-data';
 import {ApiServiceError} from './api-service-error';
+import {UserProfile} from '../state-management/user/user-profile';
+import {FolderInfo} from '../state-management/folder/folder-info';
+import {FolderContentItem} from '../state-management/folder/folder-content-item';
+import {AUTH_TOKEN} from '../storage-service';
+import {inject} from '../registry';
 
 export const LOG_IN_USER_PATH = 'api/login';
 export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
+export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
+const FOLDER_PATH = 'api/folder/';
+const FILE_PATH = 'api/file/';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
 
@@ -15,26 +21,29 @@ export const LOGIN_401_ERROR = 'Invalid login or password';
  * Service to handle server request and response.
  */
 export class ApiService {
-  #requestService;
-  #userToken;
+  @inject requestService;
+  @inject storageService;
+  #redirectToLogin;
 
   /**
-   * @param {RequestService} requestService
+   * @param {function(): void} redirectToLogin
    */
-  constructor(requestService) {
-    this.#requestService = requestService;
+  set redirectToLogin(redirectToLogin) {
+    this.#redirectToLogin = redirectToLogin;
   }
 
   /**
    * Log in user.
    *
    * @param {UserData} data
-   * @returns {Promise<Response>}
+   * @returns {Promise<ApiServiceError>}
    */
   async logIn(data) {
-    return this.#requestService.postJson(LOG_IN_USER_PATH, {
+    return this.requestService.postJson(LOG_IN_USER_PATH, {
       login: data.login,
       password: data.password,
+    }).catch(()=>{
+      throw new ApiServiceError();
     }).then((response) => {
       if (response.status === 401) {
         throw new ApiServiceError(LOGIN_401_ERROR);
@@ -42,7 +51,7 @@ export class ApiService {
       if (response.status !== 200) {
         throw new ApiServiceError();
       }
-      this.#userToken = response.body.authenticationToken;
+      this.storageService.put(AUTH_TOKEN, response.body.authenticationToken);
     });
   }
 
@@ -50,12 +59,14 @@ export class ApiService {
    * Registers user.
    *
    * @param {UserData} data
-   * @returns {Promise<Error | FieldValidationError>}
+   * @returns {Promise<ApiServiceError | FieldValidationError>}
    */
   async register(data) {
-    return this.#requestService.postJson(REGISTER_USER_PATH, {
+    return this.requestService.postJson(REGISTER_USER_PATH, {
       login: data.login,
       password: data.password,
+    }).catch(()=>{
+      throw new ApiServiceError();
     }).then((response) => {
       if (response.status === 422) {
         throw new FieldValidationError(response.body.errors);
@@ -69,26 +80,264 @@ export class ApiService {
   /**
    * Loads user data.
    *
-   * @returns {Promise<object | Error>}
+   * @returns {Promise<UserProfile | ApiServiceError>}
    */
   async loadUser() {
-    return this.#requestService.get(LOAD_USER_PATH, this.#userToken)
+    return this.requestService.getJson(LOAD_USER_PATH, this.storageService.get(AUTH_TOKEN)).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        this.#redirectToLogin();
+        return;
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+      return new UserProfile(
+          response.body.userProfile.username,
+          response.body.userProfile.rootFolderId,
+      );
+    }).catch(()=>{
+      throw new ApiServiceError();
+    });
+  }
+
+  /**
+   * Loads folder info.
+   *
+   * @param {string} folderId
+   * @returns {Promise<FolderInfo | ApiServiceError>}
+   */
+  async loadFolderInfo(folderId) {
+    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId, this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
         .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
-          return response.body;
+          return new FolderInfo(
+              response.body.folderInfo.name,
+              response.body.folderInfo.id,
+              response.body.folderInfo.parentId,
+              response.body.folderInfo.itemsAmount,
+          );
+        });
+  }
+
+  /**
+   * Loads folder content.
+   *
+   * @param {string} folderId
+   * @returns {Promise<FolderContentItem[] | ApiServiceError>}
+   */
+  async loadFolderContent(folderId) {
+    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId+'/content', this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body.folderContent.map((item)=>new FolderContentItem({
+            type: item.type,
+            id: item.id,
+            parentId: item.parentId,
+            name: item.name,
+            size: item.size,
+            mimetype: item.mimetype,
+            itemsAmount: item.itemsAmount,
+          }));
+        });
+  }
+
+  /**
+   * Loads folder content by search.
+   *
+   * @param {string} folderId
+   * @param {string} searchValue
+   * @returns {Promise<FolderContentItem[] | ApiServiceError>}
+   */
+  async searchInFolder(folderId, searchValue) {
+    return this.requestService.getJson(LOAD_FOLDER_PATH+folderId+'/search/'+searchValue,
+        this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body.folderContent.map((item)=>new FolderContentItem({
+            type: item.type,
+            id: item.id,
+            parentId: item.parentId,
+            name: item.name,
+            size: item.size,
+            mimetype: item.mimetype,
+            itemsAmount: item.itemsAmount,
+          }));
+        });
+  }
+
+  /**
+   * Deletes item.
+   *
+   * @param {FolderContentItem} item
+   */
+  async deleteItem(item) {
+    const path = item.type === 'folder' ? FOLDER_PATH : FILE_PATH;
+    return this.requestService.delete(path+item.id, this.storageService.get(AUTH_TOKEN))
+        .catch(() => {
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
+
+  /**
+   * Renames item.
+   *
+   * @param {FolderContentItem} item
+   */
+  async renameItem(item) {
+    const path = item.type === 'folder' ? FOLDER_PATH : FILE_PATH;
+
+    return this.requestService.put(path+item.id,
+        {
+          name: item.name,
+        },
+        this.storageService.get(AUTH_TOKEN))
+        .catch(() => {
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status === 422) {
+            throw new FieldValidationError(response.body.errors);
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
         });
   }
 
   /**
    * Log out user.
    *
-   * @returns {Promise<object | Error>}
+   * @returns {Promise<ApiServiceError>}
    */
   async logOut() {
-    return this.#requestService.get(LOG_OUT_USER_PATH, this.#userToken)
+    return this.requestService.postJson(LOG_OUT_USER_PATH, {}, this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{})
+        .then(()=>{})
+        .finally(() => {
+          this.#redirectToLogin();
+        });
+  }
+
+  /**
+   * Uploads files.
+   *
+   * @param {string} folderId
+   * @param {File[]} files
+   * @returns {Promise<ApiServiceError>}
+   */
+  async uploadFiles(folderId, files) {
+    const formData = new FormData();
+    [...files].forEach((file, index)=>{
+      formData.append(`files_${index}`, file);
+    });
+
+    return this.requestService.postFormData(
+        'api/folders/'+ folderId +'/content',
+        formData,
+        this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response)=>{
+          if (response.status === 401) {
+            this.storageService.put(AUTH_TOKEN, null);
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
+
+  /**
+   * Creates folder.
+   *
+   * @param {FolderContentItem} folder
+   * @returns {Promise<ApiServiceError>}
+   */
+  async createFolder(folder) {
+    return this.requestService.postJson(
+        'api/folders/',
+        {
+          name: folder.name,
+          parentId: folder.parentId,
+        },
+        this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response)=>{
+          if (response.status === 401) {
+            this.storageService.put(AUTH_TOKEN, null);
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
+
+  /**
+   * Downloads file.
+   *
+   * @param {string} fileId
+   * @returns {Promise<Blob | ApiServiceError>}
+   */
+  async downloadFile(fileId) {
+    return this.requestService.getBlob('api/files/' + fileId, this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
         .then((response) => {
+          if (response.status === 401) {
+            this.storageService.put(AUTH_TOKEN, null);
+            this.#redirectToLogin();
+            return;
+          }
           if (response.status !== 200) {
             throw new ApiServiceError();
           }

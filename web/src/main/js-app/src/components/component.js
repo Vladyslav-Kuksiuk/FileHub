@@ -1,3 +1,5 @@
+import {Observer} from './mutation-observer';
+
 /**
  * Abstract component.
  */
@@ -19,10 +21,14 @@ export class Component {
    */
   init() {
     this.render();
+
+    Observer.observe(this.rootElement, ()=>{
+      this.onDestroy();
+    });
   }
 
   /**
-   * Called after each render.
+   * Calls after each render.
    *
    * @protected
    */
@@ -63,6 +69,14 @@ export class Component {
   }
 
   /**
+   * Calls after root element removed.
+   *
+   * @protected
+   */
+  onDestroy() {
+  }
+
+  /**
    * @private
    */
   #createDomTree() {
@@ -94,9 +108,9 @@ export class Component {
    * @private
    */
   #createNewElement() {
-    const tempElement = document.createElement('div');
+    const tempElement = document.createElement('template');
     tempElement.innerHTML = this.markup();
-    return tempElement.firstElementChild;
+    return tempElement.content.firstElementChild;
   }
 
   /**
