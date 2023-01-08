@@ -85,7 +85,7 @@ const foldersContent = {
 app.use(express.json());
 app.post('/login', (req, res) => {
   res.status(200);
-  res.send({token: authToken});
+  res.send({authenticationToken: authToken});
 });
 
 app.post('/register', (req, res) => {
