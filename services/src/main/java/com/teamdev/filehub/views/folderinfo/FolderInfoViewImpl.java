@@ -47,7 +47,7 @@ public class FolderInfoViewImpl implements FolderInfoView {
                               folderRecord.id()
                                           .value(),
                               innerFoldersAmount + innerFilesAmount,
-                              folderRecord.ownerId()
+                              folderRecord.parentFolderId()
                                           .value());
     }
 }

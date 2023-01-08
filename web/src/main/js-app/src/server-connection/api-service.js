@@ -122,10 +122,10 @@ export class ApiService {
             throw new ApiServiceError();
           }
           return new FolderInfo(
-              response.body.folderInfo.name,
-              response.body.folderInfo.id,
-              response.body.folderInfo.parentId,
-              response.body.folderInfo.itemsAmount,
+              response.body.name,
+              response.body.id,
+              response.body.parentId,
+              response.body.itemsAmount,
           );
         });
   }

@@ -27,7 +27,7 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
 
         return tableMap().values()
                 .stream()
-                .filter(data -> data.parentFolderId().equals(parentId))
+                .filter(data -> parentId.equals(data.parentFolderId()))
                 .collect(Collectors.toList());
     }
 
