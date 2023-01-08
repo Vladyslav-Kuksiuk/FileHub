@@ -31,5 +31,8 @@ public class Application {
         post("api/folders",
              new CreateFolderRoute(context.getUserAuthorizationView(),
                                    context.getFolderCreateProcess()));
+        post("api/folders/:id/content",
+             new UploadFileRoute(context.getUserAuthorizationView(),
+                                 context.getFileUploadProcess()));
     }
 }

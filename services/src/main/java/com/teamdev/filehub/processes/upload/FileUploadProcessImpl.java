@@ -6,6 +6,7 @@ import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.filestorage.FileStorage;
+import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.util.LocalDateTimeUtil;
 
 import javax.annotation.Nonnull;
@@ -33,29 +34,22 @@ public class FileUploadProcessImpl implements FileUploadProcess {
 
     @Override
     public RecordId<String> handle(@Nonnull FileUploadCommand command) throws
-                                                                       FileUploadException {
+                                                                       AccessDeniedException {
 
         if (!folderDao.find(command.folderId())
                       .get()
                       .ownerId()
                       .equals(command.userId())) {
-            throw new FileUploadException("Access denied.");
-        }
-
-        if (fileDao.getFilesInFolder(command.folderId())
-                   .stream()
-                   .anyMatch(record -> record.name()
-                                             .equals(command.fileName()))) {
-            throw new FileUploadException("File with same path and name already exists.");
+            throw new AccessDeniedException("Access denied.");
         }
 
         RecordId<String> fileId =
                 new RecordId<String>(command.userId()
                                             .value() +
-                                     "_" +
-                                     command.fileName() +
-                                     LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                                                  .format(LocalDateTimeUtil.FORMATTER));
+                                             "_" +
+                                             command.fileName() +
+                                             LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
+                                                          .format(LocalDateTimeUtil.FORMATTER));
 
         FileRecord fileRecord = new FileRecord(fileId,
                                                command.folderId(),

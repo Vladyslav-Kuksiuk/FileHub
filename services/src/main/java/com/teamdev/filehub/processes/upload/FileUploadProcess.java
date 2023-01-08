@@ -1,6 +1,7 @@
 package com.teamdev.filehub.processes.upload;
 
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.filehub.processes.ApplicationProcess;
 
 /**
@@ -9,5 +10,5 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 public interface FileUploadProcess extends ApplicationProcess<FileUploadCommand, RecordId<String>> {
 
     @Override
-    RecordId<String> handle(FileUploadCommand command) throws FileUploadException;
+    RecordId<String> handle(FileUploadCommand command) throws AccessDeniedException;
 }

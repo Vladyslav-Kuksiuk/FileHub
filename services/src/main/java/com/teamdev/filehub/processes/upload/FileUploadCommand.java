@@ -18,7 +18,7 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
     private final String fileExtension;
     private final InputStream fileInputStream;
 
-    protected FileUploadCommand(
+    public FileUploadCommand(
             @Nonnull RecordId<String> userId,
             @Nonnull RecordId<String> folderId,
             @Nonnull String fileName,

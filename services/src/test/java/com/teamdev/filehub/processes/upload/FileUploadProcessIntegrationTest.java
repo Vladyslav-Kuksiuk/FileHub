@@ -4,6 +4,7 @@ import com.teamdev.filehub.ApplicationContext;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.filestorage.FileStorage;
+import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationCommand;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationResponse;
@@ -26,8 +27,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class FileUploadProcessIntegrationTest {
 
     @Test
-    void fileUploadTest() throws IOException, FileUploadException,
-            UserAlreadyRegisteredException, UserDataMismatchException, FieldValidationException {
+    void fileUploadTest() throws IOException,
+                                 UserAlreadyRegisteredException, UserDataMismatchException,
+                                 FieldValidationException, AccessDeniedException {
 
         String testFolderPath = InMemoryDatabase.DATABASE_FOLDER_PATH + "Test\\";
 
