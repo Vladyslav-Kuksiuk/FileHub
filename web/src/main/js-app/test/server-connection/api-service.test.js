@@ -1,10 +1,12 @@
-import {RequestService} from '../../src/server-connection/request-service';
 import {Response} from '../../src/server-connection/response';
 import {
   ApiService,
   LOGIN_401_ERROR,
   LOG_IN_USER_PATH,
   REGISTER_USER_PATH,
+  LOAD_FOLDER_PATH,
+  LOAD_USER_PATH,
+  LOG_OUT_USER_PATH
 } from '../../src/server-connection/api-service';
 import {DEFAULT_ERROR} from '../../src/server-connection/api-service-error';
 import {UserData} from '../../src/user-data';
