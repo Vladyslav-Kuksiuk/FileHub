@@ -17,6 +17,8 @@ public class Application {
 
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
+        post("api/logout",
+             new LogoutRoute(context.getUserAuthorizationView(), context.getUserLogoutProcess()));
 
         get("api/user",
             new LoadUserRoute(context.getUserAuthorizationView(), context.getUserProfileView()));
@@ -28,6 +30,6 @@ public class Application {
 
         post("api/folders",
              new CreateFolderRoute(context.getUserAuthorizationView(),
-                                     context.getFolderCreateProcess()));
+                                   context.getFolderCreateProcess()));
     }
 }

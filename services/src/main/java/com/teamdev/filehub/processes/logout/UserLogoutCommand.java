@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
  */
 public class UserLogoutCommand extends AuthenticatedUserCommand {
 
-    protected UserLogoutCommand(
+    public UserLogoutCommand(
             @Nonnull RecordId<String> userId) {
         super(Preconditions.checkNotNull(userId));
     }

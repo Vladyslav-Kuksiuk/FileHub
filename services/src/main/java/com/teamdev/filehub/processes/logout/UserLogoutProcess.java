@@ -9,5 +9,5 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 public interface UserLogoutProcess extends ApplicationProcess<UserLogoutCommand, RecordId<String>> {
 
     @Override
-    RecordId<String> handle(UserLogoutCommand command) throws UserNotAuthenticatedException;
+    RecordId<String> handle(UserLogoutCommand command);
 }

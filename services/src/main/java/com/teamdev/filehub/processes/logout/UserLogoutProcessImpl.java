@@ -16,7 +16,7 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
     private final AuthenticationDao authenticationDao;
 
     public UserLogoutProcessImpl(@Nonnull
-                                 AuthenticationDao authenticationDao) {
+                                         AuthenticationDao authenticationDao) {
         this.authenticationDao = authenticationDao;
 
     }
@@ -27,12 +27,9 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
      * @param command
      *         {@link UserLogoutCommand}.
      * @return User identifier.
-     * @throws UserNotAuthenticatedException
-     *         If user not authenticated.
      */
     @Override
-    public RecordId<String> handle(@Nonnull UserLogoutCommand command) throws
-                                                                       UserNotAuthenticatedException {
+    public RecordId<String> handle(@Nonnull UserLogoutCommand command) {
         Preconditions.checkNotNull(command);
 
         logger.atInfo()
