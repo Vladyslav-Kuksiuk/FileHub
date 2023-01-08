@@ -193,7 +193,7 @@ describe('ApiService', () => {
           .rejects.toEqual(new FieldValidationError(errors));
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH,
-          {username: login, password: password});
+          {login: login, password: password});
     });
   });
 
