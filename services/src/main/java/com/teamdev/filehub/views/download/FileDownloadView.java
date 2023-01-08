@@ -1,5 +1,6 @@
 package com.teamdev.filehub.views.download;
 
+import com.teamdev.filehub.views.AccessDeniedException;
 import com.teamdev.filehub.views.View;
 
 /**
@@ -9,5 +10,5 @@ import com.teamdev.filehub.views.View;
 public interface FileDownloadView extends View<FileDownloadQuery, FileDownloadResponse> {
 
     @Override
-    FileDownloadResponse handle(FileDownloadQuery query) throws FileAccessDeniedException;
+    FileDownloadResponse handle(FileDownloadQuery query) throws AccessDeniedException;
 }

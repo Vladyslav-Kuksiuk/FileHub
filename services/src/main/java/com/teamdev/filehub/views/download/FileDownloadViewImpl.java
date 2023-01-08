@@ -4,6 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
 import com.teamdev.filehub.filestorage.FileStorage;
+import com.teamdev.filehub.views.AccessDeniedException;
 import com.teamdev.filehub.views.Query;
 
 import javax.annotation.Nonnull;
@@ -34,7 +35,7 @@ public class FileDownloadViewImpl implements FileDownloadView {
      */
     @Override
     public FileDownloadResponse handle(@Nonnull FileDownloadQuery query) throws
-                                                                         FileAccessDeniedException {
+                                                                         AccessDeniedException {
 
         logger.atInfo()
               .log("[VIEW STARTED] - File download - login: %s, file: %s.", query.userId()
@@ -56,7 +57,7 @@ public class FileDownloadViewImpl implements FileDownloadView {
                             .value(), query.fileId()
                                            .value());
 
-            throw new FileAccessDeniedException("Access to file not allowed.");
+            throw new AccessDeniedException("Access to file denied.");
 
         }
 
