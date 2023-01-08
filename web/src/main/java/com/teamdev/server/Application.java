@@ -20,5 +20,7 @@ public class Application {
 
         get("api/user",
             new LoadUserRoute(context.getUserAuthorizationView(), context.getUserProfileView()));
+        get("api/folders/:id",
+            new LoadFolderRoute(context.getUserAuthorizationView(), context.getFolderInfoView()));
     }
 }

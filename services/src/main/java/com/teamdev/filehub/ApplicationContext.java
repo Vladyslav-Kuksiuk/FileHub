@@ -23,6 +23,8 @@ import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
+import com.teamdev.filehub.views.folderinfo.FolderInfoView;
+import com.teamdev.filehub.views.folderinfo.FolderInfoViewImpl;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 
@@ -35,6 +37,7 @@ public class ApplicationContext {
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
     private final UserProfileView userProfileView;
+    private final FolderInfoView folderInfoView;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
@@ -55,6 +58,7 @@ public class ApplicationContext {
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
+        folderInfoView = new FolderInfoViewImpl(folderDao, fileDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
@@ -89,6 +93,10 @@ public class ApplicationContext {
 
     public FileUploadProcess getFileUploadProcess() {
         return fileUploadProcess;
+    }
+
+    public FolderInfoView getFolderInfoView() {
+        return folderInfoView;
     }
 
     public UserAuthorizationView getUserAuthorizationView() {
