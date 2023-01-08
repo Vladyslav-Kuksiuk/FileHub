@@ -9,7 +9,7 @@ export class Response {
    * @param {number} status - HTTP status.
    * @param {object} body
    */
-  constructor(status, body) {
+  constructor(status, body = {}) {
     this.status = status;
     this.body = body;
   }

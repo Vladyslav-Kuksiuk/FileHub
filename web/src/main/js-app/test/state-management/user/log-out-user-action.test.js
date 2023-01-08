@@ -1,33 +1,36 @@
-import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LogOutUserAction} from '../../../src/state-management/user/log-out-user-action';
 import {jest} from '@jest/globals';
-import {ApplicationContext} from '../../../src/application-context';
+import {clearRegistry, registry} from '../../../src/registry';
+
 
 describe('LogOutUserAction', () => {
-  let applicationContext;
+  let apiService;
 
   beforeEach(()=>{
-    applicationContext = new ApplicationContext();
+    clearRegistry();
+    apiService = {
+      logOut: () => {},
+    };
+
+    registry.register('apiService', () => {
+      return apiService;
+    });
   });
 
-  test(`Should successfully logOut`, function(done) {
-    expect.assertions(3);
+  test(`Should call logOut in apiService`, function() {
+    expect.assertions(2);
 
     const apiServiceMock = jest
-        .spyOn(applicationContext.apiService, 'logOut')
+        .spyOn(apiService, 'logOut')
         .mockImplementation(async ()=>{});
 
     const action = new LogOutUserAction();
 
-    const executor = jest.fn((mutator, payload)=>{});
+    const executor = jest.fn(()=>{});
 
-    action.execute(executor, applicationContext);
-
-    setTimeout(()=>{
-      expect(apiServiceMock).toBeCalledTimes(1);
-      expect(executor).toBeCalledTimes(1);
-      expect(executor).toBeCalledWith(MUTATOR_NAMES.SET_USER_PROFILE, null);
-      done();
+    return action.execute(executor).then(()=>{
+      expect(apiServiceMock).toHaveBeenCalledTimes(1);
+      expect(executor).toHaveBeenCalledTimes(0);
     });
   });
 });

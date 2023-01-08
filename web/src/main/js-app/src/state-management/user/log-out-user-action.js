@@ -1,21 +1,16 @@
 import {Action} from '../action';
-import {MUTATOR_NAMES} from '../mutators';
+import {inject} from '../../registry';
 
 /**
  * Action to perform user log out.
  */
 export class LogOutUserAction extends Action {
+  @inject apiService;
+
   /**
    * @inheritDoc
    */
-  execute(executor, applicationContext) {
-    return applicationContext.apiService
-        .logOut()
-        .then(() => {
-          executor(MUTATOR_NAMES.SET_USER_PROFILE, null);
-        })
-        .catch((error)=>{
-          executor(MUTATOR_NAMES.SET_USER_PROFILE_ERROR, error);
-        });
+  execute(executor) {
+    return this.apiService.logOut();
   }
 }

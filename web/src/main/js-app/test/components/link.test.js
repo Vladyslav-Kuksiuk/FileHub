@@ -15,16 +15,18 @@ describe('Link', () => {
     expect(document.body.querySelector('[data-td="link-component"]').textContent).toBe(linkText);
   });
 
-  test('Should trigger click event', function(done) {
-    expect.assertions(1);
+  test('Should trigger click event', function() {
+    return new Promise((done) => {
+      expect.assertions(1);
 
-    const link = new Link(document.body, 'myLink');
+      const link = new Link(document.body, 'myLink');
 
-    link.onClick(()=>{
-      expect(true).toBeTruthy();
-      done();
+      link.onClick(()=>{
+        expect(true).toBeTruthy();
+        done();
+      });
+
+      document.body.querySelector('[data-td="link-component"]').click();
     });
-
-    document.body.querySelector('[data-td="link-component"]').click();
   });
 });

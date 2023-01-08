@@ -9,9 +9,7 @@ describe('validateLength', () => {
         test(`Min length: '${minLength}', testing text: '${testingText}'`, function() {
           expect.assertions(1);
           const validatingFunction = validateLength(minLength, 'Length validation error.');
-          validatingFunction(testingText).then(() => {
-            expect(true).toBeTruthy();
-          });
+          return expect(validatingFunction(testingText)).resolves.toBeUndefined();
         });
       });
 
@@ -21,48 +19,40 @@ describe('validateLength', () => {
       .forEach(([minLength, testingText]) => {
         test(`Min length: '${minLength}', testing text: '${testingText}'`, function() {
           expect.assertions(1);
-          const validatingFunction = validateLength(minLength, 'Length validation error.');
-          validatingFunction(testingText).catch((error) => {
-            expect(error.message).toBe('Length validation error.');
-          },
-          );
+          const error = 'Length validation error.';
+          const validatingFunction = validateLength(minLength, error);
+          return expect(validatingFunction(testingText)).rejects.toEqual(new Error(error));
         });
       });
 
   [null, NaN, undefined, [], {}, -1, 'hello']
       .forEach((minLength) => {
-        test('Should return error text', function() {
+        test('Should return error text about illegal minLength value', function() {
           expect.assertions(1);
-          try {
+          return expect(()=>{
             validateLength(minLength, 'Length validation error.');
-          } catch (error) {
-            expect(error.message).toBe( 'Illegal state.');
-          }
+          }).toThrow(new Error('Illegal state.'));
         });
       });
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((errorMessage) => {
-        test('Should return error text', function() {
+        test('Should return error text about illegal error message', function() {
           expect.assertions(1);
-          try {
+          return expect(()=>{
             validateLength(1, errorMessage);
-          } catch (error) {
-            expect(error.message).toBe('Illegal argument, expected: \'string\'.');
-          }
+          }).toThrow(new Error('Illegal argument, expected: \'string\'.'));
         });
       });
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((value) => {
-        test('Should return error text', function() {
+        test('Should return error text about illegal validation value', function() {
           expect.assertions(1);
-          try {
-            const validatingFunction = validateLength(1, 'Length validation error.');
+          const validatingFunction = validateLength(1, 'Length validation error.');
+          return expect(()=>{
             validatingFunction(value);
-          } catch (error) {
-            expect(error.message).toBe('Illegal argument, expected: \'string\'.');
-          }
+          }).toThrow(new Error('Illegal argument, expected: \'string\'.'));
         });
       });
 });
@@ -75,9 +65,7 @@ describe('validateRegex', function() {
         test(`RegExp pattern: '${EMAIL_VALIDATION_REGEX}', testing text: '${testingText}'`, function() {
           expect.assertions(1);
           const validatingFunction = validateByRegexp(EMAIL_VALIDATION_REGEX, 'Regexp validation error.');
-          validatingFunction(testingText).then(() => {
-            expect(true).toBeTruthy();
-          });
+          return expect(validatingFunction(testingText)).resolves.toBeUndefined();
         });
       });
 
@@ -87,48 +75,40 @@ describe('validateRegex', function() {
       .forEach((testingText) => {
         test(`RegExp pattern: '${EMAIL_VALIDATION_REGEX}', testing text: '${testingText}'`, function() {
           expect.assertions(1);
-          const validatingFunction = validateByRegexp(EMAIL_VALIDATION_REGEX, 'Regexp validation error.');
-          validatingFunction(testingText).catch((error) => {
-            expect(error.message).toBe('Regexp validation error.');
-          },
-          );
+          const error = 'Regexp validation error.';
+          const validatingFunction = validateByRegexp(EMAIL_VALIDATION_REGEX, error);
+          return expect( validatingFunction(testingText)).rejects.toEqual(new Error(error));
         });
       });
 
   [null, NaN, undefined, [], {}, -1, 'hello']
       .forEach((regexp) => {
-        test('Should return error text', function() {
+        test('Should return error text about illegal regExp value', function() {
           expect.assertions(1);
-          try {
+          return expect(()=>{
             validateByRegexp(regexp, 'RegExp validation error.');
-          } catch (error) {
-            expect(error.message).toBe( 'Illegal state.');
-          }
+          }).toThrow(new Error('Illegal state.'));
         });
       });
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((errorMessage) => {
-        test('Should return error text', function() {
+        test('Should return error tex about illegal error message value', function() {
           expect.assertions(1);
-          try {
+          return expect(()=>{
             validateByRegexp(EMAIL_VALIDATION_REGEX, errorMessage);
-          } catch (error) {
-            expect(error.message).toBe('Illegal argument, expected: \'string\'.');
-          }
+          }).toThrow(new Error('Illegal argument, expected: \'string\'.'));
         });
       });
 
   [null, NaN, undefined, [], {}, -1]
       .forEach((value) => {
-        test('Should return error text', function() {
+        test('Should return error text about illegal validation value', function() {
           expect.assertions(1);
-          try {
-            const validatingFunction = validateByRegexp(EMAIL_VALIDATION_REGEX, 'Length validation error.');
+          const validatingFunction = validateByRegexp(EMAIL_VALIDATION_REGEX, 'Length validation error.');
+          return expect(()=>{
             validatingFunction(value);
-          } catch (error) {
-            expect(error.message).toBe('Illegal argument, expected: \'string\'.');
-          }
+          }).toThrow(new Error('Illegal argument, expected: \'string\'.'));
         });
       });
 });
@@ -141,9 +121,7 @@ describe('validateSameValues', function() {
         test(`Expected value : '${value}', testing value: '${value}'`, function() {
           expect.assertions(1);
           const validatingFunction = validateSameValue(value, 'Same values validation error.');
-          validatingFunction(value).then(() => {
-            expect(true).toBeTruthy();
-          });
+          return expect(validatingFunction(value)).resolves.toBeUndefined();
         });
       });
 
@@ -153,11 +131,9 @@ describe('validateSameValues', function() {
       .forEach(([expectedValue, testingValue]) => {
         test(`Expected value : '${expectedValue}, testing value: '${testingValue}'`, function() {
           expect.assertions(1);
-          const validatingFunction = validateSameValue(expectedValue, 'Regexp validation error.');
-          validatingFunction(testingValue).catch((error) => {
-            expect(error.message).toBe('Regexp validation error.');
-          },
-          );
+          const error = 'Regexp validation error.';
+          const validatingFunction = validateSameValue(expectedValue, error);
+          return expect(validatingFunction(testingValue)).rejects.toEqual(new Error(error));
         });
       });
 
@@ -165,11 +141,9 @@ describe('validateSameValues', function() {
       .forEach((errorMessage) => {
         test('Should return error text', function() {
           expect.assertions(1);
-          try {
+          return expect(()=>{
             validateSameValue(EMAIL_VALIDATION_REGEX, errorMessage);
-          } catch (error) {
-            expect(error.message).toBe('Illegal argument, expected: \'string\'.');
-          }
+          }).toThrow(new Error('Illegal argument, expected: \'string\'.'));
         });
       });
 });

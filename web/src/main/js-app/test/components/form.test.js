@@ -51,19 +51,21 @@ describe('Form', () => {
     expect(document.body.querySelectorAll('[data-td="form-control"]').length).toBe(2);
   });
 
-  test(`Should trigger form submit event`, function(done) {
-    expect.assertions(1);
+  test(`Should trigger form submit event`, function() {
+    return new Promise((done) => {
+      expect.assertions(1);
 
-    const form = new Form(document.body, {buttonText: 'myButton',
-      linkCreator: (slot)=>{
-        new Link(slot, 'myLink');
-      }});
+      const form = new Form(document.body, {buttonText: 'myButton',
+        linkCreator: (slot)=>{
+          new Link(slot, 'myLink');
+        }});
 
-    form.onSubmit((formData) => {
-      expect(!!formData).toBeTruthy();
-      done();
+      form.onSubmit((formData) => {
+        expect(!!formData).toBeTruthy();
+        done();
+      });
+
+      document.body.querySelector('[data-td="button-component"]').click();
     });
-
-    document.body.querySelector('[data-td="button-component"]').click();
   });
 });
