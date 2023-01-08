@@ -8,9 +8,9 @@ import com.teamdev.filehub.processes.DataNotFoundException;
 /**
  * A {@link ApplicationProcess} which implementation is intended to handle file renaming.
  */
-public interface RenameFileProcess extends ApplicationProcess<RenameFileCommand, RecordId<String>> {
+public interface FileRenameProcess extends ApplicationProcess<FileRenameCommand, RecordId<String>> {
 
     @Override
-    RecordId<String> handle(RenameFileCommand command)
+    RecordId<String> handle(FileRenameCommand command)
             throws AccessDeniedException, DataNotFoundException;
 }

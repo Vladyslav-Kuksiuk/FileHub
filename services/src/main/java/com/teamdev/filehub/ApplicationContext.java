@@ -17,6 +17,8 @@ import com.teamdev.filehub.processes.logout.UserLogoutProcess;
 import com.teamdev.filehub.processes.logout.UserLogoutProcessImpl;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
 import com.teamdev.filehub.processes.register.UserRegistrationProcessImpl;
+import com.teamdev.filehub.processes.renamefile.FileRenameProcess;
+import com.teamdev.filehub.processes.renamefile.FileRenameProcessImpl;
 import com.teamdev.filehub.processes.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
@@ -40,11 +42,13 @@ public class ApplicationContext {
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
     private final UserProfileView userProfileView;
+
     private final FolderInfoView folderInfoView;
     private final FolderContentView folderContentView;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
+    private final FileRenameProcess fileRenameProcess;
 
     private final FileDownloadView fileDownloadView;
 
@@ -62,11 +66,13 @@ public class ApplicationContext {
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
+
         folderInfoView = new FolderInfoViewImpl(folderDao, fileDao);
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
+        fileRenameProcess = new FileRenameProcessImpl(fileDao);
 
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
@@ -110,5 +116,9 @@ public class ApplicationContext {
 
     public FolderContentView getFolderContentView() {
         return folderContentView;
+    }
+
+    public FileRenameProcess getFileRenameProcess() {
+        return fileRenameProcess;
     }
 }

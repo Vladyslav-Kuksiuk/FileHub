@@ -4,6 +4,7 @@ import com.teamdev.filehub.ApplicationContext;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 import static spark.Spark.staticFiles;
 
 /**
@@ -27,6 +28,10 @@ public class Application {
         get("api/folders/:id/content",
             new LoadFolderContentRoute(context.getUserAuthorizationView(),
                                        context.getFolderContentView()));
+        put("api/file/:id",
+            new RenameFileRoute(context.getUserAuthorizationView(),
+                                context.getFileRenameProcess()));
+
         get("api/files/:id",
             new DownloadFileRoute(context.getUserAuthorizationView(),
                                   context.getFileDownloadView()));

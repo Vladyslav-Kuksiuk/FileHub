@@ -9,18 +9,18 @@ import com.teamdev.filehub.processes.DataNotFoundException;
 import java.util.Optional;
 
 /**
- * {@link RenameFileProcess} implementation.
+ * {@link FileRenameProcess} implementation.
  */
-public class RenameFileProcessImpl implements RenameFileProcess {
+public class FileRenameProcessImpl implements FileRenameProcess {
 
     private final FileDao fileDao;
 
-    public RenameFileProcessImpl(FileDao fileDao) {
+    public FileRenameProcessImpl(FileDao fileDao) {
         this.fileDao = fileDao;
     }
 
     @Override
-    public RecordId<String> handle(RenameFileCommand command) throws AccessDeniedException,
+    public RecordId<String> handle(FileRenameCommand command) throws AccessDeniedException,
                                                                      DataNotFoundException {
 
         Optional<FileRecord> optionalFileRecord = fileDao.find(command.fileId());
