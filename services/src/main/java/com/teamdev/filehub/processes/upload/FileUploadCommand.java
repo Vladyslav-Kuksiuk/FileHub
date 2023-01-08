@@ -14,22 +14,25 @@ import java.io.InputStream;
 public class FileUploadCommand extends AuthenticatedUserCommand {
 
     private final RecordId<String> folderId;
-    private final String fileName;
-    private final String fileExtension;
+    private final String name;
+    private final String mimetype;
+    private final long size;
     private final InputStream fileInputStream;
 
     public FileUploadCommand(
             @Nonnull RecordId<String> userId,
             @Nonnull RecordId<String> folderId,
-            @Nonnull String fileName,
-            @Nonnull String fileExtension,
-            @Nonnull InputStream fileInputStream) {
+            @Nonnull String name,
+            @Nonnull String mimetype,
+            long size,
+            @Nonnull InputStream inputStream) {
         super(userId);
 
         this.folderId = Preconditions.checkNotNull(folderId);
-        this.fileName = Preconditions.checkNotNull(fileName);
-        this.fileExtension = Preconditions.checkNotNull(fileExtension);
-        this.fileInputStream = Preconditions.checkNotNull(fileInputStream);
+        this.name = Preconditions.checkNotNull(name);
+        this.mimetype = Preconditions.checkNotNull(mimetype);
+        this.size = size;
+        this.fileInputStream = Preconditions.checkNotNull(inputStream);
 
     }
 
@@ -37,15 +40,19 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
         return folderId;
     }
 
-    public String fileName() {
-        return fileName;
+    public String name() {
+        return name;
     }
 
-    public String fileExtension() {
-        return fileExtension;
+    public String mimetype() {
+        return mimetype;
     }
 
-    public InputStream fileInputStream() {
+    public InputStream inputStream() {
         return fileInputStream;
+    }
+
+    public long size() {
+        return size;
     }
 }

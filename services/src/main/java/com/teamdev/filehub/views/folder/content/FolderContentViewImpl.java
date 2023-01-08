@@ -64,8 +64,8 @@ public class FolderContentViewImpl implements FolderContentView {
                              file.folderId()
                                  .value(),
                              file.name(),
-                             1,
-                             file.extension())
+                             file.size(),
+                             file.mimetype())
         ));
 
         return folderContent;

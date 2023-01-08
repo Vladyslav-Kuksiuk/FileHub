@@ -49,7 +49,8 @@ public class InMemoryFileDao implements FileDao {
                                               new RecordId<>(fileData.folderId()),
                                               new RecordId<>(fileData.ownerId()),
                                               fileData.name(),
-                                              fileData.extension()));
+                                              fileData.mimetype(),
+                                              fileData.size()));
 
         }
 
@@ -87,7 +88,8 @@ public class InMemoryFileDao implements FileDao {
                                          record.ownerId()
                                                .value(),
                                          record.name(),
-                                         record.extension());
+                                         record.mimetype(),
+                                         record.size());
 
         fileTable.create(fileData);
 
@@ -113,7 +115,8 @@ public class InMemoryFileDao implements FileDao {
                                          record.ownerId()
                                                .value(),
                                          record.name(),
-                                         record.extension());
+                                         record.mimetype(),
+                                         record.size());
 
         fileTable.update(fileData);
 
@@ -126,12 +129,13 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
         return fileTable.selectWithSameFolderId(folderId.value())
-                        .stream()
-                        .map(data -> new FileRecord(new RecordId<>(data.id()),
-                                                    new RecordId<>(data.folderId()),
-                                                    new RecordId<>(data.ownerId()),
-                                                    data.name(),
-                                                    data.extension()))
-                        .collect(Collectors.toList());
+                .stream()
+                .map(data -> new FileRecord(new RecordId<>(data.id()),
+                                            new RecordId<>(data.folderId()),
+                                            new RecordId<>(data.ownerId()),
+                                            data.name(),
+                                            data.mimetype(),
+                                            data.size()))
+                .collect(Collectors.toList());
     }
 }

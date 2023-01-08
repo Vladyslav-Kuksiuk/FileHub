@@ -14,20 +14,23 @@ public class FileRecord extends DatabaseRecord<String> {
     private final RecordId<String> folderId;
     private final RecordId<String> ownerId;
     private final String name;
-    private final String extension;
+    private final String mimetype;
+    private final long size;
 
     public FileRecord(
             @Nonnull RecordId<String> id,
             @Nonnull RecordId<String> folderId,
             @Nonnull RecordId<String> ownerId,
             @Nonnull String name,
-            @Nonnull String extension) {
+            @Nonnull String mimetype,
+            long size) {
         super(Preconditions.checkNotNull(id));
 
         this.folderId = Preconditions.checkNotNull(folderId);
         this.ownerId = Preconditions.checkNotNull(ownerId);
         this.name = Preconditions.checkNotNull(name);
-        this.extension = Preconditions.checkNotNull(extension);
+        this.mimetype = Preconditions.checkNotNull(mimetype);
+        this.size = size;
     }
 
     public RecordId<String> folderId() {
@@ -42,7 +45,11 @@ public class FileRecord extends DatabaseRecord<String> {
         return name;
     }
 
-    public String extension() {
-        return extension;
+    public String mimetype() {
+        return mimetype;
+    }
+
+    public long size() {
+        return size;
     }
 }

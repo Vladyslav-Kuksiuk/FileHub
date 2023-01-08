@@ -47,31 +47,32 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                 new RecordId<String>(command.userId()
                                             .value() +
                                              "_" +
-                                             command.fileName() +
+                                             command.name() +
                                              LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
                                                           .format(LocalDateTimeUtil.FORMATTER));
 
         FileRecord fileRecord = new FileRecord(fileId,
                                                command.folderId(),
                                                command.userId(),
-                                               command.fileName(),
-                                               command.fileExtension());
+                                               command.name(),
+                                               command.mimetype(),
+                                               command.size());
 
         logger.atInfo()
               .log("[PROCESS STARTED] - File uploading - user id: %s, file: %s.",
                    command.userId()
                           .value(),
-                   command.fileName());
+                   command.name());
 
         fileDao.create(fileRecord);
 
-        fileStorage.uploadFile(fileId, command.fileInputStream());
+        fileStorage.uploadFile(fileId, command.inputStream());
 
         logger.atInfo()
               .log("[PROCESS FINISHED] - File uploading - user id: %s, file: %s.",
                    command.userId()
                           .value(),
-                   command.fileName());
+                   command.name());
 
         return fileId;
     }

@@ -71,6 +71,7 @@ class FileUploadProcessIntegrationTest {
                                                                                      "email@email.com_root"),
                                                                              "hello",
                                                                              "txt",
+                                                                             123,
                                                                              inputStream));
 
         File testingFile = new File(FileStorage.STORAGE_FOLDER_PATH + fileId.value());

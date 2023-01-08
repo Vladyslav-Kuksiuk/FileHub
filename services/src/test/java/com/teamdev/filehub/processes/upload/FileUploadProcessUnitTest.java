@@ -7,6 +7,7 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
+import com.teamdev.filehub.processes.AccessDeniedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +48,7 @@ class FileUploadProcessUnitTest {
     }
 
     @Test
-    void fileUploadTest() throws FileUploadException {
+    void fileUploadTest() throws AccessDeniedException {
 
         InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
 
@@ -55,6 +56,7 @@ class FileUploadProcessUnitTest {
                                                           rootFolder.id(),
                                                           "myFile",
                                                           "txt",
+                                                          123,
                                                           fileInputStream);
 
         RecordId<String> fileId = fileUploadProcess.handle(command);
@@ -76,9 +78,10 @@ class FileUploadProcessUnitTest {
                                                           rootFolder.id(),
                                                           "myFile",
                                                           "txt",
+                                                          123,
                                                           fileInputStream);
 
-        assertThrows(FileUploadException.class,
+        assertThrows(AccessDeniedException.class,
                      () -> fileUploadProcess.handle(command),
                      "File uploading by non-owner user not failed");
     }
@@ -92,6 +95,7 @@ class FileUploadProcessUnitTest {
                                                           new RecordId<>("notAFolder"),
                                                           "myFile",
                                                           "txt",
+                                                          123,
                                                           fileInputStream);
 
         assertThrows(NoSuchElementException.class,
@@ -100,7 +104,7 @@ class FileUploadProcessUnitTest {
     }
 
     @Test
-    void uploadSameFilesTest() throws FileUploadException {
+    void uploadSameFilesTest() throws AccessDeniedException {
 
         InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
 
@@ -108,11 +112,12 @@ class FileUploadProcessUnitTest {
                                                           rootFolder.id(),
                                                           "myFile",
                                                           "txt",
+                                                          123,
                                                           fileInputStream);
 
         fileUploadProcess.handle(command);
 
-        assertThrows(FileUploadException.class,
+        assertThrows(AccessDeniedException.class,
                      () -> fileUploadProcess.handle(command),
                      "File uploading to absent folder not failed");
     }

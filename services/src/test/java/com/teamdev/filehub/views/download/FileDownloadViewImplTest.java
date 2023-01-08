@@ -35,7 +35,8 @@ class FileDownloadViewImplTest {
                                                new RecordId<>("user_root"),
                                                new RecordId<>("user"),
                                                "myFile",
-                                               "txt");
+                                               "txt",
+                                               123);
 
         fileDao.create(fileRecord);
 

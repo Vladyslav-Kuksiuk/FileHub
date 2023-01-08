@@ -59,6 +59,7 @@ public class UploadFileRoute extends AuthorizedRoute {
                                                   new RecordId<>(request.params(":id")),
                                                   part.getSubmittedFileName(),
                                                   part.getContentType(),
+                                                  part.getSize(),
                                                   input);
 
                     fileUploadProcess.handle(command);
