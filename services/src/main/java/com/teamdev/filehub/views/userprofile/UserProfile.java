@@ -6,16 +6,16 @@ package com.teamdev.filehub.views.userprofile;
  */
 public class UserProfile {
 
-    private final String username;
+    private final String login;
     private final String rootFolderId;
 
-    public UserProfile(String username, String rootFolderId) {
-        this.username = username;
+    public UserProfile(String login, String rootFolderId) {
+        this.login = login;
         this.rootFolderId = rootFolderId;
     }
 
     public String username() {
-        return username;
+        return login;
     }
 
     public String rootFolderId() {
