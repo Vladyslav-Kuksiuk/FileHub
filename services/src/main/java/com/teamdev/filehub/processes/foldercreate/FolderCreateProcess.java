@@ -1,6 +1,7 @@
 package com.teamdev.filehub.processes.foldercreate;
 
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.filehub.processes.ApplicationProcess;
 
 /**
@@ -9,5 +10,5 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 public interface FolderCreateProcess extends ApplicationProcess<FolderCreateCommand, RecordId<String>> {
 
     @Override
-    RecordId<String> handle(FolderCreateCommand command) throws FolderCreateException;
+    RecordId<String> handle(FolderCreateCommand command) throws AccessDeniedException;
 }

@@ -25,5 +25,9 @@ public class Application {
         get("api/folders/:id/content",
             new LoadFolderContentRoute(context.getUserAuthorizationView(),
                                        context.getFolderContentView()));
+
+        post("api/folders",
+             new CreateFolderRoute(context.getUserAuthorizationView(),
+                                     context.getFolderCreateProcess()));
     }
 }

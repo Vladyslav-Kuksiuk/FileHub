@@ -3,6 +3,7 @@ package com.teamdev.filehub.processes.foldercreate;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
+import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.util.LocalDateTimeUtil;
 
 import javax.annotation.Nonnull;
@@ -21,12 +22,13 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
 
     @Override
     public RecordId<String> handle(@Nonnull FolderCreateCommand command) throws
-                                                                         FolderCreateException {
+                                                                         AccessDeniedException {
 
         RecordId<String> folderId = new RecordId<>(command.userId()
                                                           .value() +
-                                                   command.folderName() +
-                                                   LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE));
+                                                           command.folderName() +
+                                                           LocalDateTime.now(
+                                                                   LocalDateTimeUtil.TIME_ZONE));
 
         FolderRecord folderRecord = new FolderRecord(folderId,
                                                      command.userId(),
@@ -37,14 +39,7 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
                       .get()
                       .ownerId()
                       .equals(command.userId())) {
-            throw new FolderCreateException("Folder creation access denied.");
-        }
-
-        if (folderDao.getInnerFoldersByParentId(command.parentFolderId())
-                     .stream()
-                     .anyMatch(record -> record.name()
-                                               .equals(command.folderName()))) {
-            throw new FolderCreateException("Folder with same path and name already exists.");
+            throw new AccessDeniedException("Folder creation access denied.");
         }
 
         folderDao.create(folderRecord);

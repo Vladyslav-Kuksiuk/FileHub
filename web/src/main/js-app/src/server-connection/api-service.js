@@ -300,7 +300,7 @@ export class ApiService {
    */
   async createFolder(folder) {
     return this.requestService.postJson(
-        'api/folders/',
+        'api/folders',
         {
           name: folder.name,
           parentId: folder.parentId,
