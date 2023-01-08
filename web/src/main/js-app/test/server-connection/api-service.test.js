@@ -64,7 +64,7 @@ describe('ApiService', () => {
 
       await expect(apiService.logIn(new UserData(login, password))).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {username: login, password: password});
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {login: login, password: password});
     });
 
     test(`Should return error after login with error message ${DEFAULT_ERROR}`, async function() {
@@ -81,7 +81,7 @@ describe('ApiService', () => {
       await expect(apiService.logIn(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {username: login, password: password});
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {login: login, password: password});
     });
 
     test(`Should return error after request error`, async function() {
@@ -98,7 +98,7 @@ describe('ApiService', () => {
       await expect(apiService.logIn(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {username: login, password: password});
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {login: login, password: password});
     });
 
     test(`Should return error after login with error message ${LOGIN_401_ERROR}`, async function() {
@@ -115,7 +115,7 @@ describe('ApiService', () => {
       await expect(apiService.logIn(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError(LOGIN_401_ERROR));
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {username: login, password: password});
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_IN_USER_PATH, {login: login, password: password});
     });
   });
 
@@ -133,7 +133,7 @@ describe('ApiService', () => {
 
       await expect(apiService.register(new UserData(login, password))).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {username: login, password: password});
+      await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {login: login, password: password});
     });
 
     test(`Should return error after registration with error message ${DEFAULT_ERROR}`, async function() {
@@ -150,7 +150,7 @@ describe('ApiService', () => {
       await expect(apiService.register(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {username: login, password: password});
+      await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {login: login, password: password});
     });
 
     test(`Should return error after request error`, async function() {
@@ -167,7 +167,7 @@ describe('ApiService', () => {
       await expect(apiService.register(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {username: login, password: password});
+      await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH, {login: login, password: password});
     });
 
     test(`Should return error after registration with errors in response body`, async function() {
@@ -195,7 +195,7 @@ describe('ApiService', () => {
           .rejects.toEqual(new FieldValidationError(errors));
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(REGISTER_USER_PATH,
-          {username: login, password: password});
+          {login: login, password: password});
     });
   });
 
