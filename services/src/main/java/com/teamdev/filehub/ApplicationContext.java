@@ -9,6 +9,8 @@ import com.teamdev.filehub.dao.folder.InMemoryFolderDao;
 import com.teamdev.filehub.dao.user.InMemoryUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
+import com.teamdev.filehub.processes.file.remove.FileRemoveProcess;
+import com.teamdev.filehub.processes.file.remove.FileRemoveProcessImpl;
 import com.teamdev.filehub.processes.file.rename.FileRenameProcess;
 import com.teamdev.filehub.processes.file.rename.FileRenameProcessImpl;
 import com.teamdev.filehub.processes.file.upload.FileUploadProcess;
@@ -55,6 +57,7 @@ public class ApplicationContext {
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
     private final FileRenameProcess fileRenameProcess;
+    private final FileRemoveProcess fileRemoveProcess;
 
     private final FileDownloadView fileDownloadView;
 
@@ -81,7 +84,7 @@ public class ApplicationContext {
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
         fileRenameProcess = new FileRenameProcessImpl(fileDao);
-
+        fileRemoveProcess = new FileRemoveProcessImpl(fileDao, fileStorage);
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
     }
@@ -120,6 +123,10 @@ public class ApplicationContext {
 
     public FolderSearchView getFolderSearchView() {
         return folderSearchView;
+    }
+
+    public FileRemoveProcess getFileRemoveProcess() {
+        return fileRemoveProcess;
     }
 
     public UserAuthorizationView getUserAuthorizationView() {

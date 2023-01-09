@@ -2,6 +2,7 @@ package com.teamdev.server;
 
 import com.teamdev.filehub.ApplicationContext;
 
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
@@ -28,6 +29,9 @@ public class Application {
         get("api/folders/:id/content",
             new LoadFolderContentRoute(context.getUserAuthorizationView(),
                                        context.getFolderContentView()));
+        get("api/files/:id",
+            new DownloadFileRoute(context.getUserAuthorizationView(),
+                                  context.getFileDownloadView()));
         get("api/folders/:id/search/:searchWord",
             new SearchInFolderRoute(context.getUserAuthorizationView(),
                                     context.getFolderSearchView()));
@@ -39,9 +43,9 @@ public class Application {
             new RenameFolderRoute(context.getUserAuthorizationView(),
                                   context.getFolderRenameProcess()));
 
-        get("api/files/:id",
-            new DownloadFileRoute(context.getUserAuthorizationView(),
-                                  context.getFileDownloadView()));
+        delete("api/file/:id",
+               new RemoveFileRoute(context.getUserAuthorizationView(),
+                                   context.getFileRemoveProcess()));
 
         post("api/folders",
              new CreateFolderRoute(context.getUserAuthorizationView(),
