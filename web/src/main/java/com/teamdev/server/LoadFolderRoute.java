@@ -14,7 +14,7 @@ import spark.Response;
 /**
  * {@link AuthorizedRoute} to handle folder info path.
  */
-public class LoadFolderRoute extends AuthorizedRoute{
+public class LoadFolderRoute extends AuthorizedRoute {
 
     private final FolderInfoView folderInfoView;
     private final Gson gson = new Gson();

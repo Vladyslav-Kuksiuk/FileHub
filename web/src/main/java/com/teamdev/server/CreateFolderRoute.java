@@ -18,8 +18,8 @@ import spark.Route;
  */
 public class CreateFolderRoute extends AuthorizedRoute {
 
-    private Gson gson = new Gson();
     private final FolderCreateProcess folderCreateProcess;
+    private final Gson gson = new Gson();
 
     public CreateFolderRoute(
             UserAuthorizationView authorizationView,

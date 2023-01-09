@@ -31,6 +31,9 @@ public class Application {
         put("api/file/:id",
             new RenameFileRoute(context.getUserAuthorizationView(),
                                 context.getFileRenameProcess()));
+        put("api/folder/:id",
+            new RenameFolderRoute(context.getUserAuthorizationView(),
+                                  context.getFolderRenameProcess()));
 
         get("api/files/:id",
             new DownloadFileRoute(context.getUserAuthorizationView(),

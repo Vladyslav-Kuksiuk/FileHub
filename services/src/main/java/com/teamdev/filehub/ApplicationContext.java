@@ -15,6 +15,8 @@ import com.teamdev.filehub.processes.file.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.file.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.folder.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.folder.create.FolderCreateProcessImpl;
+import com.teamdev.filehub.processes.folder.rename.FolderRenameProcess;
+import com.teamdev.filehub.processes.folder.rename.FolderRenameProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
@@ -45,6 +47,7 @@ public class ApplicationContext {
 
     private final FolderInfoView folderInfoView;
     private final FolderContentView folderContentView;
+    private final FolderRenameProcess folderRenameProcess;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
@@ -69,6 +72,7 @@ public class ApplicationContext {
 
         folderInfoView = new FolderInfoViewImpl(folderDao, fileDao);
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
+        folderRenameProcess = new FolderRenameProcessImpl(folderDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
@@ -116,6 +120,10 @@ public class ApplicationContext {
 
     public FolderContentView getFolderContentView() {
         return folderContentView;
+    }
+
+    public FolderRenameProcess getFolderRenameProcess() {
+        return folderRenameProcess;
     }
 
     public FileRenameProcess getFileRenameProcess() {
