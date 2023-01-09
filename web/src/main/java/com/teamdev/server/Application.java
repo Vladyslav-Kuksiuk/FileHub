@@ -28,6 +28,10 @@ public class Application {
         get("api/folders/:id/content",
             new LoadFolderContentRoute(context.getUserAuthorizationView(),
                                        context.getFolderContentView()));
+        get("api/folders/:id/search/:searchWord",
+            new SearchInFolderRoute(context.getUserAuthorizationView(),
+                                    context.getFolderSearchView()));
+
         put("api/file/:id",
             new RenameFileRoute(context.getUserAuthorizationView(),
                                 context.getFileRenameProcess()));

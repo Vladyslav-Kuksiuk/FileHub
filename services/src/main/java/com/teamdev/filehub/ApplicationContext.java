@@ -31,6 +31,8 @@ import com.teamdev.filehub.views.folder.content.FolderContentView;
 import com.teamdev.filehub.views.folder.content.FolderContentViewImpl;
 import com.teamdev.filehub.views.folder.info.FolderInfoView;
 import com.teamdev.filehub.views.folder.info.FolderInfoViewImpl;
+import com.teamdev.filehub.views.folder.search.FolderSearchView;
+import com.teamdev.filehub.views.folder.search.FolderSearchViewImpl;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 
@@ -47,6 +49,7 @@ public class ApplicationContext {
 
     private final FolderInfoView folderInfoView;
     private final FolderContentView folderContentView;
+    private final FolderSearchView folderSearchView;
     private final FolderRenameProcess folderRenameProcess;
 
     private final FolderCreateProcess folderCreateProcess;
@@ -72,6 +75,7 @@ public class ApplicationContext {
 
         folderInfoView = new FolderInfoViewImpl(folderDao, fileDao);
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
+        folderSearchView = new FolderSearchViewImpl(folderDao, fileDao);
         folderRenameProcess = new FolderRenameProcessImpl(folderDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
@@ -112,6 +116,10 @@ public class ApplicationContext {
 
     public FolderInfoView getFolderInfoView() {
         return folderInfoView;
+    }
+
+    public FolderSearchView getFolderSearchView() {
+        return folderSearchView;
     }
 
     public UserAuthorizationView getUserAuthorizationView() {
