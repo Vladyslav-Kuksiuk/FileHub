@@ -12,7 +12,7 @@ public abstract class AuthenticatedUserCommand implements Command {
 
     private final RecordId<String> userId;
 
-    protected AuthenticatedUserCommand(@Nonnull RecordId<String> userId) {
+    public AuthenticatedUserCommand(@Nonnull RecordId<String> userId) {
         this.userId = Preconditions.checkNotNull(userId);
     }
 

@@ -54,7 +54,7 @@ public class FileStorage {
 
         }
 
-        try (OutputStream outStream = new FileOutputStream(targetFile);) {
+        try (OutputStream outStream = new FileOutputStream(targetFile)) {
 
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;
@@ -92,6 +92,20 @@ public class FileStorage {
             throw new RuntimeException(exception);
         }
 
+    }
+
+    /**
+     * Removes file by given id.
+     */
+    public void removeFile(RecordId<String> fileId) {
+        String fullPath = STORAGE_FOLDER_PATH + fileId.value();
+        File file = new File(fullPath);
+
+        if (!file.exists()) {
+            throw new RuntimeException("File not found.");
+        }
+
+        file.delete();
     }
 
     /**
