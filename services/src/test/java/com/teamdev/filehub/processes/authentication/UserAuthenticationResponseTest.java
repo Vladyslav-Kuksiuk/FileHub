@@ -2,6 +2,7 @@ package com.teamdev.filehub.processes.authentication;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
 import org.junit.jupiter.api.Test;
 
 class UserAuthenticationResponseTest {

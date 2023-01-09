@@ -2,10 +2,10 @@ package com.teamdev.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.teamdev.filehub.processes.authentication.UserAuthenticationCommand;
-import com.teamdev.filehub.processes.authentication.UserAuthenticationProcess;
-import com.teamdev.filehub.processes.authentication.UserAuthenticationResponse;
-import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationCommand;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
+import com.teamdev.filehub.processes.user.authentication.UserDataMismatchException;
 import spark.Request;
 import spark.Response;
 import spark.Route;

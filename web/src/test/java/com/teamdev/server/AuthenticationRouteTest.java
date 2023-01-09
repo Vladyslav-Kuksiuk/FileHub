@@ -1,8 +1,8 @@
 package com.teamdev.server;
 
 import com.google.gson.Gson;
-import com.teamdev.filehub.processes.authentication.UserAuthenticationResponse;
-import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
+import com.teamdev.filehub.processes.user.authentication.UserDataMismatchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -2,7 +2,7 @@ package com.teamdev.server;
 
 import com.google.gson.Gson;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
+import com.teamdev.filehub.processes.user.register.UserAlreadyRegisteredException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

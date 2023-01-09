@@ -8,6 +8,9 @@ import com.teamdev.filehub.dao.user.InMemoryUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.processes.ApplicationProcess;
 import com.teamdev.filehub.processes.ProcessException;
+import com.teamdev.filehub.processes.user.register.FieldValidationException;
+import com.teamdev.filehub.processes.user.register.UserRegistrationCommand;
+import com.teamdev.filehub.processes.user.register.UserRegistrationProcessImpl;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;

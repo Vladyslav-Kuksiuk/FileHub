@@ -1,8 +1,8 @@
 package com.teamdev.server;
 
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.logout.UserLogoutCommand;
-import com.teamdev.filehub.processes.logout.UserLogoutProcess;
+import com.teamdev.filehub.processes.user.logout.UserLogoutCommand;
+import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import spark.Request;
 import spark.Response;

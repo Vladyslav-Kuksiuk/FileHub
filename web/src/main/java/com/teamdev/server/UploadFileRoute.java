@@ -2,8 +2,8 @@ package com.teamdev.server;
 
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.AccessDeniedException;
-import com.teamdev.filehub.processes.upload.FileUploadCommand;
-import com.teamdev.filehub.processes.upload.FileUploadProcess;
+import com.teamdev.filehub.processes.file.upload.FileUploadCommand;
+import com.teamdev.filehub.processes.file.upload.FileUploadProcess;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import spark.Request;
 import spark.Response;

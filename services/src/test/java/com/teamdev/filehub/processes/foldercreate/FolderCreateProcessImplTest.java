@@ -6,6 +6,10 @@ import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
 import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.filehub.processes.CommandValidationException;
+import com.teamdev.filehub.processes.folder.create.FolderCreateCommand;
+import com.teamdev.filehub.processes.folder.create.FolderCreateException;
+import com.teamdev.filehub.processes.folder.create.FolderCreateProcess;
+import com.teamdev.filehub.processes.folder.create.FolderCreateProcessImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

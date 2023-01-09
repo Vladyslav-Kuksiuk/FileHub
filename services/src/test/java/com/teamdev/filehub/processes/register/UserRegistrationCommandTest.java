@@ -1,6 +1,8 @@
 package com.teamdev.filehub.processes.register;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.filehub.processes.user.register.FieldValidationException;
+import com.teamdev.filehub.processes.user.register.UserRegistrationCommand;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
