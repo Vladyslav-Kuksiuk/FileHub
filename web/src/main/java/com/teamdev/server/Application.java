@@ -46,6 +46,9 @@ public class Application {
         delete("api/file/:id",
                new RemoveFileRoute(context.getUserAuthorizationView(),
                                    context.getFileRemoveProcess()));
+        delete("api/folder/:id",
+               new RemoveFolderRoute(context.getUserAuthorizationView(),
+                                     context.getFolderRemoveProcess()));
 
         post("api/folders",
              new CreateFolderRoute(context.getUserAuthorizationView(),

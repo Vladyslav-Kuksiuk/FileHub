@@ -17,6 +17,8 @@ import com.teamdev.filehub.processes.file.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.file.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.folder.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.folder.create.FolderCreateProcessImpl;
+import com.teamdev.filehub.processes.folder.remove.FolderRemoveProcess;
+import com.teamdev.filehub.processes.folder.remove.FolderRemoveProcessImpl;
 import com.teamdev.filehub.processes.folder.rename.FolderRenameProcess;
 import com.teamdev.filehub.processes.folder.rename.FolderRenameProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
@@ -53,6 +55,7 @@ public class ApplicationContext {
     private final FolderContentView folderContentView;
     private final FolderSearchView folderSearchView;
     private final FolderRenameProcess folderRenameProcess;
+    private final FolderRemoveProcess folderRemoveProcess;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
@@ -80,6 +83,7 @@ public class ApplicationContext {
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
         folderSearchView = new FolderSearchViewImpl(folderDao, fileDao);
         folderRenameProcess = new FolderRenameProcessImpl(folderDao);
+        folderRemoveProcess = new FolderRemoveProcessImpl(folderDao, fileDao, fileStorage);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
@@ -127,6 +131,10 @@ public class ApplicationContext {
 
     public FileRemoveProcess getFileRemoveProcess() {
         return fileRemoveProcess;
+    }
+
+    public FolderRemoveProcess getFolderRemoveProcess() {
+        return folderRemoveProcess;
     }
 
     public UserAuthorizationView getUserAuthorizationView() {
