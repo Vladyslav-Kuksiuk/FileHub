@@ -6,7 +6,7 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.AccessDeniedException;
 import com.teamdev.filehub.views.DataNotFoundException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
-import com.teamdev.filehub.views.folder.content.FolderContent;
+import com.teamdev.filehub.views.folder.FolderContent;
 import com.teamdev.filehub.views.folder.content.FolderContentQuery;
 import com.teamdev.filehub.views.folder.content.FolderContentView;
 import com.teamdev.filehub.views.folder.info.FolderInfo;

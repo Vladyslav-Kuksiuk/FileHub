@@ -1,4 +1,4 @@
-package com.teamdev.filehub.views.folder.content;
+package com.teamdev.filehub.views.folder.search;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.file.FileDao;
@@ -15,21 +15,21 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * {@link FolderContentView} implementation.
+ * {@link FolderSearchView} implementation.
  */
-public class FolderContentViewImpl implements FolderContentView {
+public class FolderSearchViewImpl implements FolderSearchView {
 
     private final FolderDao folderDao;
     private final FileDao fileDao;
 
-    public FolderContentViewImpl(FolderDao folderDao, FileDao fileDao) {
+    public FolderSearchViewImpl(FolderDao folderDao, FileDao fileDao) {
         this.folderDao = Preconditions.checkNotNull(folderDao);
         this.fileDao = Preconditions.checkNotNull(fileDao);
     }
 
     @Override
-    public FolderContent handle(FolderContentQuery query) throws AccessDeniedException,
-                                                                 DataNotFoundException {
+    public FolderContent handle(FolderSearchQuery query) throws AccessDeniedException,
+                                                                DataNotFoundException {
         Preconditions.checkNotNull(query);
 
         Optional<FolderRecord> optionalFolderRecord = folderDao.find(query.folderId());
@@ -52,22 +52,28 @@ public class FolderContentViewImpl implements FolderContentView {
 
         FolderContent folderContent = new FolderContent();
 
-        innerFolders.forEach(folder -> folderContent.addItem(
-                new FolderItem(folder.id()
-                                     .value(),
-                               folder.parentFolderId()
-                                     .value(),
-                               folder.name())));
+        innerFolders.stream()
+                .filter(folder -> folder.name()
+                                        .contains(query.searchWord()))
+                .forEach(folder -> folderContent.addItem(
+                        new FolderItem(folder.id()
+                                             .value(),
+                                       folder.parentFolderId()
+                                             .value(),
+                                       folder.name())));
 
-        innerFiles.forEach(file -> folderContent.addItem(
-                new FileItem(file.id()
-                                 .value(),
-                             file.folderId()
-                                 .value(),
-                             file.name(),
-                             file.size(),
-                             file.mimetype())
-        ));
+        innerFiles.stream()
+                .filter(file -> file.name()
+                                    .contains(query.searchWord()))
+                .forEach(file -> folderContent.addItem(
+                        new FileItem(file.id()
+                                         .value(),
+                                     file.folderId()
+                                         .value(),
+                                     file.name(),
+                                     file.size(),
+                                     file.mimetype())
+                ));
 
         return folderContent;
     }
