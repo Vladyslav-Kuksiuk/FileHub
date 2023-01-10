@@ -26,10 +26,13 @@ import com.teamdev.filehub.views.download.FileDownloadViewImpl;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 
+import java.nio.file.Path;
+
 /**
  * Class which intended to configure services implementations.
  */
 public class ApplicationContext {
+
     private final UserRegistrationProcess userRegistrationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
@@ -42,13 +45,17 @@ public class ApplicationContext {
     private final FileDownloadView fileDownloadView;
 
     public ApplicationContext() {
-        InMemoryDatabase database = new InMemoryDatabase();
+
+        Path storagePath = Path.of("storage")
+                               .toAbsolutePath();
+
+        InMemoryDatabase database = new InMemoryDatabase(storagePath.toString());
         UserDao userDao = new InMemoryUserDao(database.userTable());
         AuthenticationDao authDao = new InMemoryAuthenticationDao(database.authenticationTable());
         FileDao fileDao = new InMemoryFileDao(database.fileTable());
         FolderDao folderDao = new InMemoryFolderDao(database.folderTable());
 
-        FileStorage fileStorage = new FileStorage();
+        FileStorage fileStorage = new FileStorage(storagePath.toString());
 
         userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
         userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);

@@ -3,7 +3,6 @@ package com.teamdev.filehub.user;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.Data;
-import com.teamdev.util.EmailValidator;
 
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +33,6 @@ public class UserData extends Data<String> {
         return password;
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hashCode(login, password);
@@ -50,6 +48,6 @@ public class UserData extends Data<String> {
         }
         UserData userData = (UserData) o;
         return Objects.equal(login, userData.login) &&
-               Objects.equal(password, userData.password);
+                Objects.equal(password, userData.password);
     }
 }

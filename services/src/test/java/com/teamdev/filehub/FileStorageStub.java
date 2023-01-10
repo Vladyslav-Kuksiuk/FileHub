@@ -10,6 +10,10 @@ public class FileStorageStub extends FileStorage {
 
     public static String INPUT_STRING = "test";
 
+    public FileStorageStub() {
+        super("");
+    }
+
     @Override
     public void uploadFile(RecordId<String> fileId, InputStream fileInput) {
 

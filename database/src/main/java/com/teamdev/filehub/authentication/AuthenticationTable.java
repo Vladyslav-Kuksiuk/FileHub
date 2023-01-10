@@ -11,10 +11,8 @@ import java.util.Optional;
  */
 public class AuthenticationTable extends InMemoryDatabaseTable<String, AuthenticationData> {
 
-    private static final String FILE_NAME = "userAuthentication.json";
-
-    public AuthenticationTable() {
-        super(FILE_NAME, AuthenticationData[].class);
+    public AuthenticationTable(String filePath) {
+        super(filePath, AuthenticationData[].class);
 
     }
 
