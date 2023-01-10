@@ -1,66 +1,43 @@
 package com.teamdev.server;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.register.FieldValidationException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
-import spark.Request;
-import spark.Response;
-import spark.Route;
 
-/**
- * {@link Route} to handle user registration path.
- */
-public class RegistrationRoute implements Route {
+public class RegistrationRoute extends WrappedRoute {
 
     private final Gson gson = new Gson();
-    private final UserRegistrationProcess process;
+    private final UserRegistrationProcess userRegistrationProcess;
 
-    public RegistrationRoute(UserRegistrationProcess process) {
-        this.process = process;
+    public RegistrationRoute(
+            UserRegistrationProcess userRegistrationProcess) {
+        this.userRegistrationProcess = userRegistrationProcess;
     }
 
-    /**
-     * Parses the {@link UserRegistrationCommand} from the request body
-     * and handle it with the {@link UserRegistrationProcess}.
-     *
-     * @param request
-     *         - HTTP request
-     * @param response
-     *         - HTTP response
-     * @return - user id as JSON
-     */
     @Override
-    public Object handle(Request request, Response response) {
+    protected void wrappedHandle(WrappedRequest request, WrappedResponse response)
+            throws JsonEntityValidationException, UserAlreadyRegisteredException {
 
         try {
-            JsonObject requestBody = gson.fromJson(request.body(), JsonObject.class);
+            var jsonBody = request.jsonBody();
+            var command = new UserRegistrationCommand(jsonBody.getAsString("login"),
+                                                      jsonBody.getAsString("password"));
 
-            UserRegistrationCommand command = new UserRegistrationCommand(
-                    requestBody.get("login")
-                               .getAsString(),
-                    requestBody.get("password")
-                               .getAsString());
+            var userId = userRegistrationProcess.handle(command);
 
-            RecordId<String> userId = process.handle(command);
-            response.status(200);
-
-            return gson.toJson(userId);
+            response.setBody(userId.value());
 
         } catch (FieldValidationException exception) {
+
             FieldErrors errors = new FieldErrors();
             errors.addError(new FieldErrorMessage(exception.getField(), exception.getMessage()));
-            response.status(422);
+            response.setStatus(422);
 
-            return gson.toJson(errors);
+            response.setBody(gson.toJson(errors));
 
-        } catch (UserAlreadyRegisteredException e) {
-            response.status(409);
-
-            return e.getMessage();
         }
+
     }
 }

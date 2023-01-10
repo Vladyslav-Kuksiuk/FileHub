@@ -7,13 +7,11 @@ import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.userprofile.UserProfile;
 import com.teamdev.filehub.views.userprofile.UserProfileQuery;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
-import spark.Request;
-import spark.Response;
 
 /**
- * {@link AuthorizedRoute} to handle user profile path.
+ * {@link AuthorizedUserRoute} to handle user profile path.
  */
-public class LoadUserRoute extends AuthorizedRoute {
+public class LoadUserRoute extends AuthorizedUserRoute {
 
     private final Gson gson = new Gson();
     private final UserProfileView userProfileView;
@@ -33,13 +31,12 @@ public class LoadUserRoute extends AuthorizedRoute {
      *         HTTP request
      * @param response
      *         HTTP response
-     * @return - {@link UserProfile} as JSON
      */
     @Override
-    protected Object authorizedHandle(Request request, Response response, RecordId<String> userId) {
+    protected void authorizedHandle(WrappedRequest request, WrappedResponse response,
+                                    RecordId<String> userId) {
 
         UserProfile userProfile = userProfileView.handle(new UserProfileQuery(userId));
-        response.status(200);
-        return gson.toJson(userProfile);
+        response.setBody(gson.toJson(userProfile));
     }
 }
