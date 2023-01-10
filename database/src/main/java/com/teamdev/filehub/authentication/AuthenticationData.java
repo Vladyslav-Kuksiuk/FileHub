@@ -49,6 +49,6 @@ public class AuthenticationData extends Data<String> {
         }
         AuthenticationData data = (AuthenticationData) o;
         return Objects.equal(authenticationToken, data.authenticationToken) &&
-               Objects.equal(expireTime, data.expireTime);
+                Objects.equal(expireTime, data.expireTime);
     }
 }

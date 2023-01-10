@@ -60,8 +60,8 @@ public class FileData extends Data<String> {
         }
         FileData fileData = (FileData) o;
         return Objects.equal(folderId, fileData.folderId) &&
-               Objects.equal(ownerId, fileData.ownerId) &&
-               Objects.equal(name, fileData.name) &&
-               Objects.equal(extension, fileData.extension);
+                Objects.equal(ownerId, fileData.ownerId) &&
+                Objects.equal(name, fileData.name) &&
+                Objects.equal(extension, fileData.extension);
     }
 }

@@ -25,8 +25,9 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
 
         RecordId<String> folderId = new RecordId<>(command.userId()
                                                           .value() +
-                                                   command.folderName() +
-                                                   LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE));
+                                                           command.folderName() +
+                                                           LocalDateTime.now(
+                                                                   LocalDateTimeUtil.TIME_ZONE));
 
         FolderRecord folderRecord = new FolderRecord(folderId,
                                                      command.userId(),
@@ -41,9 +42,9 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
         }
 
         if (folderDao.getInnerFoldersByParentId(command.parentFolderId())
-                     .stream()
-                     .anyMatch(record -> record.name()
-                                               .equals(command.folderName()))) {
+                .stream()
+                .anyMatch(record -> record.name()
+                                          .equals(command.folderName()))) {
             throw new FolderCreateException("Folder with same path and name already exists.");
         }
 

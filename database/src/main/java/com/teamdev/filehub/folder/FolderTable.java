@@ -2,6 +2,7 @@ package com.teamdev.filehub.folder;
 
 import com.teamdev.filehub.InMemoryDatabaseTable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,10 +11,8 @@ import java.util.stream.Collectors;
  */
 public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
 
-    private static final String FILE_NAME = "folders.json";
-
-    public FolderTable() {
-        super(FILE_NAME, FolderData[].class);
+    public FolderTable(@Nonnull String filePath) {
+        super(filePath, FolderData[].class);
     }
 
     public List<FolderData> selectWithSameParentId(String parentId) {
@@ -23,10 +22,10 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
         }
 
         return tableMap().values()
-                         .stream()
-                         .filter(data -> data.parentFolderId()
-                                             .equals(parentId))
-                         .collect(Collectors.toList());
+                .stream()
+                .filter(data -> data.parentFolderId()
+                                    .equals(parentId))
+                .collect(Collectors.toList());
     }
 
 }
