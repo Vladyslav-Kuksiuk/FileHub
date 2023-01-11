@@ -24,7 +24,7 @@ public abstract class AuthorizedUserRoute extends ServiceSupportingRoute {
      * Authorizes the user and calls {@link #authorizedHandle}.
      */
     @Override
-    protected final void wrappedHandle(WrappedRequest request, Response response)
+    protected final void wrappedRequestHandle(WrappedRequest request, Response response)
             throws ServiceException, JsonEntityValidationException {
         Preconditions.checkNotNull(request, response);
         String authorizationHeader = request.headers("Authorization");

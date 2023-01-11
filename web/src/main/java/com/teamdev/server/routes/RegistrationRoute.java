@@ -39,7 +39,7 @@ public class RegistrationRoute extends ServiceSupportingRoute {
      *         If user with this login is already registered in the system
      */
     @Override
-    protected void wrappedHandle(WrappedRequest request, Response response)
+    protected void wrappedRequestHandle(WrappedRequest request, Response response)
             throws JsonEntityValidationException, UserAlreadyRegisteredException {
 
         try {

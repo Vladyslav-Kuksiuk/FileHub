@@ -36,7 +36,7 @@ public class AuthenticationRoute extends ServiceSupportingRoute {
      *         If user credentials fail verification.
      */
     @Override
-    protected void wrappedHandle(WrappedRequest request, Response response)
+    protected void wrappedRequestHandle(WrappedRequest request, Response response)
             throws JsonEntityValidationException, UserDataMismatchException {
 
         UserAuthenticationCommand command =

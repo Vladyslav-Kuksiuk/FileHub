@@ -30,7 +30,7 @@ public abstract class ServiceSupportingRoute implements Route {
         try {
 
             WrappedRequest wrappedRequest = new WrappedRequest(request);
-            wrappedHandle(wrappedRequest, response);
+            wrappedRequestHandle(wrappedRequest, response);
 
             return response.body();
 
@@ -57,6 +57,6 @@ public abstract class ServiceSupportingRoute implements Route {
      * @throws JsonEntityValidationException
      *         If JSON body can`t be processed.
      */
-    protected abstract void wrappedHandle(WrappedRequest request, Response response)
+    protected abstract void wrappedRequestHandle(WrappedRequest request, Response response)
             throws ServiceException, JsonEntityValidationException;
 }
