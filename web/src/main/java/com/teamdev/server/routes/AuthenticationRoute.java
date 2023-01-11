@@ -6,11 +6,15 @@ import com.teamdev.filehub.processes.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.authentication.UserAuthenticationResponse;
 import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
 import com.teamdev.server.JsonEntityValidationException;
+import com.teamdev.server.ServiceSupportingRoute;
 import com.teamdev.server.WrappedRequest;
-import com.teamdev.server.WrappedResponse;
-import com.teamdev.server.WrappedRoute;
+import spark.Response;
 
-public class AuthenticationRoute extends WrappedRoute {
+/**
+ * An {@link ServiceSupportingRoute} implementation to provide 'user authentication' request
+ * handling.
+ */
+public class AuthenticationRoute extends ServiceSupportingRoute {
 
     private final Gson gson = new Gson();
     private final UserAuthenticationProcess process;
@@ -19,8 +23,20 @@ public class AuthenticationRoute extends WrappedRoute {
         this.process = process;
     }
 
+    /**
+     * Handles 'user authentication' request.
+     *
+     * @param request
+     *         The request object providing information about the HTTP request.
+     * @param response
+     *         The response object providing functionality for modifying the response.
+     * @throws JsonEntityValidationException
+     *         If JSON body can`t be processed.
+     * @throws UserDataMismatchException
+     *         If user credentials fail verification.
+     */
     @Override
-    protected void wrappedHandle(WrappedRequest request, WrappedResponse response)
+    protected void wrappedHandle(WrappedRequest request, Response response)
             throws JsonEntityValidationException, UserDataMismatchException {
 
         UserAuthenticationCommand command =
@@ -31,7 +47,7 @@ public class AuthenticationRoute extends WrappedRoute {
                                .getAsString("password"));
 
         UserAuthenticationResponse authResponse = process.handle(command);
-        response.setBody(gson.toJson(authResponse));
 
+        response.body(gson.toJson(authResponse));
     }
 }

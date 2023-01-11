@@ -6,11 +6,17 @@ import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
 import com.teamdev.server.JsonEntityValidationException;
+import com.teamdev.server.ServiceSupportingRoute;
 import com.teamdev.server.WrappedRequest;
-import com.teamdev.server.WrappedResponse;
-import com.teamdev.server.WrappedRoute;
+import spark.Response;
 
-public class RegistrationRoute extends WrappedRoute {
+import java.util.List;
+import java.util.Map;
+
+/**
+ * An {@link ServiceSupportingRoute} implementation to provide 'user registration' request handling.
+ */
+public class RegistrationRoute extends ServiceSupportingRoute {
 
     private final Gson gson = new Gson();
     private final UserRegistrationProcess userRegistrationProcess;
@@ -20,8 +26,20 @@ public class RegistrationRoute extends WrappedRoute {
         this.userRegistrationProcess = userRegistrationProcess;
     }
 
+    /**
+     * Handles 'user registration' request.
+     *
+     * @param request
+     *         The request object providing information about the HTTP request.
+     * @param response
+     *         The response object providing functionality for modifying the response.
+     * @throws JsonEntityValidationException
+     *         If JSON body can`t be processed.
+     * @throws UserAlreadyRegisteredException
+     *         If user with this login is already registered in the system
+     */
     @Override
-    protected void wrappedHandle(WrappedRequest request, WrappedResponse response)
+    protected void wrappedHandle(WrappedRequest request, Response response)
             throws JsonEntityValidationException, UserAlreadyRegisteredException {
 
         try {
@@ -31,15 +49,17 @@ public class RegistrationRoute extends WrappedRoute {
 
             var userId = userRegistrationProcess.handle(command);
 
-            response.setBody(userId.value());
+            response.body(userId.value());
 
         } catch (FieldValidationException exception) {
 
-            FieldErrors errors = new FieldErrors();
-            errors.addError(new FieldErrorMessage(exception.getField(), exception.getMessage()));
-            response.setStatus(422);
+            response.status(422);
 
-            response.setBody(gson.toJson(errors));
+            response.body(gson.toJson(Map.of("errors",
+                                             List.of(Map.of("fieldName",
+                                                            exception.getField(),
+                                                            "errorText",
+                                                            exception.getMessage())))));
 
         }
 

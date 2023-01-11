@@ -9,10 +9,10 @@ import com.teamdev.filehub.views.userprofile.UserProfileQuery;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.server.AuthorizedUserRoute;
 import com.teamdev.server.WrappedRequest;
-import com.teamdev.server.WrappedResponse;
+import spark.Response;
 
 /**
- * {@link AuthorizedUserRoute} to handle user profile path.
+ * An {@link AuthorizedUserRoute} implementation to provide 'load user profile' request handling.
  */
 public class LoadUserRoute extends AuthorizedUserRoute {
 
@@ -27,18 +27,19 @@ public class LoadUserRoute extends AuthorizedUserRoute {
     }
 
     /**
-     * Parses the {@link UserProfileQuery} from the request body
-     * and handle it with the {@link UserProfileView}.
+     * Handles 'load user profile' request.
      *
      * @param request
-     *         HTTP request
+     *         The request object providing information about the HTTP request.
      * @param response
-     *         HTTP response
+     *         The response object providing functionality for modifying the response.
+     * @param userId
+     *         Authorized user id.
      */
     @Override
-    protected void authorizedHandle(WrappedRequest request, WrappedResponse response,
+    protected void authorizedHandle(WrappedRequest request, Response response,
                                     RecordId<String> userId) {
         UserProfile userProfile = userProfileView.handle(new UserProfileQuery(userId));
-        response.setBody(gson.toJson(userProfile));
+        response.body(gson.toJson(userProfile));
     }
 }

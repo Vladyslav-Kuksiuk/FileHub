@@ -8,6 +8,9 @@ import spark.Request;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Wrapper for {@link Request} to provide work with body as {@link JsonEntity}.
+ */
 public class WrappedRequest {
 
     private final Gson gson = new Gson();

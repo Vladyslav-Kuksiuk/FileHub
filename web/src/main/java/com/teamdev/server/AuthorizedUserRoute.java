@@ -7,8 +7,12 @@ import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UserAuthorizationQuery;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
+import spark.Response;
 
-public abstract class AuthorizedUserRoute extends WrappedRoute {
+/**
+ * An abstract implementation of {@link ServiceSupportingRoute} with authorization feature.
+ */
+public abstract class AuthorizedUserRoute extends ServiceSupportingRoute {
 
     private final UserAuthorizationView authorizationView;
 
@@ -16,8 +20,11 @@ public abstract class AuthorizedUserRoute extends WrappedRoute {
         this.authorizationView = Preconditions.checkNotNull(authorizationView);
     }
 
+    /**
+     * Authorizes the user and calls {@link #authorizedHandle}.
+     */
     @Override
-    protected final void wrappedHandle(WrappedRequest request, WrappedResponse response)
+    protected final void wrappedHandle(WrappedRequest request, Response response)
             throws ServiceException, JsonEntityValidationException {
         Preconditions.checkNotNull(request, response);
         String authorizationHeader = request.headers("Authorization");
@@ -29,8 +36,23 @@ public abstract class AuthorizedUserRoute extends WrappedRoute {
         authorizedHandle(request, response, userId);
     }
 
+    /**
+     * Handles {@link WrappedRequest} to modify and provide {@link Response}.
+     * You must override this method to write own AuthorizedUserRoute.
+     *
+     * @param request
+     *         The request object providing information about the HTTP request.
+     * @param response
+     *         The response object providing functionality for modifying the response.
+     * @param userId
+     *         Authorized user id.
+     * @throws ServiceException
+     *         When service handles request with exception.
+     * @throws JsonEntityValidationException
+     *         When JSON body can`t be processed.
+     */
     protected abstract void authorizedHandle(WrappedRequest request,
-                                             WrappedResponse response,
+                                             Response response,
                                              RecordId<String> userId)
             throws ServiceException, JsonEntityValidationException;
 }

@@ -2,6 +2,9 @@ package com.teamdev.server;
 
 import java.io.Serial;
 
+/**
+ * The {@link Exception} that is thrown if the JSON object is invalid.
+ */
 public class JsonEntityValidationException extends Exception {
 
     @Serial

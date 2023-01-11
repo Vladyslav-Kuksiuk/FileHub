@@ -1,35 +1,64 @@
 package com.teamdev.server;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ * Wrapper for {@link JsonObject} to make work with fields more convenient.
+ * Throws {@link JsonEntityValidationException} if JSON object don't have fields with given names
+ * or field values can't be converted into correct types.
+ */
 public class JsonEntity {
 
-    private final JsonObject jsonBody;
+    private final JsonObject jsonObject;
 
-    public JsonEntity(@Nullable JsonObject jsonBody) {
-        this.jsonBody = Objects.requireNonNullElseGet(jsonBody, JsonObject::new);
+    public JsonEntity(@Nullable JsonObject jsonObject) {
+        this.jsonObject = Objects.requireNonNullElseGet(jsonObject, JsonObject::new);
     }
 
-    public String getAsString(String memberName) throws JsonEntityValidationException {
-        return get(memberName, JsonElement::getAsString);
+    /**
+     * Returns JSON object's field by given name as {@link String}.
+     *
+     * @param fieldName
+     *         - The JSON object field name.
+     * @return JSON object's field as {@link String}.
+     * @throws JsonEntityValidationException
+     *         If JSON object don't have field with given name
+     *         or field value can't be converted into {@link String}.
+     */
+    public String getAsString(@Nonnull String fieldName) throws JsonEntityValidationException {
+        Preconditions.checkNotNull(fieldName);
+        return get(fieldName, JsonElement::getAsString);
     }
 
-    public Integer getAsInteger(String memberName) throws JsonEntityValidationException {
-        return get(memberName, JsonElement::getAsInt);
+    /**
+     * Returns JSON object's field by given name as {@link Integer}.
+     *
+     * @param fieldName
+     *         - The JSON object field name.
+     * @return JSON object's field as {@link Integer}.
+     * @throws JsonEntityValidationException
+     *         If JSON object don't have field with given name
+     *         or field value can't be converted into {@link Integer}.
+     */
+    public Integer getAsInteger(@Nonnull String fieldName) throws JsonEntityValidationException {
+        Preconditions.checkNotNull(fieldName);
+        return get(fieldName, JsonElement::getAsInt);
     }
 
-    private <T> T get(String memberName, Function<JsonElement, T> getFunction)
+    private <T> T get(String fieldName, Function<JsonElement, T> getFunction)
             throws JsonEntityValidationException {
 
-        JsonElement jsonElement = jsonBody.get(memberName);
+        JsonElement jsonElement = jsonObject.get(fieldName);
 
         if (jsonElement == null) {
-            throw new JsonEntityValidationException("Field " + memberName + " not found in JSON");
+            throw new JsonEntityValidationException("Field " + fieldName + " not found in JSON");
         }
 
         try {
@@ -38,7 +67,7 @@ public class JsonEntity {
 
         } catch (UnsupportedOperationException | IllegalStateException exception) {
 
-            throw new JsonEntityValidationException("Field " + memberName + " has incorrect type.");
+            throw new JsonEntityValidationException("Field " + fieldName + " has incorrect type.");
 
         }
     }
