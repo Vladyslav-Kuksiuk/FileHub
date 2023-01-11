@@ -1,6 +1,7 @@
 package com.teamdev.filehub.views.authorization;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
@@ -21,20 +22,20 @@ public class UserAuthorizationViewImpl implements UserAuthorizationView {
     }
 
     @Override
-    public RecordId<String> handle(UserAuthorizationQuery query) throws UnauthorizedUserException {
+    public RecordId<String> handle(UserAuthorizationQuery query) throws AccessDeniedException {
 
         Optional<AuthenticationRecord> optionalAuthRecord = authenticationDao.findByToken(
                 query.authorizationToken());
 
         if (optionalAuthRecord.isEmpty()) {
-            throw new UnauthorizedUserException("Authorization token not found");
+            throw new AccessDeniedException("Authorization token not found");
         }
 
         AuthenticationRecord authRecord = optionalAuthRecord.get();
         LocalDateTime authorizationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);
 
         if (authorizationTime.isAfter(authRecord.expireTime())) {
-            throw new UnauthorizedUserException("Authorization token expired");
+            throw new AccessDeniedException("Authorization token expired");
         }
 
         return authRecord.id();

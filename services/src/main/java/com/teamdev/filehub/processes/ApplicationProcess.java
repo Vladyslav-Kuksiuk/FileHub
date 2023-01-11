@@ -1,5 +1,7 @@
 package com.teamdev.filehub.processes;
 
+import com.teamdev.filehub.ServiceException;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,9 +20,9 @@ public interface ApplicationProcess<C extends Command, R> {
      * @param command
      *         {@link Command} to handle.
      * @return Server's command handling result.
-     * @throws ProcessException
+     * @throws ServiceException
      *         If {@link Command} can't be handled.
      */
-    R handle(@NotNull C command) throws ProcessException;
+    R handle(@NotNull C command) throws ServiceException;
 
 }

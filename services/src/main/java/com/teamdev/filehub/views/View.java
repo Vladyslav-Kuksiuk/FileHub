@@ -1,5 +1,7 @@
 package com.teamdev.filehub.views;
 
+import com.teamdev.filehub.ServiceException;
+
 /**
  * A class for handling actor {@link Query} without application state changes.
  *
@@ -16,9 +18,9 @@ public interface View<Q extends Query, R> {
      * @param query
      *         {@link Query} to handle.
      * @return Server response.
-     * @throws ViewException
+     * @throws ServiceException
      *         If {@link Query} can't be handled.
      */
-    R handle(Q query) throws ViewException;
+    R handle(Q query) throws ServiceException;
 
 }

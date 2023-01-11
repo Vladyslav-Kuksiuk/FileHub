@@ -3,6 +3,7 @@ package com.teamdev.server;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UserAuthorizationQuery;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
@@ -17,7 +18,7 @@ public abstract class AuthorizedUserRoute extends WrappedRoute {
 
     @Override
     protected final void wrappedHandle(WrappedRequest request, WrappedResponse response)
-            throws Exception {
+            throws ServiceException, JsonEntityValidationException {
         Preconditions.checkNotNull(request, response);
         String authorizationHeader = request.headers("Authorization");
         String token = Iterables.get(Splitter.on(' ')
@@ -28,6 +29,8 @@ public abstract class AuthorizedUserRoute extends WrappedRoute {
         authorizedHandle(request, response, userId);
     }
 
-    protected abstract void authorizedHandle(WrappedRequest request, WrappedResponse response,
-                                             RecordId<String> userId) throws Exception;
+    protected abstract void authorizedHandle(WrappedRequest request,
+                                             WrappedResponse response,
+                                             RecordId<String> userId)
+            throws ServiceException, JsonEntityValidationException;
 }

@@ -1,5 +1,6 @@
 package com.teamdev.server;
 
+import com.teamdev.filehub.ServiceException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -17,7 +18,7 @@ public abstract class WrappedRoute implements Route {
 
             return wrappedResponse.body();
 
-        } catch (Exception exception) {
+        } catch (ServiceException | JsonEntityValidationException exception) {
             ExceptionStatusFactory exceptionStatusFactory = new ExceptionStatusFactory();
 
             response.status(exceptionStatusFactory.getStatus(exception.getClass()));
@@ -28,5 +29,5 @@ public abstract class WrappedRoute implements Route {
     }
 
     protected abstract void wrappedHandle(WrappedRequest request, WrappedResponse response)
-            throws Exception;
+            throws ServiceException, JsonEntityValidationException;
 }

@@ -1,5 +1,7 @@
 package com.teamdev.server;
 
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 
@@ -12,6 +14,8 @@ public class ExceptionStatusFactory {
 
     public ExceptionStatusFactory() {
         exceptionStatusMap.put(UserDataMismatchException.class, 401);
+        exceptionStatusMap.put(AccessDeniedException.class, 401);
+        exceptionStatusMap.put(DataNotFoundException.class, 404);
         exceptionStatusMap.put(UserAlreadyRegisteredException.class, 409);
     }
 
