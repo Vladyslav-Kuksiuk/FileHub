@@ -1,4 +1,4 @@
-package com.teamdev.server;
+package com.teamdev.server.routes;
 
 import java.util.ArrayList;
 

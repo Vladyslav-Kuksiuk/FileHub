@@ -1,4 +1,4 @@
-package com.teamdev.server;
+package com.teamdev.server.routes;
 
 /**
  * Data transfer object with info about some field error.

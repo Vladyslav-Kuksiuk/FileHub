@@ -18,7 +18,6 @@ public abstract class WrappedRoute implements Route {
             return wrappedResponse.body();
 
         } catch (Exception exception) {
-
             ExceptionStatusFactory exceptionStatusFactory = new ExceptionStatusFactory();
 
             response.status(exceptionStatusFactory.getStatus(exception.getClass()));

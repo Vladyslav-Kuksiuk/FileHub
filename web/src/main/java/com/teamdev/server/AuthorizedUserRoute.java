@@ -7,7 +7,7 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UserAuthorizationQuery;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 
-abstract class AuthorizedUserRoute extends WrappedRoute {
+public abstract class AuthorizedUserRoute extends WrappedRoute {
 
     private final UserAuthorizationView authorizationView;
 
@@ -19,7 +19,6 @@ abstract class AuthorizedUserRoute extends WrappedRoute {
     protected final void wrappedHandle(WrappedRequest request, WrappedResponse response)
             throws Exception {
         Preconditions.checkNotNull(request, response);
-
         String authorizationHeader = request.headers("Authorization");
         String token = Iterables.get(Splitter.on(' ')
                                              .split(authorizationHeader), 1);

@@ -1,10 +1,14 @@
-package com.teamdev.server;
+package com.teamdev.server.routes;
 
 import com.google.gson.Gson;
 import com.teamdev.filehub.processes.register.FieldValidationException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
+import com.teamdev.server.JsonEntityValidationException;
+import com.teamdev.server.WrappedRequest;
+import com.teamdev.server.WrappedResponse;
+import com.teamdev.server.WrappedRoute;
 
 public class RegistrationRoute extends WrappedRoute {
 

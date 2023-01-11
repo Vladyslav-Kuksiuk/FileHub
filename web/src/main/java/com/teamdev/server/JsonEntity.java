@@ -12,7 +12,6 @@ public class JsonEntity {
     private final JsonObject jsonBody;
 
     public JsonEntity(@Nullable JsonObject jsonBody) {
-
         this.jsonBody = Objects.requireNonNullElseGet(jsonBody, JsonObject::new);
     }
 

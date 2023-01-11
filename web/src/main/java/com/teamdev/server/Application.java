@@ -1,6 +1,9 @@
 package com.teamdev.server;
 
 import com.teamdev.filehub.ApplicationContext;
+import com.teamdev.server.routes.AuthenticationRoute;
+import com.teamdev.server.routes.LoadUserRoute;
+import com.teamdev.server.routes.RegistrationRoute;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
