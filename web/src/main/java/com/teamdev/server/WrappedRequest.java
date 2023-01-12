@@ -7,6 +7,7 @@ import spark.Request;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * Wrapper for {@link Request} to provide work with body as {@link JsonEntity}.
@@ -21,7 +22,11 @@ public class WrappedRequest {
     public WrappedRequest(@Nonnull Request request) {
         Preconditions.checkNotNull(request);
 
-        jsonBody = new JsonEntity(gson.fromJson(request.body(), JsonObject.class));
+        var jsonObject =
+                Objects.requireNonNullElseGet(gson.fromJson(request.body(), JsonObject.class),
+                                              JsonObject::new);
+
+        jsonBody = new JsonEntity(gson.fromJson(jsonObject, JsonObject.class));
         this.request = request;
     }
 

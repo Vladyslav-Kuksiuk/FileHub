@@ -5,8 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -18,8 +16,8 @@ public class JsonEntity {
 
     private final JsonObject jsonObject;
 
-    public JsonEntity(@Nullable JsonObject jsonObject) {
-        this.jsonObject = Objects.requireNonNullElseGet(jsonObject, JsonObject::new);
+    public JsonEntity(@Nonnull JsonObject jsonObject) {
+        this.jsonObject = Preconditions.checkNotNull(jsonObject);
     }
 
     /**
@@ -55,15 +53,13 @@ public class JsonEntity {
     private <T> T get(String fieldName, Function<JsonElement, T> getFunction)
             throws JsonEntityValidationException {
 
-        JsonElement jsonElement = jsonObject.get(fieldName);
-
-        if (jsonElement == null) {
+        if (!jsonObject.has(fieldName)) {
             throw new JsonEntityValidationException("Field " + fieldName + " not found in JSON");
         }
 
         try {
 
-            return getFunction.apply(jsonElement);
+            return getFunction.apply(jsonObject.get(fieldName));
 
         } catch (UnsupportedOperationException | IllegalStateException exception) {
 
