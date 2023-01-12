@@ -9,14 +9,17 @@ import com.teamdev.filehub.views.authorization.UserAuthorizationQuery;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import spark.Response;
 
+import javax.annotation.Nonnull;
+
 /**
  * An abstract implementation of {@link ServiceSupportingRoute} with authorization feature.
+ * Authorization provides the user id by token, if there is one in the system.
  */
 public abstract class AuthorizedUserRoute extends ServiceSupportingRoute {
 
     private final UserAuthorizationView authorizationView;
 
-    public AuthorizedUserRoute(UserAuthorizationView authorizationView) {
+    public AuthorizedUserRoute(@Nonnull UserAuthorizationView authorizationView) {
         this.authorizationView = Preconditions.checkNotNull(authorizationView);
     }
 

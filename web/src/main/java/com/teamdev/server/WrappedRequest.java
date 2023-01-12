@@ -26,19 +26,33 @@ public class WrappedRequest {
                 Objects.requireNonNullElseGet(gson.fromJson(request.body(), JsonObject.class),
                                               JsonObject::new);
 
-        jsonBody = new JsonEntity(gson.fromJson(jsonObject, JsonObject.class));
+        jsonBody = new JsonEntity(jsonObject);
         this.request = request;
     }
 
+    /**
+     * @return HTTP body representation as {@link JsonEntity}.
+     */
     public JsonEntity jsonBody() {
         return jsonBody;
     }
 
+    /**
+     * @return The raw HttpServletRequest object.
+     */
     public HttpServletRequest raw() {
         return request.raw();
     }
 
+    /**
+     * Gets the value for the provided header.
+     *
+     * @param header
+     *         HTTP request header name.
+     * @return The value of the provided header.
+     */
     public String headers(@Nonnull String header) {
+        Preconditions.checkNotNull(header);
         return request.headers(header);
     }
 }

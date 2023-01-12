@@ -1,11 +1,13 @@
 package com.teamdev.server;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonSyntaxException;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.processes.authentication.UserDataMismatchException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ public class ExceptionStatusFactory {
 
     private final Map<Class<? extends Exception>, Integer> exceptionStatusMap = new HashMap<>();
 
-    public ExceptionStatusFactory() {
+    ExceptionStatusFactory() {
         exceptionStatusMap.put(JsonEntityValidationException.class, 400);
         exceptionStatusMap.put(JsonSyntaxException.class, 400);
 
@@ -35,7 +37,8 @@ public class ExceptionStatusFactory {
      *         - {@link Exception} class.
      * @return HTTP status code.
      */
-    public int getStatus(Class<? extends Exception> exceptionClass) {
+    public int getStatus(@Nonnull Class<? extends Exception> exceptionClass) {
+        Preconditions.checkNotNull(exceptionClass);
 
         if (exceptionStatusMap.containsKey(exceptionClass)) {
 

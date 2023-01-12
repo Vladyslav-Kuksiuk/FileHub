@@ -1,10 +1,13 @@
 package com.teamdev.server;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonSyntaxException;
 import com.teamdev.filehub.ServiceException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+
+import javax.annotation.Nonnull;
 
 /**
  * An abstract implementation of {@link Route} with more convenient API to work with services.
@@ -25,7 +28,8 @@ public abstract class ServiceSupportingRoute implements Route {
      * @return {@link Response} body.
      */
     @Override
-    public final String handle(Request request, Response response) {
+    public final String handle(@Nonnull Request request, @Nonnull Response response) {
+        Preconditions.checkNotNull(request, response);
 
         try {
 

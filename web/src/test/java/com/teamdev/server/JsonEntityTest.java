@@ -10,11 +10,11 @@ import org.mockito.Mockito;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class JsonEntityTest {
+class JsonEntityTest {
 
     @Test
-    @DisplayName("Should throw NullPointerException on null in constructors and methods params")
-    void testConstructorNullPointer() {
+    @DisplayName("Should throw NullPointerException on null in constructor and methods params")
+    void testNullPointer() {
 
         NullPointerTester tester = new NullPointerTester();
 
