@@ -35,7 +35,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
      */
     @Override
     public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command) throws
-                                                                                         UserDataMismatchException {
+                                                                                         UserCredentialsMismatchException {
 
         logger.atInfo()
               .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
@@ -43,7 +43,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         Optional<UserRecord> optionalUserRecord = userDao.findByLogin(command.login());
 
         if (optionalUserRecord.isEmpty()) {
-            throw new UserDataMismatchException("Authentication data incorrect.");
+            throw new UserCredentialsMismatchException("Authentication data incorrect.");
         }
         UserRecord userRecord = optionalUserRecord.get();
 
@@ -56,7 +56,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                   .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: Password incorrect.",
                        command.login());
 
-            throw new UserDataMismatchException("Authentication data incorrect.");
+            throw new UserCredentialsMismatchException("Authentication data incorrect.");
         }
 
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);

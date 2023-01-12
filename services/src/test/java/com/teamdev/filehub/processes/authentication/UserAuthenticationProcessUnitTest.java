@@ -41,7 +41,7 @@ public class UserAuthenticationProcessUnitTest {
     }
 
     @Test
-    void authenticationTest() throws UserDataMismatchException {
+    void authenticationTest() throws UserCredentialsMismatchException {
 
         UserAuthenticationCommand command = new UserAuthenticationCommand(registeredUser.login(),
                                                                           "password1");
@@ -61,7 +61,7 @@ public class UserAuthenticationProcessUnitTest {
         UserAuthenticationCommand command = new UserAuthenticationCommand(notRegisteredUser.login(),
                                                                           "password1");
 
-        assertThrows(UserDataMismatchException.class, () -> authenticationProcess.handle(command),
+        assertThrows(UserCredentialsMismatchException.class, () -> authenticationProcess.handle(command),
                      "User authentication with wrong login not failed.");
     }
 
@@ -71,7 +71,7 @@ public class UserAuthenticationProcessUnitTest {
         UserAuthenticationCommand command = new UserAuthenticationCommand(registeredUser.login(),
                                                                           "password2");
 
-        assertThrows(UserDataMismatchException.class, () -> authenticationProcess.handle(command),
+        assertThrows(UserCredentialsMismatchException.class, () -> authenticationProcess.handle(command),
                      "User authentication with wrong password not failed.");
     }
 

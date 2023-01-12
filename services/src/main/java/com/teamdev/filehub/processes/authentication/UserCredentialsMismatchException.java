@@ -4,9 +4,9 @@ import com.teamdev.filehub.ServiceException;
 
 import javax.annotation.Nonnull;
 
-public class UserDataMismatchException extends ServiceException {
+public class UserCredentialsMismatchException extends ServiceException {
 
-    public UserDataMismatchException(@Nonnull String message) {
+    public UserCredentialsMismatchException(@Nonnull String message) {
         super(message);
     }
 }
