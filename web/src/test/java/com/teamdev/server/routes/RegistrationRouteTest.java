@@ -26,7 +26,7 @@ class RegistrationRouteTest {
 
         var tester = new NullPointerTester();
 
-        tester.testAllPublicConstructors(AuthenticationRoute.class);
+        tester.testAllPublicConstructors(RegistrationRoute.class);
 
     }
 
@@ -144,13 +144,14 @@ class RegistrationRouteTest {
                .thenReturn("{\"login\":\"login\",\"password\":\"password123\"}");
 
         var response = Mockito.mock(Response.class);
-        Mockito.when(response.body()).thenReturn(errorResponse);
+        Mockito.when(response.body())
+               .thenReturn(errorResponse);
 
         var process = new UserRegistrationProcess() {
 
             @Override
             public RecordId<String> handle(UserRegistrationCommand command) {
-                return null;
+                throw new RuntimeException("");
             }
         };
 
@@ -160,10 +161,10 @@ class RegistrationRouteTest {
                 .that(route.handle(request, response))
                 .isEqualTo(errorResponse);
 
-        Mockito.verify(response, Mockito.times(1))
-               .body(errorResponse);
-        Mockito.verify(response, Mockito.times(1))
+        Mockito.verify(response)
                .status(422);
+        Mockito.verify(response)
+               .body(errorResponse);
 
     }
 

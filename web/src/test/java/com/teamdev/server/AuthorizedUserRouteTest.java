@@ -60,7 +60,7 @@ class AuthorizedUserRouteTest {
     }
 
     @Test
-    @DisplayName("Should throw AccessDeniedException after authorization")
+    @DisplayName("Should throw AccessDeniedException after authorization try")
     void testHandleWithAccessDeniedException() {
         var userId = "userId";
         var token = "token";

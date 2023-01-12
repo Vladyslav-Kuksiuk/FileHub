@@ -1,5 +1,6 @@
 package com.teamdev.server.routes;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.teamdev.filehub.processes.register.FieldValidationException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
@@ -10,8 +11,10 @@ import com.teamdev.server.ServiceSupportingRoute;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * An {@link ServiceSupportingRoute} implementation to provide 'user registration' request handling.
@@ -21,9 +24,8 @@ public class RegistrationRoute extends ServiceSupportingRoute {
     private final Gson gson = new Gson();
     private final UserRegistrationProcess userRegistrationProcess;
 
-    public RegistrationRoute(
-            UserRegistrationProcess userRegistrationProcess) {
-        this.userRegistrationProcess = userRegistrationProcess;
+    public RegistrationRoute(@Nonnull UserRegistrationProcess userRegistrationProcess) {
+        this.userRegistrationProcess = Preconditions.checkNotNull(userRegistrationProcess);
     }
 
     /**
@@ -53,13 +55,13 @@ public class RegistrationRoute extends ServiceSupportingRoute {
 
         } catch (FieldValidationException exception) {
 
+            String errorJson = gson.toJson(Map.of("errors",
+                                                  List.of(new TreeMap<>(Map.of("fieldName",
+                                                                               exception.getField(),
+                                                                               "errorText",
+                                                                               exception.getMessage())))));
             response.status(422);
-
-            response.body(gson.toJson(Map.of("errors",
-                                             List.of(Map.of("fieldName",
-                                                            exception.getField(),
-                                                            "errorText",
-                                                            exception.getMessage())))));
+            response.body(errorJson);
 
         }
 
