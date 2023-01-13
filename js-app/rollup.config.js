@@ -3,6 +3,7 @@ import {terser} from 'rollup-plugin-terser';
 import htmlTemplate from 'rollup-plugin-generate-html-template';
 import copy from 'rollup-plugin-copy';
 import babel from '@rollup/plugin-babel';
+import ts from 'rollup-plugin-ts';
 
 export default {
   input: 'src/index.js',
@@ -16,6 +17,12 @@ export default {
     },
   },
   plugins: [
+    ts({
+      transpiler: {
+        typescriptSyntax: 'typescript',
+        otherSyntax: 'babel',
+      },
+    }),
     babel({
       babelHelpers: 'bundled',
       plugins: [

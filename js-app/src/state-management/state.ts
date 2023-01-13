@@ -132,11 +132,11 @@ export class State {
    * @param {object} source
    * @private
    */
-  #setOwnProperties(source) {
+  #setOwnProperties(source : any) {
     const properties = Object.keys(this);
     const entries = Object.entries(source)
         .filter(([key])=>properties.includes(key));
-    entries.forEach(([key, value]) => this[key] = value);
+    entries.forEach(([key, value]) => (this as any)[key] = value);
   }
 
   /**
@@ -144,9 +144,9 @@ export class State {
    * @returns {object}
    * @private
    */
-  #deepFreeze(object) {
+  #deepFreeze(object : any) {
     Object.getOwnPropertyNames(object).forEach((name) => {
-      const value = object[name];
+      const value = (object)[name];
 
       if (value && typeof value === 'object') {
         this.#deepFreeze(value);

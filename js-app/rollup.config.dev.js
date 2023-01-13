@@ -5,6 +5,7 @@ import dev from 'rollup-plugin-dev';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import babel from '@rollup/plugin-babel';
+import ts from 'rollup-plugin-ts';
 
 export default {
   input: 'src/index.js',
@@ -13,6 +14,9 @@ export default {
     entryFileNames: 'app-[hash].js',
   },
   plugins: [
+    ts({
+      transpiler: 'babel',
+    }),
     babel({
       babelHelpers: 'bundled',
       plugins: [
