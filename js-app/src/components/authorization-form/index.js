@@ -7,8 +7,8 @@ import {ValidationService} from '../../validation/validation-service';
 import {Link} from '../link';
 import {UserData} from '../../user-data';
 
-const EMAIL = 'email';
-const PASSWORD = 'password';
+export const EMAIL = 'email';
+export const PASSWORD = 'password';
 const EMAIL_MIN_LENGTH = 5;
 const PASSWORD_MIN_LENGTH = 6;
 export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
@@ -88,7 +88,8 @@ export class AuthorizationForm extends Component {
       this.#validateForm(formData, configCreator)
           .then(()=>{
             this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
-          });
+          })
+          .catch(()=>{});
     });
   }
 
