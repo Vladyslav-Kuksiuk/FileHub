@@ -50,7 +50,7 @@ export class State {
   #setOwnProperties(source) {
     const properties = Object.keys(this);
     const entries = Object.entries(source)
-        .filter(([key])=>properties.includes(key));
+        .filter(([key]) => properties.includes(key));
     entries.forEach(([key, value]) => this[key] = value);
   }
 

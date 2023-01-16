@@ -2,7 +2,7 @@ import {Component} from '../../components/component';
 import {AuthorizationPage} from '../authorization/authorization-page';
 import {RegistrationPage} from '../registration/registration-page';
 import {Router} from '../../router';
-import {Error404Page} from '../../components/error-404-page';
+import {Error404Page} from '../error-404-page/index';
 import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../application-context';

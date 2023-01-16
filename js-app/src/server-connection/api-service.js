@@ -78,19 +78,18 @@ export class ApiService {
    * @returns {Promise<UserProfile | ApiServiceError>}
    */
   async loadUser() {
-    return this.#requestService.get(LOAD_USER_PATH, this.#userToken).catch(()=>{
-      throw new ApiServiceError();
-    }).then((response) => {
-      if (response.status !== 200) {
-        throw new ApiServiceError();
-      }
-      return new UserProfile(
-          response.body.userProfile.username,
-          response.body.userProfile.rootFolderId,
-      );
-    }).catch(()=>{
-      throw new ApiServiceError();
-    });
+    return this.#requestService.get(LOAD_USER_PATH, this.#userToken)
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return new UserProfile(
+              response.body.userProfile.username,
+              response.body.userProfile.rootFolderId,
+          );
+        }).catch(()=>{
+          throw new ApiServiceError();
+        });
   }
 
   /**
@@ -100,7 +99,7 @@ export class ApiService {
    * @returns {Promise<FolderInfo | ApiServiceError>}
    */
   async loadFolderInfo(folderId) {
-    return this.#requestService.get(LOAD_FOLDER_INFO_PATH+folderId, this.#userToken)
+    return this.#requestService.get(LOAD_FOLDER_INFO_PATH + folderId, this.#userToken)
         .catch(()=>{
           throw new ApiServiceError();
         })
