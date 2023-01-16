@@ -16,6 +16,10 @@ describe('UserInfoWrapper', () => {
     jest.spyOn(applicationContext.stateManagementService, 'addStateListener')
         .mockImplementation((field, listener)=>{
           stateListeners[field] = listener;
+          return {
+            field: field,
+            listener: listener,
+          };
         });
     dispatchMock = jest.spyOn(applicationContext.stateManagementService, 'dispatch')
         .mockImplementation(()=>{});

@@ -7,7 +7,7 @@ import {RouterConfigBuilder} from '../../router/router-config';
 import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../application-context';
 import {ROUTE} from '../../router/routes';
-
+import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action';
 /**
  * Application component.
  */
@@ -37,7 +37,7 @@ export class Application extends Component {
             router.redirect(ROUTE.REGISTRATION);
           });
           page.onNavigateToTable(()=>{
-            router.redirect(ROUTE.TABLE);
+            router.redirect(ROUTE.FILE_LIST);
           });
         })
         .addRoute(ROUTE.REGISTRATION, () => {
@@ -48,14 +48,20 @@ export class Application extends Component {
             router.redirect(ROUTE.LOGIN);
           });
         })
-        .addRoute(ROUTE.TABLE, () => {
+        .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
           this.rootElement.innerHTML = '';
           const page = new TablePage(this.rootElement, applicationContext);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
           });
+          page.onNavigateToFolder((folderId)=>{
+            router.redirect(ROUTE.FILE_LIST+'/'+folderId);
+          });
         })
-        .addHomeRoutePath(ROUTE.TABLE)
+        .addMetadataChangeListener((metadata)=>{
+          applicationContext.stateManagementService.dispatch(new ChangeLocationMetadataAction(metadata));
+        })
+        .addHomeRoutePath(ROUTE.FILE_LIST_FOLDER)
         .build();
 
     const router = new Router(routerConfig);

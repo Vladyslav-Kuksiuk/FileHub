@@ -1,3 +1,5 @@
+import {Observer} from './mutation-observer';
+
 /**
  * Virtual DOM of the element.
  */
@@ -19,10 +21,14 @@ export class Component {
    */
   init() {
     this.render();
+
+    Observer.observe(this.rootElement, ()=>{
+      this.onDestroy();
+    });
   }
 
   /**
-   * Called after each render.
+   * Calls after each render.
    *
    * @protected
    */
@@ -60,6 +66,14 @@ export class Component {
   render() {
     this.#createDomTree();
     this.afterRender();
+  }
+
+  /**
+   * Calls after root element removed.
+   *
+   * @protected
+   */
+  onDestroy() {
   }
 
   /**

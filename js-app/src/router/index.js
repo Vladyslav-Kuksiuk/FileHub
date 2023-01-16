@@ -1,9 +1,10 @@
-import {RouterConfig} from './router-config';
+import {METADATA_CHANGE_EVENT, RouterConfig} from './router-config';
 /**
  * Service for handling routes along the given paths.
  */
 export class Router {
   #config;
+  #currentRoutePath;
 
   /**
    * @param {RouterConfig} config
@@ -14,7 +15,6 @@ export class Router {
       this.#handleRoute(window.location.hash.replace('#', ''));
     });
 
-    window.location.hash = config.homeRoutePath;
     this.#handleRoute(window.location.hash.replace('#', ''));
   }
 
@@ -25,12 +25,65 @@ export class Router {
    */
   #handleRoute(path) {
     if (path === '') {
+      setTimeout(()=>{
+        this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
+      });
+      this.#currentRoutePath = this.#config.homeRoutePath;
       this.#config.routesMap[this.#config.homeRoutePath]();
-    } else if (this.#config.routesMap[path]) {
-      this.#config.routesMap[path]();
-    } else {
-      this.#config.errorRoute();
+      return;
     }
+
+    const parsedRoute = this.#parseWithParams(path);
+    if (parsedRoute.routePath) {
+      setTimeout(()=>{
+        this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {
+          detail: {
+            metadata: parsedRoute.params,
+          },
+        }));
+      });
+
+      if (this.#currentRoutePath !== parsedRoute.routePath) {
+        this.#currentRoutePath = parsedRoute.routePath;
+        this.#config.routesMap[parsedRoute.routePath](parsedRoute.params);
+      }
+      return;
+    }
+
+    setTimeout(()=>{
+      this.#config.eventTarget.dispatchEvent(new CustomEvent(METADATA_CHANGE_EVENT, {detail: {metadata: {}}}));
+    });
+    this.#config.errorRoute();
+  }
+
+  /**
+   * @param {string} path
+   * @returns {{routePath: {string}, params: {}}}
+   * @private
+   */
+  #parseWithParams(path) {
+    const pathArray = path.split('/');
+    let params = {};
+    let parsedRoutePath;
+
+    Object.keys(this.#config.routesMap).some((routePath)=>{
+      parsedRoutePath = routePath;
+      const routeArray = routePath.split('/');
+      return routeArray.every((routePart, index)=>{
+        if (routePart.startsWith(':')) {
+          params[routePart.substring(1)] = pathArray[index];
+        } else if (routePart !== pathArray[index]) {
+          parsedRoutePath = null;
+          params = {};
+          return false;
+        }
+        return true;
+      });
+    });
+    return {
+      routePath: parsedRoutePath,
+      params: params,
+    };
   }
 
   /**

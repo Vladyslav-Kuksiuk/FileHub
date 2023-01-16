@@ -50,4 +50,19 @@ describe('StateManagementService', () => {
     expect(listenerMock).toHaveBeenCalledTimes(2);
     expect(stateManagementService.state.isChanged).toBeTruthy();
   });
+
+  test('Should add and remove stateListener', function() {
+    expect.assertions(2);
+
+    const listenerMock = jest.fn();
+    const listenerToRemove = stateManagementService.addStateListener('change', listenerMock);
+
+    stateManagementService.dispatch(action);
+    expect(listenerMock).toHaveBeenCalledTimes(1);
+
+    stateManagementService.removeStateListener('change', listenerToRemove);
+
+    stateManagementService.dispatch(action);
+    expect(listenerMock).toHaveBeenCalledTimes(1);
+  });
 });

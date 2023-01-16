@@ -52,6 +52,11 @@ export class State {
   folderContentError = null;
 
   /**
+   * @type {object}
+   */
+  locationMetadata = null;
+
+  /**
    * @param {object} state
    */
   constructor(state = {}) {

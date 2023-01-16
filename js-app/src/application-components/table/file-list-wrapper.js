@@ -1,36 +1,26 @@
-import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {ApplicationContext} from '../application-context';
 import {FileList} from '../../components/file-list';
-import {LoadFolderInfoAction} from '../../state-management/folder/load-folder-info-action';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
+import {StateAwareWrapper} from '../state-aware-wrapper';
+
+const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
 /**
  * FileList wrapper for state change listening.
  */
-export class FileListWrapper {
+export class FileListWrapper extends StateAwareWrapper {
+  #eventTarget = new EventTarget();
   #stateManagementService;
 
   /**
    * @param {ApplicationContext} applicationContext
    */
   constructor(applicationContext) {
+    super(applicationContext.stateManagementService);
     this.#stateManagementService = applicationContext.stateManagementService;
 
-    const state = this.#stateManagementService.state;
-
-    if (state.userProfile == null && !state.isUserProfileLoading) {
-      this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
-    }
-
-    this.#stateManagementService.addStateListener('userProfile', (state) => {
-      if (state.userProfile) {
-        this.#stateManagementService.dispatch(
-            new LoadFolderInfoAction(state.userProfile.rootFolderId, applicationContext.apiService));
-      }
-    });
-
-    this.#stateManagementService.addStateListener('folderInfo', (state) => {
-      if (state.folderInfo) {
+    this.addStateListener('folderInfo', (state) => {
+      if (state.folderInfo && !state.isFolderContentLoading) {
         this.#stateManagementService.dispatch(
             new LoadFolderContentAction(state.folderInfo.id, applicationContext.apiService));
       }
@@ -43,13 +33,20 @@ export class FileListWrapper {
    * @param {FileList} fileList
    */
   wrap(fileList) {
-    this.#stateManagementService.addStateListener('folderContent', (state) => {
+    this.addStateListener('folderContent', (state) => {
       if (state.folderContent) {
         const folders = state.folderContent
             .filter((item) => item.type === 'folder')
             .map((folder) => {
               return {
                 name: folder.name,
+                linkListener: ()=>{
+                  this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+                    detail: {
+                      folderId: folder.id,
+                    },
+                  }));
+                },
               };
             });
 
@@ -68,24 +65,35 @@ export class FileListWrapper {
       }
     });
 
-    this.#stateManagementService.addStateListener('isFolderContentLoading', (state) => {
+    this.addStateListener('isFolderContentLoading', (state) => {
       fileList.isLoading = state.isFolderContentLoading;
     });
 
-    this.#stateManagementService.addStateListener('isUserProfileLoading', (state) => {
+    this.addStateListener('isUserProfileLoading', (state) => {
       if (state.isUserProfileLoading) {
         fileList.isLoading = true;
       }
     });
 
-    this.#stateManagementService.addStateListener('isFolderInfoLoading', (state) => {
+    this.addStateListener('isFolderInfoLoading', (state) => {
       if (state.isFolderInfoLoading) {
         fileList.isLoading = true;
       }
     });
 
-    this.#stateManagementService.addStateListener('folderContentError', (state) => {
+    this.addStateListener('folderContentError', (state) => {
       fileList.hasError = !!state.folderContentError;
+    });
+  }
+
+  /**
+   * Adds listener on navigate to folder event.
+   *
+   * @param {function(string)} listener
+   */
+  onNavigateToFolder(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_FOLDER, (event)=>{
+      listener(event.detail.folderId);
     });
   }
 }

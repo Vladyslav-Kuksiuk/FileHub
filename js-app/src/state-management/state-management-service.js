@@ -50,14 +50,28 @@ export class StateManagementService {
   }
 
   /**
-   * Adds listener to some field in state changes' event.
+   * Adds listener to some field in the state change event.
    *
    * @param {string} fieldName
    * @param {function(State)} listener
+   * @returns {{field: string, listener: (function(Event))}}
    */
   addStateListener(fieldName, listener) {
     listener(this.state);
-    this.#eventTarget.addEventListener(`STATE_CHANGED.${fieldName}`,
-        (event) => listener(event.detail));
+    const detailedListener = (event) => listener(event.detail);
+    this.#eventTarget.addEventListener(`STATE_CHANGED.${fieldName}`, detailedListener);
+    return {
+      field: fieldName,
+      listener: detailedListener};
+  }
+
+  /**
+   * Removes listener from some field in the state change event.
+   *
+   * @param {string} fieldName
+   * @param {function(Event)} listener
+   */
+  removeStateListener(fieldName, listener) {
+    this.#eventTarget.removeEventListener(`STATE_CHANGED.${fieldName}`, listener);
   }
 }
