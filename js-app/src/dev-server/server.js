@@ -1,8 +1,9 @@
 import express from 'express';
-import {STATE, USER_PROFILE} from '../state-management/state.js';
 
 const app = express();
 const port = 3001;
+
+const ROOT_FOLDER_ID = 'testUser-0';
 
 app.post('/login', (req, res) => {
   res.status(200);
@@ -23,12 +24,26 @@ app.get('/user', (req, res) => {
   setTimeout(() => {
     res.status(200);
     res.send({
-      [STATE.USER_PROFILE]: {
-        [USER_PROFILE.USERNAME]: 'testUser',
-        [USER_PROFILE.ROOT_FOLDER_ID]: 'testUser-0',
+      userProfile: {
+        username: 'testUser',
+        rootFolderId: ROOT_FOLDER_ID,
       },
     });
   }, 1000);
+});
+
+app.get('/folders/'+ROOT_FOLDER_ID, (req, res) => {
+  setTimeout(() => {
+    res.status(200);
+    res.send({
+      folderInfo: {
+        name: 'testUserRoot',
+        id: ROOT_FOLDER_ID,
+        itemsAmount: 1,
+        parentId: null,
+      },
+    });
+  }, 500);
 });
 
 app.get('/logout', (req, res) => {

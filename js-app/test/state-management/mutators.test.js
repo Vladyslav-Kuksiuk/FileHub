@@ -1,47 +1,131 @@
-import {MUTATORS, MUTATOR_NAMES} from '../../src/state-management/mutators';
-import {STATE, USER_PROFILE} from '../../src/state-management/state';
+import {MUTATOR_NAMES, MUTATORS} from '../../src/state-management/mutators';
+import {State} from '../../src/state-management/state';
+import {FolderInfo} from '../../src/state-management/folder/folder-info';
+import {UserProfile} from '../../src/state-management/user/user-profile';
 
 describe('Mutators', () => {
   let state;
 
   beforeEach(() => {
-    state = {
-      [STATE.IS_USER_PROFILE_LOADING]: false,
-      [STATE.USER_PROFILE]: null,
-      [STATE.USER_PROFILE_ERROR]: null,
-    };
+    state = new State();
   });
 
-  test(`Should return new state with changed 'isUserLoading'`, function() {
-    expect.assertions(2);
+  test(`Should return new state with changed isUserProfileLoading`, function() {
+    expect.assertions(1);
 
-    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING](state, true);
+    const expectedState = new State({
+      isUserProfileLoading: false,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING](state, false);
 
-    expect(state[STATE.IS_USER_PROFILE_LOADING]).toBeFalsy();
-    expect(newState[STATE.IS_USER_PROFILE_LOADING]).toBeTruthy();
+    expect(newState).toStrictEqual(expectedState);
   });
 
-  test(`Should return new state with changed 'username'`, function() {
-    expect.assertions(2);
+  test(`Should return new state with changed isUserProfileLoading and nulled userProfile and userProfileError`,
+      function() {
+        expect.assertions(1);
 
-    const userProfile = {
-      [USER_PROFILE.USERNAME]: 'username',
-      [USER_PROFILE.ROOT_FOLDER_ID]: '3123',
-    };
+        const state = new State({
+          isUserProfileLoading: false,
+          userProfile: {},
+          userProfileError: {},
+        });
 
+        const expectedState = new State({
+          isUserProfileLoading: true,
+          userProfile: null,
+          userProfileError: null,
+        });
+        const newState = MUTATORS[MUTATOR_NAMES.SET_IS_USER_PROFILE_LOADING](state, true);
+
+        expect(newState).toStrictEqual(expectedState);
+      });
+
+  test(`Should return new state with changed userProfile`, function() {
+    expect.assertions(1);
+
+    const userProfile = new UserProfile(
+        'testUser',
+        'rootFolderId',
+    );
+    const expectedState = new State({
+      userProfile: userProfile,
+    });
     const newState = MUTATORS[MUTATOR_NAMES.SET_USER_PROFILE](state, userProfile);
 
-    expect(state[STATE.USER_PROFILE]).toBeNull();
-    expect(newState[STATE.USER_PROFILE]).toStrictEqual(userProfile);
+    expect(newState).toStrictEqual(expectedState);
   });
 
-  test(`Should return new state with changed 'userError'`, function() {
-    expect.assertions(2);
+  test(`Should return new state with changed userProfileError`, function() {
+    expect.assertions(1);
 
     const error = 'error';
+    const expectedState = new State({
+      userProfileError: error,
+    });
     const newState = MUTATORS[MUTATOR_NAMES.SET_USER_PROFILE_ERROR](state, error);
 
-    expect(state[STATE.USER_PROFILE_ERROR]).toBeNull();
-    expect(newState[STATE.USER_PROFILE_ERROR]).toBe(error);
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed isFolderInfoLoading`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      isFolderInfoLoading: false,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING](state, false);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed isFolderInfoLoading and nulled folderInfo and folderInfoError`,
+      function() {
+        expect.assertions(1);
+
+        const state = new State({
+          isFolderInfoLoading: false,
+          folderInfo: {},
+          folderInfoError: {},
+        });
+
+        const expectedState = new State({
+          isFolderInfoLoading: true,
+          folderInfo: null,
+          folderInfoError: null,
+        });
+        const newState = MUTATORS[MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING](state, true);
+
+        expect(newState).toStrictEqual(expectedState);
+      });
+
+  test(`Should return new state with changed folderInfo`, function() {
+    expect.assertions(1);
+
+    const folderInfo = new FolderInfo(
+        'folder',
+        'ID',
+        'parentId',
+        1,
+    );
+
+    const expectedState = new State({
+      folderInfo: folderInfo,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_INFO](state, folderInfo);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed folderInfoError`, function() {
+    expect.assertions(1);
+
+    const error = 'error';
+    const expectedState = new State({
+      folderInfoError: error,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_INFO_ERROR](state, error);
+
+    expect(newState).toStrictEqual(expectedState);
   });
 });

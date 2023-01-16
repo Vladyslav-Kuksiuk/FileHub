@@ -3,7 +3,7 @@ import {
   EMAIL,
   EMAIL_LENGTH_ERROR, PASSWORD,
   PASSWORD_LENGTH_ERROR,
-} from '../../src/components/authorization-form';
+} from '../../../src/application-components/authorization/authorization-form';
 
 describe('AuthorizationForm', () => {
   beforeEach(() => {
@@ -48,26 +48,28 @@ describe('AuthorizationForm', () => {
       passwordErrors: [PASSWORD_LENGTH_ERROR],
     },
   ].forEach(({email, password, emailErrors, passwordErrors})=>{
-    test(`Should render ${emailErrors.length + passwordErrors.length} errors`, function(done) {
-      expect.assertions(emailErrors.length + passwordErrors.length);
+    test(`Should render ${emailErrors.length + passwordErrors.length} errors`, function() {
+      return new Promise((done) => {
+        expect.assertions(emailErrors.length + passwordErrors.length);
 
-      new AuthorizationForm(document.body);
-      document.body.querySelectorAll('[data-td="form-control"] input')[0].value = email;
-      document.body.querySelectorAll('[data-td="form-control"] input')[1].value = password;
-      document.body.querySelector('[data-td="button-component"]').click();
+        new AuthorizationForm(document.body);
+        document.body.querySelectorAll('[data-td="form-control"] input')[0].value = email;
+        document.body.querySelectorAll('[data-td="form-control"] input')[1].value = password;
+        document.body.querySelector('[data-td="button-component"]').click();
 
-      setTimeout( () => {
-        emailErrors.forEach((error, index)=>{
-          expect(document.body.querySelectorAll('[data-td="form-control"]')[0]
-              .querySelectorAll('[data-td="error-message"]')[index].textContent)
-              .toBe(error);
+        setTimeout( () => {
+          emailErrors.forEach((error, index)=>{
+            expect(document.body.querySelectorAll('[data-td="form-control"]')[0]
+                .querySelectorAll('[data-td="error-message"]')[index].textContent)
+                .toBe(error);
+          });
+          passwordErrors.forEach((error, index)=>{
+            expect(document.body.querySelectorAll('[data-td="form-control"]')[1]
+                .querySelectorAll('[data-td="error-message"]')[index].textContent)
+                .toBe(error);
+          });
+          done();
         });
-        passwordErrors.forEach((error, index)=>{
-          expect(document.body.querySelectorAll('[data-td="form-control"]')[1]
-              .querySelectorAll('[data-td="error-message"]')[index].textContent)
-              .toBe(error);
-        });
-        done();
       });
     });
   });

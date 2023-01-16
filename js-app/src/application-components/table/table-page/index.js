@@ -1,11 +1,14 @@
-import {Component} from '../component';
-import {LogOutUserAction} from '../../state-management/user/log-out-user-action';
-import {UserInfo} from '../user-info';
-import {StateManagementService} from '../../state-management/state-management-service';
-import {TitleService} from '../../title-service';
-import {LoadUserAction} from '../../state-management/user/load-user-action.js';
+import {Component} from '../../../components/component';
+import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
+import {ApplicationContext} from '../../application-context';
+import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
+import {UserInfoWrapper} from '../user-info-wrapper';
+import {Breadcrumb} from '../../../components/breadcrumb';
+import {UserInfo} from '../../../components/user-info/index';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
+const USER_INFO_SLOT = 'user-info-slot';
+const BREADCRUMB_SLOT = 'breadcrumb-slot';
 
 /**
  * Table page component.
@@ -13,16 +16,17 @@ const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 export class TablePage extends Component {
   #eventTarget = new EventTarget();
   #stateManagementService;
+  #applicationContext;
 
   /**
    * @param {HTMLElement} parent
-   * @param {StateManagementService} stateManagementService
-   * @param {TitleService} titleService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, stateManagementService, titleService) {
+  constructor(parent, applicationContext) {
     super(parent);
-    titleService.setTitles(['Table']);
-    this.#stateManagementService = stateManagementService;
+    this.#applicationContext = applicationContext;
+    applicationContext.titleService.setTitles(['Table']);
+    this.#stateManagementService = applicationContext.stateManagementService;
     this.init();
   }
 
@@ -30,13 +34,24 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
-    const userInfoSlot = this.getSlot('user-info');
-    new UserInfo(userInfoSlot, this.#stateManagementService);
-    this.#stateManagementService.dispatch(new LoadUserAction());
+    const userInfoWrapper = new UserInfoWrapper(this.#applicationContext);
+    const userInfoSlot = this.getSlot(USER_INFO_SLOT);
+    userInfoWrapper.wrap(
+        new UserInfo(userInfoSlot, false, null, false));
+
+    const breadcrumbWrapper = new BreadcrumbWrapper(this.#applicationContext);
+    const breadcrumbSlot = this.getSlot(BREADCRUMB_SLOT);
+    breadcrumbWrapper.wrap(new Breadcrumb(
+        breadcrumbSlot,
+        false,
+        false,
+        [{name: 'Home'},
+          (id) => {}],
+    ));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
-      this.#stateManagementService.dispatch(new LogOutUserAction());
+      this.#stateManagementService.dispatch(new LogOutUserAction(this.#applicationContext.apiService));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
     });
   }
@@ -61,7 +76,7 @@ export class TablePage extends Component {
                                           title="TeamDev" width="200"></a>
             <ul class="authorized-user-panel">
             <li>
-                ${this.addSlot('user-info')}
+                ${this.addSlot(USER_INFO_SLOT)}
             </li>
             <li>
                 <a ${this.markElement('logout-link')} class="logout-button" href="/" title="Log Out">
@@ -72,9 +87,7 @@ export class TablePage extends Component {
         </ul>
     </header>
     <main class="container">
-        <ul class="breadcrumb">
-            <li class="active">Home</li>
-        </ul>
+        ${this.addSlot(BREADCRUMB_SLOT)}
         <hr class="horizontal-line">
         <div class="row table-tool-bar">
             <div class="col-xs-8 col-sm-6">

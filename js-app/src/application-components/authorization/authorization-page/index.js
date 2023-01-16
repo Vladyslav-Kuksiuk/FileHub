@@ -1,7 +1,6 @@
-import {Component} from '../component';
+import {Component} from '../../../components/component';
 import {AuthorizationForm} from '../authorization-form';
-import {TitleService} from '../../title-service';
-import {ApiService} from '../../server-connection/api-service';
+import {ApplicationContext} from '../../application-context';
 
 const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
 const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
@@ -15,13 +14,12 @@ export class AuthorizationPage extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {TitleService} titleService
-   * @param {ApiService} apiService
+   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, titleService, apiService) {
+  constructor(parent, applicationContext) {
     super(parent);
-    titleService.setTitles(['Sign In']);
-    this.#apiService = apiService;
+    applicationContext.titleService.setTitles(['Sign In']);
+    this.#apiService = applicationContext.apiService;
     this.init();
   }
 

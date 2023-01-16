@@ -20,8 +20,15 @@ describe('StateManagementService', () => {
     actionMock = jest
         .spyOn(action, 'execute')
         .mockImplementation((executor) => {
-          executor('change', true);
+          executor('change', !state.isChanged);
         });
+  });
+
+  test('Should return error on constructor without state', function() {
+    expect.assertions(1);
+    expect(()=>{
+      new StateManagementService({}, undefined, {});
+    }).toThrow(new Error('Initial state is not valid'));
   });
 
   test(`Should successfully change state`, function() {
@@ -29,20 +36,18 @@ describe('StateManagementService', () => {
 
     expect(stateManagementService.state.isChanged).toBeFalsy();
     stateManagementService.dispatch(action);
-    expect(actionMock).toBeCalledTimes(1);
+    expect(actionMock).toHaveBeenCalledTimes(1);
     expect(stateManagementService.state.isChanged).toBeTruthy();
   });
 
-  test(`Should successfully trigger state event`, function(done) {
-    expect.assertions(4);
+  test(`Should successfully trigger state event`, function() {
+    expect.assertions(3);
 
-    expect(stateManagementService.state.isChanged).toBeFalsy();
-    stateManagementService.addStateListener('isChanged', (state)=>{
-      expect(state.isChanged).toBeTruthy();
-      done();
-    });
+    const listenerMock = jest.fn();
+    stateManagementService.addStateListener('isChanged', listenerMock);
     stateManagementService.dispatch(action);
-    expect(actionMock).toBeCalledTimes(1);
+    expect(actionMock).toHaveBeenCalledTimes(1);
+    expect(listenerMock).toHaveBeenCalledTimes(2);
     expect(stateManagementService.state.isChanged).toBeTruthy();
   });
 });

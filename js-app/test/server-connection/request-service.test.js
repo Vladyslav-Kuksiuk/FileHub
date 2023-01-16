@@ -2,7 +2,7 @@ import {RequestService} from '../../src/server-connection/request-service';
 import {jest} from '@jest/globals';
 
 describe('RequestService', () => {
-  test(`Should correctly send POST request and handle response`, function(done) {
+  test(`Should correctly send POST request and handle response with json body`, function() {
     expect.assertions(4);
     const url = 'MyUrl';
     const requestBody = {text: 'myText'};
@@ -21,8 +21,8 @@ describe('RequestService', () => {
     const token = 'myToken';
     const responsePromise = requestService.postJson(url, requestBody, token);
 
-    expect(fetch).toBeCalledTimes(1);
-    expect(fetch).toBeCalledWith(url, {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -31,33 +31,60 @@ describe('RequestService', () => {
       body: JSON.stringify(requestBody),
     });
 
-    responsePromise.then((response) => {
+    return responsePromise.then((response) => {
       expect(response.status).toBe(200);
       expect(response.body).toBe(responseBody);
-      done();
     });
   });
 
-  test(`Should fail POST request and handle error`, function(done) {
-    expect.assertions(2);
-
-    const errorText = 'error text';
+  test(`Should correctly send POST request and handle response without json body`, function() {
+    expect.assertions(4);
+    const url = 'MyUrl';
+    const requestBody = {text: 'myText'};
 
     global.fetch = jest.fn(async () => {
-      throw new Error(errorText);
+      return {
+        status: 200,
+        json: async () => {
+          throw new Error();
+        },
+      };
+    });
+
+    const requestService = new RequestService();
+    const token = 'myToken';
+    const responsePromise = requestService.postJson(url, requestBody, token);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    return responsePromise.then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual({});
+    });
+  });
+
+  test(`Should fail POST request and handle error`, function() {
+    expect.assertions(1);
+
+    global.fetch = jest.fn(async () => {
+      throw new Error();
     });
 
     const requestService = new RequestService();
     const responsePromise = requestService.postJson('myUrl', {}, 'token');
 
-    responsePromise.then((response) => {
-      expect(response.status).toBe(522);
-      expect(response.body).toStrictEqual({error: errorText});
-      done();
-    });
+    return expect(responsePromise).rejects.toThrow(Error);
   });
 
-  test(`Should correctly send GET request and handle response`, function(done) {
+  test(`Should correctly send GET request and handle response with json body`, function() {
     expect.assertions(4);
     const url = 'MyUrl';
     const responseBody = {answer: 'answer'};
@@ -75,8 +102,8 @@ describe('RequestService', () => {
     const token = 'myToken';
     const responsePromise = requestService.get(url, token);
 
-    expect(fetch).toBeCalledTimes(1);
-    expect(fetch).toBeCalledWith(url, {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -84,29 +111,54 @@ describe('RequestService', () => {
       },
     });
 
-    responsePromise.then((response) => {
+    return responsePromise.then((response) => {
       expect(response.status).toBe(200);
       expect(response.body).toBe(responseBody);
-      done();
     });
   });
 
-  test(`Should fail GET request and handle error`, function(done) {
-    expect.assertions(2);
-
-    const errorText = 'error text';
+  test(`Should correctly send GET request and handle response without json body`, function() {
+    expect.assertions(4);
+    const url = 'MyUrl';
 
     global.fetch = jest.fn(async () => {
-      throw new Error(errorText);
+      return {
+        status: 200,
+        json: async () => {
+          throw new Error();
+        },
+      };
+    });
+
+    const requestService = new RequestService();
+    const token = 'myToken';
+    const responsePromise = requestService.get(url, token);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return responsePromise.then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual({});
+    });
+  });
+
+  test(`Should fail GET request and handle error`, function() {
+    expect.assertions(1);
+
+    global.fetch = jest.fn(async () => {
+      throw new Error();
     });
 
     const requestService = new RequestService();
     const responsePromise = requestService.get('myUrl', 'myToken');
 
-    responsePromise.then((response) => {
-      expect(response.status).toBe(522);
-      expect(response.body).toStrictEqual({error: errorText});
-      done();
-    });
+    return expect(responsePromise).rejects.toThrow(Error);
   });
 });
