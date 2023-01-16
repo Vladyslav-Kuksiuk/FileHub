@@ -5,6 +5,7 @@ import {FormValidationConfigBuilder} from '../../validation/form-validation-conf
 import {validateByRegexp, validateLength, validateSameValue} from '../../validation/value-validations';
 import {ValidationService} from '../../validation/validation-service';
 import {Link} from '../link';
+import {UserData} from '../../user-data';
 
 const EMAIL = 'email';
 const PASSWORD = 'password';
@@ -18,6 +19,7 @@ export const EMAIL_VALIDATION_ERROR = 'Allowed only a-Z and +.-_@ .';
 export const PASSWORD_MATCH_ERROR = 'Passwords don\'t match.';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+const SUBMIT_EVENT = 'SUBMIT_EVENT';
 
 /**
  * Authorization page component.
@@ -106,7 +108,9 @@ export class RegistrationForm extends Component {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
       this.#confirmValue = formData.get(CONFIRM_PASSWORD);
-      this.#validateForm(formData, configCreator);
+      this.#validateForm(formData, configCreator).then(() => {
+        this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
+      });
     });
   }
 
@@ -129,9 +133,24 @@ export class RegistrationForm extends Component {
   }
 
   /**
+   * Adds event listener on form submit after validation.
+   *
+   * @param {function} listener
+   */
+  onSubmit(listener) {
+    this.#eventTarget.addEventListener(SUBMIT_EVENT, ()=>{
+      listener(new UserData(
+          this.#emailValue,
+          this.#passwordValue,
+      ));
+    });
+  }
+
+  /**
    * @private
    * @param {FormData} formData
    * @param {function(FormData)} configCreator
+   * @returns {Promise<void | Error>}
    */
   #validateForm(formData, configCreator) {
     this.#setFormErrors({
@@ -139,7 +158,7 @@ export class RegistrationForm extends Component {
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
     });
-    new ValidationService()
+    return new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
           const errorsByField = result.errors.reduce((tempErrors, error)=>{
@@ -149,6 +168,7 @@ export class RegistrationForm extends Component {
             return tempErrors;
           }, {});
           this.#setFormErrors(errorsByField);
+          throw new Error();
         });
   }
 

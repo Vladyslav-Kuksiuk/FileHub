@@ -36,6 +36,9 @@ export class Application extends Component {
           page.onNavigateToRegistration(() => {
             router.redirect(REGISTRATION_PATH);
           });
+          page.onNavigateToTable(()=>{
+            router.redirect('table');
+          });
         })
         .addRoute(REGISTRATION_PATH, () => {
           this.rootElement.innerHTML = '';

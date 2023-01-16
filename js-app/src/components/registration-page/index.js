@@ -28,6 +28,9 @@ export class RegistrationPage extends Component {
     form.onNavigateToAuthorization(()=>{
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
+    form.onSubmit((data)=>{
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+    });
   }
 
   /**
