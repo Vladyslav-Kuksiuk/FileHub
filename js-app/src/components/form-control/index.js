@@ -1,4 +1,5 @@
 import {Component} from '../component';
+import {IndexService} from '../../index-service';
 
 /**
  * Form control component.
@@ -9,7 +10,7 @@ export class FormControl extends Component {
   #type;
   #name;
   #placeholder;
-  #id = crypto.randomUUID();
+  #id = IndexService.index;
   #value = '';
 
   /**
