@@ -10,11 +10,12 @@ export class Breadcrumb extends Component {
   #isLoading;
   #hasError;
   #path;
+  #folderLinkListener;
 
   /**
    *@typedef Folder
    * @param {string} name
-   * @param {Function} linkListener
+   * @param {string} id
    */
 
   /**
@@ -22,13 +23,15 @@ export class Breadcrumb extends Component {
    * @param {boolean} isLoading
    * @param {boolean} hasError
    * @param {Folder[]} path
+   * @param {function(string): void} folderLinkListener
    */
-  constructor(parent, isLoading, hasError, path) {
+  constructor(parent, isLoading, hasError, path, folderLinkListener) {
     super(parent);
 
     this.#isLoading = isLoading;
     this.#hasError = hasError;
     this.#path = path;
+    this.#folderLinkListener = folderLinkListener;
 
     this.init();
   }
@@ -37,15 +40,14 @@ export class Breadcrumb extends Component {
    * @inheritDoc
    */
   afterRender() {
-    this.#path.forEach((folder, index)=>{
-      if (index < this.#path.length - 1) {
-        const linkSlot = this.getSlot(LINK_SLOT+index);
-        if (linkSlot) {
-          const link = new Link(linkSlot, folder.name);
-          link.onClick(folder.linkListener);
-        }
+    for (let i = 0; i < this.#path.length - 1; i++) {
+      const linkSlot = this.getSlot(LINK_SLOT + i);
+      const folder = this.#path[i];
+      if (linkSlot) {
+        const link = new Link(linkSlot, folder.name);
+        link.onClick(this.#folderLinkListener(folder.id));
       }
-    });
+    }
   }
 
   /**

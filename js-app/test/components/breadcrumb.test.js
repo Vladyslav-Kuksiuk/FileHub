@@ -19,20 +19,24 @@ describe('Breadcrumb', () => {
   test(`Should render Breadcrumb component with three path element`, function() {
     expect.assertions(6);
 
+    const linkListener = jest.fn();
+    const id1 = 'id1';
+    const id2 = 'id2';
+
     const path = [
-      {name: 'folder1', linkListener: jest.fn()},
-      {name: 'folder2', linkListener: jest.fn()},
+      {name: 'folder1', id: id1},
+      {name: 'folder2', id: id2},
       {name: 'folder3'},
     ];
-    new Breadcrumb(document.body, false, false, path);
+    new Breadcrumb(document.body, false, false, path, linkListener);
 
     expect(document.body.querySelectorAll('ul li').length).toBe(3);
     expect(document.body.querySelectorAll('ul li a')[0].textContent).toBe(path[0].name);
     document.body.querySelectorAll('ul li a')[0].click();
-    expect(path[0].linkListener).toHaveBeenCalledTimes(1);
+    expect(linkListener).toHaveBeenNthCalledWith(1, id1);
     expect(document.body.querySelectorAll('ul li a')[1].textContent).toBe(path[1].name);
     document.body.querySelectorAll('ul li a')[1].click();
-    expect(path[1].linkListener).toHaveBeenCalledTimes(1);
+    expect(linkListener).toHaveBeenNthCalledWith(2, id2);
     expect(document.body.querySelectorAll('ul li')[2].textContent).toBe(path[2].name);
   });
 
@@ -53,11 +57,11 @@ describe('Breadcrumb', () => {
   test('Should change state one folder -> two folders -> error -> loading', function() {
     expect.assertions(5);
     const path1 = [{name: 'Home'}];
-    const breadcrumb = new Breadcrumb(document.body, false, false, path1);
+    const breadcrumb = new Breadcrumb(document.body, false, false, path1, jest.fn());
 
     expect(document.body.querySelector('ul li').textContent).toBe(path1[0].name);
 
-    const path2 = [{name: 'Home', linkListener: ()=>{}},
+    const path2 = [{name: 'Home', id: 'hello'},
       {name: 'folder2'}];
 
     breadcrumb.path = path2;

@@ -45,7 +45,8 @@ export class TablePage extends Component {
         breadcrumbSlot,
         false,
         false,
-        [{name: 'Home'}],
+        [{name: 'Home'},
+          (id) => {}],
     ));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{

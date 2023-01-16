@@ -44,12 +44,12 @@ export class BreadcrumbWrapper {
         let path = [{name: 'Home'}];
         if (state.folderInfo.parentId === state?.userProfile?.rootFolderId) {
           path = [
-            {name: 'Home', linkListener: ()=>{}},
-            {name: state.folderInfo.name}];
+            {name: 'Home', id: null},
+            {name: null}];
         } else if (state.folderInfo.parentId != null) {
           path = [
-            {name: 'Home', linkListener: ()=>{}},
-            {name: '...', linkListener: ()=>{}},
+            {name: 'Home', id: null},
+            {name: '...', id: null},
             {name: state.folderInfo.name}];
         }
         breadcrumb.path = path;
