@@ -11,7 +11,7 @@ import {UserData} from '../../src/user-data';
 import {jest} from '@jest/globals';
 
 describe('ApiService', () => {
-  test(`Should successfully log in`, function(done) {
+  test(`Should save authToken when response is 200`, function(done) {
     expect.assertions(4);
 
     const login = 'login';
@@ -36,27 +36,28 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should fail login with error message ${DEFAULT_ERROR}`, function(done) {
-    expect.assertions(2);
+  test(`Should throw error message ${DEFAULT_ERROR} when registration response != 200, 401`,
+      function(done) {
+        expect.assertions(2);
 
-    const requestService = new RequestService();
+        const requestService = new RequestService();
 
-    const requestServiceMock = jest
-        .spyOn(requestService, 'postJson')
-        .mockImplementation(async () => {
-          return new Response(400, {});
-        });
+        const requestServiceMock = jest
+            .spyOn(requestService, 'postJson')
+            .mockImplementation(async () => {
+              return new Response(400, {});
+            });
 
-    const apiService = new ApiService(requestService);
-    apiService.logIn(new UserData('login', 'password'))
-        .catch((error) => {
-          expect(requestServiceMock).toBeCalledTimes(1);
-          expect(error.message).toBe(DEFAULT_ERROR);
-          done();
-        });
-  });
+        const apiService = new ApiService(requestService);
+        apiService.logIn(new UserData('login', 'password'))
+            .catch((error) => {
+              expect(requestServiceMock).toBeCalledTimes(1);
+              expect(error.message).toBe(DEFAULT_ERROR);
+              done();
+            });
+      });
 
-  test(`Should fail login with error message ${LOGIN_401_ERROR}`, function(done) {
+  test(`Should throw error message ${LOGIN_401_ERROR} when registration response is 401`, function(done) {
     expect.assertions(2);
 
     const requestService = new RequestService();
@@ -76,7 +77,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should successfully register`, function(done) {
+  test(`Should pass when registration response is 200`, function(done) {
     expect.assertions(4);
 
     const login = 'login';
@@ -100,7 +101,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should fail registration with error message ${DEFAULT_ERROR}`, function(done) {
+  test(`Should throw error message ${DEFAULT_ERROR} when response != 200, 422`, function(done) {
     expect.assertions(2);
 
     const requestService = new RequestService();
@@ -120,7 +121,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should fail registration with errors in response body`, function(done) {
+  test(`Should throw FieldValidationError when response is 422`, function(done) {
     expect.assertions(2);
     const errors = {
       email: 'Email error',
@@ -144,7 +145,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should successfully logOut`, function(done) {
+  test(`Should pass when logOut response is 200`, function(done) {
     expect.assertions(1);
     const requestService = new RequestService();
 
@@ -162,7 +163,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should fail logOut`, function(done) {
+  test(`Should throw error message ${DEFAULT_ERROR} when logOut response != 200`, function(done) {
     expect.assertions(2);
     const requestService = new RequestService();
 
@@ -181,7 +182,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should successfully load user`, function(done) {
+  test(`Should pass when loadUser response is 200`, function(done) {
     expect.assertions(2);
     const requestService = new RequestService();
     const username = 'test user';
@@ -203,7 +204,7 @@ describe('ApiService', () => {
         });
   });
 
-  test(`Should fail loadUser`, function(done) {
+  test(`Should throw error message ${DEFAULT_ERROR} when loadUser response != 200`, function(done) {
     expect.assertions(2);
     const requestService = new RequestService();
 

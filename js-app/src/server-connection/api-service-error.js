@@ -7,7 +7,7 @@ export class ApiServiceError extends Error {
   /**
    * @param {string} message
    */
-  constructor(message= DEFAULT_ERROR) {
+  constructor(message = DEFAULT_ERROR) {
     super(message);
   }
 }
