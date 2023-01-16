@@ -192,7 +192,7 @@ export class RegistrationForm extends Component {
   markup() {
     const error = this.#headError ? `<p class="text-danger"> ${this.#headError} </p>` : '';
     return `
-    <slot>${error}</slot>
+    <slot ${this.markElement('head-error')} >${error}</slot>
     ${this.addSlot('form')}
     `;
   }
