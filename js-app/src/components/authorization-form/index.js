@@ -27,6 +27,7 @@ export class AuthorizationForm extends Component {
     [EMAIL]: [],
     [PASSWORD]: [],
   };
+  #headError;
   #eventTarget = new EventTarget();
 
   /**
@@ -85,6 +86,8 @@ export class AuthorizationForm extends Component {
     form.onSubmit((formData) => {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
+      this.#headError = null;
+
       this.#validateForm(formData, configCreator)
           .then(()=>{
             this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
@@ -99,6 +102,16 @@ export class AuthorizationForm extends Component {
    */
   #setFormErrors(errors) {
     this.#formErrors = errors;
+    this.render();
+  }
+
+  /**
+   * Sets head error.
+   *
+   * @param {string} error
+   */
+  setHeadError(error) {
+    this.#headError = error;
     this.render();
   }
 
@@ -127,8 +140,8 @@ export class AuthorizationForm extends Component {
 
   /**
    * @param {FormData} formData
-   * @param {function(FormData)} configCreator
-   * @returns {*|Promise<void | Promise>}
+   * @param {Function} configCreator
+   * @returns {Promise<void>}
    * @private
    */
   #validateForm(formData, configCreator) {
@@ -146,7 +159,7 @@ export class AuthorizationForm extends Component {
             return tempErrors;
           }, {});
           this.#setFormErrors(errorsByField);
-          return Promise.reject(new Error());
+          throw new Error();
         });
   }
 
@@ -154,6 +167,10 @@ export class AuthorizationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    return this.addSlot('auth-form');
+    const error = this.#headError ? `<p class="text-danger">${this.#headError}</p>` : '';
+    return `
+    <slot ${this.markElement('head-error')}>${error}</slot>
+    ${this.addSlot('auth-form')}
+    `;
   }
 }

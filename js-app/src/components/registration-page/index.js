@@ -1,6 +1,8 @@
 import {Component} from '../component';
 import {RegistrationForm} from '../registration-form';
-import {TitleService} from '../../title-service.js';
+import {TitleService} from '../../title-service';
+import {ApiService} from '../../server-connection/api-service';
+import {FieldValidationError} from '../../server-connection/field-validation-error';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -9,14 +11,17 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  */
 export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
+  #apiService;
 
   /**
    * @param {HTMLElement} parent
    * @param {TitleService} titleService
+   * @param {ApiService} apiService
    */
-  constructor(parent, titleService) {
+  constructor(parent, titleService, apiService) {
     super(parent);
-    titleService.titles = ['Sign Up'];
+    titleService.setTitles(['Sign Up']);
+    this.#apiService = apiService;
     this.init();
   }
 
@@ -30,7 +35,22 @@ export class RegistrationPage extends Component {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
     form.onSubmit((data)=>{
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+      this.#apiService.register(data)
+          .then(()=>{
+            this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+          })
+          .catch((error)=>{
+            if (error instanceof FieldValidationError) {
+              const errors = {};
+              error.fieldErrors.forEach((fieldError) =>{
+                const prevErrors = errors[fieldError.fieldName] || [];
+                errors[fieldError.fieldName] = [...prevErrors, fieldError.errorText];
+              });
+              form.formErrors = errors;
+            } else {
+              form.setHeadError(error.message);
+            }
+          });
     });
   }
 

@@ -34,6 +34,7 @@ export class RegistrationForm extends Component {
     [CONFIRM_PASSWORD]: [],
   };
   #eventTarget = new EventTarget();
+  #headError;
 
   /**
    * @param {HTMLElement} parent
@@ -108,6 +109,8 @@ export class RegistrationForm extends Component {
       this.#emailValue = formData.get(EMAIL);
       this.#passwordValue = formData.get(PASSWORD);
       this.#confirmValue = formData.get(CONFIRM_PASSWORD);
+      this.#headError = null;
+
       this.#validateForm(formData, configCreator)
           .then(() => {
             this.#eventTarget.dispatchEvent(new Event(SUBMIT_EVENT));
@@ -118,9 +121,8 @@ export class RegistrationForm extends Component {
 
   /**
    * @param {object} errors
-   * @private
    */
-  #setFormErrors(errors) {
+  set formErrors(errors) {
     this.#formErrors = errors;
     this.render();
   }
@@ -149,17 +151,27 @@ export class RegistrationForm extends Component {
   }
 
   /**
+   * Sets head error.
+   *
+   * @param {string} error
+   */
+  setHeadError(error) {
+    this.#headError = error;
+    this.render();
+  }
+
+  /**
    * @param {FormData} formData
-   * @param {function(FormData)} configCreator
-   * @returns {*|Promise<void | Promise>}
+   * @param {Function} configCreator
+   * @returns {Promise<void>}
    * @private
    */
   #validateForm(formData, configCreator) {
-    this.#setFormErrors({
+    this.formErrors ={
       [EMAIL]: [],
       [PASSWORD]: [],
       [CONFIRM_PASSWORD]: [],
-    });
+    };
     return new ValidationService()
         .validate(formData, configCreator(formData))
         .catch((result) => {
@@ -169,8 +181,8 @@ export class RegistrationForm extends Component {
             tempErrors[fieldName] = [...prevErrors, error.message];
             return tempErrors;
           }, {});
-          this.#setFormErrors(errorsByField);
-          return Promise.reject(new Error());
+          this.formErrors = errorsByField;
+          throw new Error();
         });
   }
 
@@ -178,7 +190,11 @@ export class RegistrationForm extends Component {
    * @inheritDoc
    */
   markup() {
-    return this.addSlot('form');
+    const error = this.#headError ? `<p class="text-danger"> ${this.#headError} </p>` : '';
+    return `
+    <slot ${this.markElement('head-error')} >${error}</slot>
+    ${this.addSlot('form')}
+    `;
   }
 }
 

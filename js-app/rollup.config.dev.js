@@ -1,7 +1,8 @@
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import htmlTemplate from 'rollup-plugin-generate-html-template';
 import copy from 'rollup-plugin-copy';
-import serve from 'rollup-plugin-serve';
+import dev from 'rollup-plugin-dev';
+import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 
 export default {
@@ -12,6 +13,7 @@ export default {
   },
   plugins: [
     nodeResolve(),
+    commonjs(),
     htmlTemplate({
       template: 'index.html',
       target: 'dist/index.html',
@@ -23,10 +25,10 @@ export default {
         {src: 'static/fonts', dest: 'dist/static'},
       ],
     }),
-    serve({
-      open: true,
+    dev({
       port: 3000,
-      contentBase: 'dist',
+      dirs: ['dist'],
+      proxy: [{from: '/api', to: 'http://localhost:3001'}],
     }),
     livereload(),
   ],

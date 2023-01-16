@@ -13,7 +13,7 @@ describe('Title service', () => {
     const titles = ['title1', 'title2'];
     const titleService = new TitleService(mainTitle, separator);
 
-    titleService.titles = titles;
+    titleService.setTitles(titles);
 
     setTimeout(()=>{
       expect(document.title).toBe(mainTitle+separator+titles[0]+separator+titles[1]);

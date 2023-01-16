@@ -15,9 +15,11 @@ export class TitleService {
   }
 
   /**
+   * Set's titles to document.title with main title, by separator.
+   *
    * @param {string[]} titles
    */
-  set titles(titles) {
+  setTitles(titles) {
     const allTitles = [this.#mainTitle, ...titles];
     document.title = allTitles.join(this.#separator);
   }
