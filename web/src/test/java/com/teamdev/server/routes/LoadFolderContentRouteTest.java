@@ -7,9 +7,9 @@ import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
-import com.teamdev.filehub.views.folder.info.FolderInfo;
-import com.teamdev.filehub.views.folder.info.FolderInfoQuery;
-import com.teamdev.filehub.views.folder.info.FolderInfoView;
+import com.teamdev.filehub.views.folder.FolderContent;
+import com.teamdev.filehub.views.folder.content.FolderContentQuery;
+import com.teamdev.filehub.views.folder.content.FolderContentView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,7 +19,7 @@ import spark.Response;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 
-class LoadFolderRouteTest {
+class LoadFolderContentRouteTest {
 
     private final Gson gson = new Gson();
 
@@ -29,18 +29,18 @@ class LoadFolderRouteTest {
 
         var tester = new NullPointerTester();
 
-        tester.testAllPublicConstructors(LoadFolderRoute.class);
+        tester.testAllPublicConstructors(LoadFolderContentRoute.class);
 
     }
 
     @Test
-    @DisplayName("Should set FolderInfo as JSON string in response body")
+    @DisplayName("Should set FolderContent as JSON string in response body")
     void testHandleWithoutExceptions() throws UserAuthorizationException {
 
         var folderId = "folderId";
 
-        var folderInfo = new FolderInfo("Folder", folderId, "parentFolderId");
-        var responseJsonString = gson.toJson(folderInfo);
+        var folderContent = new FolderContent();
+        var responseJsonString = gson.toJson(folderContent);
 
         var request = Mockito.mock(Request.class);
         Mockito.when(request.headers("Authorization"))
@@ -56,22 +56,22 @@ class LoadFolderRouteTest {
         Mockito.when(authView.handle(any()))
                .thenReturn(new RecordId<>("userId"));
 
-        var folderInfoView = new FolderInfoView() {
+        var folderContentView = new FolderContentView() {
 
             @Override
-            public FolderInfo handle(FolderInfoQuery query) {
+            public FolderContent handle(FolderContentQuery query) {
                 if (!query.folderId()
                           .value()
-                          .equals(folderInfo.id())) {
+                          .equals(folderId)) {
                     throw new RuntimeException("");
                 }
-                return folderInfo;
+                return folderContent;
             }
         };
 
-        var route = new LoadFolderRoute(authView, folderInfoView);
+        var route = new LoadFolderContentRoute(authView, folderContentView);
 
-        assertWithMessage("Route handle did not return folder info")
+        assertWithMessage("Route handle did not return folder content")
                 .that(route.handle(request, response))
                 .isEqualTo(responseJsonString);
         Mockito.verify(response, Mockito.times(1))
@@ -97,15 +97,15 @@ class LoadFolderRouteTest {
         Mockito.when(authView.handle(any()))
                .thenReturn(new RecordId<>("userId"));
 
-        var folderInfoView = new FolderInfoView() {
+        var folderContentView = new FolderContentView() {
 
             @Override
-            public FolderInfo handle(FolderInfoQuery query) throws AccessDeniedException {
+            public FolderContent handle(FolderContentQuery query) throws AccessDeniedException {
                 throw new AccessDeniedException(errorMessage);
             }
         };
 
-        var route = new LoadFolderRoute(authView, folderInfoView);
+        var route = new LoadFolderContentRoute(authView, folderContentView);
 
         assertWithMessage("Route handle did not return error message")
                 .that(route.handle(request, response))
@@ -133,15 +133,15 @@ class LoadFolderRouteTest {
         Mockito.when(authView.handle(any()))
                .thenReturn(new RecordId<>("userId"));
 
-        var folderInfoView = new FolderInfoView() {
+        var folderContentView = new FolderContentView() {
 
             @Override
-            public FolderInfo handle(FolderInfoQuery query) throws DataNotFoundException {
+            public FolderContent handle(FolderContentQuery query) throws DataNotFoundException {
                 throw new DataNotFoundException(errorMessage);
             }
         };
 
-        var route = new LoadFolderRoute(authView, folderInfoView);
+        var route = new LoadFolderContentRoute(authView, folderContentView);
 
         assertWithMessage("Route handle did not return error message")
                 .that(route.handle(request, response))
