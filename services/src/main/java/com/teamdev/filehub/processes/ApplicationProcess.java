@@ -5,7 +5,9 @@ import com.teamdev.filehub.ServiceException;
 import javax.validation.constraints.NotNull;
 
 /**
- * A class for handling actor {@link Command} with application state changes.
+ * Interface whose implementations handle user {@link Command}.
+ * You should implement it if you want to write a service that
+ * will change system state at the request of the user.
  *
  * @param <C>
  *         {@link Command} implementation.
@@ -15,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public interface ApplicationProcess<C extends Command, R> {
 
     /**
-     * Handles the command.
+     * Handles the user {@link Command}.
      *
      * @param command
      *         {@link Command} to handle.

@@ -1,6 +1,6 @@
 package com.teamdev.server;
 
-import com.teamdev.filehub.ApplicationContext;
+import com.teamdev.filehub.ApplicationConfiguration;
 import com.teamdev.server.routes.AuthenticationRoute;
 import com.teamdev.server.routes.LoadUserRoute;
 import com.teamdev.server.routes.RegistrationRoute;
@@ -19,7 +19,7 @@ public class Application {
 
     public static void main(String[] args) {
         staticFiles.location("/web-client");
-        ApplicationContext context = new ApplicationContext();
+        ApplicationConfiguration context = new ApplicationConfiguration();
 
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));

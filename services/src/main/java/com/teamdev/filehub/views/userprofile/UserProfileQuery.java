@@ -5,7 +5,7 @@ import com.teamdev.filehub.views.Query;
 
 /**
  * A {@link Query} implementation which is intended to store
- * data about user profile query.
+ * data about user profile request.
  */
 public class UserProfileQuery implements Query {
 

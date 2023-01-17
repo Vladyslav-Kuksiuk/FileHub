@@ -31,7 +31,7 @@ import java.nio.file.Path;
 /**
  * Class which intended to configure services implementations.
  */
-public class ApplicationContext {
+public class ApplicationConfiguration {
 
     private final UserRegistrationProcess userRegistrationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
@@ -44,7 +44,7 @@ public class ApplicationContext {
 
     private final FileDownloadView fileDownloadView;
 
-    public ApplicationContext() {
+    public ApplicationConfiguration() {
 
         Path storagePath = Path.of("storage")
                                .toAbsolutePath();

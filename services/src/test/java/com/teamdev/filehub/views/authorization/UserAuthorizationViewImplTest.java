@@ -1,5 +1,6 @@
 package com.teamdev.filehub.views.authorization;
 
+import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
@@ -18,7 +19,7 @@ public class UserAuthorizationViewImplTest {
 
     @Test
     @DisplayName("Should return user id")
-    void shouldReturnAuthorizedUserId() throws UnauthorizedUserException {
+    void shouldReturnAuthorizedUserId() throws AccessDeniedException {
         AuthenticationRecord authenticationRecord = new AuthenticationRecord(
                 new RecordId<>("recordId"),
                 "token",
@@ -59,7 +60,7 @@ public class UserAuthorizationViewImplTest {
         Mockito.when(authenticationDao.findByToken(authorizationQuery.authorizationToken()))
                .thenReturn(Optional.empty());
 
-        assertThrows(UnauthorizedUserException.class, () -> {
+        assertThrows(AccessDeniedException.class, () -> {
             userAuthorizationView.handle(authorizationQuery);
         }, "UserAuthorizationView passed without valid token");
 
@@ -67,7 +68,7 @@ public class UserAuthorizationViewImplTest {
 
     @Test
     @DisplayName("Should throw an UnauthorizedUserException if token expired")
-    void shouldFailByExpiredToken() throws UnauthorizedUserException {
+    void shouldFailByExpiredToken() {
         AuthenticationRecord authenticationRecord = new AuthenticationRecord(
                 new RecordId<>("recordId"),
                 "token",
@@ -85,7 +86,7 @@ public class UserAuthorizationViewImplTest {
         Mockito.when(authenticationDao.findByToken(authenticationRecord.authenticationToken()))
                .thenReturn(Optional.of(authenticationRecord));
 
-        assertThrows(UnauthorizedUserException.class, () -> {
+        assertThrows(AccessDeniedException.class, () -> {
             userAuthorizationView.handle(authorizationQuery);
         }, "UserAuthorizationView passed with expired token");
 

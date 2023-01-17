@@ -7,6 +7,7 @@ import com.teamdev.filehub.views.View;
 /**
  * A {@link View} extended interface which implementation is intended to process
  * user authorization.
+ * Authorization converts authentication token into user id.
  */
 public interface UserAuthorizationView extends View<UserAuthorizationQuery, RecordId<String>> {
 

@@ -6,7 +6,7 @@ import com.teamdev.filehub.dao.RecordId;
 import javax.annotation.Nonnull;
 
 /**
- * {@link Command} extension with data about authenticated user.
+ * An abstract {@link Command} with an authenticated user id.
  */
 public abstract class AuthenticatedUserCommand implements Command {
 
