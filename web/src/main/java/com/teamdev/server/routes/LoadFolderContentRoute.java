@@ -6,32 +6,30 @@ import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
-import com.teamdev.filehub.views.folder.info.FolderInfo;
-import com.teamdev.filehub.views.folder.info.FolderInfoQuery;
-import com.teamdev.filehub.views.folder.info.FolderInfoView;
+import com.teamdev.filehub.views.folder.content.FolderContent;
+import com.teamdev.filehub.views.folder.content.FolderContentQuery;
+import com.teamdev.filehub.views.folder.content.FolderContentView;
 import com.teamdev.server.AuthorizedUserRoute;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
 
-import javax.annotation.Nonnull;
-
 /**
- * An {@link AuthorizedUserRoute} implementation to provide 'load folder' request handling.
+ * An {@link AuthorizedUserRoute} implementation to provide 'load folder content' request handling.
  */
-public class LoadFolderRoute extends AuthorizedUserRoute {
+public class LoadFolderContentRoute extends AuthorizedUserRoute {
 
-    private final FolderInfoView folderInfoView;
+    private final FolderContentView folderContentView;
     private final Gson gson = new Gson();
 
-    public LoadFolderRoute(
-            @Nonnull UserAuthorizationView authorizationView,
-            @Nonnull FolderInfoView folderInfoView) {
-        super(Preconditions.checkNotNull(authorizationView));
-        this.folderInfoView = Preconditions.checkNotNull(folderInfoView);
+    public LoadFolderContentRoute(
+            UserAuthorizationView authorizationView,
+            FolderContentView folderContentView) {
+        super(authorizationView);
+        this.folderContentView = Preconditions.checkNotNull(folderContentView);
     }
 
     /**
-     * Handles 'load folder' request.
+     * Handles 'load folder content' request.
      *
      * @param request
      *         The request object providing information about the HTTP request.
@@ -45,12 +43,12 @@ public class LoadFolderRoute extends AuthorizedUserRoute {
                                     RecordId<String> userId)
             throws DataNotFoundException, AccessDeniedException {
 
-        FolderInfoQuery folderInfoQuery =
-                new FolderInfoQuery(userId,
-                                    new RecordId<>(request.params(":id")));
+        FolderContentQuery query =
+                new FolderContentQuery(userId, new RecordId<>(request.params(":id")));
 
-        FolderInfo folderInfo = folderInfoView.handle(folderInfoQuery);
-        response.body(gson.toJson(folderInfo));
+        FolderContent folderContent = folderContentView.handle(query);
+
+        response.body(gson.toJson(folderContent));
 
     }
 }
