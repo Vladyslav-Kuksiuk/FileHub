@@ -65,7 +65,7 @@ public class ApplicationConfiguration {
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
-        folderInfoView = new FolderInfoViewImpl(folderDao, fileDao);
+        folderInfoView = new FolderInfoViewImpl(folderDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
