@@ -14,16 +14,19 @@ public class AuthenticationData extends Data<String> {
     private final String authenticationToken;
 
     private final String expireTime;
+    private final String userId;
 
     public AuthenticationData(@NotNull String id,
                               @NotNull String authenticationToken,
-                              @NotNull String expireTime) {
+                              @NotNull String expireTime,
+                              @NotNull String userId) {
         super(Preconditions.checkNotNull(id));
         Preconditions.checkState(!authenticationToken.isEmpty());
         Preconditions.checkState(!expireTime.isEmpty());
 
         this.authenticationToken = authenticationToken;
         this.expireTime = expireTime;
+        this.userId = userId;
     }
 
     public String authenticationToken() {
@@ -32,6 +35,10 @@ public class AuthenticationData extends Data<String> {
 
     public String expireTime() {
         return expireTime;
+    }
+
+    public String userId() {
+        return userId;
     }
 
     @Override

@@ -26,7 +26,11 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
     public Optional<AuthenticationData> findByUserId(@Nonnull String userId) {
         Preconditions.checkNotNull(userId);
 
-        return Optional.ofNullable(tableMap().get(userId));
+        return tableMap().values()
+                .stream()
+                .filter(auth -> auth.userId()
+                                    .equals(userId))
+                .findFirst();
 
     }
 

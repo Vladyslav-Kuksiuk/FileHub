@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Factory to convert exceptions into HTTP status codes.
+ * Binding to convert exceptions into HTTP status codes.
  */
-public class ExceptionStatusFactory {
+public class ExceptionToStatusBinding {
 
     private final Map<Class<? extends Exception>, Integer> exceptionStatusMap = new HashMap<>();
 
-    ExceptionStatusFactory() {
+    ExceptionToStatusBinding() {
         exceptionStatusMap.put(JsonEntityValidationException.class, 400);
         exceptionStatusMap.put(JsonSyntaxException.class, 400);
 

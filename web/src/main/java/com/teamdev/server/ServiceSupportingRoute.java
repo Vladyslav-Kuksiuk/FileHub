@@ -39,7 +39,7 @@ public abstract class ServiceSupportingRoute implements Route {
             return response.body();
 
         } catch (ServiceException | JsonEntityValidationException | JsonSyntaxException exception) {
-            ExceptionStatusFactory exceptionStatusFactory = new ExceptionStatusFactory();
+            ExceptionToStatusBinding exceptionStatusFactory = new ExceptionToStatusBinding();
 
             response.status(exceptionStatusFactory.getStatus(exception.getClass()));
 
