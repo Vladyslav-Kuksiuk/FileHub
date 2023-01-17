@@ -36,6 +36,7 @@ import java.nio.file.Path;
  * Class which intended to configure services implementations.
  */
 public class ApplicationConfiguration {
+
     private final UserRegistrationProcess userRegistrationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;

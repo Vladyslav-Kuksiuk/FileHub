@@ -1,6 +1,10 @@
 package com.teamdev.filehub.views.folder;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Server response which is intended to store
@@ -13,11 +17,14 @@ public class FolderContentItem {
     private final String parentId;
     private final String name;
 
-    public FolderContentItem(String type, String id, String parentId, String name) {
-        this.type = type;
-        this.id = id;
+    public FolderContentItem(@Nonnull String type,
+                             @Nonnull String id,
+                             @Nullable String parentId,
+                             @Nonnull String name) {
+        this.type = Preconditions.checkNotNull(type);
+        this.id = Preconditions.checkNotNull(id);
         this.parentId = parentId;
-        this.name = name;
+        this.name = Preconditions.checkNotNull(name);
     }
 
     public String type() {
