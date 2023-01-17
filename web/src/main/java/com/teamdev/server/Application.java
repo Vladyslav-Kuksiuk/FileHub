@@ -2,6 +2,7 @@ package com.teamdev.server;
 
 import com.teamdev.filehub.ApplicationConfiguration;
 import com.teamdev.server.routes.AuthenticationRoute;
+import com.teamdev.server.routes.LoadFolderRoute;
 import com.teamdev.server.routes.LoadUserRoute;
 import com.teamdev.server.routes.RegistrationRoute;
 

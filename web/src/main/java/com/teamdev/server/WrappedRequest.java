@@ -45,8 +45,6 @@ public class WrappedRequest {
     }
 
     /**
-     * Gets the value for the provided header.
-     *
      * @param header
      *         HTTP request header name.
      * @return The value of the provided header.
@@ -54,5 +52,18 @@ public class WrappedRequest {
     public String headers(@Nonnull String header) {
         Preconditions.checkNotNull(header);
         return request.headers(header);
+    }
+
+    /**
+     * Returns the value of the provided route pattern parameter.
+     * Example: parameter 'name' from the following pattern: (get '/hello/:name')
+     *
+     * @param param
+     *         HTTP parameter name.
+     * @return The value of the provided parameter.
+     */
+    public String params(@Nonnull String param) {
+        Preconditions.checkNotNull(param);
+        return request.params(param);
     }
 }

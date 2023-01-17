@@ -1,10 +1,10 @@
 package com.teamdev.filehub.views.folderinfo;
 
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.views.AccessDeniedException;
-import com.teamdev.filehub.views.DataNotFoundException;
 
 import java.util.Optional;
 
