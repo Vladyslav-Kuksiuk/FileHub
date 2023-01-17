@@ -14,16 +14,22 @@ public class AuthenticationData extends Data<String> {
     private final String authenticationToken;
 
     private final String expireTime;
+    private final String userId;
 
     public AuthenticationData(@NotNull String id,
                               @NotNull String authenticationToken,
-                              @NotNull String expireTime) {
+                              @NotNull String expireTime,
+                              @NotNull String userId) {
         super(Preconditions.checkNotNull(id));
+        Preconditions.checkNotNull(authenticationToken);
+        Preconditions.checkNotNull(expireTime);
+        Preconditions.checkNotNull(userId);
         Preconditions.checkState(!authenticationToken.isEmpty());
         Preconditions.checkState(!expireTime.isEmpty());
 
         this.authenticationToken = authenticationToken;
         this.expireTime = expireTime;
+        this.userId = userId;
     }
 
     public String authenticationToken() {
@@ -32,6 +38,10 @@ public class AuthenticationData extends Data<String> {
 
     public String expireTime() {
         return expireTime;
+    }
+
+    public String userId() {
+        return userId;
     }
 
     @Override
@@ -49,6 +59,6 @@ public class AuthenticationData extends Data<String> {
         }
         AuthenticationData data = (AuthenticationData) o;
         return Objects.equal(authenticationToken, data.authenticationToken) &&
-               Objects.equal(expireTime, data.expireTime);
+                Objects.equal(expireTime, data.expireTime);
     }
 }
