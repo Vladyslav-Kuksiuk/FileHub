@@ -21,10 +21,11 @@ public class UserAuthorizationViewImplTest {
     @DisplayName("Should return user id")
     void shouldReturnAuthorizedUserId() throws AccessDeniedException {
         AuthenticationRecord authenticationRecord = new AuthenticationRecord(
-                new RecordId<>("recordId"),
+                new RecordId<>("token"),
                 "token",
                 LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                             .plusDays(1));
+                             .plusDays(1),
+                new RecordId<>("recordId"));
 
         UserAuthorizationQuery authorizationQuery =
                 new UserAuthorizationQuery(authenticationRecord.authenticationToken());
@@ -41,7 +42,7 @@ public class UserAuthorizationViewImplTest {
 
         assertWithMessage("UserAuthorizationView failed")
                 .that(userId)
-                .isEqualTo(authenticationRecord.id());
+                .isEqualTo(authenticationRecord.userId());
 
     }
 
@@ -70,10 +71,11 @@ public class UserAuthorizationViewImplTest {
     @DisplayName("Should throw an UnauthorizedUserException if token expired")
     void shouldFailByExpiredToken() {
         AuthenticationRecord authenticationRecord = new AuthenticationRecord(
-                new RecordId<>("recordId"),
+                new RecordId<>("token"),
                 "token",
                 LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                             .minusDays(1));
+                             .minusDays(1),
+                new RecordId<>("recordId"));
 
         UserAuthorizationQuery authorizationQuery =
                 new UserAuthorizationQuery(authenticationRecord.authenticationToken());

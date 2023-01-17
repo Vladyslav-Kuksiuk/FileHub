@@ -1,7 +1,6 @@
 package com.teamdev.filehub.filestorage;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 
 import javax.annotation.Nonnull;

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UserAuthenticationProcessUnitTest {
+public class UserAuthenticationProcessTest {
 
     private AuthenticationDaoFake authenticationDao;
     private UserAuthenticationProcess authenticationProcess;
@@ -49,10 +49,15 @@ public class UserAuthenticationProcessUnitTest {
         UserAuthenticationResponse response = authenticationProcess.handle(command);
 
         assertWithMessage("User authentication failed.")
-                .that(authenticationDao.find(registeredUser.id())
-                                       .get()
-                                       .authenticationToken())
-                .matches(response.authenticationToken());
+                .that(authenticationDao.authenticationsMap()
+                                       .values()
+                              .stream()
+                              .filter(authRecord -> authRecord.userId()
+                                                              .equals(registeredUser.id()))
+                              .findFirst()
+                              .get()
+                              .authenticationToken())
+                .isEqualTo(response.authenticationToken());
     }
 
     @Test
@@ -61,7 +66,8 @@ public class UserAuthenticationProcessUnitTest {
         UserAuthenticationCommand command = new UserAuthenticationCommand(notRegisteredUser.login(),
                                                                           "password1");
 
-        assertThrows(UserCredentialsMismatchException.class, () -> authenticationProcess.handle(command),
+        assertThrows(UserCredentialsMismatchException.class,
+                     () -> authenticationProcess.handle(command),
                      "User authentication with wrong login not failed.");
     }
 
@@ -71,7 +77,8 @@ public class UserAuthenticationProcessUnitTest {
         UserAuthenticationCommand command = new UserAuthenticationCommand(registeredUser.login(),
                                                                           "password2");
 
-        assertThrows(UserCredentialsMismatchException.class, () -> authenticationProcess.handle(command),
+        assertThrows(UserCredentialsMismatchException.class,
+                     () -> authenticationProcess.handle(command),
                      "User authentication with wrong password not failed.");
     }
 

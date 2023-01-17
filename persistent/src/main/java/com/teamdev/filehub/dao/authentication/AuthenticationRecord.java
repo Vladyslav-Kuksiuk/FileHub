@@ -15,7 +15,7 @@ public class AuthenticationRecord extends DatabaseRecord<String> {
 
     private final String authenticationToken;
     private final LocalDateTime expireTime;
-    private final  RecordId<String> userId;
+    private final RecordId<String> userId;
 
     public AuthenticationRecord(@Nonnull RecordId<String> id,
                                 @Nonnull String authenticationToken,

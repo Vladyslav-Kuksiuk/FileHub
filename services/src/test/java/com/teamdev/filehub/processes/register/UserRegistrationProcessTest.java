@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class UserRegistrationProcessUnitTest {
+class UserRegistrationProcessTest {
 
     private UserDaoFake userDao;
     private FolderDaoFake folderDao;

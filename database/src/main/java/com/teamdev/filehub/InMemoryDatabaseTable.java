@@ -40,10 +40,8 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
     private final Object locker = new Object();
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
-    private ScheduledFuture<Boolean> fileWritingFuture = null;
-
     private final Map<I, D> tableMap = new HashMap<>();
+    private ScheduledFuture<Boolean> fileWritingFuture = null;
 
     protected InMemoryDatabaseTable(@Nonnull String filePath,
                                     @Nonnull Class<D[]> dataArrayClass) {
