@@ -2,8 +2,8 @@ package com.teamdev.server.routes;
 
 import com.google.common.testing.NullPointerTester;
 import com.google.gson.Gson;
-import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.userprofile.UserProfile;
 import com.teamdev.filehub.views.userprofile.UserProfileQuery;
@@ -17,7 +17,7 @@ import spark.Response;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 
-public class LoadUserRouteTest {
+class LoadUserRouteTest {
 
     private final Gson gson = new Gson();
 
@@ -33,7 +33,7 @@ public class LoadUserRouteTest {
 
     @Test
     @DisplayName("Should set UserAuthenticationResponse as JSON string in response body")
-    void testHandleWithoutExceptions() throws AccessDeniedException {
+    void testHandleWithoutExceptions() throws UserAuthorizationException {
 
         var userId = new RecordId<>("userId");
 

@@ -3,7 +3,7 @@ package com.teamdev.filehub;
 import java.io.Serial;
 
 /**
- * An {@link Exception} thrown if the user does not have the access to execute the request.
+ * An {@link ServiceException} thrown if the user does not have the access to execute the request.
  */
 public class AccessDeniedException extends ServiceException {
 

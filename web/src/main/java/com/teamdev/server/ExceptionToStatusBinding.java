@@ -6,6 +6,7 @@ import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.processes.authentication.UserCredentialsMismatchException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
+import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -23,8 +24,9 @@ public class ExceptionToStatusBinding {
         exceptionStatusMap.put(JsonSyntaxException.class, 400);
 
         exceptionStatusMap.put(UserCredentialsMismatchException.class, 401);
-        exceptionStatusMap.put(AccessDeniedException.class, 401);
+        exceptionStatusMap.put(UserAuthorizationException.class, 401);
 
+        exceptionStatusMap.put(AccessDeniedException.class, 403);
         exceptionStatusMap.put(DataNotFoundException.class, 404);
 
         exceptionStatusMap.put(UserAlreadyRegisteredException.class, 409);

@@ -3,7 +3,7 @@ package com.teamdev.filehub;
 import java.io.Serial;
 
 /**
- * An {@link Exception} thrown if the requested data is missing from the system.
+ * An {@link ServiceException} thrown if the requested data is missing from the system.
  */
 public class DataNotFoundException extends ServiceException {
 

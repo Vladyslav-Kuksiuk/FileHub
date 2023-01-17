@@ -1,8 +1,8 @@
 package com.teamdev.server;
 
-import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationQuery;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import org.junit.jupiter.api.DisplayName;
@@ -31,11 +31,11 @@ class AuthorizedUserRouteTest {
         var authView = new UserAuthorizationView() {
             @Override
             public RecordId<String> handle(UserAuthorizationQuery query)
-                    throws AccessDeniedException {
+                    throws UserAuthorizationException {
 
                 if (!Objects.equals(query.authorizationToken(), token)) {
 
-                    throw new AccessDeniedException("");
+                    throw new UserAuthorizationException("");
 
                 }
 
@@ -74,9 +74,9 @@ class AuthorizedUserRouteTest {
         var authView = new UserAuthorizationView() {
             @Override
             public RecordId<String> handle(UserAuthorizationQuery query)
-                    throws AccessDeniedException {
+                    throws UserAuthorizationException {
 
-                throw new AccessDeniedException("");
+                throw new UserAuthorizationException("");
             }
         };
 
@@ -89,7 +89,7 @@ class AuthorizedUserRouteTest {
             }
         };
 
-        assertThrows(AccessDeniedException.class, () -> {
+        assertThrows(UserAuthorizationException.class, () -> {
             route.wrappedRequestHandle(request, response);
         }, "AccessDeniedException was not thrown");
 

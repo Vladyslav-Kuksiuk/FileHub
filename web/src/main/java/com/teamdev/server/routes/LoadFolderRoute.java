@@ -1,5 +1,6 @@
 package com.teamdev.server.routes;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
@@ -12,6 +13,8 @@ import com.teamdev.server.AuthorizedUserRoute;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
 
+import javax.annotation.Nonnull;
+
 /**
  * An {@link AuthorizedUserRoute} implementation to provide 'load folder' request handling.
  */
@@ -21,10 +24,10 @@ public class LoadFolderRoute extends AuthorizedUserRoute {
     private final Gson gson = new Gson();
 
     public LoadFolderRoute(
-            UserAuthorizationView authorizationView,
-            FolderInfoView folderInfoView) {
-        super(authorizationView);
-        this.folderInfoView = folderInfoView;
+            @Nonnull UserAuthorizationView authorizationView,
+            @Nonnull FolderInfoView folderInfoView) {
+        super(Preconditions.checkNotNull(authorizationView));
+        this.folderInfoView = Preconditions.checkNotNull(folderInfoView);
     }
 
     /**

@@ -25,7 +25,7 @@ public class UserAuthorizationViewImpl implements UserAuthorizationView {
     }
 
     @Override
-    public RecordId<String> handle(UserAuthorizationQuery query) throws AccessDeniedException {
+    public RecordId<String> handle(UserAuthorizationQuery query) throws UserAuthorizationException {
 
         logger.atInfo()
               .log("[VIEW QUERIED] - User authorization - token: %s.", query.authorizationToken());
@@ -39,7 +39,7 @@ public class UserAuthorizationViewImpl implements UserAuthorizationView {
                   .log("[VIEW FAILED] - User authorization - Token not found - token: %s.",
                        query.authorizationToken());
 
-            throw new AccessDeniedException("Authorization token not found");
+            throw new UserAuthorizationException("Authorization token not found");
         }
 
         AuthenticationRecord authRecord = optionalAuthRecord.get();
@@ -51,7 +51,7 @@ public class UserAuthorizationViewImpl implements UserAuthorizationView {
                   .log("[VIEW FAILED] - User authorization - Token expired - token: %s.",
                        query.authorizationToken());
 
-            throw new AccessDeniedException("Authorization token expired");
+            throw new UserAuthorizationException("Authorization token expired");
         }
 
         logger.atInfo()

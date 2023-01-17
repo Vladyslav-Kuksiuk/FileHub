@@ -1,6 +1,5 @@
 package com.teamdev.filehub.views.authorization;
 
-import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
@@ -19,7 +18,7 @@ public class UserAuthorizationViewImplTest {
 
     @Test
     @DisplayName("Should return user id")
-    void shouldReturnAuthorizedUserId() throws AccessDeniedException {
+    void shouldReturnAuthorizedUserId() throws UserAuthorizationException {
         AuthenticationRecord authenticationRecord = new AuthenticationRecord(
                 new RecordId<>("token"),
                 "token",
@@ -61,7 +60,7 @@ public class UserAuthorizationViewImplTest {
         Mockito.when(authenticationDao.findByToken(authorizationQuery.authorizationToken()))
                .thenReturn(Optional.empty());
 
-        assertThrows(AccessDeniedException.class, () -> {
+        assertThrows(UserAuthorizationException.class, () -> {
             userAuthorizationView.handle(authorizationQuery);
         }, "UserAuthorizationView passed without valid token");
 
@@ -88,7 +87,7 @@ public class UserAuthorizationViewImplTest {
         Mockito.when(authenticationDao.findByToken(authenticationRecord.authenticationToken()))
                .thenReturn(Optional.of(authenticationRecord));
 
-        assertThrows(AccessDeniedException.class, () -> {
+        assertThrows(UserAuthorizationException.class, () -> {
             userAuthorizationView.handle(authorizationQuery);
         }, "UserAuthorizationView passed with expired token");
 
