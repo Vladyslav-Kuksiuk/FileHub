@@ -6,12 +6,14 @@ import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
-import com.teamdev.filehub.views.folder.content.FolderContent;
+import com.teamdev.filehub.views.folder.FolderContent;
 import com.teamdev.filehub.views.folder.content.FolderContentQuery;
 import com.teamdev.filehub.views.folder.content.FolderContentView;
 import com.teamdev.server.AuthorizedUserRoute;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
+
+import javax.annotation.Nonnull;
 
 /**
  * An {@link AuthorizedUserRoute} implementation to provide 'load folder content' request handling.
@@ -22,9 +24,9 @@ public class LoadFolderContentRoute extends AuthorizedUserRoute {
     private final Gson gson = new Gson();
 
     public LoadFolderContentRoute(
-            UserAuthorizationView authorizationView,
-            FolderContentView folderContentView) {
-        super(authorizationView);
+            @Nonnull UserAuthorizationView authorizationView,
+            @Nonnull FolderContentView folderContentView) {
+        super(Preconditions.checkNotNull(authorizationView));
         this.folderContentView = Preconditions.checkNotNull(folderContentView);
     }
 

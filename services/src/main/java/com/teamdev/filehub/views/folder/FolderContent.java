@@ -1,7 +1,6 @@
-package com.teamdev.filehub.views.folder.content;
+package com.teamdev.filehub.views.folder;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.filehub.views.folder.FolderContentItem;
 
 import java.util.Collections;
 import java.util.LinkedList;
