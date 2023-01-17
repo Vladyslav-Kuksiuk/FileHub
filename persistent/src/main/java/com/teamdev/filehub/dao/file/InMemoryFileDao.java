@@ -126,12 +126,12 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
         return fileTable.selectWithSameFolderId(folderId.value())
-                        .stream()
-                        .map(data -> new FileRecord(new RecordId<>(data.id()),
-                                                    new RecordId<>(data.folderId()),
-                                                    new RecordId<>(data.ownerId()),
-                                                    data.name(),
-                                                    data.extension()))
-                        .collect(Collectors.toList());
+                .stream()
+                .map(data -> new FileRecord(new RecordId<>(data.id()),
+                                            new RecordId<>(data.folderId()),
+                                            new RecordId<>(data.ownerId()),
+                                            data.name(),
+                                            data.extension()))
+                .collect(Collectors.toList());
     }
 }

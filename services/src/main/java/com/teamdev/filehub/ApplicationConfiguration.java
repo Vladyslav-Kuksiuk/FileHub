@@ -30,11 +30,12 @@ import com.teamdev.filehub.views.folder.info.FolderInfoViewImpl;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 
+import java.nio.file.Path;
+
 /**
  * Class which intended to configure services implementations.
  */
-public class ApplicationContext {
-
+public class ApplicationConfiguration {
     private final UserRegistrationProcess userRegistrationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
@@ -48,21 +49,25 @@ public class ApplicationContext {
 
     private final FileDownloadView fileDownloadView;
 
-    public ApplicationContext() {
-        InMemoryDatabase database = new InMemoryDatabase();
+    public ApplicationConfiguration() {
+
+        Path storagePath = Path.of("storage")
+                               .toAbsolutePath();
+
+        InMemoryDatabase database = new InMemoryDatabase(storagePath.toString());
         UserDao userDao = new InMemoryUserDao(database.userTable());
         AuthenticationDao authDao = new InMemoryAuthenticationDao(database.authenticationTable());
         FileDao fileDao = new InMemoryFileDao(database.fileTable());
         FolderDao folderDao = new InMemoryFolderDao(database.folderTable());
 
-        FileStorage fileStorage = new FileStorage();
+        FileStorage fileStorage = new FileStorage(storagePath.toString());
 
         userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
         userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
-        folderInfoView = new FolderInfoViewImpl(folderDao, fileDao);
+        folderInfoView = new FolderInfoViewImpl(folderDao);
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);

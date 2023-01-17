@@ -1,7 +1,11 @@
 package com.teamdev.filehub.views;
 
+import com.teamdev.filehub.ServiceException;
+
 /**
- * A class for handling actor {@link Query} without application state changes.
+ * Interface whose implementations handle user {@link Query}.
+ * You should implement it if you want to write a service that
+ * will receive system state data at the request of the user.
  *
  * @param <Q>
  *         {@link Query} implementation.
@@ -11,14 +15,14 @@ package com.teamdev.filehub.views;
 public interface View<Q extends Query, R> {
 
     /**
-     * Handle a query.
+     * Handles the user {@link Query}.
      *
      * @param query
      *         {@link Query} to handle.
      * @return Server response.
-     * @throws ViewException
+     * @throws ServiceException
      *         If {@link Query} can't be handled.
      */
-    R handle(Q query) throws ViewException;
+    R handle(Q query) throws ServiceException;
 
 }

@@ -54,7 +54,7 @@ public class FolderData extends Data<String> {
         }
         FolderData data = (FolderData) o;
         return Objects.equal(ownerId, data.ownerId) &&
-               Objects.equal(parentFolderId, data.parentFolderId) &&
-               Objects.equal(name, data.name);
+                Objects.equal(parentFolderId, data.parentFolderId) &&
+                Objects.equal(name, data.name);
     }
 }

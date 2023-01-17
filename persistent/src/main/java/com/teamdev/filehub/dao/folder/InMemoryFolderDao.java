@@ -78,12 +78,12 @@ public class InMemoryFolderDao implements FolderDao {
     public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) {
 
         return folderTable.selectWithSameParentId(parentId.value())
-                          .stream()
-                          .map(data -> new FolderRecord(new RecordId<>(data.id()),
-                                                        new RecordId<>(data.ownerId()),
-                                                        new RecordId<>(data.parentFolderId()),
-                                                        data.name()))
-                          .collect(Collectors.toList());
+                .stream()
+                .map(data -> new FolderRecord(new RecordId<>(data.id()),
+                                              new RecordId<>(data.ownerId()),
+                                              new RecordId<>(data.parentFolderId()),
+                                              data.name()))
+                .collect(Collectors.toList());
 
     }
 
@@ -97,9 +97,9 @@ public class InMemoryFolderDao implements FolderDao {
 
             return Optional.of(
                     new FolderRecord(new RecordId<>(data.id()),
-                    new RecordId<>(data.ownerId()),
-                    new RecordId<>(data.parentFolderId()),
-                    data.name()));
+                                     new RecordId<>(data.ownerId()),
+                                     new RecordId<>(data.parentFolderId()),
+                                     data.name()));
         }
 
         return Optional.empty();

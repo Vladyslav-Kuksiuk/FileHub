@@ -22,12 +22,14 @@ class InMemoryAuthenticationDaoTest {
             new AuthenticationRecord(
                     new RecordId<>("auth_id"),
                     "token",
-                    LocalDateTime.of(10, 10, 10, 10, 10));
+                    LocalDateTime.of(10, 10, 10, 10, 10),
+                    new RecordId<>("user"));
     private final AuthenticationData AUTHENTICATION_DATA =
             new AuthenticationData("auth_id",
                                    "token",
                                    LocalDateTime.of(10, 10, 10, 10, 10)
-                                                .toString());
+                                                .toString(),
+                                   "user");
     private final AuthenticationDao authenticationDao;
     @Mock
     private AuthenticationTable authenticationTable;
@@ -79,7 +81,7 @@ class InMemoryAuthenticationDaoTest {
     void createExistingAuthenticationTest() {
 
         doThrow(new RuntimeException("Data already exists.")).when(authenticationTable)
-                                                             .create(AUTHENTICATION_DATA);
+                .create(AUTHENTICATION_DATA);
 
         assertThrows(RuntimeException.class, () -> authenticationDao.create(AUTHENTICATION_RECORD));
 
