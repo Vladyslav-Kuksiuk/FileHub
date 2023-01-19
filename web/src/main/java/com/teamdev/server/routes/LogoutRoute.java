@@ -1,6 +1,8 @@
 package com.teamdev.server.routes;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.logout.UserLogoutCommand;
 import com.teamdev.filehub.processes.logout.UserLogoutProcess;
@@ -38,7 +40,11 @@ public class LogoutRoute extends AuthorizedUserRoute {
     protected void authorizedHandle(WrappedRequest request, Response response,
                                     RecordId<String> userId) {
 
-        UserLogoutCommand command = new UserLogoutCommand(userId);
+        String authorizationHeader = request.headers("Authorization");
+        String token = Iterables.get(Splitter.on(' ')
+                                             .split(authorizationHeader), 1);
+
+        UserLogoutCommand command = new UserLogoutCommand(userId, token);
         response.body(userLogoutProcess.handle(command)
                                        .value());
 

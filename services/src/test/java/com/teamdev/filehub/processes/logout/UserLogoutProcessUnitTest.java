@@ -38,7 +38,8 @@ class UserLogoutProcessUnitTest {
 
         authDao.create(realAuth);
 
-        logoutProcess.handle(new UserLogoutCommand(realAuth.id()));
+        logoutProcess.handle(
+                new UserLogoutCommand(realAuth.userId(), realAuth.authenticationToken()));
 
         assertWithMessage("User logout failed.")
                 .that(authDao.find(realAuth.id()))
@@ -51,7 +52,8 @@ class UserLogoutProcessUnitTest {
 
         assertThrows(RuntimeException.class,
                      () -> logoutProcess.handle(
-                             new UserLogoutCommand(new RecordId<>("notAuthenticated"))));
+                             new UserLogoutCommand(new RecordId<>("notAuthenticated"),
+                                                   "notAToken")));
 
     }
 }
