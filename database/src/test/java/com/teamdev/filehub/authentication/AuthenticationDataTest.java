@@ -17,13 +17,14 @@ class AuthenticationDataTest {
         LocalDateTime expireTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
                                                 .plusDays(1);
 
-        AuthenticationData authenticationData = new AuthenticationData("user",
+        AuthenticationData authenticationData = new AuthenticationData("tokenId",
                                                                        "BF487GW87FB4W874FO8W7WB4F",
-                                                                       expireTime.toString());
+                                                                       expireTime.toString(),
+                                                                       "userid");
 
         Truth.assertWithMessage("User id reading failed.")
              .that(authenticationData.id())
-             .matches("user");
+             .matches("tokenId");
 
         Truth.assertWithMessage("Authentication token reading failed.")
              .that(authenticationData.authenticationToken())
@@ -40,11 +41,12 @@ class AuthenticationDataTest {
 
         assertThrows(IllegalStateException.class, () -> {
             AuthenticationData authenticationData =
-                    new AuthenticationData("user",
+                    new AuthenticationData("tokenId",
                                            "",
                                            LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
                                                         .plusDays(1)
-                                                        .toString());
+                                                        .toString(),
+                                           "userid");
         }, "User authorization data creation with illegal authentication token passed.");
 
     }

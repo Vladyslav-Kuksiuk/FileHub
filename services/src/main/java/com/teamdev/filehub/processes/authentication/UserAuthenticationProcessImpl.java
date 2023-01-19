@@ -2,6 +2,7 @@ package com.teamdev.filehub.processes.authentication;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
 import com.teamdev.filehub.dao.user.UserDao;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class UserAuthenticationProcessImpl implements UserAuthenticationProcess {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
+
     private final UserDao userDao;
     private final AuthenticationDao authenticationDao;
 
@@ -34,29 +36,34 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
      * user authentication.
      */
     @Override
-    public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command) throws
-            UserDataMismatchException {
+    public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command)
+            throws UserCredentialsMismatchException {
 
         logger.atInfo()
-                .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
+              .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
 
         Optional<UserRecord> optionalUserRecord = userDao.findByLogin(command.login());
 
         if (optionalUserRecord.isEmpty()) {
-            throw new UserDataMismatchException("Authentication data incorrect.");
+
+            logger.atWarning()
+                  .log("[PROCESS FAILED] - User authentication - Login not found - login: %s.",
+                       command.login());
+
+            throw new UserCredentialsMismatchException("Authentication data incorrect.");
         }
         UserRecord userRecord = optionalUserRecord.get();
 
         boolean isPasswordMatch = StringEncryptor.encrypt(command.password())
-                .equals(userRecord.password());
+                                                 .equals(userRecord.password());
 
         if (!isPasswordMatch) {
 
             logger.atWarning()
-                    .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: Password incorrect.",
-                            command.login());
+                  .log("[PROCESS FAILED] - User authentication - Password incorrect - login: %s.",
+                       command.login());
 
-            throw new UserDataMismatchException("Authentication data incorrect.");
+            throw new UserCredentialsMismatchException("Authentication data incorrect.");
         }
 
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);
@@ -66,11 +73,13 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                 userRecord.login() + expireDateTime);
 
         AuthenticationRecord authenticationRecord =
-                new AuthenticationRecord(userRecord.id(),
-                        authenticationToken,
-                        expireDateTime);
+                new AuthenticationRecord(new RecordId<>(authenticationToken),
+                                         authenticationToken,
+                                         expireDateTime,
+                                         userRecord.id());
 
-        if (authenticationDao.find(userRecord.id()).isPresent()) {
+        if (authenticationDao.find(userRecord.id())
+                             .isPresent()) {
             authenticationDao.update(authenticationRecord);
         } else {
             authenticationDao.create(authenticationRecord);
@@ -80,7 +89,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                 new UserAuthenticationResponse(authenticationToken);
 
         logger.atInfo()
-                .log("[PROCESS FINISHED] - User authentication - login: %s.", command.login());
+              .log("[PROCESS FINISHED] - User authentication - login: %s.", command.login());
 
         return response;
     }

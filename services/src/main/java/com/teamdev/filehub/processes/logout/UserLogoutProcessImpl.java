@@ -16,7 +16,7 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
     private final AuthenticationDao authenticationDao;
 
     public UserLogoutProcessImpl(@Nonnull
-                                 AuthenticationDao authenticationDao) {
+                                         AuthenticationDao authenticationDao) {
         this.authenticationDao = authenticationDao;
 
     }
