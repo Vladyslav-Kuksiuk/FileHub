@@ -5,7 +5,6 @@ import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.authentication.AuthenticationData;
 import com.teamdev.filehub.authentication.AuthenticationTable;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.dao.user.UserRecord;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
@@ -43,8 +42,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
             return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
                                                         authData.authenticationToken(),
-                                                        LocalDateTime.parse(
-                                                                authData.expireTime())));
+                                                        LocalDateTime.parse(authData.expireTime()),
+                                                        new RecordId<>(authData.userId())));
         }
 
         return Optional.empty();
@@ -75,7 +74,9 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                                .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()
-                                                               .toString());
+                                                               .toString(),
+                                                         record.userId()
+                                                               .value());
 
         authTable.create(data);
 
@@ -94,7 +95,9 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                                .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()
-                                                               .toString());
+                                                               .toString(),
+                                                         record.userId()
+                                                               .value());
 
         authTable.update(data);
 
@@ -111,9 +114,10 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
             AuthenticationData authData = optionalAuthData.get();
 
             return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
-                    authData.authenticationToken(),
-                    LocalDateTime.parse(
-                            authData.expireTime())));
+                                                        authData.authenticationToken(),
+                                                        LocalDateTime.parse(
+                                                                authData.expireTime()),
+                                                        new RecordId<>(authData.userId())));
         }
 
         return Optional.empty();

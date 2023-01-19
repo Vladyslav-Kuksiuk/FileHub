@@ -1,9 +1,9 @@
 package com.teamdev.filehub.processes.foldercreate;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.AuthenticatedUserCommand;
-import com.teamdev.filehub.processes.CommandValidationException;
 
 import javax.annotation.Nonnull;
 import java.util.regex.Matcher;
@@ -22,8 +22,11 @@ public class FolderCreateCommand extends AuthenticatedUserCommand {
     public FolderCreateCommand(
             @Nonnull RecordId<String> userId,
             @Nonnull RecordId<String> parentFolderId,
-            @Nonnull String folderName) throws CommandValidationException {
+            @Nonnull String folderName) throws RequestFieldValidationException {
         super(userId);
+        Preconditions.checkNotNull(userId);
+        Preconditions.checkNotNull(parentFolderId);
+        Preconditions.checkNotNull(folderName);
 
         String namePatternRegex = "^[^%/\\\\&?,';:!-+!@#$^*)<>(]{1,50}$";
 
@@ -31,7 +34,7 @@ public class FolderCreateCommand extends AuthenticatedUserCommand {
         Matcher nameMatcher = namePattern.matcher(folderName);
 
         if (!nameMatcher.matches()) {
-            throw new CommandValidationException("Folder name invalid.");
+            throw new RequestFieldValidationException("folderName", "Folder name invalid.");
         }
 
         this.parentFolderId = Preconditions.checkNotNull(parentFolderId);

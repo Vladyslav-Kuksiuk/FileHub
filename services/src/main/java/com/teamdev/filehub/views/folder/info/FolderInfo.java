@@ -2,6 +2,9 @@ package com.teamdev.filehub.views.folder.info;
 
 import com.google.common.base.Preconditions;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Server response which is intended to store
  * information about the folder.
@@ -10,15 +13,13 @@ public class FolderInfo {
 
     private final String name;
     private final String id;
-    private final int itemsAmount;
-    private final String type;
     private final String parentId;
 
-    public FolderInfo(String name, String id, int itemsAmount, String parentId) {
+    public FolderInfo(@Nonnull String name,
+                      @Nonnull String id,
+                      @Nullable String parentId) {
         this.name = Preconditions.checkNotNull(name);
         this.id = Preconditions.checkNotNull(id);
-        this.itemsAmount = itemsAmount;
-        this.type = "folder";
         this.parentId = parentId;
     }
 
@@ -28,14 +29,6 @@ public class FolderInfo {
 
     public String id() {
         return id;
-    }
-
-    public int itemsAmount() {
-        return itemsAmount;
-    }
-
-    public String type() {
-        return type;
     }
 
     public String parentId() {

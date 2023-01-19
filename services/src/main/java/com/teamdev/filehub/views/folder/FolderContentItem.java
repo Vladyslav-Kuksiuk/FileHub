@@ -1,5 +1,11 @@
 package com.teamdev.filehub.views.folder;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Server response which is intended to store
  * information about the folder content item.
@@ -11,11 +17,14 @@ public class FolderContentItem {
     private final String parentId;
     private final String name;
 
-    public FolderContentItem(String type, String id, String parentId, String name) {
-        this.type = type;
-        this.id = id;
+    public FolderContentItem(@Nonnull String type,
+                             @Nonnull String id,
+                             @Nullable String parentId,
+                             @Nonnull String name) {
+        this.type = Preconditions.checkNotNull(type);
+        this.id = Preconditions.checkNotNull(id);
         this.parentId = parentId;
-        this.name = name;
+        this.name = Preconditions.checkNotNull(name);
     }
 
     public String type() {
@@ -32,5 +41,25 @@ public class FolderContentItem {
 
     public String name() {
         return name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(type, id, parentId, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FolderContentItem item = (FolderContentItem) o;
+        return Objects.equal(type, item.type) &&
+                Objects.equal(id, item.id) &&
+                Objects.equal(parentId, item.parentId) &&
+                Objects.equal(name, item.name);
     }
 }
