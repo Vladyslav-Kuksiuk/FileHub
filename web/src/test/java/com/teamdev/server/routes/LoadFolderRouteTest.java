@@ -10,9 +10,12 @@ import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.folder.info.FolderInfo;
 import com.teamdev.filehub.views.folder.info.FolderInfoQuery;
 import com.teamdev.filehub.views.folder.info.FolderInfoView;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import spark.Request;
 import spark.Response;
 
@@ -22,6 +25,34 @@ import static org.mockito.ArgumentMatchers.any;
 class LoadFolderRouteTest {
 
     private final Gson gson = new Gson();
+
+    private final RecordId<String> userId = new RecordId<>("userId");
+    private final RecordId<String> folderId = new RecordId<>("folderId");
+
+    @Mock
+    private Request request;
+
+    @Mock
+    private Response response;
+
+    @Mock
+    private UserAuthorizationView authView;
+
+    LoadFolderRouteTest() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @BeforeEach
+    void setUp() throws UserAuthorizationException {
+        Mockito.when(request.headers("Authorization"))
+               .thenReturn("Bearer token");
+        Mockito.when(request.params(":id"))
+               .thenReturn(folderId.value());
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
+        Mockito.when(authView.handle(any()))
+               .thenReturn(userId);
+    }
 
     @Test
     @DisplayName("Should throw NullPointerException on null in constructor params")
@@ -35,26 +66,13 @@ class LoadFolderRouteTest {
 
     @Test
     @DisplayName("Should set FolderInfo as JSON string in response body")
-    void testHandleWithoutExceptions() throws UserAuthorizationException {
+    void testHandleWithoutExceptions() {
 
-        var folderId = "folderId";
-
-        var folderInfo = new FolderInfo("Folder", folderId, "parentFolderId");
+        var folderInfo = new FolderInfo("Folder", folderId.value(), "parentFolderId");
         var responseJsonString = gson.toJson(folderInfo);
 
-        var request = Mockito.mock(Request.class);
-        Mockito.when(request.headers("Authorization"))
-               .thenReturn("Bearer token");
-        Mockito.when(request.params(":id"))
-               .thenReturn(folderId);
-
-        var response = Mockito.mock(Response.class);
         Mockito.when(response.body())
                .thenReturn(responseJsonString);
-
-        var authView = Mockito.mock(UserAuthorizationView.class);
-        Mockito.when(authView.handle(any()))
-               .thenReturn(new RecordId<>("userId"));
 
         var folderInfoView = new FolderInfoView() {
 
@@ -81,21 +99,9 @@ class LoadFolderRouteTest {
 
     @Test
     @DisplayName("Should catch AccessDeniedException and set 403 response status")
-    void testHandleWithAccessDeniedException() throws UserAuthorizationException {
+    void testHandleWithAccessDeniedException() {
 
         var errorMessage = "errorMessage";
-
-        var request = Mockito.mock(Request.class);
-        Mockito.when(request.headers("Authorization"))
-               .thenReturn("Bearer token");
-        Mockito.when(request.params(":id"))
-               .thenReturn("folderId");
-
-        var response = Mockito.mock(Response.class);
-
-        var authView = Mockito.mock(UserAuthorizationView.class);
-        Mockito.when(authView.handle(any()))
-               .thenReturn(new RecordId<>("userId"));
 
         var folderInfoView = new FolderInfoView() {
 
@@ -116,22 +122,10 @@ class LoadFolderRouteTest {
     }
 
     @Test
-    @DisplayName("Should catch AccessDeniedException and set 403 response status")
-    void testHandleWithDataNotFoundException() throws UserAuthorizationException {
+    @DisplayName("Should catch DataNotFountException and set 404 response status")
+    void testHandleWithDataNotFoundException() {
 
         var errorMessage = "errorMessage";
-
-        var request = Mockito.mock(Request.class);
-        Mockito.when(request.headers("Authorization"))
-               .thenReturn("Bearer token");
-        Mockito.when(request.params(":id"))
-               .thenReturn("folderId");
-
-        var response = Mockito.mock(Response.class);
-
-        var authView = Mockito.mock(UserAuthorizationView.class);
-        Mockito.when(authView.handle(any()))
-               .thenReturn(new RecordId<>("userId"));
 
         var folderInfoView = new FolderInfoView() {
 
