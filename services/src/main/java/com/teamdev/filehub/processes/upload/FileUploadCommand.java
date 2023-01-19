@@ -1,5 +1,6 @@
 package com.teamdev.filehub.processes.upload;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.AuthenticatedUserCommand;
@@ -54,5 +55,26 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
 
     public long size() {
         return size;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(folderId, name, mimetype, size, fileInputStream);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FileUploadCommand)) {
+            return false;
+        }
+        FileUploadCommand command = (FileUploadCommand) o;
+        return size == command.size &&
+                Objects.equal(folderId, command.folderId) &&
+                Objects.equal(name, command.name) &&
+                Objects.equal(mimetype, command.mimetype) &&
+                Objects.equal(fileInputStream, command.fileInputStream);
     }
 }

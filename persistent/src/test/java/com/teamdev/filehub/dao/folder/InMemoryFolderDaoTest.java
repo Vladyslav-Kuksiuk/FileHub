@@ -76,7 +76,7 @@ class InMemoryFolderDaoTest {
     void createExistingFolderTest() {
 
         doThrow(new RuntimeException("Data already exists.")).when(folderTable)
-                                                             .create(FOLDER_DATA);
+                .create(FOLDER_DATA);
 
         assertThrows(RuntimeException.class, () -> folderDao.create(FOLDER_RECORD));
 

@@ -17,7 +17,7 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
 
     public UserLogoutProcessImpl(@Nonnull
                                          AuthenticationDao authenticationDao) {
-        this.authenticationDao = authenticationDao;
+        this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
 
     }
 
@@ -36,7 +36,7 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
               .log("[PROCESS STARTED] - User logout - login: %s", command.userId()
                                                                          .value());
 
-        authenticationDao.delete(command.userId());
+        authenticationDao.delete(new RecordId<>(command.authenticationToken()));
 
         logger.atInfo()
               .log("[PROCESS FINISHED] - User logout - login: %s", command.userId()

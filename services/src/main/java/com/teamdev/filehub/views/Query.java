@@ -1,7 +1,8 @@
 package com.teamdev.filehub.views;
 
 /**
- * A class for transmitting data from an actor to perform handling in {@link View}.
+ * The user's request to receive data about the state of the system without changing it.
+ * Must be handled by {@link View} implementation.
  */
 public interface Query {
 
