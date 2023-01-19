@@ -12,6 +12,8 @@ import com.teamdev.server.JsonEntityValidationException;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
 
+import javax.annotation.Nonnull;
+
 /**
  * An {@link AuthorizedUserRoute} implementation to provide 'create folder' request handling.
  */
@@ -20,9 +22,9 @@ public class CreateFolderRoute extends AuthorizedUserRoute {
     private final FolderCreateProcess folderCreateProcess;
 
     public CreateFolderRoute(
-            UserAuthorizationView authorizationView,
-            FolderCreateProcess folderCreateProcess) {
-        super(authorizationView);
+            @Nonnull UserAuthorizationView authorizationView,
+            @Nonnull FolderCreateProcess folderCreateProcess) {
+        super(Preconditions.checkNotNull(authorizationView));
         this.folderCreateProcess = Preconditions.checkNotNull(folderCreateProcess);
     }
 

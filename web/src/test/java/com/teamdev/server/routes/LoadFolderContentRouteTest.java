@@ -116,7 +116,7 @@ class LoadFolderContentRouteTest {
     }
 
     @Test
-    @DisplayName("Should catch AccessDeniedException and set 403 response status")
+    @DisplayName("Should catch DataNotFoundException and set 404 response status")
     void testHandleWithDataNotFoundException() throws UserAuthorizationException {
 
         var errorMessage = "errorMessage";
