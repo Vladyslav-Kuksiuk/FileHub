@@ -43,19 +43,19 @@ public class FileUploadProcessImpl implements FileUploadProcess {
         }
 
         if (fileDao.getFilesInFolder(command.folderId())
-                   .stream()
-                   .anyMatch(record -> record.name()
-                                             .equals(command.fileName()))) {
+                .stream()
+                .anyMatch(record -> record.name()
+                                          .equals(command.fileName()))) {
             throw new FileUploadException("File with same path and name already exists.");
         }
 
         RecordId<String> fileId =
                 new RecordId<String>(command.userId()
                                             .value() +
-                                     "_" +
-                                     command.fileName() +
-                                     LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                                                  .format(LocalDateTimeUtil.FORMATTER));
+                                             "_" +
+                                             command.fileName() +
+                                             LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
+                                                          .format(LocalDateTimeUtil.FORMATTER));
 
         FileRecord fileRecord = new FileRecord(fileId,
                                                command.folderId(),

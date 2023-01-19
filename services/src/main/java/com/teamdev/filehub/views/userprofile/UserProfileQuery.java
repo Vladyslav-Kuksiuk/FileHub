@@ -1,21 +1,18 @@
 package com.teamdev.filehub.views.userprofile;
 
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.views.Query;
+import com.teamdev.filehub.views.AuthenticatedUserQuery;
+
+import javax.annotation.Nonnull;
 
 /**
- * A {@link Query} implementation which is intended to store
- * data about user profile query.
+ * An {@link AuthenticatedUserQuery} which is intended to store
+ * data about user profile request.
  */
-public class UserProfileQuery implements Query {
+public class UserProfileQuery extends AuthenticatedUserQuery {
 
-    private final RecordId<String> userId;
-
-    public UserProfileQuery(RecordId<String> userId) {
-        this.userId = userId;
-    }
-
-    public RecordId<String> userId() {
-        return userId;
+    public UserProfileQuery(@Nonnull RecordId<String> userId) {
+        super(Preconditions.checkNotNull(userId));
     }
 }

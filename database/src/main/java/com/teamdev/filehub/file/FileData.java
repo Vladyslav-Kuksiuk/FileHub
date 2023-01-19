@@ -55,13 +55,13 @@ public class FileData extends Data<String> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof FileData)) {
             return false;
         }
         FileData fileData = (FileData) o;
         return Objects.equal(folderId, fileData.folderId) &&
-               Objects.equal(ownerId, fileData.ownerId) &&
-               Objects.equal(name, fileData.name) &&
-               Objects.equal(extension, fileData.extension);
+                Objects.equal(ownerId, fileData.ownerId) &&
+                Objects.equal(name, fileData.name) &&
+                Objects.equal(extension, fileData.extension);
     }
 }

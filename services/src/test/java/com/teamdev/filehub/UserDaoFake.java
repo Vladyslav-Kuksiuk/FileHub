@@ -57,10 +57,10 @@ public class UserDaoFake implements UserDao {
     public Optional<UserRecord> findByLogin(String login) {
 
         Optional<UserRecord> optionalUser = users.values()
-                                                 .stream()
-                                                 .filter(user -> user.login()
-                                                                     .equals(login))
-                                                 .findFirst();
+                .stream()
+                .filter(user -> user.login()
+                                    .equals(login))
+                .findFirst();
 
         return optionalUser;
     }

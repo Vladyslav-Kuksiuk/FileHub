@@ -9,5 +9,5 @@ public interface UserAuthenticationProcess extends ApplicationProcess<UserAuthen
 
     @Override
     UserAuthenticationResponse handle(UserAuthenticationCommand command) throws
-                                                                         UserDataMismatchException;
+                                                                         UserCredentialsMismatchException;
 }
