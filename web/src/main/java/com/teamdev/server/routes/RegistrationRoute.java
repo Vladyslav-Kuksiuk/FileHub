@@ -2,7 +2,7 @@ package com.teamdev.server.routes;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
-import com.teamdev.filehub.processes.register.FieldValidationException;
+import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.register.UserRegistrationProcess;
@@ -53,7 +53,7 @@ public class RegistrationRoute extends ServiceSupportingRoute {
 
             response.body(userId.value());
 
-        } catch (FieldValidationException exception) {
+        } catch (RequestFieldValidationException exception) {
 
             String errorJson = gson.toJson(Map.of("errors",
                                                   List.of(new TreeMap<>(Map.of("fieldName",

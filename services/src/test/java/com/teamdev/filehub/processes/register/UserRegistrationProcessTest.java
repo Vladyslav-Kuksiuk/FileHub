@@ -2,6 +2,7 @@ package com.teamdev.filehub.processes.register;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.FolderDaoFake;
+import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.UserDaoFake;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
@@ -41,7 +42,7 @@ class UserRegistrationProcessTest {
     }
 
     @Test
-    void registerTest() throws UserAlreadyRegisteredException, FieldValidationException {
+    void registerTest() throws UserAlreadyRegisteredException, RequestFieldValidationException {
 
         UserRegistrationCommand command = new UserRegistrationCommand(toRegisterUser.login(),
                                                                       "password2");
@@ -68,7 +69,7 @@ class UserRegistrationProcessTest {
     }
 
     @Test
-    void registerExistingUserTest() throws FieldValidationException {
+    void registerExistingUserTest() throws RequestFieldValidationException {
 
         UserRegistrationCommand command =
                 new UserRegistrationCommand(registeredUser.login(), "password1");

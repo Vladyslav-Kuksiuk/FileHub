@@ -2,7 +2,7 @@ package com.teamdev.filehub.processes.foldercreate;
 
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.FolderDaoFake;
-import com.teamdev.filehub.RequestValidationException;
+import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
@@ -36,7 +36,7 @@ class FolderCreateProcessImplTest {
 
     @Test
     void folderCreationTest() throws
-                              AccessDeniedException, RequestValidationException {
+                              AccessDeniedException, RequestFieldValidationException {
 
         FolderCreateCommand command = new FolderCreateCommand(rootFolder.ownerId(),
                                                               rootFolder.id(),
@@ -53,7 +53,7 @@ class FolderCreateProcessImplTest {
     }
 
     @Test
-    void folderCreationNotByOwnerTest() throws RequestValidationException {
+    void folderCreationNotByOwnerTest() throws RequestFieldValidationException {
         FolderCreateCommand command = new FolderCreateCommand(new RecordId<>("user2"),
                                                               rootFolder.id(),
                                                               "folder");

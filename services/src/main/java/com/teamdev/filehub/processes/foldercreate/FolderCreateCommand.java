@@ -1,7 +1,7 @@
 package com.teamdev.filehub.processes.foldercreate;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.filehub.RequestValidationException;
+import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.AuthenticatedUserCommand;
 
@@ -22,7 +22,7 @@ public class FolderCreateCommand extends AuthenticatedUserCommand {
     public FolderCreateCommand(
             @Nonnull RecordId<String> userId,
             @Nonnull RecordId<String> parentFolderId,
-            @Nonnull String folderName) throws RequestValidationException {
+            @Nonnull String folderName) throws RequestFieldValidationException {
         super(userId);
         Preconditions.checkNotNull(userId);
         Preconditions.checkNotNull(parentFolderId);
@@ -34,7 +34,7 @@ public class FolderCreateCommand extends AuthenticatedUserCommand {
         Matcher nameMatcher = namePattern.matcher(folderName);
 
         if (!nameMatcher.matches()) {
-            throw new RequestValidationException("folderName", "Folder name invalid.");
+            throw new RequestFieldValidationException("folderName", "Folder name invalid.");
         }
 
         this.parentFolderId = Preconditions.checkNotNull(parentFolderId);

@@ -2,7 +2,7 @@ package com.teamdev.server.routes;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.AccessDeniedException;
-import com.teamdev.filehub.RequestValidationException;
+import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.foldercreate.FolderCreateCommand;
 import com.teamdev.filehub.processes.foldercreate.FolderCreateProcess;
@@ -37,7 +37,7 @@ public class CreateFolderRoute extends AuthorizedUserRoute {
      *         If JSON body can`t be processed.
      * @throws AccessDeniedException
      *         If the user doesn't have access.
-     * @throws RequestValidationException
+     * @throws RequestFieldValidationException
      *         If request as command validation failed.
      */
     @Override
@@ -45,7 +45,7 @@ public class CreateFolderRoute extends AuthorizedUserRoute {
                                     RecordId<String> userId)
             throws AccessDeniedException,
                    JsonEntityValidationException,
-                   RequestValidationException {
+                   RequestFieldValidationException {
 
         var jsonBody = request.jsonBody();
 
