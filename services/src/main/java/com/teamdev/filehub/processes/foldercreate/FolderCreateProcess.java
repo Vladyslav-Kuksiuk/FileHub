@@ -1,7 +1,7 @@
 package com.teamdev.filehub.processes.foldercreate;
 
+import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.filehub.processes.ApplicationProcess;
 
 /**

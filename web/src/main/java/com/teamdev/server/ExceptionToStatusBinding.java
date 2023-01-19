@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonSyntaxException;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
+import com.teamdev.filehub.RequestValidationException;
 import com.teamdev.filehub.processes.authentication.UserCredentialsMismatchException;
 import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationException;
@@ -15,7 +16,7 @@ import java.util.Map;
 /**
  * Binding to convert exceptions into HTTP status codes.
  */
-public class ExceptionToStatusBinding {
+class ExceptionToStatusBinding {
 
     private final Map<Class<? extends Exception>, Integer> exceptionStatusMap = new HashMap<>();
 
@@ -30,6 +31,8 @@ public class ExceptionToStatusBinding {
         exceptionStatusMap.put(DataNotFoundException.class, 404);
 
         exceptionStatusMap.put(UserAlreadyRegisteredException.class, 409);
+
+        exceptionStatusMap.put(RequestValidationException.class, 422);
     }
 
     /**

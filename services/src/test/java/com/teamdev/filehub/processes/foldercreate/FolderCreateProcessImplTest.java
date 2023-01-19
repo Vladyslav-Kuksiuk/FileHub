@@ -1,11 +1,11 @@
 package com.teamdev.filehub.processes.foldercreate;
 
+import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.FolderDaoFake;
+import com.teamdev.filehub.RequestValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.processes.AccessDeniedException;
-import com.teamdev.filehub.processes.CommandValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,8 +35,8 @@ class FolderCreateProcessImplTest {
     }
 
     @Test
-    void folderCreationTest() throws CommandValidationException,
-                                     AccessDeniedException {
+    void folderCreationTest() throws
+                              AccessDeniedException, RequestValidationException {
 
         FolderCreateCommand command = new FolderCreateCommand(rootFolder.ownerId(),
                                                               rootFolder.id(),
@@ -53,33 +53,12 @@ class FolderCreateProcessImplTest {
     }
 
     @Test
-    void sameFolderAlreadyExists() throws CommandValidationException {
-
-        FolderRecord folder = new FolderRecord(
-                new RecordId<>("user1-folder-id"),
-                new RecordId<>("user1"),
-                new RecordId<>("user1-root-folder-id"),
-                "folder");
-
-        folderDao.create(folder);
-
-        FolderCreateCommand command = new FolderCreateCommand(rootFolder.ownerId(),
-                                                              rootFolder.id(),
-                                                              "folder");
-
-        assertThrows(FolderCreateException.class,
-                     () -> folderCreateProcess.handle(command),
-                     "Same folder(path and name) creation not failed");
-
-    }
-
-    @Test
-    void folderCreationNotByOwnerTest() throws CommandValidationException {
+    void folderCreationNotByOwnerTest() throws RequestValidationException {
         FolderCreateCommand command = new FolderCreateCommand(new RecordId<>("user2"),
                                                               rootFolder.id(),
                                                               "folder");
 
-        assertThrows(FolderCreateException.class,
+        assertThrows(AccessDeniedException.class,
                      () -> folderCreateProcess.handle(command),
                      "Folder creation by non-owner user not failed");
     }

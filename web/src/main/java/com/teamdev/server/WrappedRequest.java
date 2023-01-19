@@ -46,6 +46,7 @@ public class WrappedRequest {
 
     /**
      * Returns the value of the provided header.
+     *
      * @param header
      *         HTTP request header name.
      */
