@@ -142,14 +142,15 @@ class UploadFileRouteTest {
 
         Mockito.when(request.raw())
                .thenReturn(raw);
-        Mockito.when(raw.getParts()).thenThrow(new IOException(errorMessage));
+        Mockito.when(raw.getParts())
+               .thenThrow(new IOException(errorMessage));
 
         var route = new UploadFileRoute(authView, Mockito.mock(FileUploadProcess.class));
 
         route.handle(request, response);
 
         Mockito.verify(response, Mockito.times(1))
-                .body(errorMessage);
+               .body(errorMessage);
         Mockito.verify(response, Mockito.times(1))
                .status(500);
 
@@ -188,7 +189,7 @@ class UploadFileRouteTest {
             }
         };
 
-        var route = new UploadFileRoute(authView,  processWithDataException);
+        var route = new UploadFileRoute(authView, processWithDataException);
 
         assertWithMessage("Route handle did not return an error message")
                 .that(route.handle(request, response))
@@ -207,7 +208,7 @@ class UploadFileRouteTest {
             }
         };
 
-        route = new UploadFileRoute(authView,  processWithAccessException);
+        route = new UploadFileRoute(authView, processWithAccessException);
 
         assertWithMessage("Route handle did not return an error message")
                 .that(route.handle(request, response))
@@ -227,9 +228,10 @@ class UploadFileRouteTest {
 
         Mockito.when(request.raw())
                .thenReturn(raw);
-        Mockito.when(raw.getParts()).thenThrow(new ServletException(errorMessage));
+        Mockito.when(raw.getParts())
+               .thenThrow(new ServletException(errorMessage));
 
-        var route = new UploadFileRoute(authView,  Mockito.mock(FileUploadProcess.class));
+        var route = new UploadFileRoute(authView, Mockito.mock(FileUploadProcess.class));
 
         route.handle(request, response);
 

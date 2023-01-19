@@ -17,6 +17,7 @@ public class FileDownloadQuery implements Query {
 
     public FileDownloadQuery(@Nonnull RecordId<String> userId,
                              @Nonnull RecordId<String> fileId) {
+
         this.userId = Preconditions.checkNotNull(userId);
         this.fileId = Preconditions.checkNotNull(fileId);
     }

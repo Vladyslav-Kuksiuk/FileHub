@@ -59,10 +59,10 @@ public class FileUploadProcessImpl implements FileUploadProcess {
             throw new DataNotFoundException("Folder not found");
         }
 
-        if (!folderDao.find(command.folderId())
-                      .get()
-                      .ownerId()
-                      .equals(command.userId())) {
+        FolderRecord folderRecord = optionalFolderRecord.get();
+
+        if (!folderRecord.ownerId()
+                         .equals(command.userId())) {
 
             logger.atInfo()
                   .log("[PROCESS FAILED] - File uploading - Access denied - user id: %s, file: %s.",

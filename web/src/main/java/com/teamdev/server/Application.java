@@ -3,6 +3,7 @@ package com.teamdev.server;
 import com.teamdev.filehub.ApplicationConfiguration;
 import com.teamdev.server.routes.AuthenticationRoute;
 import com.teamdev.server.routes.CreateFolderRoute;
+import com.teamdev.server.routes.DownloadFileRoute;
 import com.teamdev.server.routes.LoadFolderContentRoute;
 import com.teamdev.server.routes.LoadFolderRoute;
 import com.teamdev.server.routes.LoadUserRoute;

@@ -42,7 +42,7 @@ class CreateFolderRouteTest {
         Mockito.when(request.headers("Authorization"))
                .thenReturn("Bearer token");
         Mockito.when(request.contentType())
-                       .thenReturn("application/json");
+               .thenReturn("application/json");
         Mockito.when(authView.handle(any()))
                .thenReturn(new RecordId<>("userId"));
     }
