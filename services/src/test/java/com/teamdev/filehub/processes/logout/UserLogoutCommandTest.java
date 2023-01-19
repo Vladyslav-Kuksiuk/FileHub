@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 class UserLogoutCommandTest {
 
     @Test
-    void nullTest() throws NoSuchMethodException {
+    void nullTest() {
 
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(String.class, "123");
         tester.testAllPublicConstructors(UserLogoutCommand.class);
 
     }

@@ -28,7 +28,7 @@ class UserLogoutProcessUnitTest {
     }
 
     @Test
-    void logoutAuthenticatedUserTest() throws UserNotAuthenticatedException {
+    void logoutAuthenticatedUserTest() {
 
         var realAuth = new AuthenticationRecord(new RecordId<>("token1"),
                                                 "token1",

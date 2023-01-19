@@ -17,7 +17,7 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
 
     public UserLogoutProcessImpl(@Nonnull
                                          AuthenticationDao authenticationDao) {
-        this.authenticationDao = authenticationDao;
+        this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
 
     }
 

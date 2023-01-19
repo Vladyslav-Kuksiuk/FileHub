@@ -6,6 +6,7 @@ import com.teamdev.server.routes.CreateFolderRoute;
 import com.teamdev.server.routes.LoadFolderContentRoute;
 import com.teamdev.server.routes.LoadFolderRoute;
 import com.teamdev.server.routes.LoadUserRoute;
+import com.teamdev.server.routes.LogoutRoute;
 import com.teamdev.server.routes.RegistrationRoute;
 
 import static spark.Spark.get;
