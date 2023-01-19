@@ -22,11 +22,15 @@ public class WrappedRequest {
     public WrappedRequest(@Nonnull Request request) {
         Preconditions.checkNotNull(request);
 
-        var jsonObject =
-                Objects.requireNonNullElseGet(gson.fromJson(request.body(), JsonObject.class),
-                                              JsonObject::new);
+        if (Objects.equals(request.contentType(), "application/json")) {
+            var jsonObject =
+                    Objects.requireNonNullElseGet(gson.fromJson(request.body(), JsonObject.class),
+                                                  JsonObject::new);
+            jsonBody = new JsonEntity(jsonObject);
+        } else {
+            jsonBody = new JsonEntity(new JsonObject());
+        }
 
-        jsonBody = new JsonEntity(jsonObject);
         this.request = request;
     }
 
@@ -66,5 +70,21 @@ public class WrappedRequest {
     public String params(@Nonnull String param) {
         Preconditions.checkNotNull(param);
         return request.params(param);
+    }
+
+    /**
+     * Sets an attribute on the request.
+     *
+     * @param attribute
+     *         The attribute.
+     * @param value
+     *         The attribute value.
+     */
+    public void attribute(@Nonnull String attribute,
+                          @Nonnull Object value) {
+        Preconditions.checkNotNull(attribute);
+        Preconditions.checkNotNull(value);
+
+        request.attribute(attribute, value);
     }
 }

@@ -8,6 +8,7 @@ import com.teamdev.server.routes.LoadFolderRoute;
 import com.teamdev.server.routes.LoadUserRoute;
 import com.teamdev.server.routes.LogoutRoute;
 import com.teamdev.server.routes.RegistrationRoute;
+import com.teamdev.server.routes.UploadFileRoute;
 
 import static spark.Spark.get;
 import static spark.Spark.post;

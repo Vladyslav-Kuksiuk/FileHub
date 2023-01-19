@@ -41,6 +41,8 @@ class CreateFolderRouteTest {
     void setUp() throws UserAuthorizationException {
         Mockito.when(request.headers("Authorization"))
                .thenReturn("Bearer token");
+        Mockito.when(request.contentType())
+                       .thenReturn("application/json");
         Mockito.when(authView.handle(any()))
                .thenReturn(new RecordId<>("userId"));
     }

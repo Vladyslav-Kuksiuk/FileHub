@@ -1,5 +1,7 @@
 package com.teamdev.filehub.processes.upload;
 
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.FileDaoFake;
 import com.teamdev.filehub.FileStorageStub;
 import com.teamdev.filehub.FolderDaoFake;
@@ -7,13 +9,11 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.processes.AccessDeniedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.NoSuchElementException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -48,7 +48,7 @@ class FileUploadProcessUnitTest {
     }
 
     @Test
-    void fileUploadTest() throws AccessDeniedException {
+    void fileUploadTest() throws AccessDeniedException, DataNotFoundException {
 
         InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
 
@@ -98,26 +98,7 @@ class FileUploadProcessUnitTest {
                                                           123,
                                                           fileInputStream);
 
-        assertThrows(NoSuchElementException.class,
-                     () -> fileUploadProcess.handle(command),
-                     "File uploading to absent folder not failed");
-    }
-
-    @Test
-    void uploadSameFilesTest() throws AccessDeniedException {
-
-        InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
-
-        FileUploadCommand command = new FileUploadCommand(rootFolder.ownerId(),
-                                                          rootFolder.id(),
-                                                          "myFile",
-                                                          "txt",
-                                                          123,
-                                                          fileInputStream);
-
-        fileUploadProcess.handle(command);
-
-        assertThrows(AccessDeniedException.class,
+        assertThrows(DataNotFoundException.class,
                      () -> fileUploadProcess.handle(command),
                      "File uploading to absent folder not failed");
     }

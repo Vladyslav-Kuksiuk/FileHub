@@ -40,6 +40,8 @@ class AuthenticationRouteTest {
         var responseJsonString = gson.toJson(authenticationResponse);
 
         var request = Mockito.mock(Request.class);
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
         Mockito.when(request.body())
                .thenReturn("{\"login\":\"" + login + "\",\"password\":\"" + password + "\"}");
 
@@ -81,6 +83,8 @@ class AuthenticationRouteTest {
         var errorMessage = "errorMessage";
 
         var request = Mockito.mock(Request.class);
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
         Mockito.when(request.body())
                .thenReturn("{\"login\":\"login\",\"password\":\"password\"}");
 
@@ -112,6 +116,8 @@ class AuthenticationRouteTest {
     void testHandleWithJsonEntityValidationException() {
 
         var request = Mockito.mock(Request.class);
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
         Mockito.when(request.body())
                .thenReturn("{\"login\":\"login\"}");
 

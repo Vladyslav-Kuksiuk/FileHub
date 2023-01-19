@@ -39,6 +39,8 @@ class RegistrationRouteTest {
         var userId = new RecordId<>("userId");
 
         var request = Mockito.mock(Request.class);
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
         Mockito.when(request.body())
                .thenReturn("{\"login\":\"" + login + "\",\"password\":\"" + password + "\"}");
 
@@ -79,6 +81,8 @@ class RegistrationRouteTest {
         var errorMessage = "errorMessage";
 
         var request = Mockito.mock(Request.class);
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
         Mockito.when(request.body())
                .thenReturn("{\"login\":\"login@gmail.com\",\"password\":\"password123\"}");
 
@@ -109,6 +113,8 @@ class RegistrationRouteTest {
     void testHandleWithJsonEntityValidationException() {
 
         var request = Mockito.mock(Request.class);
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
         Mockito.when(request.body())
                .thenReturn("{\"login\":\"login\"}");
 
@@ -140,6 +146,8 @@ class RegistrationRouteTest {
         var errorResponse = "{\"errors\":[{\"errorText\":\"Email validation failed.\",\"fieldName\":\"email\"}]}";
 
         var request = Mockito.mock(Request.class);
+        Mockito.when(request.contentType())
+               .thenReturn("application/json");
         Mockito.when(request.body())
                .thenReturn("{\"login\":\"login\",\"password\":\"password123\"}");
 

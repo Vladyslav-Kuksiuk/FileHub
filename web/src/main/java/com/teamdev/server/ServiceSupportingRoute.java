@@ -1,13 +1,13 @@
 package com.teamdev.server;
 
 import com.google.common.base.Preconditions;
-import com.google.gson.JsonSyntaxException;
 import com.teamdev.filehub.ServiceException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * An abstract implementation of {@link Route} with more convenient API to work with services.
@@ -36,9 +36,10 @@ public abstract class ServiceSupportingRoute implements Route {
             WrappedRequest wrappedRequest = new WrappedRequest(request);
             wrappedRequestHandle(wrappedRequest, response);
 
-            return response.body();
+            return Optional.ofNullable(response.body())
+                           .orElse("");
 
-        } catch (ServiceException | JsonEntityValidationException | JsonSyntaxException exception) {
+        } catch (Exception exception) {
             ExceptionToStatusBinding exceptionStatusFactory = new ExceptionToStatusBinding();
 
             response.status(exceptionStatusFactory.getStatus(exception.getClass()));

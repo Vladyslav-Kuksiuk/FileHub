@@ -1,10 +1,13 @@
 package com.teamdev.server;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.filehub.dao.RecordId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import spark.Request;
+
+import java.util.Objects;
 
 class WrappedRequestTest {
 
@@ -15,6 +18,8 @@ class WrappedRequestTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.testAllPublicConstructors(JsonEntity.class);
+
+        tester.setDefault(Object.class, new Object());
 
         tester.testInstanceMethods(new WrappedRequest(Mockito.mock(Request.class)),
                                    NullPointerTester.Visibility.PUBLIC);
