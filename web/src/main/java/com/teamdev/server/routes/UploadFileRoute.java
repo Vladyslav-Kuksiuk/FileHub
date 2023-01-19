@@ -1,5 +1,6 @@
 package com.teamdev.server.routes;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
@@ -10,9 +11,11 @@ import com.teamdev.server.AuthorizedUserRoute;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
 
+import javax.annotation.Nonnull;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
@@ -25,10 +28,11 @@ public class UploadFileRoute extends AuthorizedUserRoute {
     private final FileUploadProcess fileUploadProcess;
 
     public UploadFileRoute(
-            UserAuthorizationView authorizationView,
-            FileUploadProcess fileUploadProcess) {
-        super(authorizationView);
-        this.fileUploadProcess = fileUploadProcess;
+            @Nonnull UserAuthorizationView authorizationView,
+            @Nonnull FileUploadProcess fileUploadProcess) {
+
+        super(Preconditions.checkNotNull(authorizationView));
+        this.fileUploadProcess = Preconditions.checkNotNull(fileUploadProcess);
     }
 
     /**
@@ -53,12 +57,9 @@ public class UploadFileRoute extends AuthorizedUserRoute {
 
             for (var part : parts) {
 
-                var uploadedFileIdentifiers = new LinkedList<>();
+                Collection<String> uploadedFilesIds = new LinkedList<>();
 
-                try (var input = request.raw()
-                                        .getPart(part.getName())
-                                        .getInputStream()
-                ) {
+                try (var input = part.getInputStream()) {
 
                     var command = new FileUploadCommand(
                             userId,
@@ -68,16 +69,23 @@ public class UploadFileRoute extends AuthorizedUserRoute {
                             part.getSize(),
                             input);
 
-                    uploadedFileIdentifiers.add(fileUploadProcess.handle(command)
-                                                                 .value());
+                    uploadedFilesIds.add(fileUploadProcess.handle(command)
+                                                          .value());
                 }
 
-                response.body(gson.toJson(uploadedFileIdentifiers));
+                response.body(gson.toJson(uploadedFilesIds));
 
             }
-        } catch (IOException | ServletException exception) {
+        } catch (IOException exception) {
+
             response.status(500);
             response.body(exception.getMessage());
+
+        } catch (ServletException exception) {
+
+            response.status(400);
+            response.body(exception.getMessage());
+
         }
 
     }

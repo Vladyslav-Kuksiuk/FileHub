@@ -18,7 +18,7 @@ import java.io.InputStream;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class FileUploadProcessUnitTest {
+class FileUploadProcessTest {
 
     private FileDao fileDao;
     private FileUploadProcess fileUploadProcess;
