@@ -49,7 +49,7 @@ public class FolderData extends Data<String> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof FolderData)) {
             return false;
         }
         FolderData data = (FolderData) o;

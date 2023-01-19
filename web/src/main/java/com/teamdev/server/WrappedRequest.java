@@ -31,23 +31,23 @@ public class WrappedRequest {
     }
 
     /**
-     * @return HTTP body representation as {@link JsonEntity}.
+     * Returns hTTP body representation as {@link JsonEntity}.
      */
     public JsonEntity jsonBody() {
         return jsonBody;
     }
 
     /**
-     * @return The raw HttpServletRequest object.
+     * Returns the raw HttpServletRequest object.
      */
     public HttpServletRequest raw() {
         return request.raw();
     }
 
     /**
+     * Returns the value of the provided header.
      * @param header
      *         HTTP request header name.
-     * @return The value of the provided header.
      */
     public String headers(@Nonnull String header) {
         Preconditions.checkNotNull(header);

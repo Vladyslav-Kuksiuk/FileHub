@@ -54,7 +54,7 @@ public class AuthenticationData extends Data<String> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof AuthenticationData)) {
             return false;
         }
         AuthenticationData data = (AuthenticationData) o;

@@ -43,7 +43,7 @@ public class UserData extends Data<String> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof UserData)) {
             return false;
         }
         UserData userData = (UserData) o;
