@@ -9,8 +9,8 @@ import com.teamdev.filehub.dao.folder.InMemoryFolderDao;
 import com.teamdev.filehub.dao.user.InMemoryUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
-import com.teamdev.filehub.processes.file.remove.FileRemoveProcess;
-import com.teamdev.filehub.processes.file.remove.FileRemoveProcessImpl;
+import com.teamdev.filehub.processes.filesystem.remove.RemoveProcess;
+import com.teamdev.filehub.processes.filesystem.remove.FileRemoveProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcessImpl;
 import com.teamdev.filehub.processes.filesystem.rename.FileRenameProcess;
@@ -58,7 +58,7 @@ public class ApplicationConfiguration {
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
     private final RenameProcess fileRenameProcess;
-    private final FileRemoveProcess fileRemoveProcess;
+    private final RemoveProcess fileRemoveProcess;
 
     private final FileDownloadView fileDownloadView;
 
@@ -89,7 +89,7 @@ public class ApplicationConfiguration {
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
         fileRenameProcess = new FileRenameProcess(fileDao);
-        fileRemoveProcess = new FileRemoveProcessImpl(fileDao, fileStorage);
+        fileRemoveProcess = new FileRemoveProcess(fileDao, fileStorage);
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
     }
@@ -130,7 +130,7 @@ public class ApplicationConfiguration {
         return folderSearchView;
     }
 
-    public FileRemoveProcess getFileRemoveProcess() {
+    public RemoveProcess getFileRemoveProcess() {
         return fileRemoveProcess;
     }
 

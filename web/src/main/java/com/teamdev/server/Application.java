@@ -9,6 +9,7 @@ import com.teamdev.server.routes.LoadFolderRoute;
 import com.teamdev.server.routes.LoadUserRoute;
 import com.teamdev.server.routes.LogoutRoute;
 import com.teamdev.server.routes.RegistrationRoute;
+import com.teamdev.server.routes.RemoveItemRoute;
 import com.teamdev.server.routes.RenameItemRoute;
 import com.teamdev.server.routes.SearchInFolderRoute;
 import com.teamdev.server.routes.UploadFileRoute;
@@ -58,7 +59,7 @@ public class Application {
                                 context.getFolderRenameProcess()));
 
         delete("api/file/:id",
-               new RemoveFileRoute(context.getUserAuthorizationView(),
+               new RemoveItemRoute(context.getUserAuthorizationView(),
                                    context.getFileRemoveProcess()));
 
         post("api/folders",

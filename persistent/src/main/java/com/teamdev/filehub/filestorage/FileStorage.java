@@ -99,7 +99,7 @@ public class FileStorage {
      * Removes file by given id.
      */
     public void removeFile(RecordId<String> fileId) {
-        String fullPath = STORAGE_FOLDER_PATH + fileId.value();
+        String fullPath = storageFolderPath + fileId.value();
         File file = new File(fullPath);
 
         if (!file.exists()) {

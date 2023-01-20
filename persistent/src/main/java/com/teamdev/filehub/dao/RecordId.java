@@ -30,7 +30,7 @@ public class RecordId<T> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof RecordId)) {
             return false;
         }
         RecordId<?> id1 = (RecordId<?>) o;
