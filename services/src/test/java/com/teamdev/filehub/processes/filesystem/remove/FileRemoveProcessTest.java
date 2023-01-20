@@ -86,7 +86,7 @@ class FileRemoveProcessTest {
         });
 
         Mockito.verify(fileDao, Mockito.never())
-               .update(any());
+               .delete(any());
 
         Mockito.verify(fileStorage, Mockito.never())
                .removeFile(any());
@@ -122,7 +122,7 @@ class FileRemoveProcessTest {
         });
 
         Mockito.verify(fileDao, Mockito.never())
-               .update(any());
+               .delete(any());
 
         Mockito.verify(fileStorage, Mockito.never())
                .removeFile(any());
