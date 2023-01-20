@@ -1,8 +1,13 @@
 package com.teamdev.filehub.folder;
 
 import com.teamdev.filehub.InMemoryDatabaseTable;
+import com.teamdev.filehub.user.UserData;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -10,10 +15,8 @@ import java.util.stream.Collectors;
  */
 public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
 
-    private static final String FILE_NAME = "folders.json";
-
-    public FolderTable() {
-        super(FILE_NAME, FolderData[].class);
+    public FolderTable(@Nonnull String filePath) {
+        super(filePath, FolderData[].class);
     }
 
     public List<FolderData> selectWithSameParentId(String parentId) {
@@ -23,10 +26,43 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
         }
 
         return tableMap().values()
-                         .stream()
-                         .filter(data -> data.parentFolderId()
-                                             .equals(parentId))
-                         .collect(Collectors.toList());
+                .stream()
+                .filter(data -> parentId.equals(data.parentFolderId()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Method to get users root folder by user id.
+     *
+     * @param userId
+     *         User id.
+     * @return {@link UserData}.
+     */
+    public Optional<FolderData> findUserRootFolder(@Nonnull String userId) {
+
+        return tableMap().values()
+                .stream()
+                .filter(folder -> folder.ownerId()
+                                        .equals(userId) && folder.parentFolderId() == null)
+                .findFirst();
+
+    }
+
+    public List<FolderData> getByParentIdAndNamePart(@Nonnull String parentId,
+                                                     @Nonnull String namePart) {
+
+        if (!tableMap().containsKey(parentId)) {
+            throw new RuntimeException("Folder with this id doesn't exist.");
+        }
+
+        return tableMap().values()
+                .stream()
+                .filter(data -> Objects.equals(parentId, data.parentFolderId()) &&
+                        data.name()
+                            .toLowerCase()
+                            .contains(namePart))
+                .collect(Collectors.toList());
+
     }
 
 }

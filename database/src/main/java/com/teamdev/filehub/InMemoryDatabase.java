@@ -5,6 +5,7 @@ import com.teamdev.filehub.file.FileTable;
 import com.teamdev.filehub.folder.FolderTable;
 import com.teamdev.filehub.user.UserTable;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 /**
@@ -12,25 +13,27 @@ import java.io.File;
  */
 public class InMemoryDatabase {
 
-    public static final String DATABASE_FOLDER_PATH = "D:\\Work\\DatabaseFolder\\";
-    public static final String DATABASE_TABLES_FOLDER_PATH = DATABASE_FOLDER_PATH + "Tables\\";
     private final UserTable userTable;
     private final AuthenticationTable authenticationTable;
     private final FileTable fileTable;
 
     private final FolderTable folderTable;
 
-    public InMemoryDatabase() {
+    public InMemoryDatabase(@Nonnull String databaseFolderPath) {
 
-        File tablesDirectory = new File(DATABASE_TABLES_FOLDER_PATH);
+        String tablesFolderPath =
+                databaseFolderPath + File.separator + "Tables" + File.separator;
+
+        File tablesDirectory =
+                new File(tablesFolderPath);
         if (!tablesDirectory.exists()) {
             tablesDirectory.mkdirs();
         }
 
-        userTable = new UserTable();
-        authenticationTable = new AuthenticationTable();
-        fileTable = new FileTable();
-        folderTable = new FolderTable();
+        userTable = new UserTable(tablesFolderPath + "users.json");
+        authenticationTable = new AuthenticationTable(tablesFolderPath + "authentications.json");
+        fileTable = new FileTable(tablesFolderPath + "files.json");
+        folderTable = new FolderTable(tablesFolderPath + "folders.json");
     }
 
     public UserTable userTable() {

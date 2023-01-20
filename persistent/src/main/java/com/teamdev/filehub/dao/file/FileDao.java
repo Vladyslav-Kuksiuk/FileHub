@@ -12,4 +12,6 @@ public interface FileDao extends DataAccessObject<String, FileRecord> {
 
     List<FileRecord> getFilesInFolder(RecordId<String> folderId);
 
+    List<FileRecord> getByFolderIdAndNamePart(RecordId<String> folderId, String namePart);
+
 }

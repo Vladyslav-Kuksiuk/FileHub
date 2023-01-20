@@ -6,13 +6,13 @@ import com.teamdev.filehub.dao.RecordId;
 import javax.annotation.Nonnull;
 
 /**
- * {@link Command} extension with data about authenticated user.
+ * {@link Command} implementation with an authenticated user id.
  */
-public abstract class AuthenticatedUserCommand implements Command {
+public class AuthenticatedUserCommand implements Command {
 
     private final RecordId<String> userId;
 
-    protected AuthenticatedUserCommand(@Nonnull RecordId<String> userId) {
+    public AuthenticatedUserCommand(@Nonnull RecordId<String> userId) {
         this.userId = Preconditions.checkNotNull(userId);
     }
 

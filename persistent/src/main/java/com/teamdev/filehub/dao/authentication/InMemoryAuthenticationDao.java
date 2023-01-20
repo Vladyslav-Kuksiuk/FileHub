@@ -42,8 +42,8 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
             return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
                                                         authData.authenticationToken(),
-                                                        LocalDateTime.parse(
-                                                                authData.expireTime())));
+                                                        LocalDateTime.parse(authData.expireTime()),
+                                                        new RecordId<>(authData.userId())));
         }
 
         return Optional.empty();
@@ -74,7 +74,9 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                                .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()
-                                                               .toString());
+                                                               .toString(),
+                                                         record.userId()
+                                                               .value());
 
         authTable.create(data);
 
@@ -93,9 +95,31 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
                                                                .value(),
                                                          record.authenticationToken(),
                                                          record.expireTime()
-                                                               .toString());
+                                                               .toString(),
+                                                         record.userId()
+                                                               .value());
 
         authTable.update(data);
 
+    }
+
+    @Override
+    public Optional<AuthenticationRecord> findByToken(String token) {
+        Preconditions.checkNotNull(token);
+
+        Optional<AuthenticationData> optionalAuthData = authTable.findByToken(token);
+
+        if (optionalAuthData.isPresent()) {
+
+            AuthenticationData authData = optionalAuthData.get();
+
+            return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
+                                                        authData.authenticationToken(),
+                                                        LocalDateTime.parse(
+                                                                authData.expireTime()),
+                                                        new RecordId<>(authData.userId())));
+        }
+
+        return Optional.empty();
     }
 }

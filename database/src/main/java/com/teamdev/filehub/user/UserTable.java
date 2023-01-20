@@ -10,10 +10,8 @@ import java.util.Optional;
  */
 public class UserTable extends InMemoryDatabaseTable<String, UserData> {
 
-    private static final String FILE_NAME = "users.json";
-
-    public UserTable() {
-        super(FILE_NAME, UserData[].class);
+    public UserTable(String filePath) {
+        super(filePath, UserData[].class);
 
     }
 
@@ -27,10 +25,10 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
     public Optional<UserData> getUserByLogin(@NotNull String login) {
 
         Optional<UserData> foundUser = tableMap().values()
-                                                 .stream()
-                                                 .filter(user -> user.login()
-                                                                     .equals(login))
-                                                 .findFirst();
+                .stream()
+                .filter(user -> user.login()
+                                    .equals(login))
+                .findFirst();
 
         return foundUser;
 

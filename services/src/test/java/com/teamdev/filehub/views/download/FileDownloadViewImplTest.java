@@ -1,5 +1,7 @@
 package com.teamdev.filehub.views.download;
 
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.FileDaoFake;
 import com.teamdev.filehub.FileStorageStub;
 import com.teamdev.filehub.dao.RecordId;
@@ -11,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.NoSuchElementException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,20 +36,20 @@ class FileDownloadViewImplTest {
                                                new RecordId<>("user_root"),
                                                new RecordId<>("user"),
                                                "myFile",
-                                               "txt");
+                                               "txt",
+                                               123);
 
         fileDao.create(fileRecord);
 
     }
 
     @Test
-    void fileDownloadTest() throws FileAccessDeniedException, IOException {
+    void fileDownloadTest() throws IOException, DataNotFoundException, AccessDeniedException {
 
         FileDownloadQuery query = new FileDownloadQuery(new RecordId<>("user"),
                                                         new RecordId<>("uploadedFileId"));
 
-        InputStream fileInputStream = fileDownloadView.handle(query)
-                                                      .fileInput();
+        InputStream fileInputStream = fileDownloadView.handle(query);
 
         assertWithMessage("File downloading failed.")
                 .that(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8))
@@ -62,7 +63,7 @@ class FileDownloadViewImplTest {
         FileDownloadQuery query = new FileDownloadQuery(new RecordId<>("user"),
                                                         new RecordId<>("notUploadedFileId"));
 
-        assertThrows(NoSuchElementException.class,
+        assertThrows(DataNotFoundException.class,
                      () -> fileDownloadView.handle(query),
                      "Absent file download not failed.");
 
@@ -74,7 +75,7 @@ class FileDownloadViewImplTest {
         FileDownloadQuery query = new FileDownloadQuery(new RecordId<>("notOwner"),
                                                         new RecordId<>("uploadedFileId"));
 
-        assertThrows(FileAccessDeniedException.class,
+        assertThrows(AccessDeniedException.class,
                      () -> fileDownloadView.handle(query),
                      "DFile downloading by non-owner user not failed.");
 

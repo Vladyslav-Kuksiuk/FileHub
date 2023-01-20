@@ -21,12 +21,14 @@ class InMemoryFileDaoTest {
                                                           new RecordId<>("folder_id"),
                                                           new RecordId<>("owner_id"),
                                                           "name",
-                                                          "extension");
+                                                          "extension",
+                                                          123);
     private final FileData FILE_DATA = new FileData("file_id",
                                                     "folder_id",
                                                     "owner_id",
                                                     "name",
-                                                    "extension");
+                                                    "extension",
+                                                    123);
     @Mock
     private FileTable fileTable;
     private FileDao fileDao;
@@ -78,7 +80,7 @@ class InMemoryFileDaoTest {
     void createExistingFileTest() {
 
         doThrow(new RuntimeException("Data already exists.")).when(fileTable)
-                                                             .create(FILE_DATA);
+                .create(FILE_DATA);
 
         assertThrows(RuntimeException.class, () -> fileDao.create(FILE_RECORD));
 

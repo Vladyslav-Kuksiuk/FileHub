@@ -55,7 +55,7 @@ dependencies {
 
     implementation("javax.validation:validation-api:2.0.1.Final")
 
-    compileOnly("com.google.errorprone:error_prone_core:2.15.0")
+    compileOnly("com.google.errorprone:error_prone_core:2.9.0")
 
     implementation("org.jasypt:jasypt:1.9.3")
 
@@ -66,6 +66,8 @@ dependencies {
     implementation("com.google.flogger:flogger-log4j2-backend:0.7.4")
 
     implementation("com.google.code.findbugs:jsr305:3.0.2")
+
+    testImplementation("org.mockito:mockito-core:4.7.0")
 }
 
 application {

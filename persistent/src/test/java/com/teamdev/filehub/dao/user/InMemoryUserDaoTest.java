@@ -19,12 +19,10 @@ class InMemoryUserDaoTest {
 
     private final UserRecord USER_RECORD = new UserRecord(new RecordId<>("real_user"),
                                                           "real_user",
-                                                          "real_password",
-                                                          "real@email.com");
+                                                          "real_password");
     private final UserData USER_DATA = new UserData("real_user",
                                                     "real_user",
-                                                    "real_password",
-                                                    "real@email.com");
+                                                    "real_password");
     @Mock
     private UserTable userTable;
     private UserDao userDao;
@@ -76,7 +74,7 @@ class InMemoryUserDaoTest {
     void createExistingUserTest() {
 
         doThrow(new RuntimeException("Data already exists.")).when(userTable)
-                                                             .create(USER_DATA);
+                .create(USER_DATA);
 
         assertThrows(RuntimeException.class, () -> userDao.create(USER_RECORD));
 

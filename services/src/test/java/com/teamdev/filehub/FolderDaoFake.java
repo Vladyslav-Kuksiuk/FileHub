@@ -61,10 +61,20 @@ public class FolderDaoFake implements FolderDao {
         }
 
         return folders.values()
-                      .stream()
-                      .filter(record -> record.parentFolderId()
-                                              .equals(parentId))
-                      .collect(Collectors.toList());
+                .stream()
+                .filter(record -> record.parentFolderId()
+                                        .equals(parentId))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<FolderRecord> findUserRootFolder(RecordId<String> userId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<FolderRecord> getByParentIdAndNamePart(RecordId<String> parentId, String namePart) {
+        return null;
     }
 
     public Map<RecordId<String>, FolderRecord> foldersMap() {

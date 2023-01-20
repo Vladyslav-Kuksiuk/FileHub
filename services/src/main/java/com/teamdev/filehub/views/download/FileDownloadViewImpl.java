@@ -1,6 +1,9 @@
 package com.teamdev.filehub.views.download;
 
+import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
 import com.teamdev.filehub.filestorage.FileStorage;
@@ -8,6 +11,7 @@ import com.teamdev.filehub.views.Query;
 
 import javax.annotation.Nonnull;
 import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * {@link FileDownloadView} implementation.
@@ -21,8 +25,9 @@ public class FileDownloadViewImpl implements FileDownloadView {
 
     public FileDownloadViewImpl(@Nonnull FileDao fileDao,
                                 @Nonnull FileStorage fileStorage) {
-        this.fileDao = fileDao;
-        this.fileStorage = fileStorage;
+
+        this.fileDao = Preconditions.checkNotNull(fileDao);
+        this.fileStorage = Preconditions.checkNotNull(fileStorage);
     }
 
     /**
@@ -30,11 +35,12 @@ public class FileDownloadViewImpl implements FileDownloadView {
      *
      * @param query
      *         {@link Query} implementation to request.
-     * @return {@link FileDownloadResponse}.
+     * @return {@link InputStream} The file input stream.
      */
     @Override
-    public FileDownloadResponse handle(@Nonnull FileDownloadQuery query) throws
-                                                                         FileAccessDeniedException {
+    public InputStream handle(@Nonnull FileDownloadQuery query)
+            throws AccessDeniedException, DataNotFoundException {
+        Preconditions.checkNotNull(query);
 
         logger.atInfo()
               .log("[VIEW STARTED] - File download - login: %s, file: %s.", query.userId()
@@ -42,21 +48,33 @@ public class FileDownloadViewImpl implements FileDownloadView {
                    query.fileId()
                         .value());
 
-        FileRecord fileRecord = fileDao.find(query.fileId())
-                                       .get();
+        Optional<FileRecord> optionalFileRecord = fileDao.find(query.fileId());
 
-        if (!query.userId()
-                  .value()
-                  .equals(fileRecord.ownerId()
-                                    .value())) {
+        if (optionalFileRecord.isEmpty()) {
 
             logger.atInfo()
-                  .log("[VIEW FAILED] - File download - login: %s, file: %s - Exception message: Access to file not allowed .",
+                  .log("[VIEW FAILED] - File download - login: %s, file: %s - Exception message: File not found.",
                        query.userId()
-                            .value(), query.fileId()
-                                           .value());
+                            .value(),
+                       query.fileId()
+                            .value());
 
-            throw new FileAccessDeniedException("Access to file not allowed.");
+            throw new DataNotFoundException("Folder not found");
+        }
+
+        FileRecord fileRecord = optionalFileRecord.get();
+
+        if (!query.userId()
+                  .equals(fileRecord.ownerId())) {
+
+            logger.atInfo()
+                  .log("[VIEW FAILED] - File download - login: %s, file: %s - Exception message: Access to file not allowed.",
+                       query.userId()
+                            .value(),
+                       query.fileId()
+                            .value());
+
+            throw new AccessDeniedException("Access to file denied.");
 
         }
 
@@ -68,6 +86,6 @@ public class FileDownloadViewImpl implements FileDownloadView {
                    query.fileId()
                         .value());
 
-        return new FileDownloadResponse(fileInput);
+        return fileInput;
     }
 }

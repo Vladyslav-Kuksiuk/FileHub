@@ -1,5 +1,6 @@
 package com.teamdev.filehub.dao.folder;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.DatabaseRecord;
 import com.teamdev.filehub.dao.RecordId;
@@ -37,5 +38,25 @@ public class FolderRecord extends DatabaseRecord<String> {
 
     public String name() {
         return name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(ownerId, parentFolderId, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FolderRecord)) {
+            return false;
+        }
+        FolderRecord that = (FolderRecord) o;
+        return Objects.equal(id(), that.id()) &&
+                Objects.equal(ownerId, that.ownerId) &&
+                Objects.equal(parentFolderId, that.parentFolderId) &&
+                Objects.equal(name, that.name);
     }
 }

@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "FileHub"
-include("services", "persistent", "util", "database")
+include("services", "persistent", "util", "database", "web")

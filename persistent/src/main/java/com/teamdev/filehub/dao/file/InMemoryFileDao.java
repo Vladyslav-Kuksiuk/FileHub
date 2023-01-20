@@ -26,6 +26,27 @@ public class InMemoryFileDao implements FileDao {
         this.fileTable = fileTable;
     }
 
+    private static FileRecord convertDataIntoRecord(FileData data) {
+        return new FileRecord(new RecordId<>(data.id()),
+                              new RecordId<>(data.folderId()),
+                              new RecordId<>(data.ownerId()),
+                              data.name(),
+                              data.mimetype(),
+                              data.size());
+    }
+
+    private static FileData convertRecordIntoData(FileRecord record) {
+        return new FileData(record.id()
+                                  .value(),
+                            record.folderId()
+                                  .value(),
+                            record.ownerId()
+                                  .value(),
+                            record.name(),
+                            record.mimetype(),
+                            record.size());
+    }
+
     /**
      * Method to find a file meta context record in the {@link InMemoryDatabase} by id.
      *
@@ -45,11 +66,7 @@ public class InMemoryFileDao implements FileDao {
 
             FileData fileData = optionalFileData.get();
 
-            return Optional.of(new FileRecord(new RecordId<>(fileData.id()),
-                                              new RecordId<>(fileData.folderId()),
-                                              new RecordId<>(fileData.ownerId()),
-                                              fileData.name(),
-                                              fileData.extension()));
+            return Optional.of(convertDataIntoRecord(fileData));
 
         }
 
@@ -80,16 +97,7 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public void create(@Nonnull FileRecord record) {
 
-        FileData fileData = new FileData(record.id()
-                                               .value(),
-                                         record.folderId()
-                                               .value(),
-                                         record.ownerId()
-                                               .value(),
-                                         record.name(),
-                                         record.extension());
-
-        fileTable.create(fileData);
+        fileTable.create(convertRecordIntoData(record));
 
         logger.atInfo()
               .log("[FILE CREATED] - id: %s", record.id()
@@ -106,16 +114,7 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public void update(@Nonnull FileRecord record) {
 
-        FileData fileData = new FileData(record.id()
-                                               .value(),
-                                         record.folderId()
-                                               .value(),
-                                         record.ownerId()
-                                               .value(),
-                                         record.name(),
-                                         record.extension());
-
-        fileTable.update(fileData);
+        fileTable.update(convertRecordIntoData(record));
 
         logger.atInfo()
               .log("[FILE UPDATED] - id: %s", record.id()
@@ -126,12 +125,16 @@ public class InMemoryFileDao implements FileDao {
     @Override
     public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
         return fileTable.selectWithSameFolderId(folderId.value())
-                        .stream()
-                        .map(data -> new FileRecord(new RecordId<>(data.id()),
-                                                    new RecordId<>(data.folderId()),
-                                                    new RecordId<>(data.ownerId()),
-                                                    data.name(),
-                                                    data.extension()))
-                        .collect(Collectors.toList());
+                .stream()
+                .map(InMemoryFileDao::convertDataIntoRecord)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FileRecord> getByFolderIdAndNamePart(RecordId<String> folderId, String namePart) {
+        return fileTable.getByFolderIdAndNamePart(folderId.value(), namePart)
+                .stream()
+                .map(InMemoryFileDao::convertDataIntoRecord)
+                .collect(Collectors.toList());
     }
 }
