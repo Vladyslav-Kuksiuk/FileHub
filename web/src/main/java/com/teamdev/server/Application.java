@@ -10,6 +10,7 @@ import com.teamdev.server.routes.LoadUserRoute;
 import com.teamdev.server.routes.LogoutRoute;
 import com.teamdev.server.routes.RegistrationRoute;
 import com.teamdev.server.routes.RenameItemRoute;
+import com.teamdev.server.routes.SearchInFolderRoute;
 import com.teamdev.server.routes.UploadFileRoute;
 
 import static spark.Spark.get;

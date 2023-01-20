@@ -1,16 +1,17 @@
 package com.teamdev.filehub.views.folder.search;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.views.AccessDeniedException;
-import com.teamdev.filehub.views.DataNotFoundException;
 import com.teamdev.filehub.views.folder.FileItem;
 import com.teamdev.filehub.views.folder.FolderContent;
 import com.teamdev.filehub.views.folder.FolderItem;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +23,15 @@ public class FolderSearchViewImpl implements FolderSearchView {
     private final FolderDao folderDao;
     private final FileDao fileDao;
 
-    public FolderSearchViewImpl(FolderDao folderDao, FileDao fileDao) {
+    public FolderSearchViewImpl(@Nonnull FolderDao folderDao,
+                                @Nonnull FileDao fileDao) {
         this.folderDao = Preconditions.checkNotNull(folderDao);
         this.fileDao = Preconditions.checkNotNull(fileDao);
     }
 
     @Override
-    public FolderContent handle(FolderSearchQuery query) throws AccessDeniedException,
-                                                                DataNotFoundException {
+    public FolderContent handle(@Nonnull FolderSearchQuery query)
+            throws AccessDeniedException, DataNotFoundException {
         Preconditions.checkNotNull(query);
 
         Optional<FolderRecord> optionalFolderRecord = folderDao.find(query.folderId());
