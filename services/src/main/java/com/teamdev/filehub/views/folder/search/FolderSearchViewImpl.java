@@ -1,6 +1,7 @@
 package com.teamdev.filehub.views.folder.search;
 
 import com.google.common.base.Preconditions;
+import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.file.FileDao;
@@ -20,6 +21,8 @@ import java.util.Optional;
  */
 public class FolderSearchViewImpl implements FolderSearchView {
 
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
+
     private final FolderDao folderDao;
     private final FileDao fileDao;
 
@@ -34,9 +37,22 @@ public class FolderSearchViewImpl implements FolderSearchView {
             throws AccessDeniedException, DataNotFoundException {
         Preconditions.checkNotNull(query);
 
+        logger.atInfo()
+              .log("[VIEW QUERIED] - Folder search - folderId: %s, search word: %s.",
+                   query.folderId()
+                        .value(),
+                   query.searchWord());
+
         Optional<FolderRecord> optionalFolderRecord = folderDao.find(query.folderId());
 
         if (optionalFolderRecord.isEmpty()) {
+
+            logger.atInfo()
+                  .log("[VIEW FAILED] - Folder search - Folder not found - folderId: %s, search word: %s.",
+                       query.folderId()
+                            .value(),
+                       query.searchWord());
+
             throw new DataNotFoundException("Folder not found");
         }
 
@@ -44,6 +60,13 @@ public class FolderSearchViewImpl implements FolderSearchView {
 
         if (!folderRecord.ownerId()
                          .equals(query.userId())) {
+
+            logger.atInfo()
+                  .log("[VIEW FAILED] - Folder search - Access denied - folderId: %s, search word: %s.",
+                       query.folderId()
+                            .value(),
+                       query.searchWord());
+
             throw new AccessDeniedException("Access to folder denied.");
         }
 
@@ -70,6 +93,12 @@ public class FolderSearchViewImpl implements FolderSearchView {
                              file.size(),
                              file.mimetype())
         ));
+
+        logger.atInfo()
+              .log("[VIEW FINISHED] - Folder search - folderId: %s, search word: %s.",
+                   query.folderId()
+                        .value(),
+                   query.searchWord());
 
         return folderContent;
     }

@@ -61,4 +61,9 @@ public class FileDaoFake implements FileDao {
                                         .equals(folderId))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<FileRecord> getByFolderIdAndNamePart(RecordId<String> folderId, String namePart) {
+        return null;
+    }
 }

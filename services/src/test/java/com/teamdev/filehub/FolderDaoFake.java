@@ -72,6 +72,11 @@ public class FolderDaoFake implements FolderDao {
         return Optional.empty();
     }
 
+    @Override
+    public List<FolderRecord> getByParentIdAndNamePart(RecordId<String> parentId, String namePart) {
+        return null;
+    }
+
     public Map<RecordId<String>, FolderRecord> foldersMap() {
         return folders;
     }

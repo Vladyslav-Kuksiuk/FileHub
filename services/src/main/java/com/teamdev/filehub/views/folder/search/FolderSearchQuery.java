@@ -19,7 +19,7 @@ public class FolderSearchQuery extends AuthenticatedUserQuery {
     public FolderSearchQuery(@Nonnull RecordId<String> userId,
                              @Nonnull RecordId<String> folderId,
                              @Nonnull String searchWord) {
-        super(userId);
+        super(Preconditions.checkNotNull(userId));
         this.folderId = Preconditions.checkNotNull(folderId);
         this.searchWord = Preconditions.checkNotNull(searchWord);
     }

@@ -5,6 +5,7 @@ import com.teamdev.filehub.user.UserData;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,6 +59,7 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
                 .stream()
                 .filter(data -> Objects.equals(parentId, data.parentFolderId()) &&
                         data.name()
+                            .toLowerCase()
                             .contains(namePart))
                 .collect(Collectors.toList());
 

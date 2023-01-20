@@ -34,6 +34,11 @@ public class RenameCommand extends AuthenticatedUserCommand {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(itemId, newName);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -45,10 +50,5 @@ public class RenameCommand extends AuthenticatedUserCommand {
         return Objects.equal(userId(), command.userId()) &&
                 Objects.equal(itemId, command.itemId) &&
                 Objects.equal(newName, command.newName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(itemId, newName);
     }
 }
