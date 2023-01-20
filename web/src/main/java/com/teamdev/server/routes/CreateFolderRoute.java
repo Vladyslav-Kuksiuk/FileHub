@@ -2,6 +2,7 @@ package com.teamdev.server.routes;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateCommand;
@@ -47,7 +48,7 @@ public class CreateFolderRoute extends AuthorizedUserRoute {
                                     RecordId<String> userId)
             throws AccessDeniedException,
                    JsonEntityValidationException,
-                   RequestFieldValidationException {
+                   RequestFieldValidationException, DataNotFoundException {
 
         var jsonBody = request.jsonBody();
 

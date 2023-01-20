@@ -21,6 +21,7 @@ import java.util.Optional;
 public class FileUploadProcessImpl implements FileUploadProcess {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
+
     private final FileDao fileDao;
     private final FolderDao folderDao;
     private final FileStorage fileStorage;

@@ -55,7 +55,7 @@ public class FileStorage {
 
         }
 
-        try (OutputStream outStream = new FileOutputStream(targetFile);) {
+        try (OutputStream outStream = new FileOutputStream(targetFile)) {
 
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;

@@ -1,6 +1,7 @@
 package com.teamdev.filehub.processes.filesystem.create;
 
 import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.FolderDaoFake;
 import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
@@ -36,7 +37,8 @@ class FolderCreateProcessImplTest {
 
     @Test
     void folderCreationTest() throws
-                              AccessDeniedException, RequestFieldValidationException {
+                              AccessDeniedException, RequestFieldValidationException,
+                              DataNotFoundException {
 
         FolderCreateCommand command = new FolderCreateCommand(rootFolder.ownerId(),
                                                               rootFolder.id(),

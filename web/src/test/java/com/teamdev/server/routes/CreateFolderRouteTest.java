@@ -137,7 +137,7 @@ class CreateFolderRouteTest {
 
     @Test
     @DisplayName("Should catch RequestFieldValidationException and set 422 response status")
-    void testHandleWithDataNotFoundException() {
+    void testHandleWithRequestFieldValidationException() {
 
         Mockito.when(request.body())
                .thenReturn(

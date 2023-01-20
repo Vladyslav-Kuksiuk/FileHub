@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class UserAuthenticationResponseTest {
 
     @Test
-    void nullTest(){
+    void nullTest() {
 
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(String.class, "FN458FB847BF");

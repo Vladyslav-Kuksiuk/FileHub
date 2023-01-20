@@ -1,6 +1,9 @@
 package com.teamdev.filehub.processes.filesystem.create;
 
+import com.google.common.base.Preconditions;
+import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
@@ -8,42 +11,82 @@ import com.teamdev.util.LocalDateTimeUtil;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * {@link FolderCreateProcess} implementation.
  */
 public class FolderCreateProcessImpl implements FolderCreateProcess {
 
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
+
     private final FolderDao folderDao;
 
     public FolderCreateProcessImpl(@Nonnull FolderDao folderDao) {
-        this.folderDao = folderDao;
+        this.folderDao = Preconditions.checkNotNull(folderDao);
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull FolderCreateCommand command) throws
-                                                                         AccessDeniedException {
+    public RecordId<String> handle(@Nonnull FolderCreateCommand command)
+            throws DataNotFoundException, AccessDeniedException {
 
-        RecordId<String> folderId = new RecordId<>(command.userId()
-                                                          .value() +
-                                                           command.folderName() +
-                                                           LocalDateTime.now(
-                                                                   LocalDateTimeUtil.TIME_ZONE));
+        Preconditions.checkNotNull(command);
 
-        FolderRecord folderRecord = new FolderRecord(folderId,
-                                                     command.userId(),
-                                                     command.parentFolderId(),
-                                                     command.folderName());
+        logger.atInfo()
+              .log("[PROCESS STARTED] - Folder creation - user id: %s, folderName: %s.",
+                   command.userId()
+                          .value(),
+                   command.folderName());
 
-        if (!folderDao.find(command.parentFolderId())
-                      .get()
-                      .ownerId()
-                      .equals(command.userId())) {
-            throw new AccessDeniedException("Folder creation access denied.");
+        Optional<FolderRecord> optionalParentFolderRecord =
+                folderDao.find(command.parentFolderId());
+
+        if (optionalParentFolderRecord.isEmpty()) {
+
+            logger.atInfo()
+                  .log("[PROCESS FAILED] - Folder creation - Folder not found - user id: %s, folderName: %s.",
+                       command.userId()
+                              .value(),
+                       command.folderName());
+
+            throw new DataNotFoundException("Folder not found");
         }
 
-        folderDao.create(folderRecord);
+        FolderRecord parentFolderRecord = optionalParentFolderRecord.get();
 
-        return folderId;
+        if (!parentFolderRecord.ownerId()
+                               .equals(command.userId())) {
+
+            logger.atInfo()
+                  .log("[PROCESS FAILED] - Folder creation - Access denied - user id: %s, folderName: %s.",
+                       command.userId()
+                              .value(),
+                       command.folderName());
+
+            throw new AccessDeniedException("Access to folder denied.");
+        }
+
+        RecordId<String> newFolderId =
+                new RecordId<>(
+                        command.userId()
+                               .value() +
+                                command.folderName() +
+                                LocalDateTime.now(
+                                        LocalDateTimeUtil.TIME_ZONE));
+
+        FolderRecord newFolderRecord = new FolderRecord(newFolderId,
+                                                        command.userId(),
+                                                        command.parentFolderId(),
+                                                        command.folderName());
+
+        folderDao.create(newFolderRecord);
+
+        logger.atInfo()
+              .log("[PROCESS FINISHED] - Folder creation - user id: %s, folderName: %s.",
+                   command.userId()
+                          .value(),
+                   command.folderName());
+
+        return newFolderId;
     }
 }
