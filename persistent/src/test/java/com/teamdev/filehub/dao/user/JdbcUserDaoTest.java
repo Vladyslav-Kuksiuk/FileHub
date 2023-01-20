@@ -18,7 +18,7 @@ class JdbcUserDaoTest {
 
     static final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/FileHub";
     static final String DB_USER = "postgres";
-    static final String DB_PASS = "postgres";
+    static final String DB_PASS = "admin";
     private final UserRecord USER = new UserRecord(new RecordId<>("user"),
                                                    "user",
                                                    "password",
