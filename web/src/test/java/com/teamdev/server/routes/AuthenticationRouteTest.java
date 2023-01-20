@@ -2,10 +2,10 @@ package com.teamdev.server.routes;
 
 import com.google.common.testing.NullPointerTester;
 import com.google.gson.Gson;
-import com.teamdev.filehub.processes.authentication.UserAuthenticationCommand;
-import com.teamdev.filehub.processes.authentication.UserAuthenticationProcess;
-import com.teamdev.filehub.processes.authentication.UserAuthenticationResponse;
-import com.teamdev.filehub.processes.authentication.UserCredentialsMismatchException;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationCommand;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
+import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
+import com.teamdev.filehub.processes.user.authentication.UserCredentialsMismatchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,4 +1,4 @@
-package com.teamdev.filehub.processes.authentication;
+package com.teamdev.filehub.processes.user.authentication;
 
 import com.teamdev.filehub.ServiceException;
 

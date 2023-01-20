@@ -32,6 +32,11 @@ public class FileDownloadQuery implements Query {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(userId, fileId);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -42,10 +47,5 @@ public class FileDownloadQuery implements Query {
         FileDownloadQuery query = (FileDownloadQuery) o;
         return Objects.equal(userId, query.userId) &&
                 Objects.equal(fileId, query.fileId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(userId, fileId);
     }
 }

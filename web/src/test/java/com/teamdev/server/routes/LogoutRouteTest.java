@@ -2,8 +2,8 @@ package com.teamdev.server.routes;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.logout.UserLogoutCommand;
-import com.teamdev.filehub.processes.logout.UserLogoutProcess;
+import com.teamdev.filehub.processes.user.logout.UserLogoutCommand;
+import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
 import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import org.junit.jupiter.api.DisplayName;

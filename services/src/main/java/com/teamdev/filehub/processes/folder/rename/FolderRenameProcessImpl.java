@@ -1,11 +1,13 @@
 package com.teamdev.filehub.processes.folder.rename;
 
+import com.google.common.base.Preconditions;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.processes.AccessDeniedException;
-import com.teamdev.filehub.processes.DataNotFoundException;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
@@ -15,7 +17,8 @@ public class FolderRenameProcessImpl implements FolderRenameProcess {
 
     private final FolderDao folderDao;
 
-    public FolderRenameProcessImpl(FolderDao folderDao) {
+    public FolderRenameProcessImpl(@Nonnull FolderDao folderDao) {
+        Preconditions.checkNotNull(folderDao);
         this.folderDao = folderDao;
     }
 

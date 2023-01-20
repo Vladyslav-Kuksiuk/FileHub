@@ -6,7 +6,6 @@ import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.UserDaoFake;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
-import com.teamdev.filehub.processes.user.register.FieldValidationException;
 import com.teamdev.filehub.processes.user.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.processes.user.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;

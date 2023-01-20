@@ -9,6 +9,8 @@ import com.teamdev.server.routes.LoadFolderRoute;
 import com.teamdev.server.routes.LoadUserRoute;
 import com.teamdev.server.routes.LogoutRoute;
 import com.teamdev.server.routes.RegistrationRoute;
+import com.teamdev.server.routes.RenameFileRoute;
+import com.teamdev.server.routes.RenameFolderRoute;
 import com.teamdev.server.routes.UploadFileRoute;
 
 import static spark.Spark.get;

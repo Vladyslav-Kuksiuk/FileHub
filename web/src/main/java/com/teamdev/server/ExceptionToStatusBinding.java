@@ -5,8 +5,8 @@ import com.google.gson.JsonSyntaxException;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.RequestFieldValidationException;
-import com.teamdev.filehub.processes.authentication.UserCredentialsMismatchException;
-import com.teamdev.filehub.processes.register.UserAlreadyRegisteredException;
+import com.teamdev.filehub.processes.user.authentication.UserCredentialsMismatchException;
+import com.teamdev.filehub.processes.user.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 
 import javax.annotation.Nonnull;

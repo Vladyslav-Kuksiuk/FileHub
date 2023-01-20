@@ -14,7 +14,6 @@ import spark.Response;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * An {@link AuthorizedUserRoute} implementation to provide 'download file' request handling.
@@ -51,7 +50,7 @@ public class DownloadFileRoute extends AuthorizedUserRoute {
 
         try (var input = fileDownloadView.handle(query);
              var output = response.raw()
-                                           .getOutputStream()
+                                  .getOutputStream()
         ) {
 
             ByteStreams.copy(input, output);

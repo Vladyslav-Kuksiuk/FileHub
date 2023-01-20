@@ -9,7 +9,7 @@ import com.teamdev.filehub.processes.user.authentication.UserAuthenticationComma
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
-import com.teamdev.filehub.processes.user.authentication.UserDataMismatchException;
+import com.teamdev.filehub.processes.user.authentication.UserCredentialsMismatchException;
 import com.teamdev.util.StringEncryptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

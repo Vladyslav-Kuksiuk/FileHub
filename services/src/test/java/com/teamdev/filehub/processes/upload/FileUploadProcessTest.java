@@ -9,7 +9,6 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.filehub.processes.file.upload.FileUploadCommand;
 import com.teamdev.filehub.processes.file.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.file.upload.FileUploadProcessImpl;

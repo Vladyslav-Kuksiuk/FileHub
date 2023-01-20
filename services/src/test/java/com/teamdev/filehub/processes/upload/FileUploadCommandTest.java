@@ -2,6 +2,7 @@ package com.teamdev.filehub.processes.upload;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.processes.file.upload.FileUploadCommand;
 import org.junit.jupiter.api.Test;
 
 class FileUploadCommandTest {

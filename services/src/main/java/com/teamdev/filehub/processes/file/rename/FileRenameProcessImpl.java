@@ -1,11 +1,13 @@
 package com.teamdev.filehub.processes.file.rename;
 
+import com.google.common.base.Preconditions;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
-import com.teamdev.filehub.processes.AccessDeniedException;
-import com.teamdev.filehub.processes.DataNotFoundException;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
@@ -15,7 +17,8 @@ public class FileRenameProcessImpl implements FileRenameProcess {
 
     private final FileDao fileDao;
 
-    public FileRenameProcessImpl(FileDao fileDao) {
+    public FileRenameProcessImpl(@Nonnull FileDao fileDao) {
+        Preconditions.checkNotNull(fileDao);
         this.fileDao = fileDao;
     }
 
