@@ -17,8 +17,7 @@ import com.teamdev.filehub.processes.filesystem.rename.FileRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.FolderRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
-import com.teamdev.filehub.processes.folder.remove.FolderRemoveProcess;
-import com.teamdev.filehub.processes.folder.remove.FolderRemoveProcessImpl;
+import com.teamdev.filehub.processes.filesystem.remove.FolderRemoveProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
@@ -56,7 +55,7 @@ public class ApplicationConfiguration {
     private final FolderContentView folderContentView;
     private final FolderSearchView folderSearchView;
     private final RenameProcess folderRenameProcess;
-    private final FolderRemoveProcess folderRemoveProcess;
+    private final RemoveProcess folderRemoveProcess;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
@@ -88,7 +87,7 @@ public class ApplicationConfiguration {
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
         folderSearchView = new FolderSearchViewImpl(folderDao, fileDao);
         folderRenameProcess = new FolderRenameProcess(folderDao);
-        folderRemoveProcess = new FolderRemoveProcessImpl(folderDao, fileDao, fileStorage);
+        folderRemoveProcess = new FolderRemoveProcess(folderDao, fileDao, fileStorage);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
@@ -138,7 +137,7 @@ public class ApplicationConfiguration {
         return fileRemoveProcess;
     }
 
-    public FolderRemoveProcess getFolderRemoveProcess() {
+    public RemoveProcess getFolderRemoveProcess() {
         return folderRemoveProcess;
     }
 

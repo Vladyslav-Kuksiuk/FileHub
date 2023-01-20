@@ -1,28 +1,29 @@
-package com.teamdev.filehub.processes.folder.remove;
+package com.teamdev.filehub.processes.filesystem.remove;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
 import com.teamdev.filehub.filestorage.FileStorage;
-import com.teamdev.filehub.processes.AccessDeniedException;
-import com.teamdev.filehub.processes.DataNotFoundException;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
  * {@link FolderRemoveProcess} implementation.
  */
-public class FolderRemoveProcessImpl implements FolderRemoveProcess {
+public class FolderRemoveProcess implements RemoveProcess {
 
     private final FolderDao folderDao;
     private final FileDao fileDao;
     private final FileStorage fileStorage;
 
-    public FolderRemoveProcessImpl(FolderDao folderDao,
-                                   FileDao fileDao,
-                                   FileStorage fileStorage) {
+    public FolderRemoveProcess(@Nonnull FolderDao folderDao,
+                               @Nonnull FileDao fileDao,
+                               @Nonnull FileStorage fileStorage) {
 
         this.folderDao = Preconditions.checkNotNull(folderDao);
         this.fileDao = Preconditions.checkNotNull(fileDao);
@@ -30,10 +31,11 @@ public class FolderRemoveProcessImpl implements FolderRemoveProcess {
     }
 
     @Override
-    public RecordId<String> handle(FolderRemoveCommand command)
+    public RecordId<String> handle(@Nonnull RemoveCommand command)
             throws AccessDeniedException, DataNotFoundException {
+        Preconditions.checkNotNull(command);
 
-        Optional<FolderRecord> optionalFolderRecord = folderDao.find(command.folderId());
+        Optional<FolderRecord> optionalFolderRecord = folderDao.find(command.itemId());
 
         if (optionalFolderRecord.isEmpty()) {
             throw new DataNotFoundException("Folder not found");
@@ -49,7 +51,7 @@ public class FolderRemoveProcessImpl implements FolderRemoveProcess {
 
         removeFolder(folderRecord.id());
 
-        return command.folderId();
+        return command.itemId();
     }
 
     private void removeFolder(RecordId<String> folderId) {
