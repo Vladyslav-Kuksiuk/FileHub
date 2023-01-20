@@ -39,7 +39,7 @@ public class FileRenameProcess implements RenameProcess {
         if (optionalFileRecord.isEmpty()) {
 
             logger.atInfo()
-                  .log("[PROCESS FAILED] - File renaming - Folder not found - user id: %s, file: %s.",
+                  .log("[PROCESS FAILED] - File renaming - File not found - user id: %s, file: %s.",
                        command.userId()
                               .value(),
                        command.itemId()
