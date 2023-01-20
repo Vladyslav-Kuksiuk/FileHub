@@ -1,14 +1,13 @@
 package com.teamdev.server.routes;
 
 import com.google.common.testing.NullPointerTester;
-import com.google.gson.Gson;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
+import com.teamdev.filehub.processes.filesystem.rename.RenameCommand;
+import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
 import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
-import com.teamdev.filehub.views.download.FileDownloadQuery;
-import com.teamdev.filehub.views.download.FileDownloadView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,18 +17,14 @@ import org.mockito.MockitoAnnotations;
 import spark.Request;
 import spark.Response;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
-class DownloadFileRouteTest {
+class RenameItemRouteTest {
 
     private final RecordId<String> userId = new RecordId<>("userId");
-    private final RecordId<String> fileId = new RecordId<>("fileId");
+    private final RecordId<String> itemId = new RecordId<>("itemId");
+    private final String newName = "newName";
 
     @Mock
     private Request request;
@@ -41,9 +36,9 @@ class DownloadFileRouteTest {
     private UserAuthorizationView authView;
 
     @Mock
-    private FileDownloadView downloadView;
+    private RenameProcess renameProcess;
 
-    DownloadFileRouteTest() {
+    RenameItemRouteTest() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -51,10 +46,16 @@ class DownloadFileRouteTest {
     void setUp() throws UserAuthorizationException {
         Mockito.when(request.headers("Authorization"))
                .thenReturn("Bearer token");
+
         Mockito.when(request.params(":id"))
-               .thenReturn(fileId.value());
+               .thenReturn(itemId.value());
+
         Mockito.when(request.contentType())
                .thenReturn("application/json");
+
+        Mockito.when(request.body())
+               .thenReturn("{\"name\":\"" + newName + "\"}");
+
         Mockito.when(authView.handle(any()))
                .thenReturn(userId);
     }
@@ -65,41 +66,29 @@ class DownloadFileRouteTest {
 
         var tester = new NullPointerTester();
 
-        tester.testAllPublicConstructors(DownloadFileRoute.class);
+        tester.testAllPublicConstructors(RenameItemRoute.class);
 
     }
 
     @Test
-    @DisplayName("Should set empty file input stream in response output stream")
-    void testHandleWithoutExceptions() throws IOException, DataNotFoundException,
+    @DisplayName("Should call rename process and set renamed item id in response body")
+    void testHandleWithoutExceptions() throws DataNotFoundException,
                                               AccessDeniedException {
 
-        var inputStream = Mockito.mock(InputStream.class);
-        Mockito.when(inputStream.read(any(byte[].class)))
-               .thenReturn(-1);
+        var command = new RenameCommand(userId, itemId, newName);
 
-        var outputStream = Mockito.mock(ServletOutputStream.class);
+        Mockito.when(renameProcess.handle(command))
+               .thenReturn(itemId);
 
-        var raw = Mockito.mock(HttpServletResponse.class);
-        Mockito.when(raw.getOutputStream())
-               .thenReturn(outputStream);
-
-        Mockito.when(response.raw())
-               .thenReturn(raw);
-
-        Mockito.when(downloadView.handle(any()))
-               .thenReturn(inputStream);
-
-        var route = new DownloadFileRoute(authView, downloadView);
+        var route = new RenameItemRoute(authView, renameProcess);
 
         route.handle(request, response);
 
-        Mockito.verify(downloadView, Mockito.times(1))
-               .handle(new FileDownloadQuery(userId, fileId));
+        Mockito.verify(response, Mockito.times(1))
+               .body(itemId.value());
 
-        Mockito.verify(outputStream, Mockito.never())
-               .write(any(byte[].class), any(Integer.class), any(Integer.class));
-
+        Mockito.verify(renameProcess, Mockito.times(1))
+               .handle(command);
     }
 
     @Test
@@ -109,10 +98,10 @@ class DownloadFileRouteTest {
 
         var errorMessage = "errorMessage";
 
-        Mockito.when(downloadView.handle(any()))
+        Mockito.when(renameProcess.handle(any()))
                .thenThrow(new AccessDeniedException(errorMessage));
 
-        var route = new DownloadFileRoute(authView, downloadView);
+        var route = new RenameItemRoute(authView, renameProcess);
 
         assertThat(route.handle(request, response)).isEqualTo(errorMessage);
 
@@ -128,43 +117,15 @@ class DownloadFileRouteTest {
 
         var errorMessage = "errorMessage";
 
-        Mockito.when(downloadView.handle(any()))
+        Mockito.when(renameProcess.handle(any()))
                .thenThrow(new DataNotFoundException(errorMessage));
 
-        var route = new DownloadFileRoute(authView, downloadView);
+        var route = new RenameItemRoute(authView, renameProcess);
 
         assertThat(route.handle(request, response)).isEqualTo(errorMessage);
 
         Mockito.verify(response, Mockito.times(1))
                .status(404);
-
-    }
-
-    @Test
-    @DisplayName("Should catch IOException and set response status 500")
-    void testHandleWithIOException() throws DataNotFoundException,
-                                            AccessDeniedException, IOException {
-
-        var errorMessage = "errorMessage";
-
-        Mockito.when(downloadView.handle(any()))
-               .thenReturn(null);
-
-        var raw = Mockito.mock(HttpServletResponse.class);
-        Mockito.when(raw.getOutputStream())
-               .thenThrow(new IOException(errorMessage));
-
-        Mockito.when(response.raw())
-               .thenReturn(raw);
-
-        var route = new DownloadFileRoute(authView, downloadView);
-
-        route.handle(request, response);
-
-        Mockito.verify(response, Mockito.times(1))
-               .status(500);
-        Mockito.verify(response, Mockito.times(1))
-               .body(errorMessage);
 
     }
 

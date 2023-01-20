@@ -1,5 +1,6 @@
 package com.teamdev.filehub.processes.filesystem.rename;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.AuthenticatedUserCommand;
@@ -30,5 +31,24 @@ public class RenameCommand extends AuthenticatedUserCommand {
 
     public String newName() {
         return newName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RenameCommand)) {
+            return false;
+        }
+        RenameCommand command = (RenameCommand) o;
+        return Objects.equal(userId(), command.userId()) &&
+                Objects.equal(itemId, command.itemId) &&
+                Objects.equal(newName, command.newName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(itemId, newName);
     }
 }
