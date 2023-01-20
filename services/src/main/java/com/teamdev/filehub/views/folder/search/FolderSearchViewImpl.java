@@ -47,35 +47,29 @@ public class FolderSearchViewImpl implements FolderSearchView {
             throw new AccessDeniedException("Access to folder denied.");
         }
 
-        List<FolderRecord> innerFolders =
-                folderDao.getInnerFoldersByParentId(query.folderId());
-        List<FileRecord> innerFiles =
-                fileDao.getFilesInFolder(query.folderId());
+        List<FolderRecord> folders =
+                folderDao.getByParentIdAndNamePart(query.folderId(), query.searchWord());
+        List<FileRecord> files =
+                fileDao.getByFolderIdAndNamePart(query.folderId(), query.searchWord());
 
         FolderContent folderContent = new FolderContent();
 
-        innerFolders.stream()
-                .filter(folder -> folder.name()
-                                        .contains(query.searchWord()))
-                .forEach(folder -> folderContent.addItem(
-                        new FolderItem(folder.id()
-                                             .value(),
-                                       folder.parentFolderId()
-                                             .value(),
-                                       folder.name())));
+        folders.forEach(folder -> folderContent.addItem(
+                new FolderItem(folder.id()
+                                     .value(),
+                               folder.parentFolderId()
+                                     .value(),
+                               folder.name())));
 
-        innerFiles.stream()
-                .filter(file -> file.name()
-                                    .contains(query.searchWord()))
-                .forEach(file -> folderContent.addItem(
-                        new FileItem(file.id()
-                                         .value(),
-                                     file.folderId()
-                                         .value(),
-                                     file.name(),
-                                     file.size(),
-                                     file.mimetype())
-                ));
+        files.forEach(file -> folderContent.addItem(
+                new FileItem(file.id()
+                                 .value(),
+                             file.folderId()
+                                 .value(),
+                             file.name(),
+                             file.size(),
+                             file.mimetype())
+        ));
 
         return folderContent;
     }

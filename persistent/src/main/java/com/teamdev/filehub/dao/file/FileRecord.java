@@ -55,6 +55,11 @@ public class FileRecord extends DatabaseRecord<String> {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(folderId, ownerId, name, mimetype, size);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -69,10 +74,5 @@ public class FileRecord extends DatabaseRecord<String> {
                 Objects.equal(ownerId, that.ownerId) &&
                 Objects.equal(name, that.name) &&
                 Objects.equal(mimetype, that.mimetype);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(folderId, ownerId, name, mimetype, size);
     }
 }

@@ -21,6 +21,24 @@ public class InMemoryFolderDao implements FolderDao {
         this.folderTable = folderTable;
     }
 
+    private static FolderRecord convertDataIntoRecord(FolderData data) {
+        return new FolderRecord(new RecordId<>(data.id()),
+                                new RecordId<>(data.ownerId()),
+                                new RecordId<>(data.parentFolderId()),
+                                data.name());
+    }
+
+    private static FolderData convertRecordIntoData(FolderRecord record) {
+        return new FolderData(
+                record.id()
+                      .value(),
+                record.ownerId()
+                      .value(),
+                record.parentFolderId()
+                      .value(),
+                record.name());
+    }
+
     @Override
     public Optional<FolderRecord> find(RecordId<String> id) {
 
@@ -30,10 +48,7 @@ public class InMemoryFolderDao implements FolderDao {
 
             FolderData data = optionalData.get();
 
-            return Optional.of(new FolderRecord(id,
-                                                new RecordId<>(data.ownerId()),
-                                                new RecordId<>(data.parentFolderId()),
-                                                data.name()));
+            return Optional.of(convertDataIntoRecord(data));
         }
 
         return Optional.empty();
@@ -47,31 +62,14 @@ public class InMemoryFolderDao implements FolderDao {
     @Override
     public void create(FolderRecord record) {
 
-        FolderData data = new FolderData(
-                record.id()
-                      .value(),
-                record.ownerId()
-                      .value(),
-                record.parentFolderId()
-                      .value(),
-                record.name());
-
-        folderTable.create(data);
+        folderTable.create(convertRecordIntoData(record));
 
     }
 
     @Override
     public void update(FolderRecord record) {
-        FolderData data = new FolderData(
-                record.id()
-                      .value(),
-                record.ownerId()
-                      .value(),
-                record.parentFolderId()
-                      .value(),
-                record.name());
 
-        folderTable.update(data);
+        folderTable.update(convertRecordIntoData(record));
     }
 
     @Override
@@ -79,10 +77,7 @@ public class InMemoryFolderDao implements FolderDao {
 
         return folderTable.selectWithSameParentId(parentId.value())
                 .stream()
-                .map(data -> new FolderRecord(new RecordId<>(data.id()),
-                                              new RecordId<>(data.ownerId()),
-                                              new RecordId<>(data.parentFolderId()),
-                                              data.name()))
+                .map(InMemoryFolderDao::convertDataIntoRecord)
                 .collect(Collectors.toList());
 
     }
@@ -95,13 +90,17 @@ public class InMemoryFolderDao implements FolderDao {
 
             FolderData data = optionalData.get();
 
-            return Optional.of(
-                    new FolderRecord(new RecordId<>(data.id()),
-                                     new RecordId<>(data.ownerId()),
-                                     new RecordId<>(data.parentFolderId()),
-                                     data.name()));
+            return Optional.of(convertDataIntoRecord(data));
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public List<FolderRecord> getByParentIdAndNamePart(RecordId<String> parentId, String namePart) {
+        return folderTable.getByParentIdAndNamePart(parentId.value(), namePart)
+                .stream()
+                .map(InMemoryFolderDao::convertDataIntoRecord)
+                .collect(Collectors.toList());
     }
 }

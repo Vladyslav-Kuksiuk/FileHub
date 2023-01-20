@@ -5,6 +5,7 @@ import com.teamdev.filehub.user.UserData;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,22 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
                 .filter(folder -> folder.ownerId()
                                         .equals(userId) && folder.parentFolderId() == null)
                 .findFirst();
+
+    }
+
+    public List<FolderData> getByParentIdAndNamePart(@Nonnull String parentId,
+                                                     @Nonnull String namePart) {
+
+        if (!tableMap().containsKey(parentId)) {
+            throw new RuntimeException("Folder with this id doesn't exist.");
+        }
+
+        return tableMap().values()
+                .stream()
+                .filter(data -> Objects.equals(parentId, data.parentFolderId()) &&
+                        data.name()
+                            .contains(namePart))
+                .collect(Collectors.toList());
 
     }
 

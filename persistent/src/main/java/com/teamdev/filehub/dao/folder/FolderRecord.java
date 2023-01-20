@@ -41,6 +41,11 @@ public class FolderRecord extends DatabaseRecord<String> {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(ownerId, parentFolderId, name);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -53,10 +58,5 @@ public class FolderRecord extends DatabaseRecord<String> {
                 Objects.equal(ownerId, that.ownerId) &&
                 Objects.equal(parentFolderId, that.parentFolderId) &&
                 Objects.equal(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(ownerId, parentFolderId, name);
     }
 }

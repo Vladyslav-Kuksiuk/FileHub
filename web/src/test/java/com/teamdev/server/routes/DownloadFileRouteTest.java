@@ -1,7 +1,6 @@
 package com.teamdev.server.routes;
 
 import com.google.common.testing.NullPointerTester;
-import com.google.gson.Gson;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
