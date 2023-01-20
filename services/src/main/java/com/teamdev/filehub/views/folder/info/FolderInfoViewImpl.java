@@ -1,11 +1,13 @@
 package com.teamdev.filehub.views.folder.info;
 
-import com.teamdev.filehub.dao.file.FileDao;
+import com.google.common.base.Preconditions;
+import com.google.common.flogger.FluentLogger;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.views.AccessDeniedException;
-import com.teamdev.filehub.views.DataNotFoundException;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
@@ -13,21 +15,32 @@ import java.util.Optional;
  */
 public class FolderInfoViewImpl implements FolderInfoView {
 
-    private final FolderDao folderDao;
-    private final FileDao fileDao;
+    private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public FolderInfoViewImpl(FolderDao folderDao, FileDao fileDao) {
-        this.folderDao = folderDao;
-        this.fileDao = fileDao;
+    private final FolderDao folderDao;
+
+    public FolderInfoViewImpl(@Nonnull FolderDao folderDao) {
+        this.folderDao = Preconditions.checkNotNull(folderDao);
     }
 
     @Override
-    public FolderInfo handle(FolderInfoQuery query)
+    public FolderInfo handle(@Nonnull FolderInfoQuery query)
             throws AccessDeniedException, DataNotFoundException {
+        Preconditions.checkNotNull(query);
+
+        logger.atInfo()
+              .log("[VIEW QUERIED] - Folder info - folderId: %s.", query.folderId()
+                                                                        .value());
 
         Optional<FolderRecord> optionalFolderRecord = folderDao.find(query.folderId());
 
         if (optionalFolderRecord.isEmpty()) {
+
+            logger.atInfo()
+                  .log("[VIEW FAILED] - Folder info - Folder not found - folderId: %s.",
+                       query.folderId()
+                            .value());
+
             throw new DataNotFoundException("Folder not found");
         }
 
@@ -35,18 +48,22 @@ public class FolderInfoViewImpl implements FolderInfoView {
 
         if (!folderRecord.ownerId()
                          .equals(query.userId())) {
+
+            logger.atInfo()
+                  .log("[VIEW FAILED] - Folder info - Access denied - folderId: %s.",
+                       query.folderId()
+                            .value());
+
             throw new AccessDeniedException("Access to folder denied.");
         }
 
-        int innerFoldersAmount = folderDao.getInnerFoldersByParentId(query.folderId())
-                                          .size();
-        int innerFilesAmount = fileDao.getFilesInFolder(query.folderId())
-                                      .size();
+        logger.atInfo()
+              .log("[VIEW FINISHED] - Folder info - folderId: %s.", folderRecord.id()
+                                                                                .value());
 
         return new FolderInfo(folderRecord.name(),
                               folderRecord.id()
                                           .value(),
-                              innerFoldersAmount + innerFilesAmount,
                               folderRecord.parentFolderId()
                                           .value());
     }

@@ -14,4 +14,6 @@ public interface FolderDao extends DataAccessObject<String, FolderRecord> {
     List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId);
 
     Optional<FolderRecord> findUserRootFolder(RecordId<String> userId);
+
+    List<FolderRecord> getByParentIdAndNamePart(RecordId<String> parentId, String namePart);
 }

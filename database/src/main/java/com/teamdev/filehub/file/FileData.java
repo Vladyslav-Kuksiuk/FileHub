@@ -53,11 +53,16 @@ public class FileData extends Data<String> {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(folderId, ownerId, name, mimetype, size);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof FileData)) {
             return false;
         }
         FileData data = (FileData) o;
@@ -65,10 +70,5 @@ public class FileData extends Data<String> {
                 Objects.equal(ownerId, data.ownerId) &&
                 Objects.equal(name, data.name) &&
                 Objects.equal(mimetype, data.mimetype);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(folderId, ownerId, name, mimetype, size);
     }
 }

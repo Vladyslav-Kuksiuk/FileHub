@@ -49,12 +49,12 @@ public class FolderData extends Data<String> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof FolderData)) {
             return false;
         }
         FolderData data = (FolderData) o;
         return Objects.equal(ownerId, data.ownerId) &&
-               Objects.equal(parentFolderId, data.parentFolderId) &&
-               Objects.equal(name, data.name);
+                Objects.equal(parentFolderId, data.parentFolderId) &&
+                Objects.equal(name, data.name);
     }
 }
