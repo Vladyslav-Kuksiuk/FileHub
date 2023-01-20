@@ -23,7 +23,6 @@ class FolderRenameProcessTest {
     void nullTest() {
 
         var tester = new NullPointerTester();
-        tester.setDefault(RecordId.class, new RecordId<>("user"));
         tester.testAllPublicConstructors(FolderRenameProcess.class);
 
     }
@@ -64,7 +63,7 @@ class FolderRenameProcessTest {
     }
 
     @Test
-    @DisplayName("Should throw DataNotFoundException because folderDao returns Optional.empty")
+    @DisplayName("Should throw DataNotFoundException because because folder doesn't exist")
     void testHandleWithDataNotFoundException() {
 
         var folderId = new RecordId<>("folderId");

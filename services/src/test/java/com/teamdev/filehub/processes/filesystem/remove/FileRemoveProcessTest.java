@@ -1,4 +1,4 @@
-package com.teamdev.filehub.processes.filesystem.rename;
+package com.teamdev.filehub.processes.filesystem.remove;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.AccessDeniedException;
@@ -6,6 +6,7 @@ import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
+import com.teamdev.filehub.filestorage.FileStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,19 +17,20 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
-class FileRenameProcessTest {
+class FileRemoveProcessTest {
 
     @Test
     @DisplayName("Should throw NullPointerException on null in constructor params")
     void nullTest() {
 
         var tester = new NullPointerTester();
-        tester.testAllPublicConstructors(FileRenameProcess.class);
+        tester.setDefault(FileStorage.class, Mockito.mock(FileStorage.class));
+        tester.testAllPublicConstructors(FileRemoveProcess.class);
 
     }
 
     @Test
-    @DisplayName("Should call file dao update with new name and return file id")
+    @DisplayName("Should call file dao remove with file id and return removed file id")
     void testHandleWithoutExceptions() throws DataNotFoundException, AccessDeniedException {
 
         var fileRecord = new FileRecord(
@@ -40,29 +42,25 @@ class FileRenameProcessTest {
                 123
         );
 
-        var newName = "newName";
-
         var fileDao = Mockito.mock(FileDao.class);
         Mockito.when(fileDao.find(fileRecord.id()))
                .thenReturn(Optional.of(fileRecord));
 
-        var process = new FileRenameProcess(fileDao);
+        var fileStorage = Mockito.mock(FileStorage.class);
 
-        var command = new RenameCommand(fileRecord.ownerId(),
-                                        fileRecord.id(),
-                                        newName);
+        var process = new FileRemoveProcess(fileDao, fileStorage);
+
+        var command = new RemoveCommand(fileRecord.ownerId(),
+                                        fileRecord.id());
 
         assertThat(process.handle(command))
                 .isEqualTo(fileRecord.id());
 
         Mockito.verify(fileDao, Mockito.times(1))
-               .update(new FileRecord(
-                       fileRecord.id(),
-                       fileRecord.folderId(),
-                       fileRecord.ownerId(),
-                       newName,
-                       fileRecord.mimetype(),
-                       fileRecord.size()));
+               .delete(fileRecord.id());
+
+        Mockito.verify(fileStorage, Mockito.times(1))
+               .removeFile(fileRecord.id());
 
     }
 
@@ -76,11 +74,12 @@ class FileRenameProcessTest {
         Mockito.when(fileDao.find(fileId))
                .thenReturn(Optional.empty());
 
-        var process = new FileRenameProcess(fileDao);
+        var fileStorage = Mockito.mock(FileStorage.class);
 
-        var command = new RenameCommand(new RecordId<>("userid"),
-                                        fileId,
-                                        "newName");
+        var process = new FileRemoveProcess(fileDao, fileStorage);
+
+        var command = new RemoveCommand(new RecordId<>("userid"),
+                                        fileId);
 
         assertThrows(DataNotFoundException.class, () -> {
             process.handle(command);
@@ -88,6 +87,9 @@ class FileRenameProcessTest {
 
         Mockito.verify(fileDao, Mockito.never())
                .update(any());
+
+        Mockito.verify(fileStorage, Mockito.never())
+               .removeFile(any());
 
     }
 
@@ -103,17 +105,17 @@ class FileRenameProcessTest {
                 "mimetype",
                 123
         );
-        var newName = "newName";
 
         var fileDao = Mockito.mock(FileDao.class);
         Mockito.when(fileDao.find(fileRecord.id()))
                .thenReturn(Optional.of(fileRecord));
 
-        var process = new FileRenameProcess(fileDao);
+        var fileStorage = Mockito.mock(FileStorage.class);
 
-        var command = new RenameCommand(new RecordId<>("notOwnerUserId"),
-                                        fileRecord.id(),
-                                        newName);
+        var process = new FileRemoveProcess(fileDao, fileStorage);
+
+        var command = new RemoveCommand(new RecordId<>("notOwnerUserId"),
+                                        fileRecord.id());
 
         assertThrows(AccessDeniedException.class, () -> {
             process.handle(command);
@@ -121,6 +123,9 @@ class FileRenameProcessTest {
 
         Mockito.verify(fileDao, Mockito.never())
                .update(any());
+
+        Mockito.verify(fileStorage, Mockito.never())
+               .removeFile(any());
 
     }
 
