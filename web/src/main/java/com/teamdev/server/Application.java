@@ -9,8 +9,7 @@ import com.teamdev.server.routes.LoadFolderRoute;
 import com.teamdev.server.routes.LoadUserRoute;
 import com.teamdev.server.routes.LogoutRoute;
 import com.teamdev.server.routes.RegistrationRoute;
-import com.teamdev.server.routes.RenameFileRoute;
-import com.teamdev.server.routes.RenameFolderRoute;
+import com.teamdev.server.routes.RenameItemRoute;
 import com.teamdev.server.routes.UploadFileRoute;
 
 import static spark.Spark.get;
@@ -43,11 +42,11 @@ public class Application {
             new LoadFolderContentRoute(context.getUserAuthorizationView(),
                                        context.getFolderContentView()));
         put("api/file/:id",
-            new RenameFileRoute(context.getUserAuthorizationView(),
+            new RenameItemRoute(context.getUserAuthorizationView(),
                                 context.getFileRenameProcess()));
         put("api/folder/:id",
-            new RenameFolderRoute(context.getUserAuthorizationView(),
-                                  context.getFolderRenameProcess()));
+            new RenameItemRoute(context.getUserAuthorizationView(),
+                                context.getFolderRenameProcess()));
 
         get("api/files/:id",
             new DownloadFileRoute(context.getUserAuthorizationView(),

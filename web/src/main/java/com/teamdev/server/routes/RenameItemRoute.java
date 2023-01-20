@@ -13,18 +13,31 @@ import spark.Response;
 
 import javax.annotation.Nonnull;
 
-public class RenameFileRoute extends AuthorizedUserRoute {
+/**
+ * An {@link AuthorizedUserRoute} implementation to provide 'rename item' request handling.
+ */
+public class RenameItemRoute extends AuthorizedUserRoute {
 
-    private final RenameProcess renameFileProcess;
+    private final RenameProcess renameItemProcess;
 
-    public RenameFileRoute(
+    public RenameItemRoute(
             @Nonnull UserAuthorizationView authorizationView,
             @Nonnull RenameProcess renameFileProcess) {
 
         super(Preconditions.checkNotNull(authorizationView));
-        this.renameFileProcess = Preconditions.checkNotNull(renameFileProcess);
+        this.renameItemProcess = Preconditions.checkNotNull(renameFileProcess);
     }
 
+    /**
+     * Handles 'rename item' request.
+     *
+     * @param request
+     *         The request object providing information about the HTTP request.
+     * @param response
+     *         The response object providing functionality for modifying the response.
+     * @param userId
+     *         Authorized user id.
+     */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
                                     RecordId<String> userId) throws ServiceException,
@@ -35,9 +48,9 @@ public class RenameFileRoute extends AuthorizedUserRoute {
                                         new RecordId<>(request.params(":id")),
                                         jsonBody.getAsString("name"));
 
-        var fileId = renameFileProcess.handle(command);
+        var itemId = renameItemProcess.handle(command);
 
-        response.body(fileId.value());
+        response.body(itemId.value());
 
     }
 }
