@@ -3,8 +3,8 @@ package com.teamdev.server.routes;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.file.rename.FileRenameCommand;
-import com.teamdev.filehub.processes.file.rename.FileRenameProcess;
+import com.teamdev.filehub.processes.filesystem.rename.RenameCommand;
+import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.server.AuthorizedUserRoute;
 import com.teamdev.server.JsonEntityValidationException;
@@ -15,11 +15,11 @@ import javax.annotation.Nonnull;
 
 public class RenameFileRoute extends AuthorizedUserRoute {
 
-    private final FileRenameProcess renameFileProcess;
+    private final RenameProcess renameFileProcess;
 
     public RenameFileRoute(
             @Nonnull UserAuthorizationView authorizationView,
-            @Nonnull FileRenameProcess renameFileProcess) {
+            @Nonnull RenameProcess renameFileProcess) {
 
         super(Preconditions.checkNotNull(authorizationView));
         this.renameFileProcess = Preconditions.checkNotNull(renameFileProcess);
@@ -31,9 +31,9 @@ public class RenameFileRoute extends AuthorizedUserRoute {
                                                                     JsonEntityValidationException {
         var jsonBody = request.jsonBody();
 
-        FileRenameCommand command = new FileRenameCommand(userId,
-                                                          new RecordId<>(request.params(":id")),
-                                                          jsonBody.getAsString("name"));
+        var command = new RenameCommand(userId,
+                                        new RecordId<>(request.params(":id")),
+                                        jsonBody.getAsString("name"));
 
         var fileId = renameFileProcess.handle(command);
 

@@ -2,8 +2,8 @@ package com.teamdev.server.routes;
 
 import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.processes.folder.rename.FolderRenameCommand;
-import com.teamdev.filehub.processes.folder.rename.FolderRenameProcess;
+import com.teamdev.filehub.processes.filesystem.rename.RenameCommand;
+import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.server.AuthorizedUserRoute;
 import com.teamdev.server.JsonEntityValidationException;
@@ -12,11 +12,11 @@ import spark.Response;
 
 public class RenameFolderRoute extends AuthorizedUserRoute {
 
-    private final FolderRenameProcess folderRenameProcess;
+    private final RenameProcess folderRenameProcess;
 
     public RenameFolderRoute(
             UserAuthorizationView authorizationView,
-            FolderRenameProcess folderRenameProcess) {
+            RenameProcess folderRenameProcess) {
         super(authorizationView);
         this.folderRenameProcess = folderRenameProcess;
     }
@@ -28,9 +28,9 @@ public class RenameFolderRoute extends AuthorizedUserRoute {
 
         var jsonBody = request.jsonBody();
 
-        var command = new FolderRenameCommand(userId,
-                                              new RecordId<>(request.params(":id")),
-                                              jsonBody.getAsString("name"));
+        var command = new RenameCommand(userId,
+                                        new RecordId<>(request.params(":id")),
+                                        jsonBody.getAsString("name"));
 
         var folderId = folderRenameProcess.handle(command);
 

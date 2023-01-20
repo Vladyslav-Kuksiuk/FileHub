@@ -9,14 +9,13 @@ import com.teamdev.filehub.dao.folder.InMemoryFolderDao;
 import com.teamdev.filehub.dao.user.InMemoryUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
-import com.teamdev.filehub.processes.file.rename.FileRenameProcess;
-import com.teamdev.filehub.processes.file.rename.FileRenameProcessImpl;
-import com.teamdev.filehub.processes.file.upload.FileUploadProcess;
-import com.teamdev.filehub.processes.file.upload.FileUploadProcessImpl;
-import com.teamdev.filehub.processes.folder.create.FolderCreateProcess;
-import com.teamdev.filehub.processes.folder.create.FolderCreateProcessImpl;
-import com.teamdev.filehub.processes.folder.rename.FolderRenameProcess;
-import com.teamdev.filehub.processes.folder.rename.FolderRenameProcessImpl;
+import com.teamdev.filehub.processes.filesystem.rename.FileRenameProcess;
+import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
+import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
+import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcessImpl;
+import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcess;
+import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcessImpl;
+import com.teamdev.filehub.processes.filesystem.rename.FolderRenameProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
@@ -49,11 +48,11 @@ public class ApplicationConfiguration {
 
     private final FolderInfoView folderInfoView;
     private final FolderContentView folderContentView;
-    private final FolderRenameProcess folderRenameProcess;
+    private final RenameProcess folderRenameProcess;
 
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
-    private final FileRenameProcess fileRenameProcess;
+    private final RenameProcess fileRenameProcess;
 
     private final FileDownloadView fileDownloadView;
 
@@ -78,11 +77,11 @@ public class ApplicationConfiguration {
 
         folderInfoView = new FolderInfoViewImpl(folderDao);
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
-        folderRenameProcess = new FolderRenameProcessImpl(folderDao);
+        folderRenameProcess = new FolderRenameProcess(folderDao);
 
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
-        fileRenameProcess = new FileRenameProcessImpl(fileDao);
+        fileRenameProcess = new FileRenameProcess(fileDao);
 
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
@@ -128,11 +127,11 @@ public class ApplicationConfiguration {
         return folderContentView;
     }
 
-    public FolderRenameProcess getFolderRenameProcess() {
+    public RenameProcess getFolderRenameProcess() {
         return folderRenameProcess;
     }
 
-    public FileRenameProcess getFileRenameProcess() {
+    public RenameProcess getFileRenameProcess() {
         return fileRenameProcess;
     }
 }
