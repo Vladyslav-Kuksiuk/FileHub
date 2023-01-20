@@ -1,5 +1,6 @@
 package com.teamdev.filehub.dao.file;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.DatabaseRecord;
 import com.teamdev.filehub.dao.RecordId;
@@ -51,5 +52,27 @@ public class FileRecord extends DatabaseRecord<String> {
 
     public long size() {
         return size;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(folderId, ownerId, name, mimetype, size);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FileRecord)) {
+            return false;
+        }
+        FileRecord that = (FileRecord) o;
+        return size == that.size &&
+                Objects.equal(folderId, that.folderId) &&
+                Objects.equal(id(), that.id()) &&
+                Objects.equal(ownerId, that.ownerId) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(mimetype, that.mimetype);
     }
 }

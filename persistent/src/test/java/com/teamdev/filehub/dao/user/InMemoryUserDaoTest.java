@@ -74,7 +74,7 @@ class InMemoryUserDaoTest {
     void createExistingUserTest() {
 
         doThrow(new RuntimeException("Data already exists.")).when(userTable)
-                                                             .create(USER_DATA);
+                .create(USER_DATA);
 
         assertThrows(RuntimeException.class, () -> userDao.create(USER_RECORD));
 

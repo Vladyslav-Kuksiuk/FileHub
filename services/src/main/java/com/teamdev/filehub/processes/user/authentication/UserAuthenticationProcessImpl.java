@@ -2,6 +2,7 @@ package com.teamdev.filehub.processes.user.authentication;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
 import com.teamdev.filehub.dao.user.UserDao;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class UserAuthenticationProcessImpl implements UserAuthenticationProcess {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
+
     private final UserDao userDao;
     private final AuthenticationDao authenticationDao;
 
@@ -34,8 +36,8 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
      * user authentication.
      */
     @Override
-    public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command) throws
-                                                                                         UserDataMismatchException {
+    public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command)
+            throws UserCredentialsMismatchException {
 
         logger.atInfo()
               .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
@@ -43,7 +45,12 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         Optional<UserRecord> optionalUserRecord = userDao.findByLogin(command.login());
 
         if (optionalUserRecord.isEmpty()) {
-            throw new UserDataMismatchException("Authentication data incorrect.");
+
+            logger.atWarning()
+                  .log("[PROCESS FAILED] - User authentication - Login not found - login: %s.",
+                       command.login());
+
+            throw new UserCredentialsMismatchException("Authentication data incorrect.");
         }
         UserRecord userRecord = optionalUserRecord.get();
 
@@ -53,10 +60,10 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         if (!isPasswordMatch) {
 
             logger.atWarning()
-                  .log("[PROCESS FAILED] - User authentication - login: %s - Exception message: Password incorrect.",
+                  .log("[PROCESS FAILED] - User authentication - Password incorrect - login: %s.",
                        command.login());
 
-            throw new UserDataMismatchException("Authentication data incorrect.");
+            throw new UserCredentialsMismatchException("Authentication data incorrect.");
         }
 
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);
@@ -66,9 +73,10 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                 userRecord.login() + expireDateTime);
 
         AuthenticationRecord authenticationRecord =
-                new AuthenticationRecord(userRecord.id(),
+                new AuthenticationRecord(new RecordId<>(authenticationToken),
                                          authenticationToken,
-                                         expireDateTime);
+                                         expireDateTime,
+                                         userRecord.id());
 
         if (authenticationDao.find(userRecord.id())
                              .isPresent()) {
