@@ -3,7 +3,6 @@ package com.teamdev.filehub.dao.user;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.DatabaseRecord;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.util.EmailValidator;
 
 import javax.annotation.Nonnull;
 

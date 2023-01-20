@@ -1,14 +1,17 @@
 package com.teamdev.filehub.views.download;
 
-import com.teamdev.filehub.views.AccessDeniedException;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.views.View;
+
+import java.io.InputStream;
 
 /**
  * A {@link View} extended interface which implementation is intended to process
  * file download.
  */
-public interface FileDownloadView extends View<FileDownloadQuery, FileDownloadResponse> {
+public interface FileDownloadView extends View<FileDownloadQuery, InputStream> {
 
     @Override
-    FileDownloadResponse handle(FileDownloadQuery query) throws AccessDeniedException;
+    InputStream handle(FileDownloadQuery query) throws AccessDeniedException, DataNotFoundException;
 }

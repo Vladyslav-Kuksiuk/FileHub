@@ -80,7 +80,7 @@ class InMemoryFileDaoTest {
     void createExistingFileTest() {
 
         doThrow(new RuntimeException("Data already exists.")).when(fileTable)
-                                                             .create(FILE_DATA);
+                .create(FILE_DATA);
 
         assertThrows(RuntimeException.class, () -> fileDao.create(FILE_RECORD));
 

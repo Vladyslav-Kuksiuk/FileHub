@@ -1,6 +1,16 @@
 package com.teamdev.server;
 
-import com.teamdev.filehub.ApplicationContext;
+import com.teamdev.filehub.ApplicationConfiguration;
+import com.teamdev.server.routes.AuthenticationRoute;
+import com.teamdev.server.routes.CreateFolderRoute;
+import com.teamdev.server.routes.DownloadFileRoute;
+import com.teamdev.server.routes.LoadFolderContentRoute;
+import com.teamdev.server.routes.LoadFolderRoute;
+import com.teamdev.server.routes.LoadUserRoute;
+import com.teamdev.server.routes.LogoutRoute;
+import com.teamdev.server.routes.RegistrationRoute;
+import com.teamdev.server.routes.RenameItemRoute;
+import com.teamdev.server.routes.UploadFileRoute;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -12,9 +22,12 @@ import static spark.Spark.staticFiles;
  */
 public class Application {
 
+    private Application() {
+    }
+
     public static void main(String[] args) {
         staticFiles.location("/web-client");
-        ApplicationContext context = new ApplicationContext();
+        ApplicationConfiguration context = new ApplicationConfiguration();
 
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
@@ -33,11 +46,11 @@ public class Application {
                                     context.getFolderSearchView()));
 
         put("api/file/:id",
-            new RenameFileRoute(context.getUserAuthorizationView(),
+            new RenameItemRoute(context.getUserAuthorizationView(),
                                 context.getFileRenameProcess()));
         put("api/folder/:id",
-            new RenameFolderRoute(context.getUserAuthorizationView(),
-                                  context.getFolderRenameProcess()));
+            new RenameItemRoute(context.getUserAuthorizationView(),
+                                context.getFolderRenameProcess()));
 
         get("api/files/:id",
             new DownloadFileRoute(context.getUserAuthorizationView(),

@@ -43,8 +43,8 @@ public class UserProfileViewImpl implements UserProfileView {
         }
 
         logger.atInfo()
-              .log("[VIEW QUERIED SUCCESSFUL] - User profile - userId: %s.", query.userId()
-                                                                                  .value());
+              .log("[VIEW FINISHED] - User profile - userId: %s.", query.userId()
+                                                                        .value());
         return new UserProfile(optionalUserRecord.get()
                                                  .login(), optionalFolderRecord.get()
                                                                                .id()

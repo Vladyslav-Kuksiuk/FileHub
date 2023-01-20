@@ -12,8 +12,16 @@ import javax.annotation.Nonnull;
  */
 public class UserLogoutCommand extends AuthenticatedUserCommand {
 
+    private final String authenticationToken;
+
     public UserLogoutCommand(
-            @Nonnull RecordId<String> userId) {
+            @Nonnull RecordId<String> userId,
+            @Nonnull String authenticationToken) {
         super(Preconditions.checkNotNull(userId));
+        this.authenticationToken = Preconditions.checkNotNull(authenticationToken);
+    }
+
+    public String authenticationToken() {
+        return authenticationToken;
     }
 }

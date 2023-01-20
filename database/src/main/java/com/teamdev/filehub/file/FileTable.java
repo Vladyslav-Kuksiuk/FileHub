@@ -2,6 +2,7 @@ package com.teamdev.filehub.file;
 
 import com.teamdev.filehub.InMemoryDatabaseTable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,19 +11,17 @@ import java.util.stream.Collectors;
  */
 public class FileTable extends InMemoryDatabaseTable<String, FileData> {
 
-    private static final String FILE_NAME = "files.json";
-
-    public FileTable() {
-        super(FILE_NAME, FileData[].class);
+    public FileTable(@Nonnull String filePath) {
+        super(filePath, FileData[].class);
     }
 
     public List<FileData> selectWithSameFolderId(String folderId) {
 
         return tableMap().values()
-                         .stream()
-                         .filter(data -> data.folderId()
-                                             .equals(folderId))
-                         .collect(Collectors.toList());
+                .stream()
+                .filter(data -> data.folderId()
+                                    .equals(folderId))
+                .collect(Collectors.toList());
     }
 
 }
