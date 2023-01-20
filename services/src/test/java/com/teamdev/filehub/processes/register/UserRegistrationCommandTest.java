@@ -1,8 +1,8 @@
 package com.teamdev.filehub.processes.register;
 
 import com.google.common.testing.NullPointerTester;
-import com.teamdev.filehub.processes.user.register.FieldValidationException;
 import com.teamdev.filehub.processes.user.register.UserRegistrationCommand;
+import com.teamdev.filehub.RequestFieldValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,7 +38,7 @@ class UserRegistrationCommandTest {
     @ParameterizedTest
     @MethodSource("negativeLoginCases")
     void invalidLoginTest(String login) {
-        assertThrows(FieldValidationException.class,
+        assertThrows(RequestFieldValidationException.class,
                      () -> new UserRegistrationCommand(login, "hello123123"),
                      "User registration command creation with illegal password passed.");
 
@@ -47,7 +47,7 @@ class UserRegistrationCommandTest {
     @ParameterizedTest
     @MethodSource("negativePasswordCases")
     void invalidPasswordTest(String password) {
-        assertThrows(FieldValidationException.class,
+        assertThrows(RequestFieldValidationException.class,
                      () -> new UserRegistrationCommand("myEmail@gmail.com", password),
                      "User registration command creation with illegal password passed.");
 

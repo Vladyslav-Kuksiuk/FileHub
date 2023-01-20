@@ -2,6 +2,7 @@ package com.teamdev.filehub.processes.user.register;
 
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.processes.Command;
 
 import javax.annotation.Nonnull;
@@ -20,7 +21,8 @@ public class UserRegistrationCommand implements Command {
     private final String password;
 
     public UserRegistrationCommand(@Nonnull String login,
-                                   @Nonnull String password) throws FieldValidationException {
+                                   @Nonnull String password) throws
+                                                             RequestFieldValidationException {
         Preconditions.checkNotNull(login);
         Preconditions.checkNotNull(password);
 
@@ -34,7 +36,7 @@ public class UserRegistrationCommand implements Command {
             logger.atInfo()
                   .log("[COMMAND VALIDATION FAILED] - User registration - login: '%s' invalid.",
                        login);
-            throw new FieldValidationException("email", "Email validation failed.");
+            throw new RequestFieldValidationException("email", "Email validation failed.");
         }
 
         String passwordPatternRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
@@ -45,7 +47,7 @@ public class UserRegistrationCommand implements Command {
             logger.atInfo()
                   .log("[COMMAND VALIDATION FAILED] - User registration - password: '%s' invalid.",
                        password);
-            throw new FieldValidationException("password", "Password validation failed.");
+            throw new RequestFieldValidationException("password", "Password validation failed.");
         }
 
         this.login = login;

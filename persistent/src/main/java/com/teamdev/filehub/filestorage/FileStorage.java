@@ -1,9 +1,9 @@
 package com.teamdev.filehub.filestorage;
 
 import com.google.common.flogger.FluentLogger;
-import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,12 +17,13 @@ import java.io.OutputStream;
  */
 public class FileStorage {
 
-    public static final String STORAGE_FOLDER_PATH =
-            InMemoryDatabase.DATABASE_FOLDER_PATH + "Files\\";
+    private final String storageFolderPath;
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public FileStorage() {
-        File filesDirectory = new File(STORAGE_FOLDER_PATH);
+    public FileStorage(@Nonnull String folderPath) {
+        storageFolderPath = folderPath + File.separator + "FileStorage" + File.separator;
+
+        File filesDirectory = new File(folderPath);
         if (!filesDirectory.exists()) {
             filesDirectory.mkdirs();
         }
@@ -36,7 +37,7 @@ public class FileStorage {
      */
     public void uploadFile(RecordId<String> fileId, InputStream fileInput) {
 
-        String fullPath = STORAGE_FOLDER_PATH + fileId.value();
+        String fullPath = storageFolderPath + fileId.value();
 
         File targetFile = new File(fullPath);
         if (!targetFile.exists()) {
@@ -78,7 +79,7 @@ public class FileStorage {
      * @return {@link InputStream} from found file.
      */
     public InputStream downloadFile(RecordId<String> fileId) {
-        String fullPath = STORAGE_FOLDER_PATH + fileId.value();
+        String fullPath = storageFolderPath + fileId.value();
         File file = new File(fullPath);
 
         if (!file.exists()) {
@@ -98,7 +99,7 @@ public class FileStorage {
      * Method to clean all files in root directory.
      */
     public void clean() {
-        File file = new File(STORAGE_FOLDER_PATH);
+        File file = new File(storageFolderPath);
 
         if (file.exists()) {
             file.delete();

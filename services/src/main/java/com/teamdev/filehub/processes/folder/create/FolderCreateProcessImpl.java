@@ -1,9 +1,9 @@
 package com.teamdev.filehub.processes.folder.create;
 
+import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.FolderRecord;
-import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.util.LocalDateTimeUtil;
 
 import javax.annotation.Nonnull;

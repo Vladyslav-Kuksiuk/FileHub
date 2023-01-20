@@ -15,17 +15,21 @@ public class AuthenticationRecord extends DatabaseRecord<String> {
 
     private final String authenticationToken;
     private final LocalDateTime expireTime;
+    private final RecordId<String> userId;
 
     public AuthenticationRecord(@Nonnull RecordId<String> id,
                                 @Nonnull String authenticationToken,
-                                @Nonnull LocalDateTime expireTime) {
+                                @Nonnull LocalDateTime expireTime,
+                                @Nonnull RecordId<String> userId) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(authenticationToken);
         Preconditions.checkNotNull(expireTime);
+        Preconditions.checkNotNull(userId);
 
         this.authenticationToken = authenticationToken;
         this.expireTime = expireTime;
+        this.userId = userId;
     }
 
     public String authenticationToken() {
@@ -34,5 +38,9 @@ public class AuthenticationRecord extends DatabaseRecord<String> {
 
     public LocalDateTime expireTime() {
         return expireTime;
+    }
+
+    public RecordId<String> userId() {
+        return userId;
     }
 }

@@ -11,31 +11,35 @@ import java.util.Optional;
  */
 public class AuthenticationTable extends InMemoryDatabaseTable<String, AuthenticationData> {
 
-    private static final String FILE_NAME = "userAuthentication.json";
-
-    public AuthenticationTable() {
-        super(FILE_NAME, AuthenticationData[].class);
+    public AuthenticationTable(String filePath) {
+        super(filePath, AuthenticationData[].class);
 
     }
 
     /**
      * Method to get {@link AuthenticationData} from table.
      *
-     * @param userId Authenticated user id.
+     * @param userId
+     *         Authenticated user id.
      * @return {@link Optional<AuthenticationData>}.
      */
 
     public Optional<AuthenticationData> findByUserId(@Nonnull String userId) {
         Preconditions.checkNotNull(userId);
 
-        return Optional.ofNullable(tableMap().get(userId));
+        return tableMap().values()
+                .stream()
+                .filter(auth -> auth.userId()
+                                    .equals(userId))
+                .findFirst();
 
     }
 
     /**
      * Method to get {@link AuthenticationData} from table by token.
      *
-     * @param token Authenticated user token.
+     * @param token
+     *         Authenticated user token.
      * @return {@link Optional<AuthenticationData>}.
      */
 
@@ -45,7 +49,7 @@ public class AuthenticationTable extends InMemoryDatabaseTable<String, Authentic
         return tableMap().values()
                 .stream()
                 .filter(auth -> auth.authenticationToken()
-                        .equals(token))
+                                    .equals(token))
                 .findFirst();
 
     }

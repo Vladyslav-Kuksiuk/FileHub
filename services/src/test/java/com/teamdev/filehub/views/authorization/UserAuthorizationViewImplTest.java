@@ -18,12 +18,13 @@ public class UserAuthorizationViewImplTest {
 
     @Test
     @DisplayName("Should return user id")
-    void shouldReturnAuthorizedUserId() throws UnauthorizedUserException {
+    void shouldReturnAuthorizedUserId() throws UserAuthorizationException {
         AuthenticationRecord authenticationRecord = new AuthenticationRecord(
-                new RecordId<>("recordId"),
+                new RecordId<>("token"),
                 "token",
                 LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                             .plusDays(1));
+                             .plusDays(1),
+                new RecordId<>("recordId"));
 
         UserAuthorizationQuery authorizationQuery =
                 new UserAuthorizationQuery(authenticationRecord.authenticationToken());
@@ -40,7 +41,7 @@ public class UserAuthorizationViewImplTest {
 
         assertWithMessage("UserAuthorizationView failed")
                 .that(userId)
-                .isEqualTo(authenticationRecord.id());
+                .isEqualTo(authenticationRecord.userId());
 
     }
 
@@ -59,7 +60,7 @@ public class UserAuthorizationViewImplTest {
         Mockito.when(authenticationDao.findByToken(authorizationQuery.authorizationToken()))
                .thenReturn(Optional.empty());
 
-        assertThrows(UnauthorizedUserException.class, () -> {
+        assertThrows(UserAuthorizationException.class, () -> {
             userAuthorizationView.handle(authorizationQuery);
         }, "UserAuthorizationView passed without valid token");
 
@@ -67,12 +68,13 @@ public class UserAuthorizationViewImplTest {
 
     @Test
     @DisplayName("Should throw an UnauthorizedUserException if token expired")
-    void shouldFailByExpiredToken() throws UnauthorizedUserException {
+    void shouldFailByExpiredToken() {
         AuthenticationRecord authenticationRecord = new AuthenticationRecord(
-                new RecordId<>("recordId"),
+                new RecordId<>("token"),
                 "token",
                 LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                             .minusDays(1));
+                             .minusDays(1),
+                new RecordId<>("recordId"));
 
         UserAuthorizationQuery authorizationQuery =
                 new UserAuthorizationQuery(authenticationRecord.authenticationToken());
@@ -85,7 +87,7 @@ public class UserAuthorizationViewImplTest {
         Mockito.when(authenticationDao.findByToken(authenticationRecord.authenticationToken()))
                .thenReturn(Optional.of(authenticationRecord));
 
-        assertThrows(UnauthorizedUserException.class, () -> {
+        assertThrows(UserAuthorizationException.class, () -> {
             userAuthorizationView.handle(authorizationQuery);
         }, "UserAuthorizationView passed with expired token");
 

@@ -1,16 +1,19 @@
 package com.teamdev.filehub.processes.file.upload;
 
 import com.google.common.flogger.FluentLogger;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
 import com.teamdev.filehub.dao.folder.FolderDao;
+import com.teamdev.filehub.dao.folder.FolderRecord;
 import com.teamdev.filehub.filestorage.FileStorage;
-import com.teamdev.filehub.processes.AccessDeniedException;
 import com.teamdev.util.LocalDateTimeUtil;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * {@link FileUploadProcess} implementation.
@@ -34,12 +37,39 @@ public class FileUploadProcessImpl implements FileUploadProcess {
 
     @Override
     public RecordId<String> handle(@Nonnull FileUploadCommand command) throws
-                                                                       AccessDeniedException {
+                                                                       AccessDeniedException,
+                                                                       DataNotFoundException {
 
-        if (!folderDao.find(command.folderId())
-                      .get()
-                      .ownerId()
-                      .equals(command.userId())) {
+        logger.atInfo()
+              .log("[PROCESS STARTED] - File uploading - user id: %s, file: %s.",
+                   command.userId()
+                          .value(),
+                   command.name());
+
+        Optional<FolderRecord> optionalFolderRecord = folderDao.find(command.folderId());
+
+        if (optionalFolderRecord.isEmpty()) {
+
+            logger.atInfo()
+                  .log("[PROCESS FAILED] - File uploading - Folder not found - user id: %s, file: %s.",
+                       command.userId()
+                              .value(),
+                       command.name());
+
+            throw new DataNotFoundException("Folder not found");
+        }
+
+        FolderRecord folderRecord = optionalFolderRecord.get();
+
+        if (!folderRecord.ownerId()
+                         .equals(command.userId())) {
+
+            logger.atInfo()
+                  .log("[PROCESS FAILED] - File uploading - Access denied - user id: %s, file: %s.",
+                       command.userId()
+                              .value(),
+                       command.name());
+
             throw new AccessDeniedException("Access denied.");
         }
 
@@ -57,12 +87,6 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                                                command.name(),
                                                command.mimetype(),
                                                command.size());
-
-        logger.atInfo()
-              .log("[PROCESS STARTED] - File uploading - user id: %s, file: %s.",
-                   command.userId()
-                          .value(),
-                   command.name());
 
         fileDao.create(fileRecord);
 
