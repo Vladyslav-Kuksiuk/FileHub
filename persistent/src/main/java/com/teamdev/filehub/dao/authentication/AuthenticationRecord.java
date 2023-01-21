@@ -1,5 +1,6 @@
 package com.teamdev.filehub.dao.authentication;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.DatabaseRecord;
 import com.teamdev.filehub.dao.RecordId;
@@ -42,5 +43,25 @@ public class AuthenticationRecord extends DatabaseRecord {
 
     public RecordId userId() {
         return userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(authenticationToken, expireTime, userId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AuthenticationRecord)) {
+            return false;
+        }
+        AuthenticationRecord that = (AuthenticationRecord) o;
+        return Objects.equal(id(), that.id()) &&
+                Objects.equal(authenticationToken, that.authenticationToken) &&
+                Objects.equal(expireTime, that.expireTime) &&
+                Objects.equal(userId, that.userId);
     }
 }
