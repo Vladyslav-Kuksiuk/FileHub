@@ -1,6 +1,7 @@
 package com.teamdev.filehub.folder;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.Data;
 
 import javax.annotation.Nonnull;
@@ -9,7 +10,7 @@ import javax.annotation.Nullable;
 /**
  * Class which is intended to store information about folder.
  */
-public class FolderData extends Data<String> {
+public class FolderData extends Data {
 
     private final String ownerId;
 
@@ -21,10 +22,11 @@ public class FolderData extends Data<String> {
                       @Nullable String ownerId,
                       @Nonnull String parentFolderId,
                       @Nonnull String name) {
-        super(id);
-        this.ownerId = ownerId;
+
+        super(Preconditions.checkNotNull(id));
+        this.ownerId = Preconditions.checkNotNull(ownerId);
         this.parentFolderId = parentFolderId;
-        this.name = name;
+        this.name = Preconditions.checkNotNull(name);
     }
 
     public String ownerId() {
@@ -53,7 +55,8 @@ public class FolderData extends Data<String> {
             return false;
         }
         FolderData data = (FolderData) o;
-        return Objects.equal(ownerId, data.ownerId) &&
+        return Objects.equal(id(), data.id()) &&
+                Objects.equal(ownerId, data.ownerId) &&
                 Objects.equal(parentFolderId, data.parentFolderId) &&
                 Objects.equal(name, data.name);
     }

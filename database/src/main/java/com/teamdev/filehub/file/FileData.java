@@ -1,15 +1,15 @@
 package com.teamdev.filehub.file;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.Data;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Class which is intended to store information about file meta context.
  */
-public class FileData extends Data<String> {
+public class FileData extends Data {
 
     private final String folderId;
     private final String ownerId;
@@ -19,16 +19,16 @@ public class FileData extends Data<String> {
 
     public FileData(@Nonnull String id,
                     @Nonnull String folderId,
-                    @Nullable String ownerId,
+                    @Nonnull String ownerId,
                     @Nonnull String name,
                     @Nonnull String mimetype,
                     long size) {
-        super(id);
+        super(Preconditions.checkNotNull(id));
 
-        this.folderId = folderId;
-        this.ownerId = ownerId;
-        this.name = name;
-        this.mimetype = mimetype;
+        this.folderId = Preconditions.checkNotNull(folderId);
+        this.ownerId = Preconditions.checkNotNull(ownerId);
+        this.name = Preconditions.checkNotNull(name);
+        this.mimetype = Preconditions.checkNotNull(mimetype);
         this.size = size;
     }
 
@@ -66,7 +66,8 @@ public class FileData extends Data<String> {
             return false;
         }
         FileData data = (FileData) o;
-        return size == data.size && Objects.equal(folderId, data.folderId) &&
+        return size == data.size && Objects.equal(id(), data.id()) &&
+                size == data.size && Objects.equal(folderId, data.folderId) &&
                 Objects.equal(ownerId, data.ownerId) &&
                 Objects.equal(name, data.name) &&
                 Objects.equal(mimetype, data.mimetype);

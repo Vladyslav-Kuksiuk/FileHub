@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Class which is intended to store information about user.
  */
-public class UserData extends Data<String> {
+public class UserData extends Data {
 
     private final String login;
     private final String password;
@@ -17,12 +17,10 @@ public class UserData extends Data<String> {
     public UserData(@NotNull String id,
                     @NotNull String login,
                     @NotNull String password) {
-        super(Preconditions.checkNotNull(id));
-        Preconditions.checkState(!login.isEmpty());
-        Preconditions.checkState(!password.isEmpty());
 
-        this.login = login;
-        this.password = password;
+        super(Preconditions.checkNotNull(id));
+        this.login = Preconditions.checkNotNull(login);
+        this.password = Preconditions.checkNotNull(password);
     }
 
     public String login() {

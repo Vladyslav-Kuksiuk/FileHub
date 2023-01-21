@@ -1,5 +1,6 @@
 package com.teamdev.filehub.folder;
 
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.InMemoryDatabaseTable;
 import com.teamdev.filehub.user.UserData;
 
@@ -12,17 +13,14 @@ import java.util.stream.Collectors;
 /**
  * {@link InMemoryDatabaseTable} implementation to store {@link FolderData}.
  */
-public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
+public class FolderTable extends InMemoryDatabaseTable<FolderData> {
 
     public FolderTable(@Nonnull String filePath) {
         super(filePath, FolderData[].class);
     }
 
-    public List<FolderData> selectWithSameParentId(String parentId) {
-
-        if (!tableMap().containsKey(parentId)) {
-            throw new RuntimeException("Folder with this id doesn't exist.");
-        }
+    public List<FolderData> getByParentId(@Nonnull String parentId) {
+        Preconditions.checkNotNull(parentId);
 
         return tableMap().values()
                 .stream()
@@ -38,6 +36,7 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
      * @return {@link UserData}.
      */
     public Optional<FolderData> findUserRootFolder(@Nonnull String userId) {
+        Preconditions.checkNotNull(userId);
 
         return tableMap().values()
                 .stream()
@@ -49,10 +48,8 @@ public class FolderTable extends InMemoryDatabaseTable<String, FolderData> {
 
     public List<FolderData> getByParentIdAndNamePart(@Nonnull String parentId,
                                                      @Nonnull String namePart) {
-
-        if (!tableMap().containsKey(parentId)) {
-            throw new RuntimeException("Folder with this id doesn't exist.");
-        }
+        Preconditions.checkNotNull(parentId);
+        Preconditions.checkNotNull(namePart);
 
         return tableMap().values()
                 .stream()

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Class which is intended to store information about authentication.
  */
-public class AuthenticationData extends Data<String> {
+public class AuthenticationData extends Data {
 
     private final String authenticationToken;
 
@@ -20,16 +20,11 @@ public class AuthenticationData extends Data<String> {
                               @NotNull String authenticationToken,
                               @NotNull String expireTime,
                               @NotNull String userId) {
-        super(Preconditions.checkNotNull(id));
-        Preconditions.checkNotNull(authenticationToken);
-        Preconditions.checkNotNull(expireTime);
-        Preconditions.checkNotNull(userId);
-        Preconditions.checkState(!authenticationToken.isEmpty());
-        Preconditions.checkState(!expireTime.isEmpty());
 
-        this.authenticationToken = authenticationToken;
-        this.expireTime = expireTime;
-        this.userId = userId;
+        super(Preconditions.checkNotNull(id));
+        this.authenticationToken = Preconditions.checkNotNull(authenticationToken);
+        this.expireTime = Preconditions.checkNotNull(expireTime);
+        this.userId = Preconditions.checkNotNull(userId);
     }
 
     public String authenticationToken() {

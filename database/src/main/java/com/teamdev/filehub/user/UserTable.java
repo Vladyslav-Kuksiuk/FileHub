@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * {@link InMemoryDatabaseTable} implementation to store {@link UserData}.
  */
-public class UserTable extends InMemoryDatabaseTable<String, UserData> {
+public class UserTable extends InMemoryDatabaseTable<UserData> {
 
     public UserTable(String filePath) {
         super(filePath, UserData[].class);
@@ -20,7 +20,7 @@ public class UserTable extends InMemoryDatabaseTable<String, UserData> {
      *
      * @param login
      *         User login.
-     * @return {@link UserData}.
+     * @return Optional {@link UserData} .
      */
     public Optional<UserData> getUserByLogin(@NotNull String login) {
 

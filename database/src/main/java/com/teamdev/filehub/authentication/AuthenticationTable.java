@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * Implementation of {@link InMemoryDatabaseTable} to store {@link AuthenticationData}.
  */
-public class AuthenticationTable extends InMemoryDatabaseTable<String, AuthenticationData> {
+public class AuthenticationTable extends InMemoryDatabaseTable<AuthenticationData> {
 
     public AuthenticationTable(String filePath) {
         super(filePath, AuthenticationData[].class);

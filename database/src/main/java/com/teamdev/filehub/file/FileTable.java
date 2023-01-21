@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * {@link InMemoryDatabaseTable} implementation to store {@link FileData}.
  */
-public class FileTable extends InMemoryDatabaseTable<String, FileData> {
+public class FileTable extends InMemoryDatabaseTable<FileData> {
 
     public FileTable(@Nonnull String filePath) {
         super(filePath, FileData[].class);

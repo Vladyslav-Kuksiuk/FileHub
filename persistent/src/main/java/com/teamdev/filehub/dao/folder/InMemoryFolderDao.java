@@ -85,7 +85,7 @@ public class InMemoryFolderDao implements FolderDao {
     public List<FolderRecord> getByParentId(@Nonnull RecordId parentId) {
         Preconditions.checkNotNull(parentId);
 
-        return folderTable.selectWithSameParentId(parentId.value())
+        return folderTable.getByParentId(parentId.value())
                 .stream()
                 .map(InMemoryFolderDao::convertDataIntoRecord)
                 .collect(Collectors.toList());

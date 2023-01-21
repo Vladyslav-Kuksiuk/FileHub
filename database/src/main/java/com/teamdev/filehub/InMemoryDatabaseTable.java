@@ -1,5 +1,6 @@
 package com.teamdev.filehub;
 
+import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.google.gson.Gson;
 
@@ -24,12 +25,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * A class that store {@link Data} implementation in {@link Map} and
  * have methods to synchronize it with a JSON file.
  *
- * @param <I>
- *         Data identifier type.
  * @param <D>
  *         Data type.
  */
-public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
+public class InMemoryDatabaseTable<D extends Data> {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -40,11 +39,13 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
     private final Object locker = new Object();
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    private final Map<I, D> tableMap = new HashMap<>();
+    private final Map<String, D> tableMap = new HashMap<>();
     private ScheduledFuture<Boolean> fileWritingFuture = null;
 
     protected InMemoryDatabaseTable(@Nonnull String filePath,
                                     @Nonnull Class<D[]> dataArrayClass) {
+        Preconditions.checkNotNull(filePath);
+        Preconditions.checkNotNull(dataArrayClass);
 
         file = new File(filePath);
 
@@ -52,6 +53,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
 
             if (!file.exists()) {
                 file.createNewFile();
+                return;
             }
 
             try (Reader reader = Files.newBufferedReader(file.toPath(), UTF_8)) {
@@ -81,7 +83,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      *         {@link Data} identifier.
      * @return {@link Data}.
      */
-    public Optional<D> findById(@Nonnull I id) {
+    public Optional<D> findById(@Nonnull String id) {
 
         return Optional.ofNullable(tableMap().get(id));
     }
@@ -114,7 +116,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
      * @param id
      *         {@link Data} identifier to delete.
      */
-    public void delete(@Nonnull I id) {
+    public void delete(@Nonnull String id) {
 
         if (!tableMap().containsKey(id)) {
             throw new RuntimeException("Data with this id doesn't exist.");
@@ -211,7 +213,7 @@ public abstract class InMemoryDatabaseTable<I, D extends Data<I>> {
         }
     }
 
-    protected Map<I, D> tableMap() {
+    protected Map<String, D> tableMap() {
         return tableMap;
     }
 }

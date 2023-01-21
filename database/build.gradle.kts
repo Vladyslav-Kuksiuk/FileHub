@@ -51,6 +51,8 @@ dependencies {
     testImplementation("com.google.guava:guava-testlib:31.1-jre")
     implementation("com.google.guava:guava:31.1-jre")
 
+    testImplementation("org.mockito:mockito-core:4.7.0")
+
     implementation("javax.validation:validation-api:2.0.1.Final")
 
     compileOnly("com.google.errorprone:error_prone_core:2.9.0")
