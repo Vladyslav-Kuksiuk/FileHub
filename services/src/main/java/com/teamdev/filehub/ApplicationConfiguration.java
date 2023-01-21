@@ -6,18 +6,18 @@ import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.InMemoryFileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.InMemoryFolderDao;
-import com.teamdev.filehub.dao.user.InMemoryUserDao;
+import com.teamdev.filehub.dao.user.JdbcUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
-import com.teamdev.filehub.processes.filesystem.remove.RemoveProcess;
-import com.teamdev.filehub.processes.filesystem.remove.FileRemoveProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcessImpl;
+import com.teamdev.filehub.processes.filesystem.remove.FileRemoveProcess;
+import com.teamdev.filehub.processes.filesystem.remove.FolderRemoveProcess;
+import com.teamdev.filehub.processes.filesystem.remove.RemoveProcess;
 import com.teamdev.filehub.processes.filesystem.rename.FileRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.FolderRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
-import com.teamdev.filehub.processes.filesystem.remove.FolderRemoveProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
@@ -39,6 +39,10 @@ import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Class which intended to configure services implementations.
@@ -70,7 +74,25 @@ public class ApplicationConfiguration {
                                .toAbsolutePath();
 
         InMemoryDatabase database = new InMemoryDatabase(storagePath.toString());
-        UserDao userDao = new InMemoryUserDao(database.userTable());
+
+        String dbUrl = "jdbc:postgresql://127.0.0.1:5432/FileHub";
+        String dbUser = "postgres";
+        String dbPassword = "admin";
+
+        Statement dbStatement;
+
+        try {
+
+            Connection dbConnection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            dbStatement = dbConnection.createStatement();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+        UserDao userDao = new JdbcUserDao(dbStatement, "users");
         AuthenticationDao authDao = new InMemoryAuthenticationDao(database.authenticationTable());
         FileDao fileDao = new InMemoryFileDao(database.fileTable());
         FolderDao folderDao = new InMemoryFolderDao(database.folderTable());

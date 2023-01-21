@@ -1,5 +1,6 @@
 package com.teamdev.filehub.dao.user;
 
+import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.InMemoryDatabase;
 import com.teamdev.filehub.dao.RecordId;
@@ -20,7 +21,7 @@ public class InMemoryUserDao implements UserDao {
     private final UserTable userTable;
 
     public InMemoryUserDao(@Nonnull UserTable userTable) {
-        this.userTable = userTable;
+        this.userTable = Preconditions.checkNotNull(userTable);
     }
 
     /**

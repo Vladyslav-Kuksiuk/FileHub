@@ -1,5 +1,7 @@
 package com.teamdev.filehub.dao;
 
+import com.google.common.base.Preconditions;
+
 import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,14 +18,16 @@ public abstract class JdbcDao<I, R extends DatabaseRecord<I>> implements DataAcc
     protected JdbcDao(@Nonnull String tableName,
                       @Nonnull Statement dbStatement,
                       @Nonnull SqlRecordConverter<I, R> converter) {
-        this.tableName = tableName;
-        this.converter = converter;
-        this.dbStatement = dbStatement;
+
+        this.tableName = Preconditions.checkNotNull(tableName);
+        this.converter = Preconditions.checkNotNull(converter);
+        this.dbStatement = Preconditions.checkNotNull(dbStatement);
 
     }
 
     @Override
     public Optional<R> find(@Nonnull RecordId<I> id) {
+        Preconditions.checkNotNull(id);
 
         String selectSqlQuery = String.format("SELECT * FROM %s WHERE id = '%s'", tableName,
                                               id.value());
@@ -44,6 +48,7 @@ public abstract class JdbcDao<I, R extends DatabaseRecord<I>> implements DataAcc
 
     @Override
     public void delete(@Nonnull RecordId<I> id) {
+        Preconditions.checkNotNull(id);
 
         String deleteSqlQuery = String.format("DELETE FROM %s WHERE id = '%s'", tableName,
                                               id.value());
@@ -54,6 +59,7 @@ public abstract class JdbcDao<I, R extends DatabaseRecord<I>> implements DataAcc
 
     @Override
     public void create(@Nonnull R record) {
+        Preconditions.checkNotNull(record);
 
         String insertSqlQuery = converter.recordToInsertSql(record);
 
@@ -63,6 +69,7 @@ public abstract class JdbcDao<I, R extends DatabaseRecord<I>> implements DataAcc
 
     @Override
     public void update(@Nonnull R record) {
+        Preconditions.checkNotNull(record);
 
         String updateSqlQuery = converter.recordToUpdateSql(record);
 

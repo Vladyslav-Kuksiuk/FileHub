@@ -27,6 +27,11 @@ public class RemoveCommand extends AuthenticatedUserCommand {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(itemId);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -37,10 +42,5 @@ public class RemoveCommand extends AuthenticatedUserCommand {
         RemoveCommand command = (RemoveCommand) o;
         return Objects.equal(userId(), command.userId()) &&
                 Objects.equal(itemId, command.itemId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(itemId);
     }
 }

@@ -34,6 +34,11 @@ public class FolderSearchQuery extends AuthenticatedUserQuery {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(userId(), folderId, searchWord);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -45,10 +50,5 @@ public class FolderSearchQuery extends AuthenticatedUserQuery {
         return Objects.equal(userId(), query.userId()) &&
                 Objects.equal(folderId, query.folderId) &&
                 Objects.equal(searchWord, query.searchWord);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(userId(), folderId, searchWord);
     }
 }

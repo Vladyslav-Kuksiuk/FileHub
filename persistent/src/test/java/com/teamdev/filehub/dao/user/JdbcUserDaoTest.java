@@ -21,8 +21,7 @@ class JdbcUserDaoTest {
     static final String DB_PASS = "admin";
     private final UserRecord USER = new UserRecord(new RecordId<>("user"),
                                                    "user",
-                                                   "password",
-                                                   "email@email.com");
+                                                   "password");
     private UserDao userDao;
     private Connection dbConnection;
     private Statement dbStatement;
@@ -32,7 +31,7 @@ class JdbcUserDaoTest {
         try {
             dbConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             dbStatement = dbConnection.createStatement();
-            userDao = new JdbcUserDao(dbStatement);
+            userDao = new JdbcUserDao(dbStatement, "users");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -56,7 +55,7 @@ class JdbcUserDaoTest {
     void findTest() throws SQLException {
 
         dbStatement.execute("INSERT INTO users (id,login,password,email)" +
-                            "VALUES ('user', 'user', 'password', 'email@email.com');");
+                                    "VALUES ('user', 'user', 'password', 'email@email.com');");
 
         Optional<UserRecord> userRecord = userDao.find(USER.id());
 

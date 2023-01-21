@@ -2,6 +2,7 @@ package com.teamdev.filehub.dao.user;
 
 import com.teamdev.filehub.dao.DataAccessObject;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
@@ -9,5 +10,5 @@ import java.util.Optional;
  */
 public interface UserDao extends DataAccessObject<String, UserRecord> {
 
-    Optional<UserRecord> findByLogin(String login);
+    Optional<UserRecord> findByLogin(@Nonnull String login);
 }
