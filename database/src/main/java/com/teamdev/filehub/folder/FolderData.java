@@ -42,11 +42,6 @@ public class FolderData extends Data {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(ownerId, parentFolderId, name);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -59,5 +54,10 @@ public class FolderData extends Data {
                 Objects.equal(ownerId, data.ownerId) &&
                 Objects.equal(parentFolderId, data.parentFolderId) &&
                 Objects.equal(name, data.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(ownerId, parentFolderId, name);
     }
 }

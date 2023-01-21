@@ -1,5 +1,6 @@
 package com.teamdev.filehub;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
@@ -17,5 +18,22 @@ public class Data {
 
     public String id() {
         return id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Data)) {
+            return false;
+        }
+        Data data = (Data) o;
+        return Objects.equal(id, data.id);
     }
 }

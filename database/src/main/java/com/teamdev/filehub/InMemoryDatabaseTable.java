@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -39,7 +39,7 @@ public class InMemoryDatabaseTable<D extends Data> {
     private final Object locker = new Object();
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    private final Map<String, D> tableMap = new HashMap<>();
+    private final Map<String, D> tableMap = new LinkedHashMap<>();
     private ScheduledFuture<Boolean> fileWritingFuture = null;
 
     protected InMemoryDatabaseTable(@Nonnull String filePath,
@@ -84,6 +84,7 @@ public class InMemoryDatabaseTable<D extends Data> {
      * @return {@link Data}.
      */
     public Optional<D> findById(@Nonnull String id) {
+        Preconditions.checkNotNull(id);
 
         return Optional.ofNullable(tableMap().get(id));
     }
@@ -95,6 +96,7 @@ public class InMemoryDatabaseTable<D extends Data> {
      *         {@link Data} to add.
      */
     public void create(@Nonnull D data) {
+        Preconditions.checkNotNull(data);
 
         if (tableMap().containsKey(data.id())) {
             throw new RuntimeException("Data with this id already exists");
@@ -117,6 +119,7 @@ public class InMemoryDatabaseTable<D extends Data> {
      *         {@link Data} identifier to delete.
      */
     public void delete(@Nonnull String id) {
+        Preconditions.checkNotNull(id);
 
         if (!tableMap().containsKey(id)) {
             throw new RuntimeException("Data with this id doesn't exist.");
@@ -137,6 +140,7 @@ public class InMemoryDatabaseTable<D extends Data> {
      *         {@link Data} to update.
      */
     public void update(@Nonnull D data) {
+        Preconditions.checkNotNull(data);
 
         if (!tableMap().containsKey(data.id())) {
             throw new RuntimeException("Data with this id doesn't exist.");
@@ -161,12 +165,6 @@ public class InMemoryDatabaseTable<D extends Data> {
         fileWritingFuture.ifPresent(future -> future.cancel(false));
 
         var future = executor.schedule(() -> {
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException("Thread sleep failed.");
-            }
 
             try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
 
