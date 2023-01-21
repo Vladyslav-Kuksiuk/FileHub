@@ -35,7 +35,7 @@ public class FileStorage {
      * @param fileInput
      *         file to save.
      */
-    public void uploadFile(RecordId<String> fileId, InputStream fileInput) {
+    public void uploadFile(RecordId fileId, InputStream fileInput) {
 
         String fullPath = storageFolderPath + fileId.value();
 
@@ -78,7 +78,7 @@ public class FileStorage {
      *
      * @return {@link InputStream} from found file.
      */
-    public InputStream downloadFile(RecordId<String> fileId) {
+    public InputStream downloadFile(RecordId fileId) {
         String fullPath = storageFolderPath + fileId.value();
         File file = new File(fullPath);
 
@@ -98,7 +98,7 @@ public class FileStorage {
     /**
      * Removes file by given id.
      */
-    public void removeFile(RecordId<String> fileId) {
+    public void removeFile(RecordId fileId) {
         String fullPath = storageFolderPath + fileId.value();
         File file = new File(fullPath);
 

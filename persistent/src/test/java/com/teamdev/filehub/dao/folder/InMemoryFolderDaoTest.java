@@ -17,9 +17,9 @@ import static org.mockito.Mockito.verify;
 
 class InMemoryFolderDaoTest {
 
-    private final FolderRecord FOLDER_RECORD = new FolderRecord(new RecordId<>("folder_id"),
-                                                                new RecordId<>("owner_id"),
-                                                                new RecordId<>("parent_folder_id"),
+    private final FolderRecord FOLDER_RECORD = new FolderRecord(new RecordId("folder_id"),
+                                                                new RecordId("owner_id"),
+                                                                new RecordId("parent_folder_id"),
                                                                 "name");
     private final FolderData FOLDER_DATA = new FolderData("folder_id",
                                                           "owner_id",

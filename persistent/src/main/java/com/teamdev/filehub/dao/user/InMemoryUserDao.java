@@ -32,7 +32,8 @@ public class InMemoryUserDao implements UserDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public Optional<UserRecord> find(@Nonnull RecordId<String> id) {
+    public Optional<UserRecord> find(@Nonnull RecordId id) {
+        Preconditions.checkNotNull(id);
 
         Optional<UserData> optionalUserData = userTable
                 .findById(id.value());
@@ -41,7 +42,7 @@ public class InMemoryUserDao implements UserDao {
 
             UserData userData = optionalUserData.get();
 
-            return Optional.of(new UserRecord(new RecordId<>(userData.id()),
+            return Optional.of(new UserRecord(new RecordId(userData.id()),
                                               userData.login(),
                                               userData.password()));
 
@@ -57,7 +58,8 @@ public class InMemoryUserDao implements UserDao {
      *         User record identifier.
      */
     @Override
-    public void delete(@Nonnull RecordId<String> id) {
+    public void delete(@Nonnull RecordId id) {
+        Preconditions.checkNotNull(id);
 
         userTable.delete(id.value());
 
@@ -74,6 +76,7 @@ public class InMemoryUserDao implements UserDao {
      */
     @Override
     public void create(@Nonnull UserRecord record) {
+        Preconditions.checkNotNull(record);
 
         UserData userData = new UserData(record.id()
                                                .value(),
@@ -94,6 +97,7 @@ public class InMemoryUserDao implements UserDao {
      */
     @Override
     public void update(@Nonnull UserRecord record) {
+        Preconditions.checkNotNull(record);
 
         UserData userData = new UserData(record.id()
                                                .value(),
@@ -116,6 +120,7 @@ public class InMemoryUserDao implements UserDao {
      */
     @Override
     public Optional<UserRecord> findByLogin(@Nonnull String login) {
+        Preconditions.checkNotNull(login);
 
         Optional<UserData> optionalUserData = userTable.getUserByLogin(login);
 
@@ -123,7 +128,7 @@ public class InMemoryUserDao implements UserDao {
 
             UserData userData = optionalUserData.get();
 
-            return Optional.of(new UserRecord(new RecordId<>(userData.id()),
+            return Optional.of(new UserRecord(new RecordId(userData.id()),
                                               userData.login(),
                                               userData.password()));
         }

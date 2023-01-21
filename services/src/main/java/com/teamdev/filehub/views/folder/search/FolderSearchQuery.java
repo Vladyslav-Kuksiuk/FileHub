@@ -14,18 +14,18 @@ import javax.annotation.Nonnull;
  */
 public class FolderSearchQuery extends AuthenticatedUserQuery {
 
-    private final RecordId<String> folderId;
+    private final RecordId folderId;
     private final String searchWord;
 
-    public FolderSearchQuery(@Nonnull RecordId<String> userId,
-                             @Nonnull RecordId<String> folderId,
+    public FolderSearchQuery(@Nonnull RecordId userId,
+                             @Nonnull RecordId folderId,
                              @Nonnull String searchWord) {
         super(Preconditions.checkNotNull(userId));
         this.folderId = Preconditions.checkNotNull(folderId);
         this.searchWord = Preconditions.checkNotNull(searchWord);
     }
 
-    public RecordId<String> folderId() {
+    public RecordId folderId() {
         return folderId;
     }
 

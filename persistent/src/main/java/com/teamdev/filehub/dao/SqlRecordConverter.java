@@ -3,7 +3,7 @@ package com.teamdev.filehub.dao;
 import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 
-public interface SqlRecordConverter<I, R extends DatabaseRecord<I>> {
+public interface SqlRecordConverter<R extends DatabaseRecord> {
 
     R resultSetToRecord(@Nonnull ResultSet resultSet);
 

@@ -42,12 +42,12 @@ public class SearchInFolderRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId)
+                                    RecordId userId)
             throws ServiceException, JsonEntityValidationException {
 
         var query = new FolderSearchQuery(
                 userId,
-                new RecordId<>(request.params(":id")),
+                new RecordId(request.params(":id")),
                 request.params(":searchWord"));
 
         var folderContent = folderSearchView.handle(query);

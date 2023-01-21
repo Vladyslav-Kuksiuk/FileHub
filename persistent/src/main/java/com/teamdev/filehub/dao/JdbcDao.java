@@ -8,16 +8,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-public abstract class JdbcDao<I, R extends DatabaseRecord<I>> implements DataAccessObject<I, R> {
+public abstract class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
 
     private final String tableName;
-    private final SqlRecordConverter<I, R> converter;
+    private final SqlRecordConverter<R> converter;
 
     private final Statement dbStatement;
 
     protected JdbcDao(@Nonnull String tableName,
                       @Nonnull Statement dbStatement,
-                      @Nonnull SqlRecordConverter<I, R> converter) {
+                      @Nonnull SqlRecordConverter<R> converter) {
 
         this.tableName = Preconditions.checkNotNull(tableName);
         this.converter = Preconditions.checkNotNull(converter);
@@ -26,7 +26,7 @@ public abstract class JdbcDao<I, R extends DatabaseRecord<I>> implements DataAcc
     }
 
     @Override
-    public Optional<R> find(@Nonnull RecordId<I> id) {
+    public Optional<R> find(@Nonnull RecordId id) {
         Preconditions.checkNotNull(id);
 
         String selectSqlQuery = String.format("SELECT * FROM %s WHERE id = '%s'", tableName,
@@ -47,7 +47,7 @@ public abstract class JdbcDao<I, R extends DatabaseRecord<I>> implements DataAcc
     }
 
     @Override
-    public void delete(@Nonnull RecordId<I> id) {
+    public void delete(@Nonnull RecordId id) {
         Preconditions.checkNotNull(id);
 
         String deleteSqlQuery = String.format("DELETE FROM %s WHERE id = '%s'", tableName,

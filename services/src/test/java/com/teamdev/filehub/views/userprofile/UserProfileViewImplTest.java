@@ -20,17 +20,17 @@ public class UserProfileViewImplTest {
     @DisplayName("Should return user profile")
     void shouldReturnUserProfile() {
         UserRecord userRecord = new UserRecord(
-                new RecordId<>("userId"),
+                new RecordId("userId"),
                 "login",
                 "password");
 
         FolderRecord folderRecord = new FolderRecord(
-                new RecordId<>("folderId"),
+                new RecordId("folderId"),
                 userRecord.id(),
-                new RecordId<>(null),
+                new RecordId(null),
                 "Folder");
 
-        RecordId<String> folderId = new RecordId<>("folderId");
+        RecordId folderId = new RecordId("folderId");
 
         UserDao userDao = Mockito.mock(UserDao.class);
         FolderDao folderDao = Mockito.mock(FolderDao.class);
@@ -63,9 +63,9 @@ public class UserProfileViewImplTest {
     @Test
     @DisplayName("Should throw an exception if there is no user")
     void shouldThrowExceptionWithoutUser() {
-        RecordId<String> userId = new RecordId<>("userId");
+        RecordId userId = new RecordId("userId");
 
-        RecordId<String> folderId = new RecordId<>("folderId");
+        RecordId folderId = new RecordId("folderId");
 
         UserDao userDao = Mockito.mock(UserDao.class);
         FolderDao folderDao = Mockito.mock(FolderDao.class);
@@ -88,11 +88,11 @@ public class UserProfileViewImplTest {
     @DisplayName("Should throw an exception if there is no root folder")
     void shouldThrowExceptionWithoutRootFolder() {
         UserRecord userRecord = new UserRecord(
-                new RecordId<>("userId"),
+                new RecordId("userId"),
                 "login",
                 "password");
 
-        RecordId<String> folderId = new RecordId<>("folderId");
+        RecordId folderId = new RecordId("folderId");
 
         UserDao userDao = Mockito.mock(UserDao.class);
         FolderDao folderDao = Mockito.mock(FolderDao.class);

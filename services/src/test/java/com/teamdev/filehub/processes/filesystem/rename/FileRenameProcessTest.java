@@ -32,9 +32,9 @@ class FileRenameProcessTest {
     void testHandleWithoutExceptions() throws DataNotFoundException, AccessDeniedException {
 
         var fileRecord = new FileRecord(
-                new RecordId<>("fileId"),
-                new RecordId<>("folderId"),
-                new RecordId<>("userId"),
+                new RecordId("fileId"),
+                new RecordId("folderId"),
+                new RecordId("userId"),
                 "oldName",
                 "mimetype",
                 123
@@ -70,7 +70,7 @@ class FileRenameProcessTest {
     @DisplayName("Should throw DataNotFoundException because file doesn't exist")
     void testHandleWithDataNotFoundException() {
 
-        var fileId = new RecordId<>("fileId");
+        var fileId = new RecordId("fileId");
 
         var fileDao = Mockito.mock(FileDao.class);
         Mockito.when(fileDao.find(fileId))
@@ -78,7 +78,7 @@ class FileRenameProcessTest {
 
         var process = new FileRenameProcess(fileDao);
 
-        var command = new RenameCommand(new RecordId<>("userid"),
+        var command = new RenameCommand(new RecordId("userid"),
                                         fileId,
                                         "newName");
 
@@ -96,9 +96,9 @@ class FileRenameProcessTest {
     void testHandleWithAccessDeniedException() {
 
         var fileRecord = new FileRecord(
-                new RecordId<>("fileId"),
-                new RecordId<>("folderId"),
-                new RecordId<>("userId"),
+                new RecordId("fileId"),
+                new RecordId("folderId"),
+                new RecordId("userId"),
                 "oldName",
                 "mimetype",
                 123
@@ -111,7 +111,7 @@ class FileRenameProcessTest {
 
         var process = new FileRenameProcess(fileDao);
 
-        var command = new RenameCommand(new RecordId<>("notOwnerUserId"),
+        var command = new RenameCommand(new RecordId("notOwnerUserId"),
                                         fileRecord.id(),
                                         newName);
 

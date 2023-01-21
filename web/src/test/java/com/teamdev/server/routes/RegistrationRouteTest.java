@@ -36,7 +36,7 @@ class RegistrationRouteTest {
 
         var login = "userLogin@gmail.com";
         var password = "userPassword123";
-        var userId = new RecordId<>("userId");
+        var userId = new RecordId("userId");
 
         var request = Mockito.mock(Request.class);
         Mockito.when(request.contentType())
@@ -51,7 +51,7 @@ class RegistrationRouteTest {
         var process = new UserRegistrationProcess() {
 
             @Override
-            public RecordId<String> handle(UserRegistrationCommand command) {
+            public RecordId handle(UserRegistrationCommand command) {
 
                 if (!Objects.equals(command.login(), login) ||
                         !Objects.equals(command.password(), password)) {
@@ -91,7 +91,7 @@ class RegistrationRouteTest {
         var process = new UserRegistrationProcess() {
 
             @Override
-            public RecordId<String> handle(UserRegistrationCommand command) throws
+            public RecordId handle(UserRegistrationCommand command) throws
                                                                             UserAlreadyRegisteredException {
                 throw new UserAlreadyRegisteredException(errorMessage);
             }
@@ -123,7 +123,7 @@ class RegistrationRouteTest {
         var process = new UserRegistrationProcess() {
 
             @Override
-            public RecordId<String> handle(UserRegistrationCommand command) {
+            public RecordId handle(UserRegistrationCommand command) {
                 return null;
             }
         };
@@ -158,7 +158,7 @@ class RegistrationRouteTest {
         var process = new UserRegistrationProcess() {
 
             @Override
-            public RecordId<String> handle(UserRegistrationCommand command) {
+            public RecordId handle(UserRegistrationCommand command) {
                 throw new RuntimeException("");
             }
         };

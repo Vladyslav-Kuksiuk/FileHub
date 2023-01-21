@@ -40,7 +40,7 @@ public class LoadUserRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId) {
+                                    RecordId userId) {
         UserProfile userProfile = userProfileView.handle(new UserProfileQuery(userId));
         response.body(gson.toJson(userProfile));
     }

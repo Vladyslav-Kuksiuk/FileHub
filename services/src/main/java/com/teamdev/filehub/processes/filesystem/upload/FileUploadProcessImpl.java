@@ -37,7 +37,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull FileUploadCommand command) throws
+    public RecordId handle(@Nonnull FileUploadCommand command) throws
                                                                        AccessDeniedException,
                                                                        DataNotFoundException {
 
@@ -74,8 +74,8 @@ public class FileUploadProcessImpl implements FileUploadProcess {
             throw new AccessDeniedException("Access denied.");
         }
 
-        RecordId<String> fileId =
-                new RecordId<String>(command.userId()
+        RecordId fileId =
+                new RecordId(command.userId()
                                             .value() +
                                              "_" +
                                              command.name() +

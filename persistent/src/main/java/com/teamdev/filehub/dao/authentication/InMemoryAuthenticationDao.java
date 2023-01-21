@@ -31,7 +31,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      * @return {@link AuthenticationRecord}.
      */
     @Override
-    public Optional<AuthenticationRecord> find(@Nonnull RecordId<String> userId) {
+    public Optional<AuthenticationRecord> find(@Nonnull RecordId userId) {
         Preconditions.checkNotNull(userId);
 
         Optional<AuthenticationData> optionalAuthData = authTable.findByUserId(userId.value());
@@ -40,10 +40,10 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
             AuthenticationData authData = optionalAuthData.get();
 
-            return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
+            return Optional.of(new AuthenticationRecord(new RecordId(authData.id()),
                                                         authData.authenticationToken(),
                                                         LocalDateTime.parse(authData.expireTime()),
-                                                        new RecordId<>(authData.userId())));
+                                                        new RecordId(authData.userId())));
         }
 
         return Optional.empty();
@@ -56,7 +56,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
      *         Authenticated user identifier.
      */
     @Override
-    public void delete(@Nonnull RecordId<String> userId) {
+    public void delete(@Nonnull RecordId userId) {
         authTable.delete(userId.value());
 
     }
@@ -104,7 +104,7 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     }
 
     @Override
-    public Optional<AuthenticationRecord> findByToken(String token) {
+    public Optional<AuthenticationRecord> findByToken(@Nonnull String token) {
         Preconditions.checkNotNull(token);
 
         Optional<AuthenticationData> optionalAuthData = authTable.findByToken(token);
@@ -113,11 +113,11 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
 
             AuthenticationData authData = optionalAuthData.get();
 
-            return Optional.of(new AuthenticationRecord(new RecordId<>(authData.id()),
+            return Optional.of(new AuthenticationRecord(new RecordId(authData.id()),
                                                         authData.authenticationToken(),
                                                         LocalDateTime.parse(
                                                                 authData.expireTime()),
-                                                        new RecordId<>(authData.userId())));
+                                                        new RecordId(authData.userId())));
         }
 
         return Optional.empty();

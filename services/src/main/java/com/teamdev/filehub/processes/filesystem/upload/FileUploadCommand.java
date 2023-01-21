@@ -14,15 +14,15 @@ import java.io.InputStream;
  */
 public class FileUploadCommand extends AuthenticatedUserCommand {
 
-    private final RecordId<String> folderId;
+    private final RecordId folderId;
     private final String name;
     private final String mimetype;
     private final long size;
     private final InputStream fileInputStream;
 
     public FileUploadCommand(
-            @Nonnull RecordId<String> userId,
-            @Nonnull RecordId<String> folderId,
+            @Nonnull RecordId userId,
+            @Nonnull RecordId folderId,
             @Nonnull String name,
             @Nonnull String mimetype,
             long size,
@@ -37,7 +37,7 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
 
     }
 
-    public RecordId<String> folderId() {
+    public RecordId folderId() {
         return folderId;
     }
 

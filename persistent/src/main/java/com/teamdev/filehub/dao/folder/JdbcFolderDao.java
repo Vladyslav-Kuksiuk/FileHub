@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcFolderDao extends JdbcDao<String, FolderRecord> implements FolderDao {
+public class JdbcFolderDao extends JdbcDao<FolderRecord> implements FolderDao {
 
     private final String tableName;
     private final Statement dbStatement;
@@ -32,7 +32,7 @@ public class JdbcFolderDao extends JdbcDao<String, FolderRecord> implements Fold
     }
 
     @Override
-    public List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId<String> parentId) {
+    public List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId parentId) {
         Preconditions.checkNotNull(parentId);
 
         try {
@@ -56,7 +56,7 @@ public class JdbcFolderDao extends JdbcDao<String, FolderRecord> implements Fold
     }
 
     @Override
-    public Optional<FolderRecord> findUserRootFolder(@Nonnull RecordId<String> userId) {
+    public Optional<FolderRecord> findUserRootFolder(@Nonnull RecordId userId) {
         Preconditions.checkNotNull(userId);
 
         String selectSqlQuery = String.format(
@@ -80,7 +80,7 @@ public class JdbcFolderDao extends JdbcDao<String, FolderRecord> implements Fold
     }
 
     @Override
-    public List<FolderRecord> getByParentIdAndNamePart(@Nonnull RecordId<String> parentId,
+    public List<FolderRecord> getByParentIdAndNamePart(@Nonnull RecordId parentId,
                                                        @Nonnull String namePart) {
         Preconditions.checkNotNull(parentId);
         Preconditions.checkNotNull(namePart);

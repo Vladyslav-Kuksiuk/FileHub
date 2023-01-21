@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
  */
 public class UserProfileQuery extends AuthenticatedUserQuery {
 
-    public UserProfileQuery(@Nonnull RecordId<String> userId) {
+    public UserProfileQuery(@Nonnull RecordId userId) {
         super(Preconditions.checkNotNull(userId));
     }
 }

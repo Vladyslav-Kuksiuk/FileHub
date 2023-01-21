@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * {@link DataAccessObject} which is intended to work with user.
  */
-public interface UserDao extends DataAccessObject<String, UserRecord> {
+public interface UserDao extends DataAccessObject<UserRecord> {
 
     Optional<UserRecord> findByLogin(@Nonnull String login);
 }

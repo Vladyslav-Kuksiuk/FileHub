@@ -20,10 +20,10 @@ class InMemoryAuthenticationDaoTest {
 
     private final AuthenticationRecord AUTHENTICATION_RECORD =
             new AuthenticationRecord(
-                    new RecordId<>("auth_id"),
+                    new RecordId("auth_id"),
                     "token",
                     LocalDateTime.of(10, 10, 10, 10, 10),
-                    new RecordId<>("user"));
+                    new RecordId("user"));
     private final AuthenticationData AUTHENTICATION_DATA =
             new AuthenticationData("auth_id",
                                    "token",

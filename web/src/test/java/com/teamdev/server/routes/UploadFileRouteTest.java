@@ -32,8 +32,8 @@ class UploadFileRouteTest {
 
     private final Gson gson = new Gson();
 
-    private final RecordId<String> userId = new RecordId<>("userId");
-    private final RecordId<String> folderId = new RecordId<>("folderId");
+    private final RecordId userId = new RecordId("userId");
+    private final RecordId folderId = new RecordId("folderId");
 
     @Mock
     private Request request;
@@ -84,7 +84,7 @@ class UploadFileRouteTest {
                 123123,
                 inputStream);
 
-        var fileId = new RecordId<>("fileId");
+        var fileId = new RecordId("fileId");
 
         var raw = Mockito.mock(HttpServletRequest.class);
         var part = Mockito.mock(Part.class);
@@ -112,7 +112,7 @@ class UploadFileRouteTest {
         var fileUploadProcess = new FileUploadProcess() {
 
             @Override
-            public RecordId<String> handle(FileUploadCommand command) {
+            public RecordId handle(FileUploadCommand command) {
 
                 assertWithMessage("Command is different")
                         .that(command)
@@ -183,7 +183,7 @@ class UploadFileRouteTest {
         var processWithDataException = new FileUploadProcess() {
 
             @Override
-            public RecordId<String> handle(FileUploadCommand command) throws DataNotFoundException {
+            public RecordId handle(FileUploadCommand command) throws DataNotFoundException {
 
                 throw new DataNotFoundException(errorMessage);
             }
@@ -202,7 +202,7 @@ class UploadFileRouteTest {
         var processWithAccessException = new FileUploadProcess() {
 
             @Override
-            public RecordId<String> handle(FileUploadCommand command) throws AccessDeniedException {
+            public RecordId handle(FileUploadCommand command) throws AccessDeniedException {
 
                 throw new AccessDeniedException(errorMessage);
             }

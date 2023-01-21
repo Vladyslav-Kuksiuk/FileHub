@@ -42,11 +42,11 @@ public class DownloadFileRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId)
+                                    RecordId userId)
             throws AccessDeniedException, DataNotFoundException {
 
         var query = new FileDownloadQuery(userId,
-                                          new RecordId<>(request.params(":id")));
+                                          new RecordId(request.params(":id")));
 
         try (var input = fileDownloadView.handle(query);
              var output = response.raw()

@@ -10,18 +10,18 @@ import javax.annotation.Nonnull;
 /**
  * {@link DatabaseRecord} implementation which is intended to store data about file meta context.
  */
-public class FileRecord extends DatabaseRecord<String> {
+public class FileRecord extends DatabaseRecord {
 
-    private final RecordId<String> folderId;
-    private final RecordId<String> ownerId;
+    private final RecordId folderId;
+    private final RecordId ownerId;
     private final String name;
     private final String mimetype;
     private final long size;
 
     public FileRecord(
-            @Nonnull RecordId<String> id,
-            @Nonnull RecordId<String> folderId,
-            @Nonnull RecordId<String> ownerId,
+            @Nonnull RecordId id,
+            @Nonnull RecordId folderId,
+            @Nonnull RecordId ownerId,
             @Nonnull String name,
             @Nonnull String mimetype,
             long size) {
@@ -34,11 +34,11 @@ public class FileRecord extends DatabaseRecord<String> {
         this.size = size;
     }
 
-    public RecordId<String> folderId() {
+    public RecordId folderId() {
         return folderId;
     }
 
-    public RecordId<String> ownerId() {
+    public RecordId ownerId() {
         return ownerId;
     }
 

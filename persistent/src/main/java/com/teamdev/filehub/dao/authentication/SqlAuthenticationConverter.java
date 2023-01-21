@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class SqlAuthenticationConverter implements SqlRecordConverter<String, AuthenticationRecord> {
+public class SqlAuthenticationConverter implements SqlRecordConverter<AuthenticationRecord> {
 
     private final String table;
 
@@ -23,11 +23,11 @@ public class SqlAuthenticationConverter implements SqlRecordConverter<String, Au
 
         try {
 
-            return new AuthenticationRecord(new RecordId<>(resultSet.getString(1)),
+            return new AuthenticationRecord(new RecordId(resultSet.getString(1)),
                                             resultSet.getString(2),
                                             resultSet.getTimestamp(3)
                                                      .toLocalDateTime(),
-                                            new RecordId<>(resultSet.getString(4)));
+                                            new RecordId(resultSet.getString(4)));
 
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);

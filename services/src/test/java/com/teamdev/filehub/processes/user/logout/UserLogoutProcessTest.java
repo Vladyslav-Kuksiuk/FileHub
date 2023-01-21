@@ -30,11 +30,11 @@ class UserLogoutProcessTest {
     @Test
     void logoutAuthenticatedUserTest() {
 
-        var realAuth = new AuthenticationRecord(new RecordId<>("token1"),
+        var realAuth = new AuthenticationRecord(new RecordId("token1"),
                                                 "token1",
                                                 LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
                                                              .plusDays(1),
-                                                new RecordId<>("user1"));
+                                                new RecordId("user1"));
 
         authDao.create(realAuth);
 
@@ -52,7 +52,7 @@ class UserLogoutProcessTest {
 
         assertThrows(RuntimeException.class,
                      () -> logoutProcess.handle(
-                             new UserLogoutCommand(new RecordId<>("notAuthenticated"),
+                             new UserLogoutCommand(new RecordId("notAuthenticated"),
                                                    "notAToken")));
 
     }

@@ -30,7 +30,7 @@ public class FileRemoveProcess implements RemoveProcess {
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull RemoveCommand command)
+    public RecordId handle(@Nonnull RemoveCommand command)
             throws AccessDeniedException, DataNotFoundException {
         Preconditions.checkNotNull(command);
 

@@ -6,8 +6,8 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 /**
  * A {@link ApplicationProcess} which implementation is intended to handle user logout.
  */
-public interface UserLogoutProcess extends ApplicationProcess<UserLogoutCommand, RecordId<String>> {
+public interface UserLogoutProcess extends ApplicationProcess<UserLogoutCommand, RecordId> {
 
     @Override
-    RecordId<String> handle(UserLogoutCommand command);
+    RecordId handle(UserLogoutCommand command);
 }

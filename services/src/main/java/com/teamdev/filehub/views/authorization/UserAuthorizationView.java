@@ -8,8 +8,8 @@ import com.teamdev.filehub.views.View;
  * user authorization.
  * Authorization converts authentication token into user id.
  */
-public interface UserAuthorizationView extends View<UserAuthorizationQuery, RecordId<String>> {
+public interface UserAuthorizationView extends View<UserAuthorizationQuery, RecordId> {
 
     @Override
-    RecordId<String> handle(UserAuthorizationQuery query) throws UserAuthorizationException;
+    RecordId handle(UserAuthorizationQuery query) throws UserAuthorizationException;
 }

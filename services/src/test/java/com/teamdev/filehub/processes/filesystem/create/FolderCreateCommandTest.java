@@ -49,7 +49,7 @@ class FolderCreateCommandTest {
     void nullTest() {
 
         var tester = new NullPointerTester();
-        tester.setDefault(RecordId.class, new RecordId<>("user"));
+        tester.setDefault(RecordId.class, new RecordId("user"));
         tester.testAllPublicConstructors(FolderCreateCommand.class);
 
     }
@@ -58,8 +58,8 @@ class FolderCreateCommandTest {
     @MethodSource("negativeNameCases")
     void invalidFolderNameTest(String folderName) {
         assertThrows(RequestFieldValidationException.class,
-                     () -> new FolderCreateCommand(new RecordId<>("userId"),
-                                                   new RecordId<>("folderId"),
+                     () -> new FolderCreateCommand(new RecordId("userId"),
+                                                   new RecordId("folderId"),
                                                    folderName),
                      "Folder creation command creation with illegal folder name passed.");
 
@@ -68,8 +68,8 @@ class FolderCreateCommandTest {
     @ParameterizedTest
     @MethodSource("positiveNameCases")
     void validFolderNameTest(String folderName) throws RequestFieldValidationException {
-        var command = new FolderCreateCommand(new RecordId<>("userId"),
-                                              new RecordId<>("folderId"),
+        var command = new FolderCreateCommand(new RecordId("userId"),
+                                              new RecordId("folderId"),
                                               folderName);
     }
 

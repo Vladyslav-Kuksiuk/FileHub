@@ -11,7 +11,7 @@ class RemoveCommandTest {
     void nullTest() {
 
         var tester = new NullPointerTester();
-        tester.setDefault(RecordId.class, new RecordId<>("user"));
+        tester.setDefault(RecordId.class, new RecordId("user"));
         tester.testAllPublicConstructors(RenameCommand.class);
 
     }

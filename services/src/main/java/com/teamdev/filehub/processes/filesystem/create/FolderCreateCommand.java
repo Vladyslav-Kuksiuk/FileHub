@@ -15,13 +15,13 @@ import java.util.regex.Pattern;
  */
 public class FolderCreateCommand extends AuthenticatedUserCommand {
 
-    private final RecordId<String> parentFolderId;
+    private final RecordId parentFolderId;
 
     private final String folderName;
 
     public FolderCreateCommand(
-            @Nonnull RecordId<String> userId,
-            @Nonnull RecordId<String> parentFolderId,
+            @Nonnull RecordId userId,
+            @Nonnull RecordId parentFolderId,
             @Nonnull String folderName) throws RequestFieldValidationException {
         super(userId);
         Preconditions.checkNotNull(userId);
@@ -41,7 +41,7 @@ public class FolderCreateCommand extends AuthenticatedUserCommand {
         this.folderName = Preconditions.checkNotNull(folderName);
     }
 
-    public RecordId<String> parentFolderId() {
+    public RecordId parentFolderId() {
         return parentFolderId;
     }
 

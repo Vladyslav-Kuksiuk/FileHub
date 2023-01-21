@@ -8,10 +8,10 @@ import java.util.List;
 /**
  * {@link DataAccessObject} which is intended to work with file meta context.
  */
-public interface FileDao extends DataAccessObject<String, FileRecord> {
+public interface FileDao extends DataAccessObject<FileRecord> {
 
-    List<FileRecord> getFilesInFolder(RecordId<String> folderId);
+    List<FileRecord> getFilesInFolder(RecordId folderId);
 
-    List<FileRecord> getByFolderIdAndNamePart(RecordId<String> folderId, String namePart);
+    List<FileRecord> getByFolderIdAndNamePart(RecordId folderId, String namePart);
 
 }

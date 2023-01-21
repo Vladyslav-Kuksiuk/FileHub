@@ -28,11 +28,11 @@ public class UserAuthenticationProcessTest {
         authenticationProcess = new UserAuthenticationProcessImpl(userDao,
                                                                   authenticationDao);
 
-        registeredUser = new UserRecord(new RecordId<>("user1"),
+        registeredUser = new UserRecord(new RecordId("user1"),
                                         "user1",
                                         StringEncryptor.encrypt("password1"));
 
-        notRegisteredUser = new UserRecord(new RecordId<>("user2"),
+        notRegisteredUser = new UserRecord(new RecordId("user2"),
                                            "user2",
                                            StringEncryptor.encrypt("password2"));
 

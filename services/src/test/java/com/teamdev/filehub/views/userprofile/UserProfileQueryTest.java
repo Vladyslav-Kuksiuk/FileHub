@@ -10,7 +10,7 @@ class UserProfileQueryTest {
     void nullTest() {
 
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(RecordId.class, new RecordId<>("user"));
+        tester.setDefault(RecordId.class, new RecordId("user"));
         tester.testAllPublicConstructors(UserProfileQuery.class);
 
     }

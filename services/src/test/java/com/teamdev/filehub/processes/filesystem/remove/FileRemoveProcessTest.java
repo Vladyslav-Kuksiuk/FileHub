@@ -34,9 +34,9 @@ class FileRemoveProcessTest {
     void testHandleWithoutExceptions() throws DataNotFoundException, AccessDeniedException {
 
         var fileRecord = new FileRecord(
-                new RecordId<>("fileId"),
-                new RecordId<>("folderId"),
-                new RecordId<>("userId"),
+                new RecordId("fileId"),
+                new RecordId("folderId"),
+                new RecordId("userId"),
                 "oldName",
                 "mimetype",
                 123
@@ -68,7 +68,7 @@ class FileRemoveProcessTest {
     @DisplayName("Should throw DataNotFoundException because file doesn't exist")
     void testHandleWithDataNotFoundException() {
 
-        var fileId = new RecordId<>("fileId");
+        var fileId = new RecordId("fileId");
 
         var fileDao = Mockito.mock(FileDao.class);
         Mockito.when(fileDao.find(fileId))
@@ -78,7 +78,7 @@ class FileRemoveProcessTest {
 
         var process = new FileRemoveProcess(fileDao, fileStorage);
 
-        var command = new RemoveCommand(new RecordId<>("userid"),
+        var command = new RemoveCommand(new RecordId("userid"),
                                         fileId);
 
         assertThrows(DataNotFoundException.class, () -> {
@@ -98,9 +98,9 @@ class FileRemoveProcessTest {
     void testHandleWithAccessDeniedException() {
 
         var fileRecord = new FileRecord(
-                new RecordId<>("fileId"),
-                new RecordId<>("folderId"),
-                new RecordId<>("userId"),
+                new RecordId("fileId"),
+                new RecordId("folderId"),
+                new RecordId("userId"),
                 "oldName",
                 "mimetype",
                 123
@@ -114,7 +114,7 @@ class FileRemoveProcessTest {
 
         var process = new FileRemoveProcess(fileDao, fileStorage);
 
-        var command = new RemoveCommand(new RecordId<>("notOwnerUserId"),
+        var command = new RemoveCommand(new RecordId("notOwnerUserId"),
                                         fileRecord.id());
 
         assertThrows(AccessDeniedException.class, () -> {

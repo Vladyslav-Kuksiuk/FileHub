@@ -10,29 +10,30 @@ import javax.annotation.Nonnull;
 /**
  * {@link DatabaseRecord} implementation which is intended to store data about the folder.
  */
-public class FolderRecord extends DatabaseRecord<String> {
+public class FolderRecord extends DatabaseRecord {
 
-    private final RecordId<String> ownerId;
+    private final RecordId ownerId;
 
-    private final RecordId<String> parentFolderId;
+    private final RecordId parentFolderId;
 
     private final String name;
 
-    public FolderRecord(@Nonnull RecordId<String> id,
-                        @Nonnull RecordId<String> ownerId,
-                        @Nonnull RecordId<String> parentFolderId,
+    public FolderRecord(@Nonnull RecordId id,
+                        @Nonnull RecordId ownerId,
+                        @Nonnull RecordId parentFolderId,
                         @Nonnull String name) {
+
         super(Preconditions.checkNotNull(id));
         this.ownerId = Preconditions.checkNotNull(ownerId);
         this.parentFolderId = Preconditions.checkNotNull(parentFolderId);
         this.name = Preconditions.checkNotNull(name);
     }
 
-    public RecordId<String> ownerId() {
+    public RecordId ownerId() {
         return ownerId;
     }
 
-    public RecordId<String> parentFolderId() {
+    public RecordId parentFolderId() {
         return parentFolderId;
     }
 

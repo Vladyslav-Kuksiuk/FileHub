@@ -10,13 +10,13 @@ import javax.annotation.Nonnull;
  */
 public class AuthenticatedUserCommand implements Command {
 
-    private final RecordId<String> userId;
+    private final RecordId userId;
 
-    public AuthenticatedUserCommand(@Nonnull RecordId<String> userId) {
+    public AuthenticatedUserCommand(@Nonnull RecordId userId) {
         this.userId = Preconditions.checkNotNull(userId);
     }
 
-    public RecordId<String> userId() {
+    public RecordId userId() {
         return userId;
     }
 }

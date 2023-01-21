@@ -38,7 +38,7 @@ public class LogoutRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId) {
+                                    RecordId userId) {
 
         String authorizationHeader = request.headers("Authorization");
         String token = Iterables.get(Splitter.on(' ')

@@ -27,8 +27,8 @@ import static org.mockito.ArgumentMatchers.any;
 
 class DownloadFileRouteTest {
 
-    private final RecordId<String> userId = new RecordId<>("userId");
-    private final RecordId<String> fileId = new RecordId<>("fileId");
+    private final RecordId userId = new RecordId("userId");
+    private final RecordId fileId = new RecordId("fileId");
 
     @Mock
     private Request request;

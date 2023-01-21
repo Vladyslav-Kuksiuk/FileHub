@@ -27,7 +27,7 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull FolderCreateCommand command)
+    public RecordId handle(@Nonnull FolderCreateCommand command)
             throws DataNotFoundException, AccessDeniedException {
 
         Preconditions.checkNotNull(command);
@@ -66,8 +66,8 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
             throw new AccessDeniedException("Access to folder denied.");
         }
 
-        RecordId<String> newFolderId =
-                new RecordId<>(
+        RecordId newFolderId =
+                new RecordId(
                         command.userId()
                                .value() +
                                 command.folderName() +

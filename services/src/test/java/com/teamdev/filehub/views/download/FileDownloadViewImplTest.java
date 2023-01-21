@@ -32,9 +32,9 @@ class FileDownloadViewImplTest {
         fileDownloadView = new FileDownloadViewImpl(fileDao,
                                                     fileStorageStub);
 
-        FileRecord fileRecord = new FileRecord(new RecordId<>("uploadedFileId"),
-                                               new RecordId<>("user_root"),
-                                               new RecordId<>("user"),
+        FileRecord fileRecord = new FileRecord(new RecordId("uploadedFileId"),
+                                               new RecordId("user_root"),
+                                               new RecordId("user"),
                                                "myFile",
                                                "txt",
                                                123);
@@ -46,8 +46,8 @@ class FileDownloadViewImplTest {
     @Test
     void fileDownloadTest() throws IOException, DataNotFoundException, AccessDeniedException {
 
-        FileDownloadQuery query = new FileDownloadQuery(new RecordId<>("user"),
-                                                        new RecordId<>("uploadedFileId"));
+        FileDownloadQuery query = new FileDownloadQuery(new RecordId("user"),
+                                                        new RecordId("uploadedFileId"));
 
         InputStream fileInputStream = fileDownloadView.handle(query);
 
@@ -60,8 +60,8 @@ class FileDownloadViewImplTest {
     @Test
     void downloadAbsentFileTest() {
 
-        FileDownloadQuery query = new FileDownloadQuery(new RecordId<>("user"),
-                                                        new RecordId<>("notUploadedFileId"));
+        FileDownloadQuery query = new FileDownloadQuery(new RecordId("user"),
+                                                        new RecordId("notUploadedFileId"));
 
         assertThrows(DataNotFoundException.class,
                      () -> fileDownloadView.handle(query),
@@ -72,8 +72,8 @@ class FileDownloadViewImplTest {
     @Test
     void downloadFileWithoutAccessTest() {
 
-        FileDownloadQuery query = new FileDownloadQuery(new RecordId<>("notOwner"),
-                                                        new RecordId<>("uploadedFileId"));
+        FileDownloadQuery query = new FileDownloadQuery(new RecordId("notOwner"),
+                                                        new RecordId("uploadedFileId"));
 
         assertThrows(AccessDeniedException.class,
                      () -> fileDownloadView.handle(query),

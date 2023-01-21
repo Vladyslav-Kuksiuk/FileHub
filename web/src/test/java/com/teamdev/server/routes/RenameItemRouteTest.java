@@ -22,8 +22,8 @@ import static org.mockito.ArgumentMatchers.any;
 
 class RenameItemRouteTest {
 
-    private final RecordId<String> userId = new RecordId<>("userId");
-    private final RecordId<String> itemId = new RecordId<>("itemId");
+    private final RecordId userId = new RecordId("userId");
+    private final RecordId itemId = new RecordId("itemId");
     private final String newName = "newName";
 
     @Mock

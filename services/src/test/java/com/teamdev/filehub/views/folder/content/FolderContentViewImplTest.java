@@ -37,20 +37,20 @@ class FolderContentViewImplTest {
     void testHandleWithoutExceptions()
             throws DataNotFoundException, AccessDeniedException {
 
-        var folderRecord = new FolderRecord(new RecordId<>("folderId"),
-                                            new RecordId<>("userId"),
-                                            new RecordId<>(null),
+        var folderRecord = new FolderRecord(new RecordId("folderId"),
+                                            new RecordId("userId"),
+                                            new RecordId(null),
                                             "folder");
 
         var innerFolderList = List.of(
                 new FolderRecord(
-                        new RecordId<>("innerFolderId1"),
+                        new RecordId("innerFolderId1"),
                         folderRecord.ownerId(),
                         folderRecord.id(),
                         "innerFolder1"
                 ),
                 new FolderRecord(
-                        new RecordId<>("innerFolderId2"),
+                        new RecordId("innerFolderId2"),
                         folderRecord.ownerId(),
                         folderRecord.id(),
                         "innerFolder1"
@@ -58,7 +58,7 @@ class FolderContentViewImplTest {
 
         var fileList = List.of(
                 new FileRecord(
-                        new RecordId<>("fileId1"),
+                        new RecordId("fileId1"),
                         folderRecord.id(),
                         folderRecord.ownerId(),
                         "file1",
@@ -66,7 +66,7 @@ class FolderContentViewImplTest {
                         123123
                 ),
                 new FileRecord(
-                        new RecordId<>("fileId2"),
+                        new RecordId("fileId2"),
                         folderRecord.id(),
                         folderRecord.ownerId(),
                         "file2",
@@ -118,7 +118,7 @@ class FolderContentViewImplTest {
     @DisplayName("Should throw a DataNotFoundException when folder not found")
     void testHandleWithDataNotFoundException() {
 
-        var folderId = new RecordId<>("folderId");
+        var folderId = new RecordId("folderId");
 
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderId))
@@ -126,7 +126,7 @@ class FolderContentViewImplTest {
 
         var fileDao = Mockito.mock(FileDao.class);
 
-        var query = new FolderContentQuery(new RecordId<>("userId"),
+        var query = new FolderContentQuery(new RecordId("userId"),
                                            folderId);
 
         var view = new FolderContentViewImpl(folderDao, fileDao);
@@ -140,9 +140,9 @@ class FolderContentViewImplTest {
     @DisplayName("Should throw an AccessDeniedException when user is not the owner")
     void testHandleWithAccessDeniedException() {
 
-        var folderRecord = new FolderRecord(new RecordId<>("folderId"),
-                                            new RecordId<>("userId"),
-                                            new RecordId<>(null),
+        var folderRecord = new FolderRecord(new RecordId("folderId"),
+                                            new RecordId("userId"),
+                                            new RecordId(null),
                                             "folder");
 
         var folderDao = Mockito.mock(FolderDao.class);
@@ -151,7 +151,7 @@ class FolderContentViewImplTest {
 
         var fileDao = Mockito.mock(FileDao.class);
 
-        var query = new FolderContentQuery(new RecordId<>("NotOwnerUser"),
+        var query = new FolderContentQuery(new RecordId("NotOwnerUser"),
                                            folderRecord.id());
 
         var view = new FolderContentViewImpl(folderDao, fileDao);

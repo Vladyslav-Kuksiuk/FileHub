@@ -8,9 +8,9 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 /**
  * A {@link ApplicationProcess} which implementation is intended to handle folder creation.
  */
-public interface FolderCreateProcess extends ApplicationProcess<FolderCreateCommand, RecordId<String>> {
+public interface FolderCreateProcess extends ApplicationProcess<FolderCreateCommand, RecordId> {
 
     @Override
-    RecordId<String> handle(FolderCreateCommand command)
+    RecordId handle(FolderCreateCommand command)
             throws AccessDeniedException, DataNotFoundException;
 }

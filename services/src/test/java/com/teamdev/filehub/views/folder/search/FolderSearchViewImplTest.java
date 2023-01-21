@@ -38,22 +38,22 @@ public class FolderSearchViewImplTest {
     void testHandleWithoutExceptions()
             throws DataNotFoundException, AccessDeniedException {
 
-        var folderRecord = new FolderRecord(new RecordId<>("folderId"),
-                                            new RecordId<>("userId"),
-                                            new RecordId<>(null),
+        var folderRecord = new FolderRecord(new RecordId("folderId"),
+                                            new RecordId("userId"),
+                                            new RecordId(null),
                                             "folder");
 
         var searchWord = "name";
 
         var innerFolderList = List.of(
                 new FolderRecord(
-                        new RecordId<>("innerFolderId1"),
+                        new RecordId("innerFolderId1"),
                         folderRecord.ownerId(),
                         folderRecord.id(),
                         "innerFolderName1"
                 ),
                 new FolderRecord(
-                        new RecordId<>("innerFolderId2"),
+                        new RecordId("innerFolderId2"),
                         folderRecord.ownerId(),
                         folderRecord.id(),
                         "innerFolderName2"
@@ -61,7 +61,7 @@ public class FolderSearchViewImplTest {
 
         var fileList = List.of(
                 new FileRecord(
-                        new RecordId<>("fileId1"),
+                        new RecordId("fileId1"),
                         folderRecord.id(),
                         folderRecord.ownerId(),
                         "fileName1",
@@ -69,7 +69,7 @@ public class FolderSearchViewImplTest {
                         123123
                 ),
                 new FileRecord(
-                        new RecordId<>("fileId2"),
+                        new RecordId("fileId2"),
                         folderRecord.id(),
                         folderRecord.ownerId(),
                         "fileName2",
@@ -122,7 +122,7 @@ public class FolderSearchViewImplTest {
     @DisplayName("Should throw DataNotFoundException because folder to search in not found")
     void testHandleWithDataNotFoundException() {
 
-        var folderId = new RecordId<>("folderId");
+        var folderId = new RecordId("folderId");
 
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderId))
@@ -132,7 +132,7 @@ public class FolderSearchViewImplTest {
 
         var view = new FolderSearchViewImpl(folderDao, fileDao);
 
-        var query = new FolderSearchQuery(new RecordId<>("userid"),
+        var query = new FolderSearchQuery(new RecordId("userid"),
                                           folderId,
                                           "searchWord");
 
@@ -147,9 +147,9 @@ public class FolderSearchViewImplTest {
     void testHandleWithAccessDeniedException() {
 
         var folderRecord = new FolderRecord(
-                new RecordId<>("folderId"),
-                new RecordId<>("userId"),
-                new RecordId<>("parentFolderId"),
+                new RecordId("folderId"),
+                new RecordId("userId"),
+                new RecordId("parentFolderId"),
                 "name"
         );
 
@@ -161,7 +161,7 @@ public class FolderSearchViewImplTest {
 
         var view = new FolderSearchViewImpl(folderDao, fileDao);
 
-        var query = new FolderSearchQuery(new RecordId<>("notOwnerUser"),
+        var query = new FolderSearchQuery(new RecordId("notOwnerUser"),
                                           folderRecord.id(),
                                           "searchWord");
 

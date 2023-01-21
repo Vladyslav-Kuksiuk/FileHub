@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-public class JdbcUserDao extends JdbcDao<String, UserRecord> implements UserDao {
+public class JdbcUserDao extends JdbcDao<UserRecord> implements UserDao {
 
     private final String tableName;
     private final Statement dbStatement;

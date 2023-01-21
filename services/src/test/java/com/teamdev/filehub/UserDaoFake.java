@@ -11,20 +11,20 @@ import java.util.Optional;
 
 public class UserDaoFake implements UserDao {
 
-    private final Map<RecordId<String>, UserRecord> users = new HashMap<>();
+    private final Map<RecordId, UserRecord> users = new HashMap<>();
 
-    public Map<RecordId<String>, UserRecord> usersMap() {
+    public Map<RecordId, UserRecord> usersMap() {
         return Collections.unmodifiableMap(users);
     }
 
     @Override
-    public Optional<UserRecord> find(RecordId<String> id) {
+    public Optional<UserRecord> find(RecordId id) {
 
         return Optional.ofNullable(users.get(id));
     }
 
     @Override
-    public void delete(RecordId<String> id) {
+    public void delete(RecordId id) {
 
         if (!users.containsKey(id)) {
             throw new RuntimeException("User not found.");

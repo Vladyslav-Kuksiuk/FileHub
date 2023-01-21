@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
  * {@link DatabaseRecord} implementation which is intended to
  * store data about user authentication.
  */
-public class AuthenticationRecord extends DatabaseRecord<String> {
+public class AuthenticationRecord extends DatabaseRecord {
 
     private final String authenticationToken;
     private final LocalDateTime expireTime;
-    private final RecordId<String> userId;
+    private final RecordId userId;
 
-    public AuthenticationRecord(@Nonnull RecordId<String> id,
+    public AuthenticationRecord(@Nonnull RecordId id,
                                 @Nonnull String authenticationToken,
                                 @Nonnull LocalDateTime expireTime,
-                                @Nonnull RecordId<String> userId) {
+                                @Nonnull RecordId userId) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(authenticationToken);
@@ -40,7 +40,7 @@ public class AuthenticationRecord extends DatabaseRecord<String> {
         return expireTime;
     }
 
-    public RecordId<String> userId() {
+    public RecordId userId() {
         return userId;
     }
 }

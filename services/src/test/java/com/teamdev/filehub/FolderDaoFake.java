@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 
 public class FolderDaoFake implements FolderDao {
 
-    Map<RecordId<String>, FolderRecord> folders = new HashMap();
+    Map<RecordId, FolderRecord> folders = new HashMap();
 
     @Override
-    public Optional<FolderRecord> find(RecordId<String> id) {
+    public Optional<FolderRecord> find(RecordId id) {
 
         return Optional.ofNullable(folders.get(id));
     }
 
     @Override
-    public void delete(RecordId<String> id) {
+    public void delete(RecordId id) {
 
         if (!folders.containsKey(id)) {
             throw new RuntimeException("Folder with this id doesn't exist");
@@ -54,7 +54,7 @@ public class FolderDaoFake implements FolderDao {
     }
 
     @Override
-    public List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId) {
+    public List<FolderRecord> getInnerFoldersByParentId(RecordId parentId) {
 
         if (!folders.containsKey(parentId)) {
             throw new RuntimeException("Folder with this id doesn't exist");
@@ -68,16 +68,16 @@ public class FolderDaoFake implements FolderDao {
     }
 
     @Override
-    public Optional<FolderRecord> findUserRootFolder(RecordId<String> userId) {
+    public Optional<FolderRecord> findUserRootFolder(RecordId userId) {
         return Optional.empty();
     }
 
     @Override
-    public List<FolderRecord> getByParentIdAndNamePart(RecordId<String> parentId, String namePart) {
+    public List<FolderRecord> getByParentIdAndNamePart(RecordId parentId, String namePart) {
         return null;
     }
 
-    public Map<RecordId<String>, FolderRecord> foldersMap() {
+    public Map<RecordId, FolderRecord> foldersMap() {
         return folders;
     }
 }

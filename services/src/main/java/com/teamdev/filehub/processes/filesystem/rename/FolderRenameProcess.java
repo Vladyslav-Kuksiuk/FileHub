@@ -26,7 +26,7 @@ public class FolderRenameProcess implements RenameProcess {
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull RenameCommand command)
+    public RecordId handle(@Nonnull RenameCommand command)
             throws AccessDeniedException, DataNotFoundException {
         Preconditions.checkNotNull(command);
 

@@ -10,13 +10,13 @@ import javax.annotation.Nonnull;
  */
 public class AuthenticatedUserQuery implements Query {
 
-    private final RecordId<String> userId;
+    private final RecordId userId;
 
-    protected AuthenticatedUserQuery(@Nonnull RecordId<String> userId) {
+    protected AuthenticatedUserQuery(@Nonnull RecordId userId) {
         this.userId = Preconditions.checkNotNull(userId);
     }
 
-    public RecordId<String> userId() {
+    public RecordId userId() {
         return userId;
     }
 }

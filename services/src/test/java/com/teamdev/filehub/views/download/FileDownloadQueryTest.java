@@ -10,7 +10,7 @@ class FileDownloadQueryTest {
     void nullTest() throws NoSuchMethodException {
 
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(RecordId.class, new RecordId<>("user"));
+        tester.setDefault(RecordId.class, new RecordId("user"));
         tester.testAllPublicConstructors(FileDownloadQuery.class);
 
     }

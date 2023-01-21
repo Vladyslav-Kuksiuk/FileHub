@@ -25,8 +25,8 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
     private final UserDao userDao;
     private final AuthenticationDao authenticationDao;
 
-    public UserAuthenticationProcessImpl(UserDao userDao,
-                                         AuthenticationDao authenticationDao) {
+    public UserAuthenticationProcessImpl(@Nonnull UserDao userDao,
+                                         @Nonnull AuthenticationDao authenticationDao) {
         this.userDao = Preconditions.checkNotNull(userDao);
         this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
     }
@@ -38,6 +38,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
     @Override
     public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command)
             throws UserCredentialsMismatchException {
+        Preconditions.checkNotNull(command);
 
         logger.atInfo()
               .log("[PROCESS STARTED] - User authentication - login: %s.", command.login());
@@ -73,7 +74,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                 userRecord.login() + expireDateTime);
 
         AuthenticationRecord authenticationRecord =
-                new AuthenticationRecord(new RecordId<>(authenticationToken),
+                new AuthenticationRecord(new RecordId(authenticationToken),
                                          authenticationToken,
                                          expireDateTime,
                                          userRecord.id());

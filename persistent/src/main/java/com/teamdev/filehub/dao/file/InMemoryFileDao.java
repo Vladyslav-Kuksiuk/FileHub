@@ -27,9 +27,9 @@ public class InMemoryFileDao implements FileDao {
     }
 
     private static FileRecord convertDataIntoRecord(FileData data) {
-        return new FileRecord(new RecordId<>(data.id()),
-                              new RecordId<>(data.folderId()),
-                              new RecordId<>(data.ownerId()),
+        return new FileRecord(new RecordId(data.id()),
+                              new RecordId(data.folderId()),
+                              new RecordId(data.ownerId()),
                               data.name(),
                               data.mimetype(),
                               data.size());
@@ -55,7 +55,7 @@ public class InMemoryFileDao implements FileDao {
      * @return {@link UserRecord}.
      */
     @Override
-    public Optional<FileRecord> find(@Nonnull RecordId<String> id) {
+    public Optional<FileRecord> find(@Nonnull RecordId id) {
 
         Optional<FileData> optionalFileData = fileTable.findById(id.value());
 
@@ -80,7 +80,7 @@ public class InMemoryFileDao implements FileDao {
      *         file meta context record identifier.
      */
     @Override
-    public void delete(@Nonnull RecordId<String> id) {
+    public void delete(@Nonnull RecordId id) {
         fileTable.delete(id.value());
 
         logger.atInfo()
@@ -123,7 +123,7 @@ public class InMemoryFileDao implements FileDao {
     }
 
     @Override
-    public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
+    public List<FileRecord> getFilesInFolder(RecordId folderId) {
         return fileTable.selectWithSameFolderId(folderId.value())
                 .stream()
                 .map(InMemoryFileDao::convertDataIntoRecord)
@@ -131,7 +131,7 @@ public class InMemoryFileDao implements FileDao {
     }
 
     @Override
-    public List<FileRecord> getByFolderIdAndNamePart(RecordId<String> folderId, String namePart) {
+    public List<FileRecord> getByFolderIdAndNamePart(RecordId folderId, String namePart) {
         return fileTable.getByFolderIdAndNamePart(folderId.value(), namePart)
                 .stream()
                 .map(InMemoryFileDao::convertDataIntoRecord)

@@ -47,7 +47,7 @@ public class UploadFileRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId) throws ServiceException {
+                                    RecordId userId) throws ServiceException {
 
         request.attribute("org.eclipse.jetty.multipartConfig",
                           new MultipartConfigElement("/temp"));
@@ -63,7 +63,7 @@ public class UploadFileRoute extends AuthorizedUserRoute {
 
                     var command = new FileUploadCommand(
                             userId,
-                            new RecordId<>(request.params(":id")),
+                            new RecordId(request.params(":id")),
                             part.getSubmittedFileName(),
                             part.getContentType(),
                             part.getSize(),

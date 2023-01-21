@@ -30,12 +30,12 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull UserRegistrationCommand command)
+    public RecordId handle(@Nonnull UserRegistrationCommand command)
             throws UserAlreadyRegisteredException {
         logger.atInfo()
               .log("[PROCESS STARTED] - User registration - login: %s.", command.login());
 
-        RecordId<String> userId = new RecordId<>(command.login());
+        RecordId userId = new RecordId(command.login());
 
         UserRecord userRecord = new UserRecord(userId,
                                                command.login(),
@@ -51,9 +51,9 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
         userDao.create(userRecord);
 
         FolderRecord userRootFolder = new FolderRecord(
-                new RecordId<>(command.login() + "_root"),
+                new RecordId(command.login() + "_root"),
                 userId,
-                new RecordId<>(null),
+                new RecordId(null),
                 command.login());
 
         folderDao.create(userRootFolder);

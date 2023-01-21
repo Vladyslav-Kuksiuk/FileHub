@@ -34,7 +34,7 @@ public abstract class AuthorizedUserRoute extends ServiceSupportingRoute {
         String token = Iterables.get(Splitter.on(' ')
                                              .split(authorizationHeader), 1);
 
-        RecordId<String> userId = authorizationView.handle(new UserAuthorizationQuery(token));
+        RecordId userId = authorizationView.handle(new UserAuthorizationQuery(token));
 
         authorizedHandle(request, response, userId);
     }
@@ -56,6 +56,6 @@ public abstract class AuthorizedUserRoute extends ServiceSupportingRoute {
      */
     protected abstract void authorizedHandle(WrappedRequest request,
                                              Response response,
-                                             RecordId<String> userId)
+                                             RecordId userId)
             throws ServiceException, JsonEntityValidationException;
 }

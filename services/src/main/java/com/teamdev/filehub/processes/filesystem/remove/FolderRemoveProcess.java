@@ -34,7 +34,7 @@ public class FolderRemoveProcess implements RemoveProcess {
     }
 
     @Override
-    public RecordId<String> handle(@Nonnull RemoveCommand command)
+    public RecordId handle(@Nonnull RemoveCommand command)
             throws AccessDeniedException, DataNotFoundException {
         Preconditions.checkNotNull(command);
 
@@ -87,7 +87,7 @@ public class FolderRemoveProcess implements RemoveProcess {
         return command.itemId();
     }
 
-    private void removeFolder(RecordId<String> folderId) {
+    private void removeFolder(RecordId folderId) {
         fileDao.getFilesInFolder(folderId)
                .forEach(file -> {
                    fileDao.delete(file.id());

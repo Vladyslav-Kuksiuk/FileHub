@@ -36,24 +36,24 @@ class FolderRemoveProcessTest {
     @DisplayName("Should call remove folder with content and return removed folder id")
     void testHandleWithoutExceptions() throws DataNotFoundException, AccessDeniedException {
 
-        var userId = new RecordId<>("userId");
+        var userId = new RecordId("userId");
 
         var folderRecord = new FolderRecord(
-                new RecordId<>("folderId"),
+                new RecordId("folderId"),
                 userId,
-                new RecordId<>("folderId"),
+                new RecordId("folderId"),
                 "name"
         );
 
         var innerFolderRecord = new FolderRecord(
-                new RecordId<>("innerFolderId"),
+                new RecordId("innerFolderId"),
                 userId,
                 folderRecord.id(),
                 "name"
         );
 
         var fileRecord1 = new FileRecord(
-                new RecordId<>("fileRecord1"),
+                new RecordId("fileRecord1"),
                 folderRecord.id(),
                 userId,
                 "name",
@@ -61,7 +61,7 @@ class FolderRemoveProcessTest {
                 123);
 
         var fileRecord2 = new FileRecord(
-                new RecordId<>("fileRecord2"),
+                new RecordId("fileRecord2"),
                 innerFolderRecord.id(),
                 userId,
                 "name",
@@ -113,7 +113,7 @@ class FolderRemoveProcessTest {
     @DisplayName("Should throw DataNotFoundException because folder doesn't exist")
     void testHandleWithDataNotFoundException() {
 
-        var folderId = new RecordId<>("folderId");
+        var folderId = new RecordId("folderId");
 
         var fileDao = Mockito.mock(FileDao.class);
 
@@ -125,7 +125,7 @@ class FolderRemoveProcessTest {
 
         var process = new FolderRemoveProcess(folderDao, fileDao, fileStorage);
 
-        var command = new RemoveCommand(new RecordId<>("userid"),
+        var command = new RemoveCommand(new RecordId("userid"),
                                         folderId);
 
         assertThrows(DataNotFoundException.class, () -> {
@@ -145,9 +145,9 @@ class FolderRemoveProcessTest {
     void testHandleWithAccessDeniedException() {
 
         var folderRecord = new FolderRecord(
-                new RecordId<>("folderId"),
-                new RecordId<>("userId"),
-                new RecordId<>("folderId"),
+                new RecordId("folderId"),
+                new RecordId("userId"),
+                new RecordId("folderId"),
                 "name"
         );
 
@@ -161,7 +161,7 @@ class FolderRemoveProcessTest {
 
         var process = new FolderRemoveProcess(folderDao, fileDao, fileStorage);
 
-        var command = new RemoveCommand(new RecordId<>("notOwnerUserId"),
+        var command = new RemoveCommand(new RecordId("notOwnerUserId"),
                                         folderRecord.id());
 
         assertThrows(AccessDeniedException.class, () -> {

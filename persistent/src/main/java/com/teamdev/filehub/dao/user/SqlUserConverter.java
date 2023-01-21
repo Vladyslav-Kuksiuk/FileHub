@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SqlUserConverter implements SqlRecordConverter<String, UserRecord> {
+public class SqlUserConverter implements SqlRecordConverter<UserRecord> {
 
     private final String table;
 
@@ -21,7 +21,7 @@ public class SqlUserConverter implements SqlRecordConverter<String, UserRecord> 
         Preconditions.checkNotNull(resultSet);
 
         try {
-            return new UserRecord(new RecordId<>(resultSet.getString(1)),
+            return new UserRecord(new RecordId(resultSet.getString(1)),
                                   resultSet.getString(2),
                                   resultSet.getString(3));
         } catch (SQLException e) {

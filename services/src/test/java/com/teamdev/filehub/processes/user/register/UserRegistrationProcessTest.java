@@ -29,11 +29,11 @@ class UserRegistrationProcessTest {
         folderDao = new FolderDaoFake();
         registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
 
-        registeredUser = new UserRecord(new RecordId<>("email1@email.com"),
+        registeredUser = new UserRecord(new RecordId("email1@email.com"),
                                         "email1@email.com",
                                         StringEncryptor.encrypt("password1"));
 
-        toRegisterUser = new UserRecord(new RecordId<>("email2@email.com"),
+        toRegisterUser = new UserRecord(new RecordId("email2@email.com"),
                                         "email2@email.com",
                                         StringEncryptor.encrypt("password2"));
 
@@ -62,7 +62,7 @@ class UserRegistrationProcessTest {
                 .matches(toRegisterUser.password());
 
         assertWithMessage("Registered user root folder not exists.")
-                .that(folderDao.find(new RecordId<>(toRegisterUser.login() + "_root"))
+                .that(folderDao.find(new RecordId(toRegisterUser.login() + "_root"))
                                .get()
                                .ownerId())
                 .isEqualTo(toRegisterUser.id());

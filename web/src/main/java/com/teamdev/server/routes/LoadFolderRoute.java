@@ -42,12 +42,12 @@ public class LoadFolderRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId)
+                                    RecordId userId)
             throws DataNotFoundException, AccessDeniedException {
 
         FolderInfoQuery folderInfoQuery =
                 new FolderInfoQuery(userId,
-                                    new RecordId<>(request.params(":id")));
+                                    new RecordId(request.params(":id")));
 
         FolderInfo folderInfo = folderInfoView.handle(folderInfoQuery);
         response.body(gson.toJson(folderInfo));

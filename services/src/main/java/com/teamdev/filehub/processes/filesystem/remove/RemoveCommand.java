@@ -13,16 +13,16 @@ import javax.annotation.Nonnull;
  */
 public class RemoveCommand extends AuthenticatedUserCommand {
 
-    private final RecordId<String> itemId;
+    private final RecordId itemId;
 
-    public RemoveCommand(@Nonnull RecordId<String> userId,
-                         @Nonnull RecordId<String> itemId) {
+    public RemoveCommand(@Nonnull RecordId userId,
+                         @Nonnull RecordId itemId) {
 
         super(Preconditions.checkNotNull(userId));
         this.itemId = Preconditions.checkNotNull(itemId);
     }
 
-    public RecordId<String> itemId() {
+    public RecordId itemId() {
         return itemId;
     }
 

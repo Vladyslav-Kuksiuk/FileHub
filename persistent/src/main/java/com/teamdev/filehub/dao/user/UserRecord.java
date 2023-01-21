@@ -9,12 +9,12 @@ import javax.annotation.Nonnull;
 /**
  * {@link DatabaseRecord} implementation which is intended to store data about the user.
  */
-public class UserRecord extends DatabaseRecord<String> {
+public class UserRecord extends DatabaseRecord {
 
     private final String login;
     private final String password;
 
-    public UserRecord(@Nonnull RecordId<String> id,
+    public UserRecord(@Nonnull RecordId id,
                       @Nonnull String login,
                       @Nonnull String password) {
         super(Preconditions.checkNotNull(id));

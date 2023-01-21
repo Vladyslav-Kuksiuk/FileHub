@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class SqlFolderConverter implements SqlRecordConverter<String, FolderRecord> {
+public class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
 
     private final String table;
 
@@ -23,9 +23,9 @@ public class SqlFolderConverter implements SqlRecordConverter<String, FolderReco
 
         try {
 
-            return new FolderRecord(new RecordId<>(resultSet.getString(1)),
-                                    new RecordId<>(resultSet.getString(2)),
-                                    new RecordId<>(resultSet.getString(3)),
+            return new FolderRecord(new RecordId(resultSet.getString(1)),
+                                    new RecordId(resultSet.getString(2)),
+                                    new RecordId(resultSet.getString(3)),
                                     resultSet.getString(4));
 
         } catch (SQLException e) {

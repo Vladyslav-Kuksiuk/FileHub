@@ -26,9 +26,9 @@ class FolderCreateProcessImplTest {
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
 
         rootFolder = new FolderRecord(
-                new RecordId<>("user1-root-folder-id"),
-                new RecordId<>("user1"),
-                new RecordId<>(null),
+                new RecordId("user1-root-folder-id"),
+                new RecordId("user1"),
+                new RecordId(null),
                 "user1-root-folder");
 
         folderDao.create(rootFolder);
@@ -44,7 +44,7 @@ class FolderCreateProcessImplTest {
                                                               rootFolder.id(),
                                                               "newFolder");
 
-        RecordId<String> createdFolderId = folderCreateProcess.handle(command);
+        RecordId createdFolderId = folderCreateProcess.handle(command);
 
         assertWithMessage("Folder creation failed.")
                 .that(folderDao.find(createdFolderId)
@@ -56,7 +56,7 @@ class FolderCreateProcessImplTest {
 
     @Test
     void folderCreationNotByOwnerTest() throws RequestFieldValidationException {
-        FolderCreateCommand command = new FolderCreateCommand(new RecordId<>("user2"),
+        FolderCreateCommand command = new FolderCreateCommand(new RecordId("user2"),
                                                               rootFolder.id(),
                                                               "folder");
 

@@ -13,11 +13,11 @@ import javax.annotation.Nonnull;
  */
 public class RenameCommand extends AuthenticatedUserCommand {
 
-    private final RecordId<String> itemId;
+    private final RecordId itemId;
     private final String newName;
 
-    public RenameCommand(@Nonnull RecordId<String> userId,
-                         @Nonnull RecordId<String> itemId,
+    public RenameCommand(@Nonnull RecordId userId,
+                         @Nonnull RecordId itemId,
                          @Nonnull String newName) {
 
         super(userId);
@@ -25,7 +25,7 @@ public class RenameCommand extends AuthenticatedUserCommand {
         this.newName = Preconditions.checkNotNull(newName);
     }
 
-    public RecordId<String> itemId() {
+    public RecordId itemId() {
         return itemId;
     }
 

@@ -31,7 +31,7 @@ class LogoutRouteTest {
     @DisplayName("Should set user id as string in response body")
     void testHandleWithoutExceptions() throws UserAuthorizationException {
 
-        var userId = new RecordId<>("userId");
+        var userId = new RecordId("userId");
 
         var request = Mockito.mock(Request.class);
         Mockito.when(request.headers("Authorization"))
@@ -48,7 +48,7 @@ class LogoutRouteTest {
         var userLogoutProcess = new UserLogoutProcess() {
 
             @Override
-            public RecordId<String> handle(UserLogoutCommand command) {
+            public RecordId handle(UserLogoutCommand command) {
                 assertWithMessage("Command user id is different.")
                         .that(command.userId())
                         .isEqualTo(userId);

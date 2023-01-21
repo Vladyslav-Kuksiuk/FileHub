@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.Optional;
 
 public class JdbcAuthenticationDao
-        extends JdbcDao<String, AuthenticationRecord>
+        extends JdbcDao<AuthenticationRecord>
         implements AuthenticationDao {
 
     private final String tableName;

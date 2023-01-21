@@ -2,21 +2,20 @@ package com.teamdev.filehub.dao;
 
 import com.google.common.base.Objects;
 
+import javax.annotation.Nullable;
+
 /**
  * Value object to store identifier for {@link DatabaseRecord}.
- *
- * @param <T>
- *         identifier type.
  */
-public class RecordId<T> {
+public class RecordId {
 
-    private final T id;
+    private final String id;
 
-    public RecordId(T id) {
+    public RecordId(@Nullable String id) {
         this.id = id;
     }
 
-    public T value() {
+    public String value() {
         return id;
     }
 
@@ -33,7 +32,7 @@ public class RecordId<T> {
         if (!(o instanceof RecordId)) {
             return false;
         }
-        RecordId<?> id1 = (RecordId<?>) o;
+        RecordId id1 = (RecordId) o;
         return Objects.equal(id, id1.id);
     }
 }

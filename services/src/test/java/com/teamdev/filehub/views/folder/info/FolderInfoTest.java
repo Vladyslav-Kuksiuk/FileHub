@@ -34,9 +34,9 @@ class FolderInfoTest {
     void testHandleWithoutExceptions()
             throws DataNotFoundException, AccessDeniedException {
 
-        var folderRecord = new FolderRecord(new RecordId<>("folderId"),
-                                            new RecordId<>("userId"),
-                                            new RecordId<>(null),
+        var folderRecord = new FolderRecord(new RecordId("folderId"),
+                                            new RecordId("userId"),
+                                            new RecordId(null),
                                             "folder");
 
         var folderDao = Mockito.mock(FolderDao.class);
@@ -66,7 +66,7 @@ class FolderInfoTest {
     @DisplayName("Should throw a DataNotFoundException when folder not found")
     void testHandleWithDataNotFoundException() {
 
-        var folderId = new RecordId<>("folderId");
+        var folderId = new RecordId("folderId");
 
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderId))
@@ -74,7 +74,7 @@ class FolderInfoTest {
 
         var fileDao = Mockito.mock(FileDao.class);
 
-        var query = new FolderContentQuery(new RecordId<>("userId"),
+        var query = new FolderContentQuery(new RecordId("userId"),
                                            folderId);
 
         var view = new FolderContentViewImpl(folderDao, fileDao);
@@ -88,9 +88,9 @@ class FolderInfoTest {
     @DisplayName("Should throw an AccessDeniedException when user is not the owner")
     void testHandleWithAccessDeniedException() {
 
-        var folderRecord = new FolderRecord(new RecordId<>("folderId"),
-                                            new RecordId<>("userId"),
-                                            new RecordId<>(null),
+        var folderRecord = new FolderRecord(new RecordId("folderId"),
+                                            new RecordId("userId"),
+                                            new RecordId(null),
                                             "folder");
 
         var folderDao = Mockito.mock(FolderDao.class);
@@ -99,7 +99,7 @@ class FolderInfoTest {
 
         var fileDao = Mockito.mock(FileDao.class);
 
-        var query = new FolderContentQuery(new RecordId<>("NotOwnerUser"),
+        var query = new FolderContentQuery(new RecordId("NotOwnerUser"),
                                            folderRecord.id());
 
         var view = new FolderContentViewImpl(folderDao, fileDao);

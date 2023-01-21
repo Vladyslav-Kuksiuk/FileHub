@@ -4,19 +4,16 @@ import javax.annotation.Nonnull;
 
 /**
  * Class to store information about record in database.
- *
- * @param <I>
- *         identifier type.
  */
-public abstract class DatabaseRecord<I> {
+public abstract class DatabaseRecord {
 
-    private final RecordId<I> id;
+    private final RecordId id;
 
-    protected DatabaseRecord(@Nonnull RecordId<I> id) {
+    protected DatabaseRecord(@Nonnull RecordId id) {
         this.id = id;
     }
 
-    public RecordId<I> id() {
+    public RecordId id() {
         return id;
     }
 }

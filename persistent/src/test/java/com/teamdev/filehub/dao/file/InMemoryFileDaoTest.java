@@ -17,9 +17,9 @@ import static org.mockito.Mockito.verify;
 
 class InMemoryFileDaoTest {
 
-    private final FileRecord FILE_RECORD = new FileRecord(new RecordId<>("file_id"),
-                                                          new RecordId<>("folder_id"),
-                                                          new RecordId<>("owner_id"),
+    private final FileRecord FILE_RECORD = new FileRecord(new RecordId("file_id"),
+                                                          new RecordId("folder_id"),
+                                                          new RecordId("owner_id"),
                                                           "name",
                                                           "extension",
                                                           123);

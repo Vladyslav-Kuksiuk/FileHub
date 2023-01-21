@@ -27,8 +27,8 @@ class SearchInFolderRouteTest {
 
     private final Gson gson = new Gson();
 
-    private final RecordId<String> userId = new RecordId<>("userId");
-    private final RecordId<String> folderId = new RecordId<>("folderId");
+    private final RecordId userId = new RecordId("userId");
+    private final RecordId folderId = new RecordId("folderId");
     private final String searchWord = "searchWord";
 
     @Mock

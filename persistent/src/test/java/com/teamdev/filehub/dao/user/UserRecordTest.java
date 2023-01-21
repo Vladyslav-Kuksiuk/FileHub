@@ -9,7 +9,7 @@ class UserRecordTest {
     @Test
     void nullTest() {
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(RecordId.class, new RecordId<String>("user"));
+        tester.setDefault(RecordId.class, new RecordId("user"));
         tester.testAllPublicConstructors(UserRecord.class);
     }
 }

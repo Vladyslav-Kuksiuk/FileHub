@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 
 public class FileDaoFake implements FileDao {
 
-    Map<RecordId<String>, FileRecord> files = new HashMap();
+    Map<RecordId, FileRecord> files = new HashMap();
 
     @Override
-    public Optional<FileRecord> find(RecordId<String> id) {
+    public Optional<FileRecord> find(RecordId id) {
 
         return Optional.ofNullable(files.get(id));
     }
 
     @Override
-    public void delete(RecordId<String> id) {
+    public void delete(RecordId id) {
 
         if (!files.containsKey(id)) {
             throw new RuntimeException("File with this id doesn't exist");
@@ -54,7 +54,7 @@ public class FileDaoFake implements FileDao {
     }
 
     @Override
-    public List<FileRecord> getFilesInFolder(RecordId<String> folderId) {
+    public List<FileRecord> getFilesInFolder(RecordId folderId) {
         return files.values()
                 .stream()
                 .filter(record -> record.folderId()
@@ -63,7 +63,7 @@ public class FileDaoFake implements FileDao {
     }
 
     @Override
-    public List<FileRecord> getByFolderIdAndNamePart(RecordId<String> folderId, String namePart) {
+    public List<FileRecord> getByFolderIdAndNamePart(RecordId folderId, String namePart) {
         return null;
     }
 }

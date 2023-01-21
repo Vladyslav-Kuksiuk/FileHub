@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 
 class InMemoryUserDaoTest {
 
-    private final UserRecord USER_RECORD = new UserRecord(new RecordId<>("real_user"),
+    private final UserRecord USER_RECORD = new UserRecord(new RecordId("real_user"),
                                                           "real_user",
                                                           "real_password");
     private final UserData USER_DATA = new UserData("real_user",

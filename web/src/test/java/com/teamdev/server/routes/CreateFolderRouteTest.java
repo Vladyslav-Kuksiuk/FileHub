@@ -21,8 +21,8 @@ import static org.mockito.ArgumentMatchers.any;
 
 class CreateFolderRouteTest {
 
-    private final RecordId<String> userId = new RecordId<>("userId");
-    private final RecordId<String> parentFolderId = new RecordId<>("parentFolderId");
+    private final RecordId userId = new RecordId("userId");
+    private final RecordId parentFolderId = new RecordId("parentFolderId");
 
     @Mock
     private Request request;
@@ -44,7 +44,7 @@ class CreateFolderRouteTest {
         Mockito.when(request.contentType())
                .thenReturn("application/json");
         Mockito.when(authView.handle(any()))
-               .thenReturn(new RecordId<>("userId"));
+               .thenReturn(new RecordId("userId"));
     }
 
     @Test
@@ -68,7 +68,7 @@ class CreateFolderRouteTest {
                        "{\"parentId\":\"" + parentFolderId.value() + "\",\"name\":\"" + folderName +
                                "\"}");
 
-        var createdFolderId = new RecordId<>("createdFolderId");
+        var createdFolderId = new RecordId("createdFolderId");
 
         Mockito.when(response.body())
                .thenReturn(createdFolderId.value());
@@ -76,7 +76,7 @@ class CreateFolderRouteTest {
         var folderCreateProcess = new FolderCreateProcess() {
 
             @Override
-            public RecordId<String> handle(FolderCreateCommand command) {
+            public RecordId handle(FolderCreateCommand command) {
 
                 assertWithMessage("Command user id is different.")
                         .that(command.userId())
@@ -118,7 +118,7 @@ class CreateFolderRouteTest {
         var folderCreateProcess = new FolderCreateProcess() {
 
             @Override
-            public RecordId<String> handle(FolderCreateCommand command)
+            public RecordId handle(FolderCreateCommand command)
                     throws AccessDeniedException {
 
                 throw new AccessDeniedException(errorMessage);
@@ -146,7 +146,7 @@ class CreateFolderRouteTest {
 
         var folderCreateProcess = new FolderCreateProcess() {
             @Override
-            public RecordId<String> handle(FolderCreateCommand command) {
+            public RecordId handle(FolderCreateCommand command) {
                 return null;
             }
         };

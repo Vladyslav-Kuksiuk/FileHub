@@ -35,7 +35,7 @@ class LoadUserRouteTest {
     @DisplayName("Should set UserAuthenticationResponse as JSON string in response body")
     void testHandleWithoutExceptions() throws UserAuthorizationException {
 
-        var userId = new RecordId<>("userId");
+        var userId = new RecordId("userId");
 
         var userProfile = new UserProfile("login", "rootFolderId");
         var responseJsonString = gson.toJson(userProfile);

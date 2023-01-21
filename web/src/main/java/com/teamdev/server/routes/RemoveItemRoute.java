@@ -40,10 +40,10 @@ public class RemoveItemRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId)
+                                    RecordId userId)
             throws ServiceException, JsonEntityValidationException {
 
-        var itemId = new RecordId<>(request.params(":id"));
+        var itemId = new RecordId(request.params(":id"));
 
         var command = new RemoveCommand(userId, itemId);
 

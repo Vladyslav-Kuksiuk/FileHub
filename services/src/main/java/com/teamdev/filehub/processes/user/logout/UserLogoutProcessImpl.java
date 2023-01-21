@@ -29,14 +29,14 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
      * @return User identifier.
      */
     @Override
-    public RecordId<String> handle(@Nonnull UserLogoutCommand command) {
+    public RecordId handle(@Nonnull UserLogoutCommand command) {
         Preconditions.checkNotNull(command);
 
         logger.atInfo()
               .log("[PROCESS STARTED] - User logout - login: %s", command.userId()
                                                                          .value());
 
-        authenticationDao.delete(new RecordId<>(command.authenticationToken()));
+        authenticationDao.delete(new RecordId(command.authenticationToken()));
 
         logger.atInfo()
               .log("[PROCESS FINISHED] - User logout - login: %s", command.userId()

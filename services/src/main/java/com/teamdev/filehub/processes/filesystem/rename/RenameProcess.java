@@ -9,9 +9,9 @@ import com.teamdev.filehub.processes.ApplicationProcess;
  * A {@link ApplicationProcess} which implementation is intended to handle renaming.
  */
 public interface RenameProcess
-        extends ApplicationProcess<RenameCommand, RecordId<String>> {
+        extends ApplicationProcess<RenameCommand, RecordId> {
 
     @Override
-    RecordId<String> handle(RenameCommand command)
+    RecordId handle(RenameCommand command)
             throws AccessDeniedException, DataNotFoundException;
 }

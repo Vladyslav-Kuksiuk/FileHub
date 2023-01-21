@@ -12,14 +12,14 @@ import java.util.Optional;
 
 public class AuthenticationDaoFake implements AuthenticationDao {
 
-    private final Map<RecordId<String>, AuthenticationRecord> authentications = new HashMap<>();
+    private final Map<RecordId, AuthenticationRecord> authentications = new HashMap<>();
 
-    public Map<RecordId<String>, AuthenticationRecord> authenticationsMap() {
+    public Map<RecordId, AuthenticationRecord> authenticationsMap() {
         return Collections.unmodifiableMap(authentications);
     }
 
     @Override
-    public Optional<AuthenticationRecord> find(RecordId<String> id) {
+    public Optional<AuthenticationRecord> find(RecordId id) {
 
         Preconditions.checkNotNull(id);
 
@@ -27,7 +27,7 @@ public class AuthenticationDaoFake implements AuthenticationDao {
     }
 
     @Override
-    public void delete(RecordId<String> id) {
+    public void delete(RecordId id) {
 
         Preconditions.checkNotNull(id);
 

@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SqlFileConverter implements SqlRecordConverter<String, FileRecord> {
+public class SqlFileConverter implements SqlRecordConverter<FileRecord> {
 
     private final String table;
 
@@ -22,9 +22,9 @@ public class SqlFileConverter implements SqlRecordConverter<String, FileRecord> 
 
         try {
 
-            return new FileRecord(new RecordId<>(resultSet.getString(1)),
-                                  new RecordId<>(resultSet.getString(2)),
-                                  new RecordId<>(resultSet.getString(3)),
+            return new FileRecord(new RecordId(resultSet.getString(1)),
+                                  new RecordId(resultSet.getString(2)),
+                                  new RecordId(resultSet.getString(3)),
                                   resultSet.getString(4),
                                   resultSet.getString(5),
                                   resultSet.getLong(6));

@@ -9,9 +9,9 @@ import com.teamdev.filehub.processes.ApplicationProcess;
  * A {@link ApplicationProcess} which implementation is intended to handle file removing.
  */
 public interface RemoveProcess
-        extends ApplicationProcess<RemoveCommand, RecordId<String>> {
+        extends ApplicationProcess<RemoveCommand, RecordId> {
 
     @Override
-    RecordId<String> handle(RemoveCommand command)
+    RecordId handle(RemoveCommand command)
             throws AccessDeniedException, DataNotFoundException;
 }

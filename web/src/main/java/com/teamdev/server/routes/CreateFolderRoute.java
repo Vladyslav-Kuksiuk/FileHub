@@ -45,7 +45,7 @@ public class CreateFolderRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId)
+                                    RecordId userId)
             throws AccessDeniedException,
                    JsonEntityValidationException,
                    RequestFieldValidationException, DataNotFoundException {
@@ -54,7 +54,7 @@ public class CreateFolderRoute extends AuthorizedUserRoute {
 
         var command = new FolderCreateCommand(
                 userId,
-                new RecordId<>(jsonBody.getAsString("parentId")),
+                new RecordId(jsonBody.getAsString("parentId")),
                 jsonBody.getAsString("name"));
 
         response.body(folderCreateProcess.handle(command)

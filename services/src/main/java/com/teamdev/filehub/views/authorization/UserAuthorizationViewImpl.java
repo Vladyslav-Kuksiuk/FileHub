@@ -24,7 +24,7 @@ public class UserAuthorizationViewImpl implements UserAuthorizationView {
     }
 
     @Override
-    public RecordId<String> handle(UserAuthorizationQuery query) throws UserAuthorizationException {
+    public RecordId handle(UserAuthorizationQuery query) throws UserAuthorizationException {
 
         logger.atInfo()
               .log("[VIEW QUERIED] - User authorization - token: %s.", query.authorizationToken());

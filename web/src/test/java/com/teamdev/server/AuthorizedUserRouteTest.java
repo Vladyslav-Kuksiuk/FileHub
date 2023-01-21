@@ -30,7 +30,7 @@ class AuthorizedUserRouteTest {
 
         var authView = new UserAuthorizationView() {
             @Override
-            public RecordId<String> handle(UserAuthorizationQuery query)
+            public RecordId handle(UserAuthorizationQuery query)
                     throws UserAuthorizationException {
 
                 if (!Objects.equals(query.authorizationToken(), token)) {
@@ -39,7 +39,7 @@ class AuthorizedUserRouteTest {
 
                 }
 
-                return new RecordId<>(userId);
+                return new RecordId(userId);
             }
         };
 
@@ -47,7 +47,7 @@ class AuthorizedUserRouteTest {
             @Override
             protected void authorizedHandle(WrappedRequest request,
                                             Response response,
-                                            RecordId<String> userId) {
+                                            RecordId userId) {
                 response.body(userId.value());
             }
         };
@@ -73,7 +73,7 @@ class AuthorizedUserRouteTest {
 
         var authView = new UserAuthorizationView() {
             @Override
-            public RecordId<String> handle(UserAuthorizationQuery query)
+            public RecordId handle(UserAuthorizationQuery query)
                     throws UserAuthorizationException {
 
                 throw new UserAuthorizationException("");
@@ -84,7 +84,7 @@ class AuthorizedUserRouteTest {
             @Override
             protected void authorizedHandle(WrappedRequest request,
                                             Response response,
-                                            RecordId<String> userId) {
+                                            RecordId userId) {
                 response.body(userId.value());
             }
         };

@@ -42,11 +42,11 @@ public class LoadFolderContentRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId<String> userId)
+                                    RecordId userId)
             throws DataNotFoundException, AccessDeniedException {
 
         FolderContentQuery query =
-                new FolderContentQuery(userId, new RecordId<>(request.params(":id")));
+                new FolderContentQuery(userId, new RecordId(request.params(":id")));
 
         FolderContent folderContent = folderContentView.handle(query);
 

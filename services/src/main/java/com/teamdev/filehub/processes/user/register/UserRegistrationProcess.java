@@ -6,8 +6,8 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 /**
  * A {@link ApplicationProcess} which implementation is intended to handle user registration.
  */
-public interface UserRegistrationProcess extends ApplicationProcess<UserRegistrationCommand, RecordId<String>> {
+public interface UserRegistrationProcess extends ApplicationProcess<UserRegistrationCommand, RecordId> {
 
     @Override
-    RecordId<String> handle(UserRegistrationCommand command) throws UserAlreadyRegisteredException;
+    RecordId handle(UserRegistrationCommand command) throws UserAlreadyRegisteredException;
 }

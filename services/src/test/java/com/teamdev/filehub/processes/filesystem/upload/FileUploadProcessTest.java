@@ -38,9 +38,9 @@ class FileUploadProcessTest {
                                                       fileStorageStub);
 
         rootFolder = new FolderRecord(
-                new RecordId<>("user_root"),
-                new RecordId<>("user"),
-                new RecordId<>(null),
+                new RecordId("user_root"),
+                new RecordId("user"),
+                new RecordId(null),
                 "user");
 
         folderDao.create(rootFolder);
@@ -59,13 +59,13 @@ class FileUploadProcessTest {
                                                           123,
                                                           fileInputStream);
 
-        RecordId<String> fileId = fileUploadProcess.handle(command);
+        RecordId fileId = fileUploadProcess.handle(command);
 
         assertWithMessage("File uploading failed")
                 .that(fileDao.find(fileId)
                              .get()
                              .ownerId())
-                .isEqualTo(new RecordId<>("user"));
+                .isEqualTo(new RecordId("user"));
 
     }
 
@@ -74,7 +74,7 @@ class FileUploadProcessTest {
 
         InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
 
-        FileUploadCommand command = new FileUploadCommand(new RecordId<>("user1"),
+        FileUploadCommand command = new FileUploadCommand(new RecordId("user1"),
                                                           rootFolder.id(),
                                                           "myFile",
                                                           "txt",
@@ -92,7 +92,7 @@ class FileUploadProcessTest {
         InputStream fileInputStream = new ByteArrayInputStream("test".getBytes());
 
         FileUploadCommand command = new FileUploadCommand(rootFolder.ownerId(),
-                                                          new RecordId<>("notAFolder"),
+                                                          new RecordId("notAFolder"),
                                                           "myFile",
                                                           "txt",
                                                           123,

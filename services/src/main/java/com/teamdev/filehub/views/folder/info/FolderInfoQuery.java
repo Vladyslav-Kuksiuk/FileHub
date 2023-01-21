@@ -12,15 +12,15 @@ import javax.annotation.Nonnull;
  */
 public class FolderInfoQuery extends AuthenticatedUserQuery {
 
-    private final RecordId<String> folderId;
+    private final RecordId folderId;
 
-    public FolderInfoQuery(@Nonnull RecordId<String> userId,
-                           @Nonnull RecordId<String> folderId) {
+    public FolderInfoQuery(@Nonnull RecordId userId,
+                           @Nonnull RecordId folderId) {
         super(Preconditions.checkNotNull(userId));
         this.folderId = Preconditions.checkNotNull(folderId);
     }
 
-    public RecordId<String> folderId() {
+    public RecordId folderId() {
         return folderId;
     }
 }

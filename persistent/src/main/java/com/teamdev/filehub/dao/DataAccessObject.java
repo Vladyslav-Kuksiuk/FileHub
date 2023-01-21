@@ -7,10 +7,8 @@ import java.util.Optional;
  *
  * @param <R>
  *         {@link DatabaseRecord} implementation.
- * @param <I>
- *         {@link RecordId} type.
  */
-public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
+public interface DataAccessObject<R extends DatabaseRecord> {
 
     /**
      * Method to find a record in the database.
@@ -19,7 +17,7 @@ public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
      *         Record identifier.
      * @return Found record.
      */
-    Optional<R> find(RecordId<I> id);
+    Optional<R> find(RecordId id);
 
     /**
      * Method to delete a record in the database.
@@ -27,7 +25,7 @@ public interface DataAccessObject<I, R extends DatabaseRecord<I>> {
      * @param id
      *         Record identifier.
      */
-    void delete(RecordId<I> id);
+    void delete(RecordId id);
 
     /**
      * Method to create a record in the database.

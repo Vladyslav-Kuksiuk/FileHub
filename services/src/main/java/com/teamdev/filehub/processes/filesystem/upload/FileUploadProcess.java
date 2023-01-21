@@ -8,9 +8,9 @@ import com.teamdev.filehub.processes.ApplicationProcess;
 /**
  * A {@link ApplicationProcess} which implementation is intended to handle file upload.
  */
-public interface FileUploadProcess extends ApplicationProcess<FileUploadCommand, RecordId<String>> {
+public interface FileUploadProcess extends ApplicationProcess<FileUploadCommand, RecordId> {
 
     @Override
-    RecordId<String> handle(FileUploadCommand command) throws AccessDeniedException,
+    RecordId handle(FileUploadCommand command) throws AccessDeniedException,
                                                               DataNotFoundException;
 }

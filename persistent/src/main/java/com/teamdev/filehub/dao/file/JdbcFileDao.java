@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcFileDao extends JdbcDao<String, FileRecord> implements FileDao {
+public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
 
     private final String tableName;
     private final Statement dbStatement;
@@ -30,7 +30,7 @@ public class JdbcFileDao extends JdbcDao<String, FileRecord> implements FileDao 
     }
 
     @Override
-    public List<FileRecord> getFilesInFolder(@Nonnull RecordId<String> folderId) {
+    public List<FileRecord> getFilesInFolder(@Nonnull RecordId folderId) {
         Preconditions.checkNotNull(folderId);
 
         try {
@@ -54,7 +54,7 @@ public class JdbcFileDao extends JdbcDao<String, FileRecord> implements FileDao 
     }
 
     @Override
-    public List<FileRecord> getByFolderIdAndNamePart(@Nonnull RecordId<String> folderId,
+    public List<FileRecord> getByFolderIdAndNamePart(@Nonnull RecordId folderId,
                                                      @Nonnull String namePart) {
         Preconditions.checkNotNull(folderId);
         Preconditions.checkNotNull(namePart);

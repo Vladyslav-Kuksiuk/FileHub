@@ -15,12 +15,12 @@ public class FileStorageStub extends FileStorage {
     }
 
     @Override
-    public void uploadFile(RecordId<String> fileId, InputStream fileInput) {
+    public void uploadFile(RecordId fileId, InputStream fileInput) {
 
     }
 
     @Override
-    public InputStream downloadFile(RecordId<String> fileId) {
+    public InputStream downloadFile(RecordId fileId) {
         return new ByteArrayInputStream(INPUT_STRING.getBytes());
     }
 

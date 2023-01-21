@@ -10,12 +10,12 @@ import java.util.Optional;
 /**
  * {@link DataAccessObject} which is intended to work with folders.
  */
-public interface FolderDao extends DataAccessObject<String, FolderRecord> {
+public interface FolderDao extends DataAccessObject<FolderRecord> {
 
-    List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId<String> parentId);
+    List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId parentId);
 
-    Optional<FolderRecord> findUserRootFolder(@Nonnull RecordId<String> userId);
+    Optional<FolderRecord> findUserRootFolder(@Nonnull RecordId userId);
 
-    List<FolderRecord> getByParentIdAndNamePart(@Nonnull RecordId<String> parentId,
+    List<FolderRecord> getByParentIdAndNamePart(@Nonnull RecordId parentId,
                                                 @Nonnull String namePart);
 }

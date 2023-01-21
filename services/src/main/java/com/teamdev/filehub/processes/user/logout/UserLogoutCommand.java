@@ -15,7 +15,7 @@ public class UserLogoutCommand extends AuthenticatedUserCommand {
     private final String authenticationToken;
 
     public UserLogoutCommand(
-            @Nonnull RecordId<String> userId,
+            @Nonnull RecordId userId,
             @Nonnull String authenticationToken) {
         super(Preconditions.checkNotNull(userId));
         this.authenticationToken = Preconditions.checkNotNull(authenticationToken);
