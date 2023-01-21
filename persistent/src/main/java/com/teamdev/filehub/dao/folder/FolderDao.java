@@ -3,6 +3,7 @@ package com.teamdev.filehub.dao.folder;
 import com.teamdev.filehub.dao.DataAccessObject;
 import com.teamdev.filehub.dao.RecordId;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +12,10 @@ import java.util.Optional;
  */
 public interface FolderDao extends DataAccessObject<String, FolderRecord> {
 
-    List<FolderRecord> getInnerFoldersByParentId(RecordId<String> parentId);
+    List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId<String> parentId);
 
-    Optional<FolderRecord> findUserRootFolder(RecordId<String> userId);
+    Optional<FolderRecord> findUserRootFolder(@Nonnull RecordId<String> userId);
 
-    List<FolderRecord> getByParentIdAndNamePart(RecordId<String> parentId, String namePart);
+    List<FolderRecord> getByParentIdAndNamePart(@Nonnull RecordId<String> parentId,
+                                                @Nonnull String namePart);
 }

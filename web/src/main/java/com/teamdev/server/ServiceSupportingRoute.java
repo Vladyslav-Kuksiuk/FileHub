@@ -40,6 +40,7 @@ public abstract class ServiceSupportingRoute implements Route {
                            .orElse("");
 
         } catch (Exception exception) {
+
             ExceptionToStatusBinding exceptionStatusFactory = new ExceptionToStatusBinding();
 
             response.status(exceptionStatusFactory.getStatus(exception.getClass()));

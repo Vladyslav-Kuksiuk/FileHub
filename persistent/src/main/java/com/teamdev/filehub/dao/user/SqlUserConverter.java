@@ -1,8 +1,10 @@
 package com.teamdev.filehub.dao.user;
 
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.SqlRecordConverter;
 
+import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -10,12 +12,13 @@ public class SqlUserConverter implements SqlRecordConverter<String, UserRecord> 
 
     private final String table;
 
-    SqlUserConverter(String table) {
-        this.table = table;
+    SqlUserConverter(@Nonnull String table) {
+        this.table = Preconditions.checkNotNull(table);
     }
 
     @Override
-    public UserRecord resultSetToRecord(ResultSet resultSet) {
+    public UserRecord resultSetToRecord(@Nonnull ResultSet resultSet) {
+        Preconditions.checkNotNull(resultSet);
 
         try {
             return new UserRecord(new RecordId<>(resultSet.getString(1)),
@@ -27,7 +30,9 @@ public class SqlUserConverter implements SqlRecordConverter<String, UserRecord> 
     }
 
     @Override
-    public String recordToInsertSql(UserRecord record) {
+    public String recordToInsertSql(@Nonnull UserRecord record) {
+        Preconditions.checkNotNull(record);
+
         return String.format("INSERT INTO %s (id, login, password)" +
                                      "VALUES('%s','%s','%s')",
                              table,
@@ -38,7 +43,9 @@ public class SqlUserConverter implements SqlRecordConverter<String, UserRecord> 
     }
 
     @Override
-    public String recordToUpdateSql(UserRecord record) {
+    public String recordToUpdateSql(@Nonnull UserRecord record) {
+        Preconditions.checkNotNull(record);
+
         return String.format("UPDATE %s" +
                                      "SET" +
                                      "login = '%s'" +

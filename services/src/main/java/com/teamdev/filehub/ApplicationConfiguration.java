@@ -6,6 +6,7 @@ import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.InMemoryFileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
 import com.teamdev.filehub.dao.folder.InMemoryFolderDao;
+import com.teamdev.filehub.dao.folder.JdbcFolderDao;
 import com.teamdev.filehub.dao.user.JdbcUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
@@ -95,7 +96,7 @@ public class ApplicationConfiguration {
         UserDao userDao = new JdbcUserDao(dbStatement, "users");
         AuthenticationDao authDao = new InMemoryAuthenticationDao(database.authenticationTable());
         FileDao fileDao = new InMemoryFileDao(database.fileTable());
-        FolderDao folderDao = new InMemoryFolderDao(database.folderTable());
+        FolderDao folderDao = new JdbcFolderDao(dbStatement, "folders");
 
         FileStorage fileStorage = new FileStorage(storagePath.toString());
 
