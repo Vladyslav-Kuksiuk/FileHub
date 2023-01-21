@@ -67,7 +67,7 @@ public class FolderContentViewImpl implements FolderContentView {
         }
 
         List<FolderRecord> innerFolders =
-                folderDao.getInnerFoldersByParentId(query.folderId());
+                folderDao.getByParentId(query.folderId());
         List<FileRecord> innerFiles =
                 fileDao.getFilesInFolder(query.folderId());
 

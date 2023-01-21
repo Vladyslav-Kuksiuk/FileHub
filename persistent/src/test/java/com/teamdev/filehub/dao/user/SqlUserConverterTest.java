@@ -28,7 +28,7 @@ class SqlUserConverterTest {
     void testNullPointer() {
 
         var tester = new NullPointerTester();
-        tester.testAllPublicConstructors(JdbcUserDao.class);
+        tester.testAllPublicConstructors(SqlUserConverter.class);
 
     }
 

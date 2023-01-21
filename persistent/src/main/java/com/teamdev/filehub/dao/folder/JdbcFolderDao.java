@@ -32,7 +32,7 @@ public class JdbcFolderDao extends JdbcDao<FolderRecord> implements FolderDao {
     }
 
     @Override
-    public List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId parentId) {
+    public List<FolderRecord> getByParentId(@Nonnull RecordId parentId) {
         Preconditions.checkNotNull(parentId);
 
         try {

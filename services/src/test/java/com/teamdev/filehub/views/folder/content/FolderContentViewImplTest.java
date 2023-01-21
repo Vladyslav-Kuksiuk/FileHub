@@ -77,7 +77,7 @@ class FolderContentViewImplTest {
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderRecord.id()))
                .thenReturn(Optional.of(folderRecord));
-        Mockito.when(folderDao.getInnerFoldersByParentId(folderRecord.id()))
+        Mockito.when(folderDao.getByParentId(folderRecord.id()))
                .thenReturn(innerFolderList);
 
         var fileDao = Mockito.mock(FileDao.class);

@@ -54,7 +54,7 @@ public class FolderDaoFake implements FolderDao {
     }
 
     @Override
-    public List<FolderRecord> getInnerFoldersByParentId(RecordId parentId) {
+    public List<FolderRecord> getByParentId(RecordId parentId) {
 
         if (!folders.containsKey(parentId)) {
             throw new RuntimeException("Folder with this id doesn't exist");

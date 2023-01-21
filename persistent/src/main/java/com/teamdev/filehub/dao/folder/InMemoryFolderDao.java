@@ -82,7 +82,7 @@ public class InMemoryFolderDao implements FolderDao {
     }
 
     @Override
-    public List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId parentId) {
+    public List<FolderRecord> getByParentId(@Nonnull RecordId parentId) {
         Preconditions.checkNotNull(parentId);
 
         return folderTable.selectWithSameParentId(parentId.value())

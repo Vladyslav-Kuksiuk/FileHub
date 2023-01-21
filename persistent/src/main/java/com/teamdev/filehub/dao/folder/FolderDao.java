@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public interface FolderDao extends DataAccessObject<FolderRecord> {
 
-    List<FolderRecord> getInnerFoldersByParentId(@Nonnull RecordId parentId);
+    List<FolderRecord> getByParentId(@Nonnull RecordId parentId);
 
     Optional<FolderRecord> findUserRootFolder(@Nonnull RecordId userId);
 

@@ -41,7 +41,7 @@ class JdbcUserDaoTest {
     }
 
     @Test
-    @DisplayName("Should  return optional with user record")
+    @DisplayName("Should return optional with user record")
     void testFindByLoginWithFoundedUser() throws SQLException {
 
         UserRecord userRecord = new UserRecord(
@@ -74,16 +74,10 @@ class JdbcUserDaoTest {
     }
 
     @Test
-    @DisplayName("Should  return optional empty when result set is empty")
+    @DisplayName("Should return optional empty when result set is empty")
     void testFindByLoginWithoutFoundedUser() throws SQLException {
 
-        String login = "login";
-
-        String selectSqlQuery = String.format("SELECT * FROM %s WHERE login = '%s'",
-                                              tableName,
-                                              login);
-
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbStatement.executeQuery(any()))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -91,7 +85,7 @@ class JdbcUserDaoTest {
 
         var userDao = new JdbcUserDao(dbStatement, tableName);
 
-        assertThat(userDao.findByLogin(login))
+        assertThat(userDao.findByLogin("login"))
                 .isEqualTo(Optional.empty());
 
     }
@@ -99,8 +93,6 @@ class JdbcUserDaoTest {
     @Test
     @DisplayName("Should throw RuntimeException when catch SQLException")
     void testFindByLoginWithSQLException() throws SQLException {
-
-        String login = "login";
 
         Mockito.when(dbStatement.executeQuery(any()))
                .thenThrow(new SQLException("exception"));
@@ -110,7 +102,7 @@ class JdbcUserDaoTest {
 
         var userDao = new JdbcUserDao(dbStatement, tableName);
 
-        assertThrows(RuntimeException.class, () -> userDao.findByLogin(login));
+        assertThrows(RuntimeException.class, () -> userDao.findByLogin("login"));
 
     }
 

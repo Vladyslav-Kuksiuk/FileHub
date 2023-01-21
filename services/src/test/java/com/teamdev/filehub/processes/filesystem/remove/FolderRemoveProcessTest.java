@@ -77,9 +77,9 @@ class FolderRemoveProcessTest {
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderRecord.id()))
                .thenReturn(Optional.of(folderRecord));
-        Mockito.when(folderDao.getInnerFoldersByParentId(folderRecord.id()))
+        Mockito.when(folderDao.getByParentId(folderRecord.id()))
                .thenReturn(List.of(innerFolderRecord));
-        Mockito.when(folderDao.getInnerFoldersByParentId(innerFolderRecord.id()))
+        Mockito.when(folderDao.getByParentId(innerFolderRecord.id()))
                .thenReturn(List.of());
 
         var fileStorage = Mockito.mock(FileStorage.class);

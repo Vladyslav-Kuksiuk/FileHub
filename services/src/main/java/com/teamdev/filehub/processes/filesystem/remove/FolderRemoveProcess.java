@@ -94,7 +94,7 @@ public class FolderRemoveProcess implements RemoveProcess {
                    fileStorage.removeFile(file.id());
                });
 
-        folderDao.getInnerFoldersByParentId(folderId)
+        folderDao.getByParentId(folderId)
                  .forEach(folder -> removeFolder(folder.id()));
 
         folderDao.delete(folderId);
