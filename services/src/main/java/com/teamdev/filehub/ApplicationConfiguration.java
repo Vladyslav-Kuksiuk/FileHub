@@ -1,12 +1,10 @@
 package com.teamdev.filehub;
 
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
-import com.teamdev.filehub.dao.authentication.InMemoryAuthenticationDao;
 import com.teamdev.filehub.dao.authentication.JdbcAuthenticationDao;
 import com.teamdev.filehub.dao.file.FileDao;
-import com.teamdev.filehub.dao.file.InMemoryFileDao;
+import com.teamdev.filehub.dao.file.JdbcFileDao;
 import com.teamdev.filehub.dao.folder.FolderDao;
-import com.teamdev.filehub.dao.folder.InMemoryFolderDao;
 import com.teamdev.filehub.dao.folder.JdbcFolderDao;
 import com.teamdev.filehub.dao.user.JdbcUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
@@ -96,7 +94,7 @@ public class ApplicationConfiguration {
 
         UserDao userDao = new JdbcUserDao(dbStatement, "users");
         AuthenticationDao authDao = new JdbcAuthenticationDao(dbStatement, "authentications");
-        FileDao fileDao = new InMemoryFileDao(database.fileTable());
+        FileDao fileDao = new JdbcFileDao(dbStatement, "files");
         FolderDao folderDao = new JdbcFolderDao(dbStatement, "folders");
 
         FileStorage fileStorage = new FileStorage(storagePath.toString());
