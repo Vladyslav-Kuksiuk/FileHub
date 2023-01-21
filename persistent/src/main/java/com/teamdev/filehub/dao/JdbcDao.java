@@ -61,7 +61,7 @@ public abstract class JdbcDao<R extends DatabaseRecord> implements DataAccessObj
     public void create(@Nonnull R record) {
         Preconditions.checkNotNull(record);
 
-        String insertSqlQuery = converter.recordToInsertSql(record);
+        String insertSqlQuery = converter.recordInsertSql(record);
 
         executeSql(insertSqlQuery);
 
@@ -71,7 +71,7 @@ public abstract class JdbcDao<R extends DatabaseRecord> implements DataAccessObj
     public void update(@Nonnull R record) {
         Preconditions.checkNotNull(record);
 
-        String updateSqlQuery = converter.recordToUpdateSql(record);
+        String updateSqlQuery = converter.recordUpdateSql(record);
 
         executeSql(updateSqlQuery);
 

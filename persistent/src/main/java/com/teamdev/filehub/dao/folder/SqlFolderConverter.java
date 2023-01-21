@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
+class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
 
     private final String table;
 
@@ -34,7 +34,7 @@ public class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
     }
 
     @Override
-    public String recordToInsertSql(@Nonnull FolderRecord record) {
+    public String recordInsertSql(@Nonnull FolderRecord record) {
         Preconditions.checkNotNull(record);
 
         Optional<String> optionalParentFolderId = Optional.ofNullable(record.parentFolderId()
@@ -56,7 +56,7 @@ public class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
     }
 
     @Override
-    public String recordToUpdateSql(@Nonnull FolderRecord record) {
+    public String recordUpdateSql(@Nonnull FolderRecord record) {
         Preconditions.checkNotNull(record);
 
         return String.format("UPDATE %s" +

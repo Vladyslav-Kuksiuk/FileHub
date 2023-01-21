@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class SqlAuthenticationConverter implements SqlRecordConverter<AuthenticationRecord> {
+class SqlAuthenticationConverter implements SqlRecordConverter<AuthenticationRecord> {
 
     private final String table;
 
@@ -35,7 +35,7 @@ public class SqlAuthenticationConverter implements SqlRecordConverter<Authentica
     }
 
     @Override
-    public String recordToInsertSql(@Nonnull AuthenticationRecord record) {
+    public String recordInsertSql(@Nonnull AuthenticationRecord record) {
         Preconditions.checkNotNull(record);
 
         return String.format("INSERT INTO %s (id, authentication_token, expire_time, user_id)" +
@@ -50,7 +50,7 @@ public class SqlAuthenticationConverter implements SqlRecordConverter<Authentica
     }
 
     @Override
-    public String recordToUpdateSql(@Nonnull AuthenticationRecord record) {
+    public String recordUpdateSql(@Nonnull AuthenticationRecord record) {
         Preconditions.checkNotNull(record);
 
         return String.format("UPDATE %s" +

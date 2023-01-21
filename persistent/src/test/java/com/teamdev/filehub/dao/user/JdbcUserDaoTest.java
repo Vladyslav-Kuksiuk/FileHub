@@ -1,73 +1,117 @@
 package com.teamdev.filehub.dao.user;
 
+import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.dao.RecordId;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 class JdbcUserDaoTest {
 
-    static final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/FileHub";
-    static final String DB_USER = "postgres";
-    static final String DB_PASS = "admin";
-    private final UserRecord USER = new UserRecord(new RecordId("user"),
-                                                   "user",
-                                                   "password");
-    private UserDao userDao;
-    private Connection dbConnection;
+    private final String tableName = "tableName";
+
+    @Mock
     private Statement dbStatement;
 
-    @BeforeEach
-    void setUp() {
-        try {
-            dbConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            dbStatement = dbConnection.createStatement();
-            userDao = new JdbcUserDao(dbStatement, "users");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Mock
+    private ResultSet resultSet;
+
+    JdbcUserDaoTest() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void createTest() throws SQLException {
+    @DisplayName("Should throw NullPointerException on null in constructor params")
+    void testNullPointer() {
 
-        userDao.create(USER);
-
-        ResultSet resultSet = dbStatement.executeQuery(
-                "SELECT * FROM users WHERE id = 'user'");
-        resultSet.next();
-        assertWithMessage("User creation failed.")
-                .that(resultSet.getString(3))
-                .matches(USER.password());
+        var tester = new NullPointerTester();
+        tester.testAllPublicConstructors(JdbcUserDao.class);
 
     }
 
     @Test
-    void findTest() throws SQLException {
+    @DisplayName("Should  return optional with user record")
+    void testFindByLoginWithFoundedUser() throws SQLException {
 
-        dbStatement.execute("INSERT INTO users (id,login,password,email)" +
-                                    "VALUES ('user', 'user', 'password', 'email@email.com');");
+        UserRecord userRecord = new UserRecord(
+                new RecordId("userId"),
+                "login",
+                "password");
 
-        Optional<UserRecord> userRecord = userDao.find(USER.id());
+        String selectSqlQuery = String.format("SELECT * FROM %s WHERE login = '%s'",
+                                              tableName,
+                                              userRecord.login());
 
-        assertWithMessage("User creation failed.")
-                .that(userRecord.get()
-                                .password())
-                .matches(USER.password());
+        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+               .thenReturn(resultSet);
+
+        Mockito.when(resultSet.next())
+               .thenReturn(true);
+        Mockito.when(resultSet.getString(1))
+               .thenReturn(userRecord.id()
+                                     .value());
+        Mockito.when(resultSet.getString(2))
+               .thenReturn(userRecord.login());
+        Mockito.when(resultSet.getString(3))
+               .thenReturn(userRecord.password());
+
+        var userDao = new JdbcUserDao(dbStatement, tableName);
+
+        assertThat(userDao.findByLogin(userRecord.login()))
+                .isEqualTo(Optional.of(userRecord));
 
     }
 
-    @AfterEach
-    void tearDown() throws SQLException {
-        dbStatement.execute("TRUNCATE TABLE users");
+    @Test
+    @DisplayName("Should  return optional empty when result set is empty")
+    void testFindByLoginWithoutFoundedUser() throws SQLException {
+
+        String login = "login";
+
+        String selectSqlQuery = String.format("SELECT * FROM %s WHERE login = '%s'",
+                                              tableName,
+                                              login);
+
+        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+               .thenReturn(resultSet);
+
+        Mockito.when(resultSet.next())
+               .thenReturn(false);
+
+        var userDao = new JdbcUserDao(dbStatement, tableName);
+
+        assertThat(userDao.findByLogin(login))
+                .isEqualTo(Optional.empty());
+
     }
+
+    @Test
+    @DisplayName("Should throw RuntimeException when catch SQLException")
+    void testFindByLoginWithSQLException() throws SQLException {
+
+        String login = "login";
+
+        Mockito.when(dbStatement.executeQuery(any()))
+               .thenThrow(new SQLException("exception"));
+
+        Mockito.when(resultSet.next())
+               .thenReturn(false);
+
+        var userDao = new JdbcUserDao(dbStatement, tableName);
+
+        assertThrows(RuntimeException.class, () -> userDao.findByLogin(login));
+
+    }
+
 }

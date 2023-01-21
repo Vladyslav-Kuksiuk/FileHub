@@ -7,8 +7,8 @@ public interface SqlRecordConverter<R extends DatabaseRecord> {
 
     R resultSetToRecord(@Nonnull ResultSet resultSet);
 
-    String recordToInsertSql(@Nonnull R record);
+    String recordInsertSql(@Nonnull R record);
 
-    String recordToUpdateSql(@Nonnull R record);
+    String recordUpdateSql(@Nonnull R record);
 
 }

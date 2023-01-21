@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SqlFileConverter implements SqlRecordConverter<FileRecord> {
+class SqlFileConverter implements SqlRecordConverter<FileRecord> {
 
     private final String table;
 
@@ -35,7 +35,7 @@ public class SqlFileConverter implements SqlRecordConverter<FileRecord> {
     }
 
     @Override
-    public String recordToInsertSql(@Nonnull FileRecord record) {
+    public String recordInsertSql(@Nonnull FileRecord record) {
         Preconditions.checkNotNull(record);
 
         return String.format("INSERT INTO %s (id, folder_id, owner_id, name, mimetype, size)" +
@@ -53,7 +53,7 @@ public class SqlFileConverter implements SqlRecordConverter<FileRecord> {
     }
 
     @Override
-    public String recordToUpdateSql(@Nonnull FileRecord record) {
+    public String recordUpdateSql(@Nonnull FileRecord record) {
         Preconditions.checkNotNull(record);
 
         return String.format("UPDATE %s" +

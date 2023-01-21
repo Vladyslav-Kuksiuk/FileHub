@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SqlUserConverter implements SqlRecordConverter<UserRecord> {
+class SqlUserConverter implements SqlRecordConverter<UserRecord> {
 
     private final String table;
 
@@ -30,7 +30,7 @@ public class SqlUserConverter implements SqlRecordConverter<UserRecord> {
     }
 
     @Override
-    public String recordToInsertSql(@Nonnull UserRecord record) {
+    public String recordInsertSql(@Nonnull UserRecord record) {
         Preconditions.checkNotNull(record);
 
         return String.format("INSERT INTO %s (id, login, password)" +
@@ -43,7 +43,7 @@ public class SqlUserConverter implements SqlRecordConverter<UserRecord> {
     }
 
     @Override
-    public String recordToUpdateSql(@Nonnull UserRecord record) {
+    public String recordUpdateSql(@Nonnull UserRecord record) {
         Preconditions.checkNotNull(record);
 
         return String.format("UPDATE %s" +
