@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-public abstract class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
+public class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
 
     private final String tableName;
     private final SqlRecordConverter<R> converter;
