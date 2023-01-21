@@ -81,7 +81,7 @@ class FolderContentViewImplTest {
                .thenReturn(innerFolderList);
 
         var fileDao = Mockito.mock(FileDao.class);
-        Mockito.when(fileDao.getFilesInFolder(folderRecord.id()))
+        Mockito.when(fileDao.getByFolderId(folderRecord.id()))
                .thenReturn(fileList);
 
         var query = new FolderContentQuery(folderRecord.ownerId(),

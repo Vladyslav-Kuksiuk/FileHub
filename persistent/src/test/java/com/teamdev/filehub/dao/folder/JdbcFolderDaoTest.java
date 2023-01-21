@@ -2,7 +2,6 @@ package com.teamdev.filehub.dao.folder;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.dao.RecordId;
-import com.teamdev.filehub.dao.user.JdbcUserDao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -59,7 +58,7 @@ class JdbcFolderDaoTest {
     void testNullPointer() {
 
         var tester = new NullPointerTester();
-        tester.testAllPublicConstructors(JdbcUserDao.class);
+        tester.testAllPublicConstructors(JdbcFolderDao.class);
 
     }
 
@@ -107,7 +106,7 @@ class JdbcFolderDaoTest {
 
     @Test
     @DisplayName("Should throw RuntimeException when catch SQLException")
-    void testFindByLoginWithSQLException() throws SQLException {
+    void testFindUserRootFolderWithSQLException() throws SQLException {
 
         Mockito.when(dbStatement.executeQuery(any()))
                .thenThrow(new SQLException("exception"));

@@ -88,7 +88,7 @@ public class FolderRemoveProcess implements RemoveProcess {
     }
 
     private void removeFolder(RecordId folderId) {
-        fileDao.getFilesInFolder(folderId)
+        fileDao.getByFolderId(folderId)
                .forEach(file -> {
                    fileDao.delete(file.id());
                    fileStorage.removeFile(file.id());

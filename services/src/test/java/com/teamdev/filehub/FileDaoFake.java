@@ -54,7 +54,7 @@ public class FileDaoFake implements FileDao {
     }
 
     @Override
-    public List<FileRecord> getFilesInFolder(RecordId folderId) {
+    public List<FileRecord> getByFolderId(RecordId folderId) {
         return files.values()
                 .stream()
                 .filter(record -> record.folderId()

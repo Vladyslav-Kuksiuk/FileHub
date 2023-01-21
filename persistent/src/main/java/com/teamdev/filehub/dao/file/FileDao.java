@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface FileDao extends DataAccessObject<FileRecord> {
 
-    List<FileRecord> getFilesInFolder(RecordId folderId);
+    List<FileRecord> getByFolderId(RecordId folderId);
 
     List<FileRecord> getByFolderIdAndNamePart(RecordId folderId, String namePart);
 

@@ -30,7 +30,7 @@ public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
     }
 
     @Override
-    public List<FileRecord> getFilesInFolder(@Nonnull RecordId folderId) {
+    public List<FileRecord> getByFolderId(@Nonnull RecordId folderId) {
         Preconditions.checkNotNull(folderId);
 
         try {
