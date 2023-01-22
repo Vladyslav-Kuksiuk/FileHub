@@ -53,6 +53,11 @@ public class FileData extends Data {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(folderId, ownerId, name, mimetype, size);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -66,10 +71,5 @@ public class FileData extends Data {
                 Objects.equal(ownerId, data.ownerId) &&
                 Objects.equal(name, data.name) &&
                 Objects.equal(mimetype, data.mimetype);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(folderId, ownerId, name, mimetype, size);
     }
 }

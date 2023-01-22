@@ -32,6 +32,11 @@ public class UserData extends Data {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(login, password);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -42,10 +47,5 @@ public class UserData extends Data {
         UserData userData = (UserData) o;
         return Objects.equal(login, userData.login) &&
                 Objects.equal(password, userData.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(login, password);
     }
 }

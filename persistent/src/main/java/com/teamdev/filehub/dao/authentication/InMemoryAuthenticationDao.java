@@ -26,15 +26,15 @@ public class InMemoryAuthenticationDao implements AuthenticationDao {
     /**
      * Method to find user authentication record in the {@link InMemoryDatabase} by id.
      *
-     * @param userId
-     *         Authentication user identifier.
+     * @param authId
+     *         Authentication identifier.
      * @return {@link AuthenticationRecord}.
      */
     @Override
-    public Optional<AuthenticationRecord> find(@Nonnull RecordId userId) {
-        Preconditions.checkNotNull(userId);
+    public Optional<AuthenticationRecord> find(@Nonnull RecordId authId) {
+        Preconditions.checkNotNull(authId);
 
-        Optional<AuthenticationData> optionalAuthData = authTable.findByUserId(userId.value());
+        Optional<AuthenticationData> optionalAuthData = authTable.findById(authId.value());
 
         if (optionalAuthData.isPresent()) {
 

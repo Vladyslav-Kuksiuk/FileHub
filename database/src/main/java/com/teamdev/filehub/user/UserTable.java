@@ -1,7 +1,9 @@
 package com.teamdev.filehub.user;
 
+import com.google.common.base.Preconditions;
 import com.teamdev.filehub.InMemoryDatabaseTable;
 
+import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
@@ -10,8 +12,9 @@ import java.util.Optional;
  */
 public class UserTable extends InMemoryDatabaseTable<UserData> {
 
-    public UserTable(String filePath) {
-        super(filePath, UserData[].class);
+    public UserTable(@Nonnull String filePath) {
+        super(Preconditions.checkNotNull(filePath),
+              UserData[].class);
 
     }
 

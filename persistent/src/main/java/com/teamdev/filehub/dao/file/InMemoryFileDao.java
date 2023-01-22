@@ -124,7 +124,7 @@ public class InMemoryFileDao implements FileDao {
 
     @Override
     public List<FileRecord> getByFolderId(RecordId folderId) {
-        return fileTable.selectWithSameFolderId(folderId.value())
+        return fileTable.getByFolderId(folderId.value())
                 .stream()
                 .map(InMemoryFileDao::convertDataIntoRecord)
                 .collect(Collectors.toList());

@@ -1,4 +1,4 @@
-package com.teamdev.filehub.user;
+package com.teamdev.filehub.authentication;
 
 import com.google.common.testing.NullPointerTester;
 import com.google.gson.Gson;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertThat;
 
-class UserTableTest {
+class AuthenticationTableTest {
 
     private final Gson gson = new Gson();
 
@@ -25,7 +25,7 @@ class UserTableTest {
     @DisplayName("Should throw NullPointerException on null in constructor params")
     void nullTest() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(UserTable.class);
+        tester.testAllPublicConstructors(AuthenticationTable.class);
     }
 
     @Test
@@ -33,10 +33,16 @@ class UserTableTest {
     void testGetUserByLogin() throws IOException {
         var filePath = tempDir.getPath() + File.separator + "table.json";
 
-        var data1 = new UserData("id1", "login1", "password1");
-        var data2 = new UserData("id2", "login2", "password2");
+        var data1 = new AuthenticationData("id1",
+                                           "token1",
+                                           "time1",
+                                           "user1");
+        var data2 = new AuthenticationData("id2",
+                                           "token2",
+                                           "time2",
+                                           "user2");
 
-        UserData[] dataArray = {data1, data2};
+        AuthenticationData[] dataArray = {data1, data2};
 
         var file = new File(filePath);
         file.createNewFile();
@@ -45,9 +51,10 @@ class UserTableTest {
             writer.write(gson.toJson(dataArray));
         }
 
-        var userTable = new UserTable(filePath);
+        var authTable = new AuthenticationTable(filePath);
 
-        assertThat(userTable.getUserByLogin(data2.login())).isEqualTo(Optional.of(data2));
+        assertThat(authTable.findByToken(data2.authenticationToken())).isEqualTo(
+                Optional.of(data2));
     }
 
 }

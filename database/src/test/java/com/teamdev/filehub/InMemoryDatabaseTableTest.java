@@ -2,7 +2,6 @@ package com.teamdev.filehub;
 
 import com.google.common.testing.NullPointerTester;
 import com.google.gson.Gson;
-import com.teamdev.filehub.user.UserData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -31,7 +30,7 @@ class InMemoryDatabaseTableTest {
     @DisplayName("Should throw NullPointerException on null in constructor params")
     void nullTest() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(UserData.class);
+        tester.testAllPublicConstructors(InMemoryDatabaseTable.class);
     }
 
     @Test

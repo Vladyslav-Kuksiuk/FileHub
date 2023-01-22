@@ -11,27 +11,9 @@ import java.util.Optional;
  */
 public class AuthenticationTable extends InMemoryDatabaseTable<AuthenticationData> {
 
-    public AuthenticationTable(String filePath) {
-        super(filePath, AuthenticationData[].class);
-
-    }
-
-    /**
-     * Method to get {@link AuthenticationData} from table.
-     *
-     * @param userId
-     *         Authenticated user id.
-     * @return {@link Optional<AuthenticationData>}.
-     */
-
-    public Optional<AuthenticationData> findByUserId(@Nonnull String userId) {
-        Preconditions.checkNotNull(userId);
-
-        return tableMap().values()
-                .stream()
-                .filter(auth -> auth.userId()
-                                    .equals(userId))
-                .findFirst();
+    public AuthenticationTable(@Nonnull String filePath) {
+        super(Preconditions.checkNotNull(filePath),
+              AuthenticationData[].class);
 
     }
 

@@ -42,7 +42,7 @@ class InMemoryAuthenticationDaoTest {
     @Test
     void findTest() {
 
-        given(authenticationTable.findByUserId(AUTHENTICATION_RECORD.id()
+        given(authenticationTable.findById(AUTHENTICATION_RECORD.id()
                                                                     .value()))
                 .willReturn(Optional.of(AUTHENTICATION_DATA));
 
