@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
- * {@link FolderRemoveProcess} implementation.
+ * {@link RemoveProcess} implementation to provide folder removing.
  */
 public class FolderRemoveProcess implements RemoveProcess {
 

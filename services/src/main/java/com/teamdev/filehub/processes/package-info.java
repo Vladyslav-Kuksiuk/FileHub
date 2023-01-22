@@ -1,4 +1,4 @@
 /**
- * A package with classes to handle actor commands.
+ * A package to provide user's command handling.
  */
 package com.teamdev.filehub.processes;

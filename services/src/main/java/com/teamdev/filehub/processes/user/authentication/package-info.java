@@ -1,4 +1,4 @@
 /**
- * A package with classes which is intended to handle user authentication process.
+ * A package to provide handling of command to authenticate the user.
  */
 package com.teamdev.filehub.processes.user.authentication;

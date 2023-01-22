@@ -21,13 +21,6 @@ public class UserLogoutProcessImpl implements UserLogoutProcess {
 
     }
 
-    /**
-     * Method to process {@link UserLogoutCommand}.
-     *
-     * @param command
-     *         {@link UserLogoutCommand}.
-     * @return User identifier.
-     */
     @Override
     public RecordId handle(@Nonnull UserLogoutCommand command) {
         Preconditions.checkNotNull(command);

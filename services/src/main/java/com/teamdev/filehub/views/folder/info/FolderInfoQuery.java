@@ -3,12 +3,12 @@ package com.teamdev.filehub.views.folder.info;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.AuthenticatedUserQuery;
+import com.teamdev.filehub.views.Query;
 
 import javax.annotation.Nonnull;
 
 /**
- * A {@link AuthenticatedUserQuery} implementation which is intended to store
- * data about folder info query.
+ * An {@link AuthenticatedUserQuery} implementation to represent 'load folder info' request.
  */
 public class FolderInfoQuery extends AuthenticatedUserQuery {
 

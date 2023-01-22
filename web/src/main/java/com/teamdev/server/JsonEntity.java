@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Function;
 
 /**
- * Wrapper for {@link JsonObject} to make work with fields more convenient.
+ * Wrapper for {@link JsonObject} to make work with fields directly, without {@link JsonElement}.
  * Throws {@link JsonEntityValidationException} if JSON object don't have fields with given names
  * or field values can't be converted into correct types.
  */

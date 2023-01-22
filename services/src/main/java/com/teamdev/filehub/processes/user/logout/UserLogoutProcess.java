@@ -4,7 +4,7 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.ApplicationProcess;
 
 /**
- * A {@link ApplicationProcess} which implementation is intended to handle user logout.
+ * An {@link ApplicationProcess} to provide user's logout.
  */
 public interface UserLogoutProcess extends ApplicationProcess<UserLogoutCommand, RecordId> {
 

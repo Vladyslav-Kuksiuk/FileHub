@@ -10,16 +10,19 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
- * An abstract implementation of {@link Route} with more convenient API to work with services.
- * The main functionality is catching {@link ServiceException} and JSON related exceptions
- * to convert them into {@link Response} with correct HTTP status.
- * Wraps {@link Request} to improve work with body as JSON.
+ * Abstract implementation of {@link Route} to provide {@link Request} wrapping in {@link WrappedRequest}
+ * and response HTTP status binding to caught {@link Exception} .
  */
-public abstract class ServiceSupportingRoute implements Route {
+public abstract class WrappedRoute implements Route {
 
     /**
      * Handles {@link Request} to modify and provide {@link Response}.
      * You may need to use this method to handle route's corresponding path.
+     *
+     * Wraps {@link Request} to improve work with body as JSON.
+     * Calls {@link #wrappedRequestHandle(WrappedRequest, Response)}.
+     * Catching {@link Exception} and convert it into {@link Response} with correct HTTP status.
+     *
      *
      * @param request
      *         The request object providing information about the HTTP request.
@@ -29,7 +32,8 @@ public abstract class ServiceSupportingRoute implements Route {
      */
     @Override
     public final String handle(@Nonnull Request request, @Nonnull Response response) {
-        Preconditions.checkNotNull(request, response);
+        Preconditions.checkNotNull(request);
+        Preconditions.checkNotNull(response);
 
         try {
 

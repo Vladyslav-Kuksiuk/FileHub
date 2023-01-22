@@ -4,14 +4,14 @@ import com.google.common.base.Preconditions;
 import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.AuthenticatedUserCommand;
+import com.teamdev.filehub.views.AuthenticatedUserQuery;
 
 import javax.annotation.Nonnull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A {@link AuthenticatedUserCommand} implementation which is intended to store
- * data about folder creation.
+ * A {@link AuthenticatedUserCommand} implementation to represent 'create folder' request.
  */
 public class FolderCreateCommand extends AuthenticatedUserCommand {
 

@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
- * {@link FolderRenameProcess} implementation.
+ * {@link RenameProcess} implementation to provide folder renaming.
  */
 public class FolderRenameProcess implements RenameProcess {
 

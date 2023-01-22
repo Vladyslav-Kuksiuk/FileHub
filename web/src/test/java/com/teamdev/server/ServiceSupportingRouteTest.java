@@ -22,7 +22,7 @@ class ServiceSupportingRouteTest {
         Mockito.when(response.body())
                .thenReturn(responseBody);
 
-        var route = new ServiceSupportingRoute() {
+        var route = new WrappedRoute() {
             @Override
             protected void wrappedRequestHandle(WrappedRequest request, Response response) {
                 response.body(responseBody);
@@ -46,7 +46,7 @@ class ServiceSupportingRouteTest {
         var request = Mockito.mock(Request.class);
         var response = Mockito.mock(Response.class);
 
-        var route = new ServiceSupportingRoute() {
+        var route = new WrappedRoute() {
             @Override
             protected void wrappedRequestHandle(WrappedRequest request, Response response)
                     throws ServiceException {
@@ -71,7 +71,7 @@ class ServiceSupportingRouteTest {
         var request = Mockito.mock(Request.class);
         var response = Mockito.mock(Response.class);
 
-        var route = new ServiceSupportingRoute() {
+        var route = new WrappedRoute() {
             @Override
             protected void wrappedRequestHandle(WrappedRequest request, Response response)
                     throws JsonEntityValidationException {

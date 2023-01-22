@@ -9,8 +9,7 @@ import com.teamdev.filehub.views.Query;
 import javax.annotation.Nonnull;
 
 /**
- * A {@link Query} implementation which is intended to store
- * data about search in folder query.
+ * An {@link AuthenticatedUserQuery} implementation to represent 'search in folder' request.
  */
 public class FolderSearchQuery extends AuthenticatedUserQuery {
 

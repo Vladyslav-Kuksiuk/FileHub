@@ -5,7 +5,7 @@ import com.teamdev.filehub.ServiceException;
 /**
  * Interface whose implementations handle user {@link Query}.
  * You should implement it if you want to write a service that
- * will receive system state data at the request of the user.
+ * will return system state data at the request of the user.
  *
  * @param <Q>
  *         {@link Query} implementation.
@@ -15,7 +15,7 @@ import com.teamdev.filehub.ServiceException;
 public interface View<Q extends Query, R> {
 
     /**
-     * Handles the user {@link Query}.
+     * Handles the user's {@link Query}.
      *
      * @param query
      *         {@link Query} to handle.

@@ -45,9 +45,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Class which intended to configure services implementations.
+ * Configuration for services to provide dependency creation and injection.
+ * Provides configured services.
  */
-public class ApplicationConfiguration {
+public class ServicesConfiguration {
 
     private final UserRegistrationProcess userRegistrationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
@@ -68,7 +69,7 @@ public class ApplicationConfiguration {
 
     private final FileDownloadView fileDownloadView;
 
-    public ApplicationConfiguration() {
+    public ServicesConfiguration() {
 
         Path storagePath = Path.of("storage")
                                .toAbsolutePath();

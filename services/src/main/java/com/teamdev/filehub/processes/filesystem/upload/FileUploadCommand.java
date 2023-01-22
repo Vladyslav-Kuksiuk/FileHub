@@ -9,8 +9,7 @@ import javax.annotation.Nonnull;
 import java.io.InputStream;
 
 /**
- * A {@link AuthenticatedUserCommand} implementation which is intended to store
- * data about file uploading.
+ * A {@link AuthenticatedUserCommand} implementation to represent 'upload file' request.
  */
 public class FileUploadCommand extends AuthenticatedUserCommand {
 

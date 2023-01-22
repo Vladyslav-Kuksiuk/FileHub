@@ -1,4 +1,4 @@
 /**
- * A package with classes which is intended to handle folder content view.
+ * A package to provide handling of user's queries to get folder content.
  */
 package com.teamdev.filehub.views.folder.content;

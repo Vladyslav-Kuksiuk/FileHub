@@ -8,8 +8,7 @@ import com.teamdev.filehub.views.Query;
 import javax.annotation.Nonnull;
 
 /**
- * A {@link Query} implementation which is intended to store
- * data about folder content query.
+ * An {@link AuthenticatedUserQuery} implementation to represent 'load folder content' request.
  */
 public class FolderContentQuery extends AuthenticatedUserQuery {
 

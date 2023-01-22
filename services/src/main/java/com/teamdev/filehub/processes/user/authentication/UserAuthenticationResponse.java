@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Server response which is intended to store
- * information about the user authentication server's response.
+ * information about the user authentication.
  */
 public class UserAuthenticationResponse {
 

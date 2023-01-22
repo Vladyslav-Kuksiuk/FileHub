@@ -10,8 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A {@link Command} implementation which is intended to store
- * data about user registration.
+ * A {@link Command} implementation to represent 'register user' request.
  */
 public class UserRegistrationCommand implements Command {
 

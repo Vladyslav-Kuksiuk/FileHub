@@ -11,6 +11,9 @@ import com.teamdev.filehub.dao.file.FileRecord;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * {@link RenameProcess} implementation to provide file renaming.
+ */
 public class FileRenameProcess implements RenameProcess {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();

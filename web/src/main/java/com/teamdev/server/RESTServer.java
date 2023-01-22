@@ -1,6 +1,6 @@
 package com.teamdev.server;
 
-import com.teamdev.filehub.ApplicationConfiguration;
+import com.teamdev.filehub.ServicesConfiguration;
 import com.teamdev.server.routes.AuthenticationRoute;
 import com.teamdev.server.routes.CreateFolderRoute;
 import com.teamdev.server.routes.DownloadFileRoute;
@@ -21,16 +21,20 @@ import static spark.Spark.put;
 import static spark.Spark.staticFiles;
 
 /**
- * Class to configure and start server.
+ * Provides REST API to communicate with services via HTTP requests.
  */
-public class Application {
+public class RESTServer {
 
-    private Application() {
+    private RESTServer() {
     }
 
+    /**
+     * Binds {@link spark.Route} implementations on HTTP requests
+     * and starts server.
+     */
     public static void main(String[] args) {
         staticFiles.location("/web-client");
-        ApplicationConfiguration context = new ApplicationConfiguration();
+        ServicesConfiguration context = new ServicesConfiguration();
 
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));

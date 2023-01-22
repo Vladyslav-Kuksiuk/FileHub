@@ -7,7 +7,7 @@ import com.teamdev.filehub.processes.user.register.UserAlreadyRegisteredExceptio
 import com.teamdev.filehub.processes.user.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
 import com.teamdev.server.JsonEntityValidationException;
-import com.teamdev.server.ServiceSupportingRoute;
+import com.teamdev.server.WrappedRoute;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
 
@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * An {@link ServiceSupportingRoute} implementation to provide 'user registration' request handling.
+ * An {@link WrappedRoute} implementation to provide 'user registration' request handling.
  */
-public class RegistrationRoute extends ServiceSupportingRoute {
+public class RegistrationRoute extends WrappedRoute {
 
     private final Gson gson = new Gson();
     private final UserRegistrationProcess userRegistrationProcess;

@@ -7,17 +7,17 @@ import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProce
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
 import com.teamdev.filehub.processes.user.authentication.UserCredentialsMismatchException;
 import com.teamdev.server.JsonEntityValidationException;
-import com.teamdev.server.ServiceSupportingRoute;
+import com.teamdev.server.WrappedRoute;
 import com.teamdev.server.WrappedRequest;
 import spark.Response;
 
 import javax.annotation.Nonnull;
 
 /**
- * An {@link ServiceSupportingRoute} implementation to provide 'user authentication' request
+ * An {@link WrappedRoute} implementation to provide 'user authentication' request
  * handling.
  */
-public class AuthenticationRoute extends ServiceSupportingRoute {
+public class AuthenticationRoute extends WrappedRoute {
 
     private final Gson gson = new Gson();
     private final UserAuthenticationProcess process;

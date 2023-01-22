@@ -7,8 +7,7 @@ import com.teamdev.filehub.views.AuthenticatedUserQuery;
 import javax.annotation.Nonnull;
 
 /**
- * An {@link AuthenticatedUserQuery} which is intended to store
- * data about user profile request.
+ * An {@link AuthenticatedUserQuery} implementation to represent 'load user profile' request.
  */
 public class UserProfileQuery extends AuthenticatedUserQuery {
 

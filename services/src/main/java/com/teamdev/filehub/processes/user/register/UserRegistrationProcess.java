@@ -4,7 +4,7 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.ApplicationProcess;
 
 /**
- * A {@link ApplicationProcess} which implementation is intended to handle user registration.
+ * An {@link ApplicationProcess} to provide user's registration.
  */
 public interface UserRegistrationProcess extends ApplicationProcess<UserRegistrationCommand, RecordId> {
 

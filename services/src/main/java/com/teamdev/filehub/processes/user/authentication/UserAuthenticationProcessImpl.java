@@ -31,10 +31,6 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
         this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
     }
 
-    /**
-     * A {@link ApplicationProcess} implementation which is intended to process
-     * user authentication.
-     */
     @Override
     public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command)
             throws UserCredentialsMismatchException {

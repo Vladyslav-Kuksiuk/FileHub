@@ -5,8 +5,7 @@ import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 
 /**
- * Server response which is intended to store
- * information about file as {@link FolderContentItem}.
+ * DTO with information about file as {@link FolderContentItem}.
  */
 public class FileItem extends FolderContentItem {
 

@@ -12,10 +12,10 @@ import spark.Response;
 import javax.annotation.Nonnull;
 
 /**
- * An abstract implementation of {@link ServiceSupportingRoute} with authorization feature.
+ * An abstract implementation of {@link WrappedRoute} with authorization feature.
  * Authorization provides the user id by token, if there is one in the system.
  */
-public abstract class AuthorizedUserRoute extends ServiceSupportingRoute {
+public abstract class AuthorizedUserRoute extends WrappedRoute {
 
     private final UserAuthorizationView authorizationView;
 

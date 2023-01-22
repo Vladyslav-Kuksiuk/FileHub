@@ -2,6 +2,8 @@ package com.teamdev.server.routes;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
+import com.teamdev.filehub.AccessDeniedException;
+import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadCommand;
@@ -47,7 +49,8 @@ public class UploadFileRoute extends AuthorizedUserRoute {
      */
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
-                                    RecordId userId) throws ServiceException {
+                                    RecordId userId)
+            throws DataNotFoundException, AccessDeniedException {
 
         request.attribute("org.eclipse.jetty.multipartConfig",
                           new MultipartConfigElement("/temp"));

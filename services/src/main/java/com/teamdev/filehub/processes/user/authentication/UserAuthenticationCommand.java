@@ -1,13 +1,13 @@
 package com.teamdev.filehub.processes.user.authentication;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.filehub.processes.AuthenticatedUserCommand;
 import com.teamdev.filehub.processes.Command;
 
 import javax.annotation.Nonnull;
 
 /**
- * A {@link Command} implementation which is intended to store
- * data about user authentication.
+ * A {@link Command} implementation to represent 'authenticate user' request.
  */
 public class UserAuthenticationCommand implements Command {
 

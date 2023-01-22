@@ -8,8 +8,7 @@ import com.teamdev.filehub.processes.AuthenticatedUserCommand;
 import javax.annotation.Nonnull;
 
 /**
- * A {@link AuthenticatedUserCommand} implementation which is intended to store
- * data about file removing.
+ * A {@link AuthenticatedUserCommand} implementation to represent 'remove item' request.
  */
 public class RemoveCommand extends AuthenticatedUserCommand {
 

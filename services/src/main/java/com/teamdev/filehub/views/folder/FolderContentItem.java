@@ -7,8 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Server response which is intended to store
- * information about the folder content item.
+ * DTO with information about the folder content item.
  */
 public class FolderContentItem {
 
