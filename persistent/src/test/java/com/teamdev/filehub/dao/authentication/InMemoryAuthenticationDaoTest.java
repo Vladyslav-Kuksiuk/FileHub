@@ -43,7 +43,7 @@ class InMemoryAuthenticationDaoTest {
     void findTest() {
 
         given(authenticationTable.findById(AUTHENTICATION_RECORD.id()
-                                                                    .value()))
+                                                                .value()))
                 .willReturn(Optional.of(AUTHENTICATION_DATA));
 
         assertWithMessage("Find authentication by id failed.")

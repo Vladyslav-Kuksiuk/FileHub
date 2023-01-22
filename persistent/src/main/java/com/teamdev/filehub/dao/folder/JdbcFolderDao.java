@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A {@link FolderDao} implementation to work with authentication via JDBC as {@link JdbcDao}.
+ */
 public class JdbcFolderDao extends JdbcDao<FolderRecord> implements FolderDao {
 
     private final String tableName;

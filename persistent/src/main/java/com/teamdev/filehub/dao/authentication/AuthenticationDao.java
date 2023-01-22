@@ -10,5 +10,12 @@ import java.util.Optional;
  */
 public interface AuthenticationDao extends DataAccessObject<AuthenticationRecord> {
 
+    /**
+     * Finds {@link AuthenticationRecord} by token.
+     *
+     * @param token
+     *         The authentication token.
+     * @return Optional founded {@link AuthenticationRecord}.
+     */
     Optional<AuthenticationRecord> findByToken(@Nonnull String token);
 }

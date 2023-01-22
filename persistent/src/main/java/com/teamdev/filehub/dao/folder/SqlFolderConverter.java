@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * A {@link SqlRecordConverter} implementation for {@link FolderRecord}.
+ */
 class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
 
     private final String table;

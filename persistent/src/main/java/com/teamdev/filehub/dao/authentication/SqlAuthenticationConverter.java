@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+/**
+ * A {@link SqlRecordConverter} implementation for {@link AuthenticationRecord}.
+ */
 class SqlAuthenticationConverter implements SqlRecordConverter<AuthenticationRecord> {
 
     private final String table;

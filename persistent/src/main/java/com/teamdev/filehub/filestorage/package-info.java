@@ -1,4 +1,4 @@
 /**
- * A package with {@link com.teamdev.filehub.filestorage.FileStorage}.
+ * A package to provide work with filesystem.
  */
 package com.teamdev.filehub.filestorage;

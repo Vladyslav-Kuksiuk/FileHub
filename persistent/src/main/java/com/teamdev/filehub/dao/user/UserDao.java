@@ -10,5 +10,12 @@ import java.util.Optional;
  */
 public interface UserDao extends DataAccessObject<UserRecord> {
 
+    /**
+     * Finds {@link UserRecord} by login.
+     *
+     * @param login
+     *         The user login.
+     * @return Optional founded {@link UserRecord}.
+     */
     Optional<UserRecord> findByLogin(@Nonnull String login);
 }

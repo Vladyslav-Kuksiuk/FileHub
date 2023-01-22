@@ -8,6 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
+/**
+ * A {@link DataAccessObject} implementation to work with databases via JDBC.
+ * Provides CRUD operations.
+ *
+ * @param <R>
+ *         {@link DatabaseRecord} type.
+ */
 public class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
 
     private final String tableName;

@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Class to work with files in file system.
+ * API to work with files in filesystem.
  */
 public class FileStorage {
 
@@ -33,7 +33,7 @@ public class FileStorage {
     }
 
     /**
-     * Method to save files to file system from {@link InputStream} by given path.
+     * Saves files to file system from {@link InputStream} by given id.
      *
      * @param fileInput
      *         file to save.
@@ -80,7 +80,7 @@ public class FileStorage {
     }
 
     /**
-     * Method to convert file in file system to {@link InputStream} by given path.
+     * Converts file in file system to {@link InputStream} by given id.
      *
      * @return {@link InputStream} from found file.
      */
@@ -120,7 +120,7 @@ public class FileStorage {
     }
 
     /**
-     * Method to clean all files in root directory.
+     * Clean all files in root directory.
      */
     public void clean() {
         File file = new File(storageFolderPath);

@@ -11,6 +11,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A {@link FileDao} implementation to work with authentication via JDBC as {@link JdbcDao}.
+ */
 public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
 
     private final String tableName;

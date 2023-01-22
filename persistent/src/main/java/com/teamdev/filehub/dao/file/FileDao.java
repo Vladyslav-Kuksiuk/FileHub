@@ -10,8 +10,24 @@ import java.util.List;
  */
 public interface FileDao extends DataAccessObject<FileRecord> {
 
+    /**
+     * Returns list of {@link FileRecord} with same folder id.
+     *
+     * @param folderId
+     *         The file's folder id.
+     * @return list of {@link FileRecord} with same folder id.
+     */
     List<FileRecord> getByFolderId(RecordId folderId);
 
+    /**
+     * Returns list of {@link FileRecord} with same folder id and name part.
+     *
+     * @param folderId
+     *         The file's folder id.
+     * @param namePart
+     *         The part of folder's name.
+     * @return list of {@link FileRecord} with same folder id and name part.
+     */
     List<FileRecord> getByFolderIdAndNamePart(RecordId folderId, String namePart);
 
 }

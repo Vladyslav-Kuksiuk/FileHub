@@ -1,4 +1,4 @@
 /**
- * A package with classes to handle work with user in databases.
+ * A package to provide work with users in databases.
  */
 package com.teamdev.filehub.dao.user;

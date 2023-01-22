@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 
 /**
- * Class to store information about record in database.
+ * Stores information about record in database.
  */
 public class DatabaseRecord {
 

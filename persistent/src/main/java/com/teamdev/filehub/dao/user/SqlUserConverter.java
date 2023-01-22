@@ -8,6 +8,9 @@ import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * A {@link SqlRecordConverter} implementation for {@link UserRecord}.
+ */
 class SqlUserConverter implements SqlRecordConverter<UserRecord> {
 
     private final String table;

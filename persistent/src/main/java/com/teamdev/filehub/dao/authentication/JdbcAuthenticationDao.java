@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
+/**
+ * An {@link AuthenticationDao} implementation to work with authentication via JDBC as {@link
+ * JdbcDao}.
+ */
 public class JdbcAuthenticationDao
         extends JdbcDao<AuthenticationRecord>
         implements AuthenticationDao {
