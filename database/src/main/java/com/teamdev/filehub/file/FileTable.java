@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * {@link InMemoryDatabaseTable} implementation to store {@link FileData}.
+ * {@link InMemoryDatabaseTable} implementation to work with {@link FileData}.
  */
 public class FileTable extends InMemoryDatabaseTable<FileData> {
 

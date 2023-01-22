@@ -7,7 +7,7 @@ import com.teamdev.filehub.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Class which is intended to store information about authentication.
+ * A {@link Data} implementation to store information about authentication.
  */
 public class AuthenticationData extends Data {
 

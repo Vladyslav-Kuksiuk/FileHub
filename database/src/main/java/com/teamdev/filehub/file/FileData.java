@@ -7,7 +7,7 @@ import com.teamdev.filehub.Data;
 import javax.annotation.Nonnull;
 
 /**
- * Class which is intended to store information about file meta context.
+ * A {@link Data} implementation to store information about file.
  */
 public class FileData extends Data {
 

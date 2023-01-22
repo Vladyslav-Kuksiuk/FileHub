@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 
 /**
- * Class which extender are intended to store some data with identifier.
+ * Representation of data to be stored in {@link InMemoryDatabaseTable} with identifier.
  */
 public class Data {
 

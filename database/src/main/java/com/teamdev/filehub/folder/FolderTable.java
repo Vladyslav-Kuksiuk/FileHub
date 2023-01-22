@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * {@link InMemoryDatabaseTable} implementation to store {@link FolderData}.
+ * {@link InMemoryDatabaseTable} implementation to work with {@link FolderData}.
  */
 public class FolderTable extends InMemoryDatabaseTable<FolderData> {
 

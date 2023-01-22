@@ -7,7 +7,7 @@ import com.teamdev.filehub.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Class which is intended to store information about user.
+ * A {@link Data} implementation to store information about user.
  */
 public class UserData extends Data {
 

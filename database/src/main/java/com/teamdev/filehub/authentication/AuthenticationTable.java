@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
- * Implementation of {@link InMemoryDatabaseTable} to store {@link AuthenticationData}.
+ * Implementation of {@link InMemoryDatabaseTable} to work with {@link AuthenticationData}.
  */
 public class AuthenticationTable extends InMemoryDatabaseTable<AuthenticationData> {
 

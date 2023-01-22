@@ -22,11 +22,11 @@ import java.util.concurrent.TimeUnit;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * A class that store {@link Data} implementation in {@link Map} and
- * have methods to synchronize it with a JSON file.
+ * Stores {@link Data} in {@link Map} and synchronize it with a JSON file.
+ * Provides CRUD methods to work with {@link Data}.
  *
  * @param <D>
- *         Data type.
+ *         {@link Data} type.
  */
 public class InMemoryDatabaseTable<D extends Data> {
 

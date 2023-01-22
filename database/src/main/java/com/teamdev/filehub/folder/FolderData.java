@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Class which is intended to store information about folder.
+ * A {@link Data} implementation to store information about folder.
  */
 public class FolderData extends Data {
 

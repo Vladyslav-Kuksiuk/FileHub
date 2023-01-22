@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
- * {@link InMemoryDatabaseTable} implementation to store {@link UserData}.
+ * {@link InMemoryDatabaseTable} implementation to work with {@link UserData}.
  */
 public class UserTable extends InMemoryDatabaseTable<UserData> {
 
