@@ -1,5 +1,6 @@
 package com.teamdev.filehub.filestorage;
 
+import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.dao.RecordId;
 
@@ -21,9 +22,11 @@ public class FileStorage {
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public FileStorage(@Nonnull String folderPath) {
+        Preconditions.checkNotNull(folderPath);
+
         storageFolderPath = folderPath + File.separator + "FileStorage" + File.separator;
 
-        File filesDirectory = new File(folderPath);
+        File filesDirectory = new File(storageFolderPath);
         if (!filesDirectory.exists()) {
             filesDirectory.mkdirs();
         }
@@ -35,7 +38,10 @@ public class FileStorage {
      * @param fileInput
      *         file to save.
      */
-    public void uploadFile(RecordId fileId, InputStream fileInput) {
+    public void uploadFile(@Nonnull RecordId fileId,
+                           @Nonnull InputStream fileInput) {
+        Preconditions.checkNotNull(fileId);
+        Preconditions.checkNotNull(fileInput);
 
         String fullPath = storageFolderPath + fileId.value();
 
@@ -78,7 +84,9 @@ public class FileStorage {
      *
      * @return {@link InputStream} from found file.
      */
-    public InputStream downloadFile(RecordId fileId) {
+    public InputStream downloadFile(@Nonnull RecordId fileId) {
+        Preconditions.checkNotNull(fileId);
+
         String fullPath = storageFolderPath + fileId.value();
         File file = new File(fullPath);
 
@@ -98,7 +106,9 @@ public class FileStorage {
     /**
      * Removes file by given id.
      */
-    public void removeFile(RecordId fileId) {
+    public void removeFile(@Nonnull RecordId fileId) {
+        Preconditions.checkNotNull(fileId);
+
         String fullPath = storageFolderPath + fileId.value();
         File file = new File(fullPath);
 
