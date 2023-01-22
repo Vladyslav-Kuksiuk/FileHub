@@ -428,7 +428,7 @@ describe('ApiService', () => {
           .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
-              folderContent: [{
+              items: [{
                 type: folderContent[0].type,
                 id: folderContent[0].id,
                 name: folderContent[0].name,
@@ -511,7 +511,7 @@ describe('ApiService', () => {
           .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
-              folderContent: [{
+              items: [{
                 type: folderContent[0].type,
                 id: folderContent[0].id,
                 name: folderContent[0].name,
@@ -932,7 +932,7 @@ describe('ApiService', () => {
       await expect(apiService.createFolder(folder)).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock)
-          .toHaveBeenCalledWith('api/folders/', folder, undefined);
+          .toHaveBeenCalledWith('api/folders', folder, undefined);
     });
 
     test(`Should return error after folder creation request`, async function() {
