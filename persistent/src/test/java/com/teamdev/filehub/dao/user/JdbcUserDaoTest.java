@@ -1,6 +1,7 @@
 package com.teamdev.filehub.dao.user;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.filehub.dao.DbConnection;
 import com.teamdev.filehub.dao.RecordId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -22,7 +22,7 @@ class JdbcUserDaoTest {
     private final String tableName = "tableName";
 
     @Mock
-    private Statement dbStatement;
+    private DbConnection dbConnection;
 
     @Mock
     private ResultSet resultSet;
@@ -36,6 +36,7 @@ class JdbcUserDaoTest {
     void testNullPointer() {
 
         var tester = new NullPointerTester();
+        tester.setDefault(DbConnection.class, Mockito.mock(DbConnection.class));
         tester.testAllPublicConstructors(JdbcUserDao.class);
 
     }
@@ -53,7 +54,7 @@ class JdbcUserDaoTest {
                                               tableName,
                                               userRecord.login());
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -66,7 +67,7 @@ class JdbcUserDaoTest {
         Mockito.when(resultSet.getString(3))
                .thenReturn(userRecord.password());
 
-        var userDao = new JdbcUserDao(dbStatement, tableName);
+        var userDao = new JdbcUserDao(dbConnection, tableName);
 
         assertThat(userDao.findByLogin(userRecord.login()))
                 .isEqualTo(Optional.of(userRecord));
@@ -77,13 +78,13 @@ class JdbcUserDaoTest {
     @DisplayName("Should return optional empty when result set is empty")
     void testFindByLoginWithoutFoundedUser() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
+        Mockito.when(dbConnection.executeQuery(any()))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
                .thenReturn(false);
 
-        var userDao = new JdbcUserDao(dbStatement, tableName);
+        var userDao = new JdbcUserDao(dbConnection, tableName);
 
         assertThat(userDao.findByLogin("login"))
                 .isEqualTo(Optional.empty());
@@ -94,13 +95,14 @@ class JdbcUserDaoTest {
     @DisplayName("Should throw RuntimeException when catch SQLException")
     void testFindByLoginWithSQLException() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
-               .thenThrow(new SQLException("exception"));
-
+        var resultSet = Mockito.mock(ResultSet.class);
         Mockito.when(resultSet.next())
-               .thenReturn(false);
+               .thenThrow(new SQLException(""));
 
-        var userDao = new JdbcUserDao(dbStatement, tableName);
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
+
+        var userDao = new JdbcUserDao(dbConnection, tableName);
 
         assertThrows(RuntimeException.class, () -> userDao.findByLogin("login"));
 

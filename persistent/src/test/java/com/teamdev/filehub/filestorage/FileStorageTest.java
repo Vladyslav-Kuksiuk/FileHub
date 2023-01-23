@@ -151,7 +151,8 @@ class FileStorageTest {
 
         var downloadedFileStream = fileStorage.downloadFile(fileId);
 
-        var downloadedString = new String(downloadedFileStream.readAllBytes(), StandardCharsets.UTF_8);
+        var downloadedString = new String(downloadedFileStream.readAllBytes(),
+                                          StandardCharsets.UTF_8);
 
         assertThat(downloadedString).isEqualTo(testString);
 

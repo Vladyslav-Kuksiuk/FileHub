@@ -5,23 +5,22 @@ import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 
 public class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
 
     private final String tableName;
-    private final SqlRecordConverter<R> converter;
+    private final SqlRecordConverter<R> sqlRecordConverter;
 
-    private final Statement dbStatement;
+    private final DbConnection dbConnection;
 
     protected JdbcDao(@Nonnull String tableName,
-                      @Nonnull Statement dbStatement,
-                      @Nonnull SqlRecordConverter<R> converter) {
+                      @Nonnull DbConnection dbConnection,
+                      @Nonnull SqlRecordConverter<R> sqlRecordConverter) {
 
         this.tableName = Preconditions.checkNotNull(tableName);
-        this.converter = Preconditions.checkNotNull(converter);
-        this.dbStatement = Preconditions.checkNotNull(dbStatement);
+        this.sqlRecordConverter = Preconditions.checkNotNull(sqlRecordConverter);
+        this.dbConnection = Preconditions.checkNotNull(dbConnection);
 
     }
 
@@ -33,10 +32,10 @@ public class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
                                               id.value());
 
         try {
-            ResultSet resultSet = dbStatement.executeQuery(selectSqlQuery);
+            ResultSet resultSet = dbConnection.executeQuery(selectSqlQuery);
 
             if (resultSet.next()) {
-                return Optional.of(converter.resultSetToRecord(resultSet));
+                return Optional.of(sqlRecordConverter.resultSetToRecord(resultSet));
             }
 
         } catch (SQLException e) {
@@ -53,7 +52,7 @@ public class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
         String deleteSqlQuery = String.format("DELETE FROM %s WHERE id = '%s'", tableName,
                                               id.value());
 
-        executeSql(deleteSqlQuery);
+        dbConnection.execute(deleteSqlQuery);
 
     }
 
@@ -61,9 +60,9 @@ public class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
     public void create(@Nonnull R record) {
         Preconditions.checkNotNull(record);
 
-        String insertSqlQuery = converter.recordInsertSql(record);
+        String insertSqlQuery = sqlRecordConverter.recordInsertSql(record);
 
-        executeSql(insertSqlQuery);
+        dbConnection.execute((insertSqlQuery));
 
     }
 
@@ -71,17 +70,21 @@ public class JdbcDao<R extends DatabaseRecord> implements DataAccessObject<R> {
     public void update(@Nonnull R record) {
         Preconditions.checkNotNull(record);
 
-        String updateSqlQuery = converter.recordUpdateSql(record);
+        String updateSqlQuery = sqlRecordConverter.recordUpdateSql(record);
 
-        executeSql(updateSqlQuery);
+        dbConnection.execute(updateSqlQuery);
 
     }
 
-    protected void executeSql(String sql) {
-        try {
-            dbStatement.execute(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException("Database query failed.", e);
-        }
+    protected DbConnection dbConnection() {
+        return dbConnection;
+    }
+
+    protected String tableName() {
+        return tableName;
+    }
+
+    protected SqlRecordConverter<R> sqlRecordConverter() {
+        return sqlRecordConverter;
     }
 }

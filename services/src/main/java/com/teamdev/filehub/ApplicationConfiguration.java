@@ -1,5 +1,6 @@
 package com.teamdev.filehub;
 
+import com.teamdev.filehub.dao.DbConnection;
 import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.JdbcAuthenticationDao;
 import com.teamdev.filehub.dao.file.FileDao;
@@ -38,11 +39,9 @@ import com.teamdev.filehub.views.folder.search.FolderSearchViewImpl;
 import com.teamdev.filehub.views.userprofile.UserProfileView;
 import com.teamdev.filehub.views.userprofile.UserProfileViewImpl;
 
+import java.io.IOException;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Properties;
 
 /**
  * Class which intended to configure services implementations.
@@ -73,29 +72,26 @@ public class ApplicationConfiguration {
         Path storagePath = Path.of("storage")
                                .toAbsolutePath();
 
-        InMemoryDatabase database = new InMemoryDatabase(storagePath.toString());
+        Properties properties = new Properties();
 
-        String dbUrl = "jdbc:postgresql://127.0.0.1:5432/FileHub";
-        String dbUser = "postgres";
-        String dbPassword = "admin";
+        try (var resources = getClass().getClassLoader()
+                                       .getResourceAsStream("database.properties")
+        ) {
 
-        Statement dbStatement;
+            properties.load(resources);
 
-        try {
-
-            Connection dbConnection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            dbStatement = dbConnection.createStatement();
-
-        } catch (SQLException e) {
-
-            throw new RuntimeException(e);
-
+        } catch (IOException e) {
+            throw new RuntimeException("Properties file reading failed.", e);
         }
 
-        UserDao userDao = new JdbcUserDao(dbStatement, "users");
-        AuthenticationDao authDao = new JdbcAuthenticationDao(dbStatement, "authentications");
-        FileDao fileDao = new JdbcFileDao(dbStatement, "files");
-        FolderDao folderDao = new JdbcFolderDao(dbStatement, "folders");
+        DbConnection dbConnection = new DbConnection(properties.getProperty("db.url"),
+                                                     properties.getProperty("db.user"),
+                                                     properties.getProperty("db.password"));
+
+        UserDao userDao = new JdbcUserDao(dbConnection, "users");
+        AuthenticationDao authDao = new JdbcAuthenticationDao(dbConnection, "authentications");
+        FileDao fileDao = new JdbcFileDao(dbConnection, "files");
+        FolderDao folderDao = new JdbcFolderDao(dbConnection, "folders");
 
         FileStorage fileStorage = new FileStorage(storagePath.toString());
 

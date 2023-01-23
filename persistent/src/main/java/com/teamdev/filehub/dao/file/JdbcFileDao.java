@@ -1,31 +1,23 @@
 package com.teamdev.filehub.dao.file;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.filehub.dao.DbConnection;
 import com.teamdev.filehub.dao.JdbcDao;
 import com.teamdev.filehub.dao.RecordId;
 
 import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
 
-    private final String tableName;
-    private final Statement dbStatement;
-    private final SqlFileConverter sqlConverter;
-
-    public JdbcFileDao(@Nonnull Statement dbStatement,
+    public JdbcFileDao(@Nonnull DbConnection dbStatement,
                        @Nonnull String tableName) {
         super(Preconditions.checkNotNull(tableName),
               Preconditions.checkNotNull(dbStatement),
               new SqlFileConverter(tableName));
-
-        this.tableName = tableName;
-        this.dbStatement = dbStatement;
-        this.sqlConverter = new SqlFileConverter(tableName);
 
     }
 
@@ -35,15 +27,15 @@ public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
 
         try {
             ResultSet resultSet =
-                    dbStatement.executeQuery(
+                    dbConnection().executeQuery(
                             String.format("SELECT * FROM %s WHERE folder_id = '%s'",
-                                          tableName,
+                                          tableName(),
                                           folderId.value()));
 
             List<FileRecord> files = new ArrayList<>();
 
             while (resultSet.next()) {
-                files.add(sqlConverter.resultSetToRecord(resultSet));
+                files.add(sqlRecordConverter().resultSetToRecord(resultSet));
             }
 
             return files;
@@ -61,17 +53,17 @@ public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
 
         try {
             ResultSet resultSet =
-                    dbStatement.executeQuery(
+                    dbConnection().executeQuery(
                             String.format(
                                     "SELECT * FROM %s WHERE folder_id = '%s' AND name ILIKE '%s'",
-                                    tableName,
+                                    tableName(),
                                     folderId.value(),
                                     namePart));
 
             List<FileRecord> files = new ArrayList<>();
 
             while (resultSet.next()) {
-                files.add(sqlConverter.resultSetToRecord(resultSet));
+                files.add(sqlRecordConverter().resultSetToRecord(resultSet));
             }
 
             return files;

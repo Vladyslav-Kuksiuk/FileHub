@@ -1,6 +1,7 @@
 package com.teamdev.filehub.dao.file;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.filehub.dao.DbConnection;
 import com.teamdev.filehub.dao.RecordId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -30,7 +30,7 @@ class JdbcFileDaoTest {
             123);
 
     @Mock
-    private Statement dbStatement;
+    private DbConnection dbConnection;
 
     @Mock
     private ResultSet resultSet;
@@ -63,6 +63,7 @@ class JdbcFileDaoTest {
     void testNullPointer() {
 
         var tester = new NullPointerTester();
+        tester.setDefault(DbConnection.class, Mockito.mock(DbConnection.class));
         tester.testAllPublicConstructors(JdbcFileDao.class);
 
     }
@@ -71,10 +72,14 @@ class JdbcFileDaoTest {
     @DisplayName("Should throw RuntimeException when catch SQLException in getByFolderId")
     void testGetByFolderIdWithSQLException() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
-               .thenThrow(new SQLException("exception"));
+        var resultSet = Mockito.mock(ResultSet.class);
+        Mockito.when(resultSet.next())
+               .thenThrow(new SQLException(""));
 
-        var fileDao = new JdbcFileDao(dbStatement, tableName);
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
+
+        var fileDao = new JdbcFileDao(dbConnection, tableName);
 
         assertThrows(RuntimeException.class,
                      () -> fileDao.getByFolderId(new RecordId("folderId")));
@@ -90,7 +95,7 @@ class JdbcFileDaoTest {
                                               fileRecord.folderId()
                                                         .value());
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -98,7 +103,7 @@ class JdbcFileDaoTest {
 
         addFileRecordInResultSet(resultSet, fileRecord);
 
-        var fileDao = new JdbcFileDao(dbStatement, tableName);
+        var fileDao = new JdbcFileDao(dbConnection, tableName);
 
         assertThat(fileDao.getByFolderId(fileRecord.folderId()))
                 .isEqualTo(List.of(fileRecord));
@@ -109,10 +114,14 @@ class JdbcFileDaoTest {
     @DisplayName("Should throw RuntimeException when catch SQLException in getByFolderIdAndNamePart")
     void testGetByFolderIdAndNamePartWithSQLException() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
-               .thenThrow(new SQLException("exception"));
+        var resultSet = Mockito.mock(ResultSet.class);
+        Mockito.when(resultSet.next())
+               .thenThrow(new SQLException(""));
 
-        var fileDao = new JdbcFileDao(dbStatement, tableName);
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
+
+        var fileDao = new JdbcFileDao(dbConnection, tableName);
 
         assertThrows(RuntimeException.class,
                      () -> fileDao.getByFolderIdAndNamePart(new RecordId("folderId"), "namePart"));
@@ -132,7 +141,7 @@ class JdbcFileDaoTest {
                           .value(),
                 namePart);
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -140,7 +149,7 @@ class JdbcFileDaoTest {
 
         addFileRecordInResultSet(resultSet, fileRecord);
 
-        var fileDao = new JdbcFileDao(dbStatement, tableName);
+        var fileDao = new JdbcFileDao(dbConnection, tableName);
 
         assertThat(fileDao.getByFolderIdAndNamePart(fileRecord.folderId(), namePart))
                 .isEqualTo(List.of(fileRecord));

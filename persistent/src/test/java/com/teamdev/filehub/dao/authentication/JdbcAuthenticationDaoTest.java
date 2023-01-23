@@ -1,6 +1,7 @@
 package com.teamdev.filehub.dao.authentication;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.filehub.dao.DbConnection;
 import com.teamdev.filehub.dao.RecordId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -24,7 +24,7 @@ class JdbcAuthenticationDaoTest {
     private final String tableName = "tableName";
 
     @Mock
-    private Statement dbStatement;
+    private DbConnection dbConnection;
 
     @Mock
     private ResultSet resultSet;
@@ -38,6 +38,7 @@ class JdbcAuthenticationDaoTest {
     void testNullPointer() {
 
         var tester = new NullPointerTester();
+        tester.setDefault(DbConnection.class, Mockito.mock(DbConnection.class));
         tester.testAllPublicConstructors(JdbcAuthenticationDao.class);
 
     }
@@ -56,7 +57,7 @@ class JdbcAuthenticationDaoTest {
                                            tableName,
                                            authRecord.authenticationToken());
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -76,7 +77,7 @@ class JdbcAuthenticationDaoTest {
                .thenReturn(authRecord.userId()
                                      .value());
 
-        var authDao = new JdbcAuthenticationDao(dbStatement, tableName);
+        var authDao = new JdbcAuthenticationDao(dbConnection, tableName);
 
         assertThat(authDao.findByToken(authRecord.authenticationToken()))
                 .isEqualTo(Optional.of(authRecord));
@@ -87,13 +88,13 @@ class JdbcAuthenticationDaoTest {
     @DisplayName("Should return optional empty when result set is empty")
     void testFindByTokenWithoutFoundedAuthentication() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
+        Mockito.when(dbConnection.executeQuery(any()))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
                .thenReturn(false);
 
-        var authDao = new JdbcAuthenticationDao(dbStatement, tableName);
+        var authDao = new JdbcAuthenticationDao(dbConnection, tableName);
 
         assertThat(authDao.findByToken("token"))
                 .isEqualTo(Optional.empty());
@@ -104,13 +105,14 @@ class JdbcAuthenticationDaoTest {
     @DisplayName("Should throw RuntimeException when catch SQLException")
     void testFindByLoginWithSQLException() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
-               .thenThrow(new SQLException("exception"));
-
+        var resultSet = Mockito.mock(ResultSet.class);
         Mockito.when(resultSet.next())
-               .thenReturn(false);
+               .thenThrow(new SQLException(""));
 
-        var authDao = new JdbcAuthenticationDao(dbStatement, tableName);
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
+
+        var authDao = new JdbcAuthenticationDao(dbConnection, tableName);
 
         assertThrows(RuntimeException.class, () -> authDao.findByToken("token"));
 

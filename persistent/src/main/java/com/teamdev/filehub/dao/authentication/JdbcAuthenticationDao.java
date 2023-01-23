@@ -1,32 +1,24 @@
 package com.teamdev.filehub.dao.authentication;
 
 import com.google.common.base.Preconditions;
+import com.teamdev.filehub.dao.DbConnection;
 import com.teamdev.filehub.dao.JdbcDao;
 
 import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 
 public class JdbcAuthenticationDao
         extends JdbcDao<AuthenticationRecord>
         implements AuthenticationDao {
 
-    private final String tableName;
-    private final Statement dbStatement;
-    private final SqlAuthenticationConverter sqlConverter;
-
-    public JdbcAuthenticationDao(@Nonnull Statement dbStatement,
+    public JdbcAuthenticationDao(@Nonnull DbConnection dbConnection,
                                  @Nonnull String tableName) {
 
         super(Preconditions.checkNotNull(tableName),
-              Preconditions.checkNotNull(dbStatement),
+              Preconditions.checkNotNull(dbConnection),
               new SqlAuthenticationConverter(tableName));
-
-        this.tableName = tableName;
-        this.dbStatement = dbStatement;
-        this.sqlConverter = new SqlAuthenticationConverter(tableName);
     }
 
     @Override
@@ -34,14 +26,14 @@ public class JdbcAuthenticationDao
         Preconditions.checkNotNull(token);
 
         String selectSqlQuery = String.format("SELECT * FROM %s WHERE authentication_token = '%s'",
-                                              tableName,
+                                              tableName(),
                                               token);
 
         try {
-            ResultSet resultSet = dbStatement.executeQuery(selectSqlQuery);
+            ResultSet resultSet = dbConnection().executeQuery(selectSqlQuery);
 
             if (resultSet.next()) {
-                return Optional.of(sqlConverter.resultSetToRecord(resultSet));
+                return Optional.of(sqlRecordConverter().resultSetToRecord(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
