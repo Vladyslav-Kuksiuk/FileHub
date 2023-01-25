@@ -30,7 +30,8 @@ public class DbConnection {
     /**
      * Executes an SQL statement on a database without returning results.
      *
-     * @param sql The SQL statement to execute.
+     * @param sql
+     *         The SQL statement to execute.
      */
     public void execute(@Nonnull String sql) {
         Preconditions.checkNotNull(sql);
@@ -51,7 +52,8 @@ public class DbConnection {
     /**
      * Executes an SQL statement on a database with returning results.
      *
-     * @param sql The SQL statement to execute.
+     * @param sql
+     *         The SQL statement to execute.
      * @return Queried {@link ResultSet}.
      */
     public ResultSet executeQuery(@Nonnull String sql) {

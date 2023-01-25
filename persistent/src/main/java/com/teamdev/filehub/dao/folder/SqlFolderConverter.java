@@ -26,10 +26,10 @@ class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
 
         try {
 
-            return new FolderRecord(new RecordId(resultSet.getString(1)),
-                                    new RecordId(resultSet.getString(2)),
-                                    new RecordId(resultSet.getString(3)),
-                                    resultSet.getString(4));
+            return new FolderRecord(new RecordId(resultSet.getString("id")),
+                                    new RecordId(resultSet.getString("owner_id")),
+                                    new RecordId(resultSet.getString("parent_folder_id")),
+                                    resultSet.getString("name"));
 
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);
@@ -62,10 +62,10 @@ class SqlFolderConverter implements SqlRecordConverter<FolderRecord> {
     public String recordUpdateSql(@Nonnull FolderRecord record) {
         Preconditions.checkNotNull(record);
 
-        return String.format("UPDATE %s" +
-                                     "SET" +
-                                     "owner_id = '%s'" +
-                                     "parent_folder_id = '%s'" +
+        return String.format("UPDATE %s " +
+                                     "SET " +
+                                     "owner_id = '%s', " +
+                                     "parent_folder_id = '%s', " +
                                      "name = '%s'" +
                                      "WHERE id = '%s'",
                              table,

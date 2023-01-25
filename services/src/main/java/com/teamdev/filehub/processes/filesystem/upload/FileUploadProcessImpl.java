@@ -38,8 +38,8 @@ public class FileUploadProcessImpl implements FileUploadProcess {
 
     @Override
     public RecordId handle(@Nonnull FileUploadCommand command) throws
-                                                                       AccessDeniedException,
-                                                                       DataNotFoundException {
+                                                               AccessDeniedException,
+                                                               DataNotFoundException {
 
         logger.atInfo()
               .log("[PROCESS STARTED] - File uploading - user id: %s, file: %s.",
@@ -76,11 +76,11 @@ public class FileUploadProcessImpl implements FileUploadProcess {
 
         RecordId fileId =
                 new RecordId(command.userId()
-                                            .value() +
-                                             "_" +
-                                             command.name() +
-                                             LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                                                          .format(LocalDateTimeUtil.FORMATTER));
+                                    .value() +
+                                     "_" +
+                                     command.name() +
+                                     LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
+                                                  .format(LocalDateTimeUtil.FORMATTER));
 
         FileRecord fileRecord = new FileRecord(fileId,
                                                command.folderId(),

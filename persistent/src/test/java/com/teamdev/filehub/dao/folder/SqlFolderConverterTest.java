@@ -57,10 +57,10 @@ class SqlFolderConverterTest {
     @DisplayName("Should return SQL code to update record in table")
     void testRecordUpdateSql() {
 
-        var updateSql = String.format("UPDATE %s" +
-                                              "SET" +
-                                              "owner_id = '%s'" +
-                                              "parent_folder_id = '%s'" +
+        var updateSql = String.format("UPDATE %s " +
+                                              "SET " +
+                                              "owner_id = '%s', " +
+                                              "parent_folder_id = '%s', " +
                                               "name = '%s'" +
                                               "WHERE id = '%s'",
                                       tableName,
@@ -82,16 +82,16 @@ class SqlFolderConverterTest {
     void testResultSetToRecordWithoutExceptions() throws SQLException {
 
         var resultSet = Mockito.mock(ResultSet.class);
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenReturn(folderRecord.id()
                                        .value());
-        Mockito.when(resultSet.getString(2))
+        Mockito.when(resultSet.getString("owner_id"))
                .thenReturn(folderRecord.ownerId()
                                        .value());
-        Mockito.when(resultSet.getString(3))
+        Mockito.when(resultSet.getString("parent_folder_id"))
                .thenReturn(folderRecord.parentFolderId()
                                        .value());
-        Mockito.when(resultSet.getString(4))
+        Mockito.when(resultSet.getString("name"))
                .thenReturn(folderRecord.name());
 
         assertThat(sqlFolderConverter.resultSetToRecord(resultSet))
@@ -104,7 +104,7 @@ class SqlFolderConverterTest {
     void testResultSetToRecordWithSQLException() throws SQLException {
 
         var resultSet = Mockito.mock(ResultSet.class);
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenThrow(new SQLException(""));
 
         assertThrows(RuntimeException.class, () -> {

@@ -15,6 +15,7 @@ public interface SqlRecordConverter<R extends DatabaseRecord> {
      * Converts {@link ResultSet} into {@link R}.
      *
      * @param resultSet
+     *         The query result set.
      * @return {@link R}
      */
     R resultSetToRecord(@Nonnull ResultSet resultSet);

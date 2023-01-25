@@ -7,8 +7,8 @@ import com.teamdev.filehub.processes.user.register.UserAlreadyRegisteredExceptio
 import com.teamdev.filehub.processes.user.register.UserRegistrationCommand;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
 import com.teamdev.server.JsonEntityValidationException;
-import com.teamdev.server.WrappedRoute;
 import com.teamdev.server.WrappedRequest;
+import com.teamdev.server.WrappedRoute;
 import spark.Response;
 
 import javax.annotation.Nonnull;

@@ -10,7 +10,8 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
- * Abstract implementation of {@link Route} to provide {@link Request} wrapping in {@link WrappedRequest}
+ * Abstract implementation of {@link Route} to provide {@link Request} wrapping in {@link
+ * WrappedRequest}
  * and response HTTP status binding to caught {@link Exception} .
  */
 public abstract class WrappedRoute implements Route {
@@ -22,7 +23,6 @@ public abstract class WrappedRoute implements Route {
      * Wraps {@link Request} to improve work with body as JSON.
      * Calls {@link #wrappedRequestHandle(WrappedRequest, Response)}.
      * Catching {@link Exception} and convert it into {@link Response} with correct HTTP status.
-     *
      *
      * @param request
      *         The request object providing information about the HTTP request.
@@ -44,6 +44,8 @@ public abstract class WrappedRoute implements Route {
                            .orElse("");
 
         } catch (Exception exception) {
+
+            exception.printStackTrace();
 
             ExceptionToStatusBinding exceptionStatusFactory = new ExceptionToStatusBinding();
 

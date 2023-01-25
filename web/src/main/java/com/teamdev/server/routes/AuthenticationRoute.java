@@ -7,8 +7,8 @@ import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProce
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
 import com.teamdev.filehub.processes.user.authentication.UserCredentialsMismatchException;
 import com.teamdev.server.JsonEntityValidationException;
-import com.teamdev.server.WrappedRoute;
 import com.teamdev.server.WrappedRequest;
+import com.teamdev.server.WrappedRoute;
 import spark.Response;
 
 import javax.annotation.Nonnull;

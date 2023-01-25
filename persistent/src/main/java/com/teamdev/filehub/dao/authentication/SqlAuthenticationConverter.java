@@ -26,11 +26,11 @@ class SqlAuthenticationConverter implements SqlRecordConverter<AuthenticationRec
 
         try {
 
-            return new AuthenticationRecord(new RecordId(resultSet.getString(1)),
-                                            resultSet.getString(2),
-                                            resultSet.getTimestamp(3)
+            return new AuthenticationRecord(new RecordId(resultSet.getString("id")),
+                                            resultSet.getString("authentication_token"),
+                                            resultSet.getTimestamp("expire_time")
                                                      .toLocalDateTime(),
-                                            new RecordId(resultSet.getString(4)));
+                                            new RecordId(resultSet.getString("user_id")));
 
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);
@@ -56,10 +56,10 @@ class SqlAuthenticationConverter implements SqlRecordConverter<AuthenticationRec
     public String recordUpdateSql(@Nonnull AuthenticationRecord record) {
         Preconditions.checkNotNull(record);
 
-        return String.format("UPDATE %s" +
-                                     "SET" +
-                                     "authentication_token = '%s'" +
-                                     "expire_time = '%s'" +
+        return String.format("UPDATE %s " +
+                                     "SET " +
+                                     "authentication_token = '%s', " +
+                                     "expire_time = '%s', " +
                                      "user_id = '%s'" +
                                      "WHERE id = '%s'",
                              table,

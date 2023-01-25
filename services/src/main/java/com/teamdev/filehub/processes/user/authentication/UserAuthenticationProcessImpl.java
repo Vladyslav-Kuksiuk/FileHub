@@ -7,7 +7,6 @@ import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.dao.user.UserRecord;
-import com.teamdev.filehub.processes.ApplicationProcess;
 import com.teamdev.util.LocalDateTimeUtil;
 import com.teamdev.util.StringEncryptor;
 

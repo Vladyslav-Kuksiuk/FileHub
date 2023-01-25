@@ -59,12 +59,12 @@ class JdbcUserDaoTest {
 
         Mockito.when(resultSet.next())
                .thenReturn(true);
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenReturn(userRecord.id()
                                      .value());
-        Mockito.when(resultSet.getString(2))
+        Mockito.when(resultSet.getString("login"))
                .thenReturn(userRecord.login());
-        Mockito.when(resultSet.getString(3))
+        Mockito.when(resultSet.getString("password"))
                .thenReturn(userRecord.password());
 
         var userDao = new JdbcUserDao(dbConnection, tableName);

@@ -12,5 +12,5 @@ public interface FileUploadProcess extends ApplicationProcess<FileUploadCommand,
 
     @Override
     RecordId handle(FileUploadCommand command) throws AccessDeniedException,
-                                                              DataNotFoundException;
+                                                      DataNotFoundException;
 }

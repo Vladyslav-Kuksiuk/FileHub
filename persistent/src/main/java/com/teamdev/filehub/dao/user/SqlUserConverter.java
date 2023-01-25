@@ -24,9 +24,9 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
         Preconditions.checkNotNull(resultSet);
 
         try {
-            return new UserRecord(new RecordId(resultSet.getString(1)),
-                                  resultSet.getString(2),
-                                  resultSet.getString(3));
+            return new UserRecord(new RecordId(resultSet.getString("id")),
+                                  resultSet.getString("login"),
+                                  resultSet.getString("password"));
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);
         }
@@ -49,9 +49,9 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
     public String recordUpdateSql(@Nonnull UserRecord record) {
         Preconditions.checkNotNull(record);
 
-        return String.format("UPDATE %s" +
-                                     "SET" +
-                                     "login = '%s'" +
+        return String.format("UPDATE %s " +
+                                     "SET " +
+                                     "login = '%s', " +
                                      "password = '%s'" +
                                      "WHERE id = '%s'",
                              table,

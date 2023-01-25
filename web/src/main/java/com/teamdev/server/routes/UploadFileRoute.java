@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
-import com.teamdev.filehub.ServiceException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadCommand;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
@@ -17,8 +16,8 @@ import javax.annotation.Nonnull;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 
 /**
  * An {@link AuthorizedUserRoute} implementation to provide 'upload file' request handling.
@@ -60,7 +59,7 @@ public class UploadFileRoute extends AuthorizedUserRoute {
 
             for (var part : parts) {
 
-                Collection<String> uploadedFilesIds = new LinkedList<>();
+                Collection<String> uploadedFilesIds = new ArrayList<>();
 
                 try (var input = part.getInputStream()) {
 

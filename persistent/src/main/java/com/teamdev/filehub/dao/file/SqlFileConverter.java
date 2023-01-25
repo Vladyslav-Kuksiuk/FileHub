@@ -25,12 +25,12 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
 
         try {
 
-            return new FileRecord(new RecordId(resultSet.getString(1)),
-                                  new RecordId(resultSet.getString(2)),
-                                  new RecordId(resultSet.getString(3)),
-                                  resultSet.getString(4),
-                                  resultSet.getString(5),
-                                  resultSet.getLong(6));
+            return new FileRecord(new RecordId(resultSet.getString("id")),
+                                  new RecordId(resultSet.getString("folder_id")),
+                                  new RecordId(resultSet.getString("owner_id")),
+                                  resultSet.getString("name"),
+                                  resultSet.getString("mimetype"),
+                                  resultSet.getLong("size"));
 
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);
@@ -59,13 +59,13 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
     public String recordUpdateSql(@Nonnull FileRecord record) {
         Preconditions.checkNotNull(record);
 
-        return String.format("UPDATE %s" +
-                                     "SET" +
-                                     "folder_id = '%s'" +
-                                     "owner_id = '%s'" +
-                                     "name = '%s'" +
-                                     "mimetype = '%s'" +
-                                     "size = '%o'" +
+        return String.format("UPDATE %s " +
+                                     "SET " +
+                                     "folder_id='%s', " +
+                                     "owner_id='%s', " +
+                                     "name='%s', " +
+                                     "mimetype='%s', " +
+                                     "size=%o " +
                                      "WHERE id = '%s'",
                              table,
                              record.folderId()

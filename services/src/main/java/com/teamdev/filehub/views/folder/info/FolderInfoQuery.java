@@ -3,7 +3,6 @@ package com.teamdev.filehub.views.folder.info;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.views.AuthenticatedUserQuery;
-import com.teamdev.filehub.views.Query;
 
 import javax.annotation.Nonnull;
 

@@ -63,17 +63,17 @@ class JdbcAuthenticationDaoTest {
         Mockito.when(resultSet.next())
                .thenReturn(true);
 
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenReturn(authRecord.id()
                                      .value());
 
-        Mockito.when(resultSet.getString(2))
+        Mockito.when(resultSet.getString("authentication_token"))
                .thenReturn(authRecord.authenticationToken());
 
-        Mockito.when(resultSet.getTimestamp(3))
+        Mockito.when(resultSet.getTimestamp("expire_time"))
                .thenReturn(Timestamp.valueOf(authRecord.expireTime()));
 
-        Mockito.when(resultSet.getString(4))
+        Mockito.when(resultSet.getString("user_id"))
                .thenReturn(authRecord.userId()
                                      .value());
 

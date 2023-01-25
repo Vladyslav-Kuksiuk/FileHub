@@ -3,8 +3,8 @@ package com.teamdev.filehub.views.folder;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class FolderContent {
 
-    private final List<FolderContentItem> items = new LinkedList<>();
+    private final List<FolderContentItem> items = new ArrayList<>();
 
     public void addItem(@Nonnull FolderContentItem item) {
         Preconditions.checkNotNull(item);

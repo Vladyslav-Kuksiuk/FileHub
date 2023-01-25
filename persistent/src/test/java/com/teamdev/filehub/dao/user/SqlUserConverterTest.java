@@ -53,9 +53,9 @@ class SqlUserConverterTest {
     @DisplayName("Should return SQL code to update record in table")
     void testRecordUpdateSql() {
 
-        var updateSql = String.format("UPDATE %s" +
-                                              "SET" +
-                                              "login = '%s'" +
+        var updateSql = String.format("UPDATE %s " +
+                                              "SET " +
+                                              "login = '%s', " +
                                               "password = '%s'" +
                                               "WHERE id = '%s'",
                                       tableName,
@@ -74,12 +74,12 @@ class SqlUserConverterTest {
     void testResultSetToRecordWithoutExceptions() throws SQLException {
 
         var resultSet = Mockito.mock(ResultSet.class);
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenReturn(userRecord.id()
                                      .value());
-        Mockito.when(resultSet.getString(2))
+        Mockito.when(resultSet.getString("login"))
                .thenReturn(userRecord.login());
-        Mockito.when(resultSet.getString(3))
+        Mockito.when(resultSet.getString("password"))
                .thenReturn(userRecord.password());
 
         assertThat(sqlUserConverter.resultSetToRecord(resultSet))

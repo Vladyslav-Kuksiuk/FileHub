@@ -1,7 +1,6 @@
 package com.teamdev.filehub.processes.user.authentication;
 
 import com.google.common.base.Preconditions;
-import com.teamdev.filehub.processes.AuthenticatedUserCommand;
 import com.teamdev.filehub.processes.Command;
 
 import javax.annotation.Nonnull;

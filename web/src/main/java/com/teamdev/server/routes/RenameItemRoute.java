@@ -41,7 +41,7 @@ public class RenameItemRoute extends AuthorizedUserRoute {
     @Override
     protected void authorizedHandle(WrappedRequest request, Response response,
                                     RecordId userId) throws ServiceException,
-                                                                    JsonEntityValidationException {
+                                                            JsonEntityValidationException {
         var jsonBody = request.jsonBody();
 
         var command = new RenameCommand(userId,

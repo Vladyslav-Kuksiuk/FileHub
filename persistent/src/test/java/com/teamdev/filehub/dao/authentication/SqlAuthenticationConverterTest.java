@@ -60,10 +60,10 @@ class SqlAuthenticationConverterTest {
     @DisplayName("Should return SQL code to update record in table")
     void testRecordUpdateSql() {
 
-        var updateSql = String.format("UPDATE %s" +
-                                              "SET" +
-                                              "authentication_token = '%s'" +
-                                              "expire_time = '%s'" +
+        var updateSql = String.format("UPDATE %s " +
+                                              "SET " +
+                                              "authentication_token = '%s', " +
+                                              "expire_time = '%s', " +
                                               "user_id = '%s'" +
                                               "WHERE id = '%s'",
                                       tableName,
@@ -85,17 +85,17 @@ class SqlAuthenticationConverterTest {
 
         var resultSet = Mockito.mock(ResultSet.class);
 
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenReturn(authRecord.id()
                                      .value());
 
-        Mockito.when(resultSet.getString(2))
+        Mockito.when(resultSet.getString("authentication_token"))
                .thenReturn(authRecord.authenticationToken());
 
-        Mockito.when(resultSet.getTimestamp(3))
+        Mockito.when(resultSet.getTimestamp("expire_time"))
                .thenReturn(Timestamp.valueOf(authRecord.expireTime()));
 
-        Mockito.when(resultSet.getString(4))
+        Mockito.when(resultSet.getString("user_id"))
                .thenReturn(authRecord.userId()
                                      .value());
 
@@ -109,7 +109,7 @@ class SqlAuthenticationConverterTest {
     void testResultSetToRecordWithSQLException() throws SQLException {
 
         var resultSet = Mockito.mock(ResultSet.class);
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenThrow(new SQLException(""));
 
         assertThrows(RuntimeException.class, () -> {

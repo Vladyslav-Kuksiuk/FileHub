@@ -8,7 +8,6 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.file.FileDao;
 import com.teamdev.filehub.dao.file.FileRecord;
 import com.teamdev.filehub.filestorage.FileStorage;
-import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;

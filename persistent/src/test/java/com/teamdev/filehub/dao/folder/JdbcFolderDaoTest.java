@@ -40,16 +40,16 @@ class JdbcFolderDaoTest {
 
     private static void addFolderRecordInResultSet(ResultSet resultSet,
                                                    FolderRecord folderRecord) throws SQLException {
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenReturn(folderRecord.id()
                                        .value());
-        Mockito.when(resultSet.getString(2))
+        Mockito.when(resultSet.getString("owner_id"))
                .thenReturn(folderRecord.ownerId()
                                        .value());
-        Mockito.when(resultSet.getString(3))
+        Mockito.when(resultSet.getString("parent_folder_id"))
                .thenReturn(folderRecord.parentFolderId()
                                        .value());
-        Mockito.when(resultSet.getString(4))
+        Mockito.when(resultSet.getString("name"))
                .thenReturn(folderRecord.name());
     }
 

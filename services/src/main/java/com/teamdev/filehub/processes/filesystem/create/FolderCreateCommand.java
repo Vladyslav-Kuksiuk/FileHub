@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.processes.AuthenticatedUserCommand;
-import com.teamdev.filehub.views.AuthenticatedUserQuery;
 
 import javax.annotation.Nonnull;
 import java.util.regex.Matcher;

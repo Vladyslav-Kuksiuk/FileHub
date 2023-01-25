@@ -41,20 +41,20 @@ class JdbcFileDaoTest {
 
     private static void addFileRecordInResultSet(ResultSet resultSet,
                                                  FileRecord fileRecord) throws SQLException {
-        Mockito.when(resultSet.getString(1))
+        Mockito.when(resultSet.getString("id"))
                .thenReturn(fileRecord.id()
                                      .value());
-        Mockito.when(resultSet.getString(2))
+        Mockito.when(resultSet.getString("folder_id"))
                .thenReturn(fileRecord.folderId()
                                      .value());
-        Mockito.when(resultSet.getString(3))
+        Mockito.when(resultSet.getString("owner_id"))
                .thenReturn(fileRecord.ownerId()
                                      .value());
-        Mockito.when(resultSet.getString(4))
+        Mockito.when(resultSet.getString("name"))
                .thenReturn(fileRecord.name());
-        Mockito.when(resultSet.getString(5))
+        Mockito.when(resultSet.getString("mimetype"))
                .thenReturn(fileRecord.mimetype());
-        Mockito.when(resultSet.getLong(6))
+        Mockito.when(resultSet.getLong("size"))
                .thenReturn(fileRecord.size());
     }
 
