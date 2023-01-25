@@ -9,7 +9,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -23,7 +22,7 @@ class JdbcDaoTest {
     private final DatabaseRecord record = new DatabaseRecord(new RecordId("recordId"));
 
     @Mock
-    private Statement dbStatement;
+    private DbConnection dbConnection;
 
     @Mock
     private SqlRecordConverter<DatabaseRecord> converter;
@@ -45,7 +44,7 @@ class JdbcDaoTest {
 
         var dao = new JdbcDao<>(
                 tableName,
-                dbStatement,
+                dbConnection,
                 converter);
 
         var selectSqlQuery = String.format("SELECT * FROM %s WHERE id = '%s'",
@@ -57,7 +56,7 @@ class JdbcDaoTest {
         Mockito.when(resultSet.next())
                .thenReturn(true);
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(converter.resultSetToRecord(resultSet))
@@ -73,7 +72,7 @@ class JdbcDaoTest {
 
         var dao = new JdbcDao<>(
                 tableName,
-                dbStatement,
+                dbConnection,
                 converter);
 
         var selectSqlQuery = String.format("SELECT * FROM %s WHERE id = '%s'",
@@ -85,7 +84,7 @@ class JdbcDaoTest {
         Mockito.when(resultSet.next())
                .thenReturn(false);
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         assertThat(dao.find(record.id()))
@@ -96,13 +95,17 @@ class JdbcDaoTest {
     @DisplayName("Should throw RuntimeException on SQLException when executing select query")
     void testFindWithSQLException() throws SQLException {
 
+        var resultSet = Mockito.mock(ResultSet.class);
+        Mockito.when(resultSet.next())
+               .thenThrow(new SQLException(""));
+
         var dao = new JdbcDao<>(
                 tableName,
-                dbStatement,
+                dbConnection,
                 converter);
 
-        Mockito.when(dbStatement.execute(any()))
-               .thenThrow(new SQLException(""));
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
 
         assertThrows(RuntimeException.class, () -> {
             dao.find(record.id());
@@ -111,11 +114,11 @@ class JdbcDaoTest {
 
     @Test
     @DisplayName("Should successfully execute delete query")
-    void testDeleteWithoutExceptions() throws SQLException {
+    void testDeleteWithoutExceptions() {
 
         var dao = new JdbcDao<>(
                 tableName,
-                dbStatement,
+                dbConnection,
                 converter);
 
         var deleteSqlQuery = String.format("DELETE FROM %s WHERE id = '%s'",
@@ -125,34 +128,17 @@ class JdbcDaoTest {
 
         dao.delete(record.id());
 
-        Mockito.verify(dbStatement, Mockito.times(1))
+        Mockito.verify(dbConnection, Mockito.times(1))
                .execute(deleteSqlQuery);
     }
 
     @Test
-    @DisplayName("Should throw RuntimeException on SQLException when executing delete query")
-    void testDeleteWithSQLException() throws SQLException {
-
-        var dao = new JdbcDao<>(
-                tableName,
-                dbStatement,
-                converter);
-
-        Mockito.when(dbStatement.execute(any()))
-               .thenThrow(new SQLException(""));
-
-        assertThrows(RuntimeException.class, () -> {
-            dao.delete(record.id());
-        });
-    }
-
-    @Test
     @DisplayName("Should successfully execute insert query")
-    void testCreateWithoutExceptions() throws SQLException {
+    void testCreateWithoutExceptions() {
 
         var dao = new JdbcDao<>(
                 tableName,
-                dbStatement,
+                dbConnection,
                 converter);
 
         var createSqlQuery = "insert sql query";
@@ -162,34 +148,17 @@ class JdbcDaoTest {
 
         dao.create(record);
 
-        Mockito.verify(dbStatement, Mockito.times(1))
+        Mockito.verify(dbConnection, Mockito.times(1))
                .execute(createSqlQuery);
     }
 
     @Test
-    @DisplayName("Should throw RuntimeException on SQLException when executing insert query")
-    void testCreateWithSQLException() throws SQLException {
-
-        var dao = new JdbcDao<>(
-                tableName,
-                dbStatement,
-                converter);
-
-        Mockito.when(dbStatement.execute(any()))
-               .thenThrow(new SQLException(""));
-
-        assertThrows(RuntimeException.class, () -> {
-            dao.create(record);
-        });
-    }
-
-    @Test
     @DisplayName("Should successfully execute update query")
-    void testUpdateWithoutExceptions() throws SQLException {
+    void testUpdateWithoutExceptions() {
 
         var dao = new JdbcDao<>(
                 tableName,
-                dbStatement,
+                dbConnection,
                 converter);
 
         var createSqlQuery = "update sql query";
@@ -199,25 +168,8 @@ class JdbcDaoTest {
 
         dao.update(record);
 
-        Mockito.verify(dbStatement, Mockito.times(1))
+        Mockito.verify(dbConnection, Mockito.times(1))
                .execute(createSqlQuery);
-    }
-
-    @Test
-    @DisplayName("Should throw RuntimeException on SQLException when executing update query")
-    void testUpdateWithSQLException() throws SQLException {
-
-        var dao = new JdbcDao<>(
-                tableName,
-                dbStatement,
-                converter);
-
-        Mockito.when(dbStatement.execute(any()))
-               .thenThrow(new SQLException(""));
-
-        assertThrows(RuntimeException.class, () -> {
-            dao.update(record);
-        });
     }
 
 }

@@ -1,6 +1,7 @@
 package com.teamdev.filehub.dao.folder;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.filehub.dao.DbConnection;
 import com.teamdev.filehub.dao.RecordId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ class JdbcFolderDaoTest {
             "folderName");
 
     @Mock
-    private Statement dbStatement;
+    private DbConnection dbConnection;
 
     @Mock
     private ResultSet resultSet;
@@ -58,6 +58,7 @@ class JdbcFolderDaoTest {
     void testNullPointer() {
 
         var tester = new NullPointerTester();
+        tester.setDefault(DbConnection.class, Mockito.mock(DbConnection.class));
         tester.testAllPublicConstructors(JdbcFolderDao.class);
 
     }
@@ -72,7 +73,7 @@ class JdbcFolderDaoTest {
                 folderRecord.ownerId()
                             .value());
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -80,7 +81,7 @@ class JdbcFolderDaoTest {
 
         addFolderRecordInResultSet(resultSet, folderRecord);
 
-        var folderDao = new JdbcFolderDao(dbStatement, tableName);
+        var folderDao = new JdbcFolderDao(dbConnection, tableName);
 
         assertThat(folderDao.findUserRootFolder(folderRecord.ownerId()))
                 .isEqualTo(Optional.of(folderRecord));
@@ -91,13 +92,13 @@ class JdbcFolderDaoTest {
     @DisplayName("Should return optional empty when result set is empty")
     void testFindUserRootFolderWithoutFoundedFolder() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
+        Mockito.when(dbConnection.executeQuery(any()))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
                .thenReturn(false);
 
-        var folderDao = new JdbcFolderDao(dbStatement, tableName);
+        var folderDao = new JdbcFolderDao(dbConnection, tableName);
 
         assertThat(folderDao.findUserRootFolder(new RecordId("userId")))
                 .isEqualTo(Optional.empty());
@@ -108,10 +109,14 @@ class JdbcFolderDaoTest {
     @DisplayName("Should throw RuntimeException when catch SQLException")
     void testFindUserRootFolderWithSQLException() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
-               .thenThrow(new SQLException("exception"));
+        var resultSet = Mockito.mock(ResultSet.class);
+        Mockito.when(resultSet.next())
+               .thenThrow(new SQLException(""));
 
-        var folderDao = new JdbcFolderDao(dbStatement, tableName);
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
+
+        var folderDao = new JdbcFolderDao(dbConnection, tableName);
 
         assertThrows(RuntimeException.class,
                      () -> folderDao.findUserRootFolder(new RecordId("userid")));
@@ -127,7 +132,7 @@ class JdbcFolderDaoTest {
                                               folderRecord.parentFolderId()
                                                           .value());
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -135,7 +140,7 @@ class JdbcFolderDaoTest {
 
         addFolderRecordInResultSet(resultSet, folderRecord);
 
-        var folderDao = new JdbcFolderDao(dbStatement, tableName);
+        var folderDao = new JdbcFolderDao(dbConnection, tableName);
 
         assertThat(folderDao.getByParentId(folderRecord.parentFolderId()))
                 .isEqualTo(List.of(folderRecord));
@@ -146,10 +151,14 @@ class JdbcFolderDaoTest {
     @DisplayName("Should throw RuntimeException when catch SQLException")
     void testGetByParentIdWithSQLException() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
-               .thenThrow(new SQLException("exception"));
+        var resultSet = Mockito.mock(ResultSet.class);
+        Mockito.when(resultSet.next())
+               .thenThrow(new SQLException(""));
 
-        var folderDao = new JdbcFolderDao(dbStatement, tableName);
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
+
+        var folderDao = new JdbcFolderDao(dbConnection, tableName);
 
         assertThrows(RuntimeException.class,
                      () -> folderDao.getByParentId(new RecordId("folderId")));
@@ -169,7 +178,7 @@ class JdbcFolderDaoTest {
                             .value(),
                 namePart);
 
-        Mockito.when(dbStatement.executeQuery(selectSqlQuery))
+        Mockito.when(dbConnection.executeQuery(selectSqlQuery))
                .thenReturn(resultSet);
 
         Mockito.when(resultSet.next())
@@ -177,7 +186,7 @@ class JdbcFolderDaoTest {
 
         addFolderRecordInResultSet(resultSet, folderRecord);
 
-        var folderDao = new JdbcFolderDao(dbStatement, tableName);
+        var folderDao = new JdbcFolderDao(dbConnection, tableName);
 
         assertThat(folderDao.getByParentIdAndNamePart(folderRecord.parentFolderId(), namePart))
                 .isEqualTo(List.of(folderRecord));
@@ -188,10 +197,14 @@ class JdbcFolderDaoTest {
     @DisplayName("Should throw RuntimeException when catch SQLException")
     void testGetByParentIdAndNamePartWithSQLException() throws SQLException {
 
-        Mockito.when(dbStatement.executeQuery(any()))
-               .thenThrow(new SQLException("exception"));
+        var resultSet = Mockito.mock(ResultSet.class);
+        Mockito.when(resultSet.next())
+               .thenThrow(new SQLException(""));
 
-        var folderDao = new JdbcFolderDao(dbStatement, tableName);
+        Mockito.when(dbConnection.executeQuery(any()))
+               .thenReturn(resultSet);
+
+        var folderDao = new JdbcFolderDao(dbConnection, tableName);
 
         assertThrows(RuntimeException.class,
                      () -> folderDao.getByParentIdAndNamePart(new RecordId("folderId"), "name"));
