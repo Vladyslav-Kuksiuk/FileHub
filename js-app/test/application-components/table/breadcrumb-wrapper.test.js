@@ -45,6 +45,25 @@ describe('BreadcrumbWrapper', () => {
     expect(addStateListenerMock).toHaveBeenCalledWith('locationMetadata', stateListeners['locationMetadata']);
   });
 
+  test('Shouldn`t dispatch LoadFolderInfoAction without folder change', function() {
+    expect.assertions(1);
+
+    const id = '123';
+    new BreadcrumbWrapper();
+
+    stateListeners['userProfile']({
+      userProfile: {},
+      locationMetadata: {
+        folderId: id,
+      },
+      folderInfo: {
+        id: id,
+      },
+    });
+
+    expect(dispatchMock).toHaveBeenCalledTimes(0);
+  });
+
   test('Should dispatch LoadFolderInfoAction by userProfile state listener', function() {
     expect.assertions(2);
     new BreadcrumbWrapper();
@@ -74,6 +93,7 @@ describe('BreadcrumbWrapper', () => {
 
     stateListeners['userProfile']({
       userProfile: userProfile,
+      locationMetadata: {},
     });
 
     expect(navigateListenerMock).toHaveBeenCalledTimes(1);

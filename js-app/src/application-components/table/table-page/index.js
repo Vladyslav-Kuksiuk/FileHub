@@ -13,10 +13,14 @@ import {ButtonGroupWrapper} from '../button-group-wrapper';
 import {ButtonGroup} from '../../../components/button-group';
 import {ModalCreate} from '../../../components/modal-create';
 import {ModalCreateWrapper} from '../modal-create-wrapper';
+import {SearchRowWrapper} from '../search-row-wrapper';
+import {SearchRow} from '../../../components/search-row';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
+const SEARCH_EVENT = 'SEARCH_EVENT';
 const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
+const SEARCH_ROW_SLOT = 'search-row-slot';
 const FILE_LIST_SLOT = 'file-list-slot';
 const MODAL_REMOVE_SLOT = 'modal-remove-slot';
 const BUTTON_GROUP_SLOT = 'button-group-slot';
@@ -35,6 +39,7 @@ export class TablePage extends Component {
   #breadcrumbWrapper;
   #fileListWrapper;
   #buttonGroupWrapper;
+  #searchRowWrapper;
 
   /**
    * @param {HTMLElement} parent
@@ -76,6 +81,18 @@ export class TablePage extends Component {
       this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
         detail: {
           folderId: folderId,
+        },
+      }));
+    });
+
+    const searchRowWrapper = new SearchRowWrapper();
+    this.#searchRowWrapper = searchRowWrapper;
+    const searchRowSlot = this.getSlot(SEARCH_ROW_SLOT);
+    searchRowWrapper.wrap(new SearchRow(searchRowSlot), (folderId, searchValue)=>{
+      this.#eventTarget.dispatchEvent(new CustomEvent(SEARCH_EVENT, {
+        detail: {
+          folderId: folderId,
+          searchValue: searchValue,
         },
       }));
     });
@@ -126,6 +143,17 @@ export class TablePage extends Component {
   }
 
   /**
+   * Adds listener on search event.
+   *
+   * @param {function(string, string)}  listener
+   */
+  onSearch(listener) {
+    this.#eventTarget.addEventListener(SEARCH_EVENT, (event) => {
+      listener(event.detail.folderId, event.detail.searchValue);
+    });
+  }
+
+  /**
    * @inheritDoc
    */
   markup() {
@@ -151,15 +179,7 @@ export class TablePage extends Component {
         <hr class="horizontal-line">
         <div class="row table-tool-bar">
             <div class="col-xs-8 col-sm-6">
-                <div class="input-group search-line">
-                    <input class="form-control" id="search" name="Search" placeholder="Enter entity name..."
-                           type="text">
-                    <span class="input-group-btn">
-                            <button class="btn btn-primary" title="Search" type="button">
-                                Search
-                            </button>
-                    </span>
-                </div>
+                ${this.addSlot(SEARCH_ROW_SLOT)}
             </div>
             ${this.addSlot(BUTTON_GROUP_SLOT)}
         </div>

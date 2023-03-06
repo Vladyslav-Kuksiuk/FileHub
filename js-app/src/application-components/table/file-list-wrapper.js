@@ -10,6 +10,7 @@ import {DefineRenamingItemAction} from '../../state-management/folder/define-ren
 import {RenameItemAction} from '../../state-management/folder/rename-item-action';
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
 import {DownloadFileAction} from '../../state-management/folder/download-file-action';
+import {State} from '../../state-management/state';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -26,11 +27,23 @@ export class FileListWrapper extends StateAwareWrapper {
   constructor() {
     super();
     this.addStateListener('folderInfo', (state) => {
-      if (state.folderInfo && !state.isFolderContentLoading) {
-        this.stateManagementService.dispatch(
-            new LoadFolderContentAction(state.folderInfo.id));
-      }
+      this.#loadContent(state);
     });
+
+    this.addStateListener('locationMetadata', (state) => {
+      this.#loadContent(state);
+    });
+  }
+
+  /**
+   * @param {State} state
+   * @private
+   */
+  #loadContent(state) {
+    if (!(state.folderInfo && !state.isFolderContentLoading)) {
+      return;
+    }
+    this.stateManagementService.dispatch(new LoadFolderContentAction(state.locationMetadata.folderId));
   }
 
   /**
@@ -210,6 +223,14 @@ export class FileListWrapper extends StateAwareWrapper {
 
     this.addStateListener('folderContentError', (state) => {
       fileList.hasError = !!state.folderContentError;
+    });
+
+    this.addStateListener('locationMetadata', (state) => {
+      if (!!state.locationMetadata.search) {
+        fileList.emptyTableText = 'No items found in this directory.';
+      } else {
+        fileList.emptyTableText = 'There are no files/directories created yet.';
+      }
     });
   }
 

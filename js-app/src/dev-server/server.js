@@ -196,6 +196,20 @@ app.get('/folders/:folderId/content', (req, res) => {
   }, 500);
 });
 
+app.get('/folders/:folderId/search/:searchValue', (req, res) => {
+  setTimeout(() => {
+    if (foldersContent[req.params['folderId']]) {
+      res.status(200);
+      res.send({folderContent: foldersContent[req.params['folderId']].filter((content) => {
+        return content.name.toLowerCase().includes(req.params['searchValue'].toLowerCase());
+      })});
+    } else {
+      res.status(404);
+      res.send({});
+    }
+  }, 500);
+});
+
 app.post('/folders/:folderId/content', (req, res) => {
   setTimeout(() => {
     const form = new formidable.IncomingForm();

@@ -73,6 +73,13 @@ export class Application extends Component {
           page.onNavigateToFolder((folderId)=>{
             router.redirect(ROUTE.FILE_LIST+'/'+folderId);
           });
+          page.onSearch((folderId, searchValue) => {
+            if (searchValue.length === 0) {
+              router.redirect(ROUTE.FILE_LIST+'/'+folderId);
+            } else {
+              router.redirect(ROUTE.FILE_LIST+'/'+folderId+'?search='+searchValue);
+            }
+          });
         })
         .addMetadataChangeListener((metadata)=>{
           registry.getInstance('stateManagementService').dispatch(new ChangeLocationMetadataAction(metadata));

@@ -67,8 +67,20 @@ export class Router {
    * @private
    */
   #parseWithParams(path) {
-    const pathArray = path.split('/');
-    let params = {};
+    const params = {};
+    // Parse parameters
+    const pathWithParamsArray = path.split('?');
+    if (pathWithParamsArray.length === 2) {
+      const paramsArr = pathWithParamsArray[1].split('&');
+      paramsArr.forEach((param) => {
+        const keyValue = param.split('=');
+        params[keyValue[0]] = keyValue[1];
+      });
+    }
+
+    // Parse path with dynamic parts
+    let dynamicParams = {};
+    const pathArray = pathWithParamsArray[0].split('/');
     let parsedRoutePath;
 
     Object.keys(this.#config.routesMap).some((routePath)=>{
@@ -76,10 +88,10 @@ export class Router {
       const routeArray = routePath.split('/');
       return routeArray.every((routePart, index)=>{
         if (routePart.startsWith(':')) {
-          params[routePart.substring(1)] = pathArray[index];
+          dynamicParams[routePart.substring(1)] = pathArray[index];
         } else if (routePart !== pathArray[index]) {
           parsedRoutePath = null;
-          params = {};
+          dynamicParams = {};
           return false;
         }
         return true;
@@ -87,7 +99,7 @@ export class Router {
     });
     return {
       routePath: parsedRoutePath,
-      params: params,
+      params: {...params, ...dynamicParams},
     };
   }
 

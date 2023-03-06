@@ -32,18 +32,24 @@ export class BreadcrumbWrapper extends StateAwareWrapper {
    * @private
    */
   #triggerFolderLoading(state) {
-    if (state.userProfile) {
-      if (state.locationMetadata?.folderId) {
-        this.stateManagementService.dispatch(
-            new LoadFolderInfoAction(state.locationMetadata.folderId));
-      } else {
-        this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
-          detail: {
-            folderId: state.userProfile.rootFolderId,
-          },
-        }));
-      }
+    if (!state.userProfile) {
+      return;
     }
+
+    if (state.locationMetadata?.folderId != null && state.locationMetadata.folderId === state.folderInfo?.id) {
+      return;
+    }
+
+    if (!!state.locationMetadata.folderId) {
+      this.stateManagementService.dispatch(new LoadFolderInfoAction(state.locationMetadata.folderId));
+      return;
+    }
+
+    this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
+      detail: {
+        folderId: state.userProfile.rootFolderId,
+      },
+    }));
   }
 
   /**
