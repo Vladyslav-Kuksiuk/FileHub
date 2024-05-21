@@ -32,7 +32,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
 
     @Override
     public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command)
-            throws UserCredentialsMismatchException {
+            throws UserCredentialsMismatchException, UserEmailNotConfirmedException {
         Preconditions.checkNotNull(command);
 
         logger.atInfo()
@@ -67,7 +67,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                     .log("[PROCESS FAILED] - User authentication - Email is not confirmed - login: %s.",
                             command.login());
 
-            throw new UserCredentialsMismatchException("Email is not confirmed.");
+            throw new UserEmailNotConfirmedException("Email is not confirmed.");
         }
 
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);

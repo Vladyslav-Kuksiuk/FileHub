@@ -44,7 +44,9 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
                              record.id()
                                    .value(),
                              record.login(),
-                             record.password());
+                             record.password(),
+                record.isEmailConfirmed(),
+                record.emailHash());
     }
 
     @Override

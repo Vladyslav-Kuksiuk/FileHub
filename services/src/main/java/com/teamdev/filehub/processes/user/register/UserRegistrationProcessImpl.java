@@ -53,7 +53,7 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
         if (userDao.findByLogin(command.login())
                    .isPresent()) {
             logger.atInfo()
-                  .log("[PROCESS FAILED] - User registration - login: %s.", command.login());
+                  .log("[PROCESS FAILED] - User registration - User already registered - login: %s.", command.login());
             throw new UserAlreadyRegisteredException("User already registered.");
         }
 

@@ -14,11 +14,11 @@ public class SendGridEmailService implements EmailService {
 
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final Email sender = new Email("vlad.kuksiuk@gmail.com");
+    private final Email sender = new Email("vlad.kuksiuk2@gmail.com");
     private final SendGrid sendGrid;
 
     public SendGridEmailService(String apiKey) {
-        this.sendGrid = new SendGrid(System.getenv(apiKey));
+        this.sendGrid = new SendGrid(apiKey);
     }
 
     @Override
@@ -32,9 +32,9 @@ public class SendGridEmailService implements EmailService {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
-            sendGrid.api(request);
+            var response = sendGrid.api(request);
             logger.atInfo()
-                    .log("[EMAIL SERVICE] - Email sent");
+                    .log("[EMAIL SERVICE] - Email sent - Status: %d - Response : %s \n", response.getStatusCode(), response.getBody());
         } catch (IOException e) {
             logger.atInfo()
                     .log("[EMAIL SERVICE] - Email not sent");

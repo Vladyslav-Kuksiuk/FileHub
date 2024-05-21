@@ -4,6 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserDao;
+import com.teamdev.filehub.dao.user.UserRecord;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -24,14 +25,23 @@ public class EmailConfirmationProcessImpl implements EmailConfirmationProcess {
         logger.atInfo()
                 .log("[PROCESS STARTED] - Email confirmation");
 
-        var user = userDao.findByEmailHash(command.emailConfirmationToken());
+        var oUser = userDao.findByEmailHash(command.emailConfirmationToken());
 
-        if (user.isEmpty()) {
+        if (oUser.isEmpty()) {
             logger.atInfo()
                     .log("[PROCESS FAILED] - Email confirmation");
             throw new DataNotFoundException("Email confirmation token is invalid.");
         }
+        var user = oUser.get();
 
-        return user.get().id();
+        userDao.update(new UserRecord(
+                user.id(),
+                user.login(),
+                user.password(),
+                true,
+                user.emailHash()
+        ));
+
+        return user.id();
     }
 }

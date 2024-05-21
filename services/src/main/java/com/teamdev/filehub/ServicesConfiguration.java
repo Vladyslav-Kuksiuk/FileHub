@@ -24,6 +24,8 @@ import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
+import com.teamdev.filehub.processes.user.confirmation.email.EmailConfirmationProcess;
+import com.teamdev.filehub.processes.user.confirmation.email.EmailConfirmationProcessImpl;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcessImpl;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
@@ -52,6 +54,7 @@ import java.util.Properties;
 public class ServicesConfiguration {
 
     private final UserRegistrationProcess userRegistrationProcess;
+    private final EmailConfirmationProcess emailConfirmationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
@@ -101,6 +104,7 @@ public class ServicesConfiguration {
         EmailService emailService = new SendGridEmailService(properties.getProperty("sg.key"));
 
         userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao, emailService);
+        emailConfirmationProcess = new EmailConfirmationProcessImpl(userDao);
         userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
@@ -178,5 +182,9 @@ public class ServicesConfiguration {
 
     public RenameProcess getFileRenameProcess() {
         return fileRenameProcess;
+    }
+
+    public EmailConfirmationProcess getEmailConfirmationProcess() {
+        return emailConfirmationProcess;
     }
 }

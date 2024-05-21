@@ -2,10 +2,7 @@ package com.teamdev.server.routes;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
-import com.teamdev.filehub.processes.user.authentication.UserAuthenticationCommand;
-import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
-import com.teamdev.filehub.processes.user.authentication.UserAuthenticationResponse;
-import com.teamdev.filehub.processes.user.authentication.UserCredentialsMismatchException;
+import com.teamdev.filehub.processes.user.authentication.*;
 import com.teamdev.server.JsonEntityValidationException;
 import com.teamdev.server.WrappedRequest;
 import com.teamdev.server.WrappedRoute;
@@ -40,7 +37,7 @@ public class AuthenticationRoute extends WrappedRoute {
      */
     @Override
     protected void wrappedRequestHandle(WrappedRequest request, Response response)
-            throws JsonEntityValidationException, UserCredentialsMismatchException {
+            throws JsonEntityValidationException, UserCredentialsMismatchException, UserEmailNotConfirmedException {
 
         UserAuthenticationCommand command =
                 new UserAuthenticationCommand(

@@ -1,18 +1,7 @@
 package com.teamdev.server;
 
 import com.teamdev.filehub.ServicesConfiguration;
-import com.teamdev.server.routes.AuthenticationRoute;
-import com.teamdev.server.routes.CreateFolderRoute;
-import com.teamdev.server.routes.DownloadFileRoute;
-import com.teamdev.server.routes.LoadFolderContentRoute;
-import com.teamdev.server.routes.LoadFolderRoute;
-import com.teamdev.server.routes.LoadUserRoute;
-import com.teamdev.server.routes.LogoutRoute;
-import com.teamdev.server.routes.RegistrationRoute;
-import com.teamdev.server.routes.RemoveItemRoute;
-import com.teamdev.server.routes.RenameItemRoute;
-import com.teamdev.server.routes.SearchInFolderRoute;
-import com.teamdev.server.routes.UploadFileRoute;
+import com.teamdev.server.routes.*;
 
 import static spark.Spark.delete;
 import static spark.Spark.get;
@@ -37,6 +26,7 @@ public class RESTServer {
         ServicesConfiguration context = new ServicesConfiguration();
 
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
+        post("api/confirm-email/:confirmationToken", new ConfirmEmailRoute(context.getEmailConfirmationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
         post("api/logout",
              new LogoutRoute(context.getUserAuthorizationView(), context.getUserLogoutProcess()));

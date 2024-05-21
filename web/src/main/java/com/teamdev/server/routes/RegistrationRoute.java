@@ -31,14 +31,10 @@ public class RegistrationRoute extends WrappedRoute {
     /**
      * Handles 'user registration' request.
      *
-     * @param request
-     *         The request object providing information about the HTTP request.
-     * @param response
-     *         The response object providing functionality for modifying the response.
-     * @throws JsonEntityValidationException
-     *         If JSON body can`t be processed.
-     * @throws UserAlreadyRegisteredException
-     *         If user with this login is already registered in the system
+     * @param request  The request object providing information about the HTTP request.
+     * @param response The response object providing functionality for modifying the response.
+     * @throws JsonEntityValidationException  If JSON body can`t be processed.
+     * @throws UserAlreadyRegisteredException If user with this login is already registered in the system
      */
     @Override
     protected void wrappedRequestHandle(WrappedRequest request, Response response)
@@ -47,7 +43,7 @@ public class RegistrationRoute extends WrappedRoute {
         try {
             var jsonBody = request.jsonBody();
             var command = new UserRegistrationCommand(jsonBody.getAsString("login"),
-                                                      jsonBody.getAsString("password"));
+                    jsonBody.getAsString("password"));
 
             var userId = userRegistrationProcess.handle(command);
 
@@ -56,14 +52,12 @@ public class RegistrationRoute extends WrappedRoute {
         } catch (RequestFieldValidationException exception) {
 
             String errorJson = gson.toJson(Map.of("errors",
-                                                  List.of(new TreeMap<>(Map.of("fieldName",
-                                                                               exception.getField(),
-                                                                               "errorText",
-                                                                               exception.getMessage())))));
+                    List.of(new TreeMap<>(Map.of("fieldName",
+                            exception.getField(),
+                            "errorText",
+                            exception.getMessage())))));
             response.status(422);
             response.body(errorJson);
-
         }
-
     }
 }
