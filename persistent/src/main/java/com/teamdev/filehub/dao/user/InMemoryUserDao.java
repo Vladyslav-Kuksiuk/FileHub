@@ -27,8 +27,7 @@ public class InMemoryUserDao implements UserDao {
     /**
      * Method to find a user record in the {@link InMemoryDatabase} by id.
      *
-     * @param id
-     *         User record identifier.
+     * @param id User record identifier.
      * @return {@link UserRecord}.
      */
     @Override
@@ -43,8 +42,10 @@ public class InMemoryUserDao implements UserDao {
             UserData userData = optionalUserData.get();
 
             return Optional.of(new UserRecord(new RecordId(userData.id()),
-                                              userData.login(),
-                                              userData.password()));
+                    userData.login(),
+                    userData.password(),
+                    userData.isEmailConfirmed(),
+                    userData.emailHash()));
 
         }
 
@@ -54,8 +55,7 @@ public class InMemoryUserDao implements UserDao {
     /**
      * Method to delete user record in the {@link InMemoryDatabase}.
      *
-     * @param id
-     *         User record identifier.
+     * @param id User record identifier.
      */
     @Override
     public void delete(@Nonnull RecordId id) {
@@ -64,58 +64,59 @@ public class InMemoryUserDao implements UserDao {
         userTable.delete(id.value());
 
         logger.atInfo()
-              .log("[USER DELETED] - id: %s", id.value());
+                .log("[USER DELETED] - id: %s", id.value());
 
     }
 
     /**
      * Method to create user record in the {@link InMemoryDatabase}.
      *
-     * @param record
-     *         User record to create.
+     * @param record User record to create.
      */
     @Override
     public void create(@Nonnull UserRecord record) {
         Preconditions.checkNotNull(record);
 
         UserData userData = new UserData(record.id()
-                                               .value(),
-                                         record.login(),
-                                         record.password());
+                .value(),
+                record.login(),
+                record.password(),
+                record.isEmailConfirmed(),
+                record.emailHash());
 
         userTable.create(userData);
 
         logger.atInfo()
-              .log("[USER CREATED] - login: %s", record.login());
+                .log("[USER CREATED] - login: %s", record.login());
     }
 
     /**
      * Method to update user record in the {@link InMemoryDatabase}.
      *
-     * @param record
-     *         User record to update.
+     * @param record User record to update.
      */
     @Override
     public void update(@Nonnull UserRecord record) {
         Preconditions.checkNotNull(record);
 
         UserData userData = new UserData(record.id()
-                                               .value(),
-                                         record.login(),
-                                         record.password());
+                .value(),
+                record.login(),
+                record.password(),
+                record.isEmailConfirmed(),
+                record.emailHash());
 
         userTable.update(userData);
 
         logger.atInfo()
-              .log("[USER UPDATED] - login: %s", record.login());
+                .log("[USER UPDATED] - login: %s", record.login());
 
     }
 
     /**
      * Method to find a user record in the {@link InMemoryDatabase} by login.
      *
-     * @param login
-     *         User login.
+     * @param login User login.
      * @return {@link UserRecord}.
      */
     @Override
@@ -129,8 +130,30 @@ public class InMemoryUserDao implements UserDao {
             UserData userData = optionalUserData.get();
 
             return Optional.of(new UserRecord(new RecordId(userData.id()),
-                                              userData.login(),
-                                              userData.password()));
+                    userData.login(),
+                    userData.password(),
+                    userData.isEmailConfirmed(),
+                    userData.emailHash()));
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserRecord> findByEmailHash(@Nonnull String emailHash) {
+        Preconditions.checkNotNull(emailHash);
+
+        Optional<UserData> optionalUserData = userTable.getUserByEmailHash(emailHash);
+
+        if (optionalUserData.isPresent()) {
+
+            UserData userData = optionalUserData.get();
+
+            return Optional.of(new UserRecord(new RecordId(userData.id()),
+                    userData.login(),
+                    userData.password(),
+                    userData.isEmailConfirmed(),
+                    userData.emailHash()));
         }
 
         return Optional.empty();

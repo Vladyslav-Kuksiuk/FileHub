@@ -1,11 +1,13 @@
 package com.teamdev.filehub.processes.user.register;
 
 import com.google.common.testing.NullPointerTester;
+import com.teamdev.filehub.EmailServiceFake;
 import com.teamdev.filehub.FolderDaoFake;
 import com.teamdev.filehub.RequestFieldValidationException;
 import com.teamdev.filehub.UserDaoFake;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
+import com.teamdev.filehub.postman.EmailService;
 import com.teamdev.util.StringEncryptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,8 @@ class UserRegistrationProcessTest {
 
     private UserDaoFake userDao;
     private FolderDaoFake folderDao;
+    private EmailService emailService;
+
     private UserRegistrationProcess registrationProcess;
 
     private UserRecord registeredUser;
@@ -27,15 +31,20 @@ class UserRegistrationProcessTest {
     void setUp() {
         userDao = new UserDaoFake();
         folderDao = new FolderDaoFake();
-        registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
+        emailService = new EmailServiceFake();
+        registrationProcess = new UserRegistrationProcessImpl(userDao, folderDao, emailService);
 
         registeredUser = new UserRecord(new RecordId("email1@email.com"),
                                         "email1@email.com",
-                                        StringEncryptor.encrypt("password1"));
+                                        StringEncryptor.encrypt("password1"),
+                false,
+                StringEncryptor.encrypt("email1@email.com"));
 
         toRegisterUser = new UserRecord(new RecordId("email2@email.com"),
                                         "email2@email.com",
-                                        StringEncryptor.encrypt("password2"));
+                                        StringEncryptor.encrypt("password2"),
+                false,
+                StringEncryptor.encrypt("email1@email.com"));
 
         userDao.create(registeredUser);
 
@@ -83,7 +92,7 @@ class UserRegistrationProcessTest {
     @Test
     void nullTest() throws NoSuchMethodException {
         UserRegistrationProcessImpl registrationProcess =
-                new UserRegistrationProcessImpl(userDao, folderDao);
+                new UserRegistrationProcessImpl(userDao, folderDao, emailService);
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(registrationProcess,

@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 
 import javax.annotation.Nonnull;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Class for string encrypting.
@@ -19,8 +20,8 @@ public class StringEncryptor {
     public static String encrypt(@Nonnull String text) {
         Preconditions.checkNotNull(text);
 
-        return Hashing.sha256()
-                      .hashString(text + SECRET_WORD, Charsets.UTF_8)
+        return Hashing.hmacSha256(SECRET_WORD.getBytes(StandardCharsets.UTF_8))
+                      .hashString(text, Charsets.UTF_8)
                       .toString();
     }
 }

@@ -40,4 +40,23 @@ public class JdbcUserDao extends JdbcDao<UserRecord> implements UserDao {
             throw new RuntimeException("Database query failed.", e);
         }
     }
+
+    @Override
+    public Optional<UserRecord> findByEmailHash(@Nonnull String emailHash) {
+        Preconditions.checkNotNull(emailHash);
+
+        String selectSqlQuery = String.format("SELECT * FROM %s WHERE email_hash = '%s'", tableName(),
+                emailHash);
+
+        try {
+            ResultSet resultSet = dbConnection().executeQuery(selectSqlQuery);
+
+            if (resultSet.next()) {
+                return Optional.of(sqlRecordConverter().resultSetToRecord(resultSet));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new RuntimeException("Database query failed.", e);
+        }
+    }
 }

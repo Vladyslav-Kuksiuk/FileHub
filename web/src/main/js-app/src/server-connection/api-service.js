@@ -12,6 +12,7 @@ export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
+export const EMAIL_CONFIRMATION_PATH = 'api/confirm-email';
 const FOLDER_PATH = 'api/folder/';
 const FILE_PATH = 'api/file/';
 

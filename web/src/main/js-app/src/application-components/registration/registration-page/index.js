@@ -67,7 +67,7 @@ export class RegistrationPage extends Component {
     return `
     <div class="page-wrapper">
     <header class="page-header">
-        <a href="" title="TeamDev"><img alt="TeamDev" height="37" src="static/images/logo.png" width="200"></a>
+        <a href="" title="FileHub"><img alt="FileHub" height="37" src="static/images/logo.png" width="200"></a>
     </header>
     <main class="container">
         <h1>Sign up to FileHub</h1>

@@ -10,6 +10,8 @@ import com.teamdev.filehub.dao.folder.JdbcFolderDao;
 import com.teamdev.filehub.dao.user.JdbcUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
+import com.teamdev.filehub.postman.EmailService;
+import com.teamdev.filehub.postman.SendGridEmailService;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcessImpl;
 import com.teamdev.filehub.processes.filesystem.remove.FileRemoveProcess;
@@ -76,7 +78,7 @@ public class ServicesConfiguration {
         Properties properties = new Properties();
 
         try (var resources = getClass().getClassLoader()
-                                       .getResourceAsStream("database.properties")
+                                       .getResourceAsStream("secret.properties")
         ) {
 
             properties.load(resources);
@@ -96,7 +98,9 @@ public class ServicesConfiguration {
 
         FileStorage fileStorage = new FileStorage(storagePath.toString());
 
-        userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
+        EmailService emailService = new SendGridEmailService(properties.getProperty("sg.key"));
+
+        userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao, emailService);
         userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);

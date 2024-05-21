@@ -37,4 +37,16 @@ public class UserTable extends InMemoryDatabaseTable<UserData> {
 
     }
 
+    public Optional<UserData> getUserByEmailHash(@NotNull String emailHash) {
+
+        Optional<UserData> foundUser = tableMap().values()
+                .stream()
+                .filter(user -> user.emailHash()
+                        .equals(emailHash))
+                .findFirst();
+
+        return foundUser;
+
+    }
+
 }

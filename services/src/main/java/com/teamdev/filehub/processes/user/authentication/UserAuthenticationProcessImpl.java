@@ -62,6 +62,14 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
             throw new UserCredentialsMismatchException("Authentication data incorrect.");
         }
 
+        if(!userRecord.isEmailConfirmed()) {
+            logger.atWarning()
+                    .log("[PROCESS FAILED] - User authentication - Email is not confirmed - login: %s.",
+                            command.login());
+
+            throw new UserCredentialsMismatchException("Email is not confirmed.");
+        }
+
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);
         LocalDateTime expireDateTime = authenticationTime.plusDays(1);
 

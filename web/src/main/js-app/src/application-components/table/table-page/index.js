@@ -160,8 +160,8 @@ export class TablePage extends Component {
     return `
     <div class="page-wrapper table-page-wrapper">
     <header class="page-header">
-        <a href="/web-client/static"><img alt="TeamDev" height="37" src="static/images/logo.png"
-                                          title="TeamDev" width="200"></a>
+        <a href="/web-client/static"><img alt="FileHub" height="37" src="static/images/logo.png"
+                                          title="FileHub" width="200"></a>
             <ul class="authorized-user-panel">
             <li>
                 ${this.addSlot(USER_INFO_SLOT)}
@@ -188,24 +188,24 @@ export class TablePage extends Component {
     <footer class="page-footer">
         <ul class="list-inline social-icons">
             <li>
-                <a href="https://www.linkedin.com/company/teamdev-ltd-/"
+                <a href="https://www.linkedin.com/in/vladyslavkuksiuk/"
                    target="_blank" title="Linked In">
                     <img alt="Linked In" src="static/images/icon-linkedin.png">
                 </a>
             </li>
             <li>
-                <a href="https://www.facebook.com/TeamDev" target="_blank" title="Facebook">
+                <a href="https://www.facebook.com/profile.php?id=100078765320939" target="_blank" title="Facebook">
                     <img alt="Facebook" src="static/images/icon-facebook.png">
                 </a>
             </li>
             <li>
-                <a href="https://www.instagram.com/teamdev_ltd/" target="_blank" title="Instagram">
+                <a href="https://www.instagram.com/_hellamb_/" target="_blank" title="Instagram">
                     <img alt="Instagram" src="static/images/icon-instagram.png">
                 </a>
             </li>
         </ul>
         <p class="copyright">
-            Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
+            Copyright © 2024 <a href="/">Vladyslav Kuksiuk</a>. All rights reserved.
         </p>
     </footer>
 ${this.addSlot(MODAL_REMOVE_SLOT)}

@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.Data;
 
+import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -13,14 +14,20 @@ public class UserData extends Data {
 
     private final String login;
     private final String password;
+    private final boolean isEmailConfirmed;
+    private final String emailHash;
 
     public UserData(@NotNull String id,
                     @NotNull String login,
-                    @NotNull String password) {
+                    @NotNull String password,
+                    boolean isEmailConfirmed,
+                    @Nonnull String emailHash) {
 
         super(Preconditions.checkNotNull(id));
         this.login = Preconditions.checkNotNull(login);
         this.password = Preconditions.checkNotNull(password);
+        this.isEmailConfirmed = isEmailConfirmed;
+        this.emailHash = emailHash;
     }
 
     public String login() {
@@ -29,6 +36,14 @@ public class UserData extends Data {
 
     public String password() {
         return password;
+    }
+
+    public boolean isEmailConfirmed() {
+        return isEmailConfirmed;
+    }
+
+    public String emailHash() {
+        return emailHash;
     }
 
     @Override
@@ -46,6 +61,8 @@ public class UserData extends Data {
         }
         UserData userData = (UserData) o;
         return Objects.equal(login, userData.login) &&
-                Objects.equal(password, userData.password);
+                Objects.equal(password, userData.password) &&
+                Objects.equal(isEmailConfirmed, userData.isEmailConfirmed) &&
+                Objects.equal(emailHash, userData.emailHash);
     }
 }
