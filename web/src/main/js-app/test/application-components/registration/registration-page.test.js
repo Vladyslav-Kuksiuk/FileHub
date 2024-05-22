@@ -47,7 +47,7 @@ describe('RegistrationPage', () => {
 
       const page = new RegistrationPage(document.body);
 
-      page.onNavigateToAuthorization(() => {
+      page.onNavigateToEmailConfirmationSent(() => {
         expect(true).toBeTruthy();
         done();
       });
@@ -65,7 +65,7 @@ describe('RegistrationPage', () => {
 
       const page = new RegistrationPage(document.body);
 
-      page.onNavigateToAuthorization(() => {
+      page.onNavigateToEmailConfirmationSent(() => {
         expect(apiServiceMock).toHaveBeenCalledTimes(1);
         expect(apiServiceMock).toHaveBeenCalledWith(new UserData('email', 'password'));
         done();

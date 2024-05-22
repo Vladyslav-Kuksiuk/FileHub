@@ -26,6 +26,7 @@ public class RESTServer {
         ServicesConfiguration context = new ServicesConfiguration();
 
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
+        post("api/send-confirmation-email", new SendConfirmationEmailRoute(context.getSendEmailConfirmationProcess()));
         post("api/confirm-email/:confirmationToken", new ConfirmEmailRoute(context.getEmailConfirmationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
         post("api/logout",

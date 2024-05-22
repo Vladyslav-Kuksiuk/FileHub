@@ -12,11 +12,14 @@ export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
-export const EMAIL_CONFIRMATION_PATH = 'api/confirm-email';
+export const EMAIL_CONFIRMATION_PATH = 'api/confirm-email/';
+export const SEND_CONFIRMATION_EMAIL_PATH = 'api/send-confirmation-email';
 const FOLDER_PATH = 'api/folder/';
 const FILE_PATH = 'api/file/';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
+export const LOGIN_403_ERROR = 'Email address is not confirmed';
+export const EMAIL_SEND_ERROR = 'User with provided email doesn\'t exist';
 
 /**
  * Service to handle server request and response.
@@ -49,11 +52,53 @@ export class ApiService {
       if (response.status === 401) {
         throw new ApiServiceError(LOGIN_401_ERROR);
       }
+      if (response.status === 403) {
+        throw new ApiServiceError(LOGIN_403_ERROR);
+      }
       if (response.status !== 200) {
         throw new ApiServiceError();
       }
       this.storageService.put(AUTH_TOKEN, response.body.authenticationToken);
     });
+  }
+
+  /**
+   * Sends confirmation email.
+   *
+   * @returns {Promise<ApiServiceError>}
+   */
+  async sendConfirmationEmail(email) {
+    return this.requestService.postJson(SEND_CONFIRMATION_EMAIL_PATH, {
+      email: email})
+        .catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 404) {
+        throw new ApiServiceError(EMAIL_SEND_ERROR);
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+    });
+  }
+
+  /**
+   * Confirms email.
+   *
+   * @returns {Promise<ApiServiceError>}
+   */
+  async confirmEmail(confirmationToken) {
+    return this.requestService.postJson(EMAIL_CONFIRMATION_PATH+confirmationToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        }).then((response) => {
+          if (response.status === 404) {
+            throw new ApiServiceError(EMAIL_SEND_ERROR);
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
   }
 
   /**

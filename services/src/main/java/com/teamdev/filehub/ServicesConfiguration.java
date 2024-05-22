@@ -24,8 +24,11 @@ import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
-import com.teamdev.filehub.processes.user.confirmation.email.EmailConfirmationProcess;
-import com.teamdev.filehub.processes.user.confirmation.email.EmailConfirmationProcessImpl;
+import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationProcess;
+import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationProcessImpl;
+import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationCommand;
+import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationProcess;
+import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationProcessImpl;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcessImpl;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
@@ -54,6 +57,7 @@ import java.util.Properties;
 public class ServicesConfiguration {
 
     private final UserRegistrationProcess userRegistrationProcess;
+    private final SendEmailConfirmationProcess sendEmailConfirmationProcess;
     private final EmailConfirmationProcess emailConfirmationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
@@ -72,6 +76,10 @@ public class ServicesConfiguration {
     private final RemoveProcess fileRemoveProcess;
 
     private final FileDownloadView fileDownloadView;
+
+    public SendEmailConfirmationProcess getSendEmailConfirmationProcess() {
+        return sendEmailConfirmationProcess;
+    }
 
     public ServicesConfiguration() {
 
@@ -105,7 +113,8 @@ public class ServicesConfiguration {
 
         userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao, emailService);
         emailConfirmationProcess = new EmailConfirmationProcessImpl(userDao);
-        userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);
+        sendEmailConfirmationProcess = new SendEmailConfirmationProcessImpl(userDao, emailService);
+        userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao, emailService);
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);

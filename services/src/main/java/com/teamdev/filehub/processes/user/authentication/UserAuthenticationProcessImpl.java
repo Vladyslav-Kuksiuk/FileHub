@@ -7,12 +7,16 @@ import com.teamdev.filehub.dao.authentication.AuthenticationDao;
 import com.teamdev.filehub.dao.authentication.AuthenticationRecord;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.dao.user.UserRecord;
+import com.teamdev.filehub.postman.EmailService;
 import com.teamdev.util.LocalDateTimeUtil;
 import com.teamdev.util.StringEncryptor;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static com.teamdev.filehub.processes.user.register.ConfirmationEmail.confirmationEmailText;
+import static com.teamdev.filehub.processes.user.register.UserRegistrationProcessImpl.emailConfirmationLink;
 
 /**
  * A {@link UserAuthenticationProcess} implementation.
@@ -23,11 +27,14 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
 
     private final UserDao userDao;
     private final AuthenticationDao authenticationDao;
+    private final EmailService emailService;
 
     public UserAuthenticationProcessImpl(@Nonnull UserDao userDao,
-                                         @Nonnull AuthenticationDao authenticationDao) {
+                                         @Nonnull AuthenticationDao authenticationDao,
+                                         @Nonnull EmailService emailService) {
         this.userDao = Preconditions.checkNotNull(userDao);
         this.authenticationDao = Preconditions.checkNotNull(authenticationDao);
+        this.emailService = Preconditions.checkNotNull(emailService);
     }
 
     @Override
@@ -66,6 +73,9 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
             logger.atWarning()
                     .log("[PROCESS FAILED] - User authentication - Email is not confirmed - login: %s.",
                             command.login());
+
+            emailService.sendEmail(command.login(), "Confirm your email address",
+                    confirmationEmailText(emailConfirmationLink(command.login())));
 
             throw new UserEmailNotConfirmedException("Email is not confirmed.");
         }

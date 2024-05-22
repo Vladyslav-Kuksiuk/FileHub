@@ -1,8 +1,11 @@
 import {Component} from '../../../components/component';
 import {AuthorizationForm} from '../authorization-form';
 import {inject} from '../../../registry';
+import {EMAIL_ADDRESS} from "../../../storage-service.js";
+import {LOGIN_403_ERROR} from "../../../server-connection/api-service.js";
 
 const NAVIGATE_EVENT_REGISTRATION = 'NAVIGATE_EVENT_REGISTRATION';
+const NAVIGATE_EVENT_EMAIL_CONFIRMATION_SENT = 'NAVIGATE_EVENT_EMAIL_CONFIRMATION_SENT';
 const NAVIGATE_EVENT_TABLE = 'NAVIGATE_EVENT_TABLE';
 
 /**
@@ -12,6 +15,7 @@ export class AuthorizationPage extends Component {
   #eventTarget = new EventTarget();
   @inject titleService;
   @inject apiService;
+  @inject storageService;
 
   /**
    * @param {HTMLElement} parent
@@ -32,12 +36,17 @@ export class AuthorizationPage extends Component {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_REGISTRATION));
     });
     form.onSubmit((data) => {
+      this.storageService.put(EMAIL_ADDRESS, data.login)
       this.apiService.logIn(data)
           .then(() => {
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_TABLE));
           })
           .catch((error) => {
-            form.setHeadError(error.message);
+            if(error.message === LOGIN_403_ERROR) {
+              this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_EMAIL_CONFIRMATION_SENT));
+            } else {
+              form.setHeadError(error.message);
+            }
           });
     });
   }
@@ -58,6 +67,15 @@ export class AuthorizationPage extends Component {
    */
   onNavigateToTable(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT_TABLE, listener);
+  }
+
+  /**
+   * Adds listener on navigate to email confirmation sent event.
+   *
+   * @param {Function} listener
+   */
+  onNavigateToEmailConfirmationSent(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_EMAIL_CONFIRMATION_SENT, listener);
   }
 
   /**

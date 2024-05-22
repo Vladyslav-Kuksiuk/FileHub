@@ -2,6 +2,7 @@ import {Component} from '../../../components/component';
 import {RegistrationForm} from '../registration-form';
 import {FieldValidationError} from '../../../server-connection/field-validation-error';
 import {inject} from '../../../registry.js';
+import {EMAIL_ADDRESS} from "../../../storage-service.js";
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -12,6 +13,7 @@ export class RegistrationPage extends Component {
   #eventTarget = new EventTarget();
   @inject apiService;
   @inject titleService;
+  @inject storageService;
 
   /**
    * @param {HTMLElement} parent
@@ -32,6 +34,7 @@ export class RegistrationPage extends Component {
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
     });
     form.onSubmit((data)=>{
+      this.storageService.put(EMAIL_ADDRESS, data.login)
       this.apiService.register(data)
           .then(()=>{
             this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
@@ -52,11 +55,11 @@ export class RegistrationPage extends Component {
   }
 
   /**
-   * Adds listener on navigate to authorization event.
+   * Adds listener on navigate to email confirmation sent event.
    *
    * @param {Function} listener
    */
-  onNavigateToAuthorization(listener) {
+  onNavigateToEmailConfirmationSent(listener) {
     this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
   }
 

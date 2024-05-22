@@ -1,4 +1,4 @@
-package com.teamdev.filehub.processes.user.confirmation.email;
+package com.teamdev.filehub.processes.user.confirmation.email.confirm;
 
 import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.DataNotFoundException;
@@ -41,6 +41,9 @@ public class EmailConfirmationProcessImpl implements EmailConfirmationProcess {
                 true,
                 user.emailHash()
         ));
+
+        logger.atInfo()
+                .log("[PROCESS FINISHED] - Email confirmation");
 
         return user.id();
     }

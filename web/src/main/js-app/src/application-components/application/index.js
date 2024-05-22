@@ -10,7 +10,8 @@ import {ROUTE} from '../../router/routes';
 import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action';
 import {registry} from '../../registry.js';
 import {ResetStateAction} from '../../state-management/reset-state-action';
-import {AUTH_TOKEN} from '../../storage-service';
+import {AUTH_TOKEN, EMAIL_ADDRESS} from '../../storage-service';
+import {EmailConfirmationSentPage} from "../email-confirmation/email-confirmation-sent-page/index.js";
 /**
  * Application component.
  */
@@ -47,6 +48,9 @@ export class Application extends Component {
           page.onNavigateToTable(()=>{
             router.redirect(ROUTE.FILE_LIST);
           });
+          page.onNavigateToEmailConfirmationSent(()=> {
+            router.redirect(ROUTE.EMAIL_CONFIRMATION_SENT)
+          })
         })
         .addRoute(ROUTE.REGISTRATION, () => {
           this.rootElement.innerHTML = '';
@@ -57,9 +61,22 @@ export class Application extends Component {
           }
           const page =
             new RegistrationPage(this.rootElement);
-          page.onNavigateToAuthorization(() => {
-            router.redirect(ROUTE.LOGIN);
+          page.onNavigateToEmailConfirmationSent(() => {
+            router.redirect(ROUTE.EMAIL_CONFIRMATION_SENT);
           });
+        })
+        .addRoute(ROUTE.EMAIL_CONFIRMATION_SENT, () => {
+          this.rootElement.innerHTML = '';
+          const storage = registry.getInstance('storageService');
+          if (storage.get(AUTH_TOKEN) != null) {
+            router.redirect(ROUTE.FILE_LIST);
+            return;
+          }
+          if (storage.get(EMAIL_ADDRESS) == null) {
+            router.redirect(ROUTE.LOGIN)
+            return;
+          }
+          const page = new EmailConfirmationSentPage(this.rootElement);
         })
         .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
           this.rootElement.innerHTML = '';

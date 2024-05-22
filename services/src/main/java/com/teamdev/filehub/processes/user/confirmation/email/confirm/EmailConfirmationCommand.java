@@ -1,4 +1,4 @@
-package com.teamdev.filehub.processes.user.confirmation.email;
+package com.teamdev.filehub.processes.user.confirmation.email.confirm;
 
 import com.google.common.base.Preconditions;
 import com.teamdev.filehub.processes.Command;

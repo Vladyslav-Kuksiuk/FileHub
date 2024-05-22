@@ -3,8 +3,8 @@ package com.teamdev.server.routes;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.teamdev.filehub.ServiceException;
-import com.teamdev.filehub.processes.user.confirmation.email.EmailConfirmationCommand;
-import com.teamdev.filehub.processes.user.confirmation.email.EmailConfirmationProcess;
+import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationCommand;
+import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationProcess;
 import com.teamdev.server.WrappedRequest;
 import com.teamdev.server.WrappedRoute;
 import spark.Response;
@@ -13,7 +13,6 @@ import javax.annotation.Nonnull;
 
 public class ConfirmEmailRoute extends WrappedRoute {
 
-    private final Gson gson = new Gson();
     private final EmailConfirmationProcess emailConfirmationProcess;
 
     public ConfirmEmailRoute(@Nonnull EmailConfirmationProcess emailConfirmationProcess) {

@@ -1,4 +1,4 @@
-package com.teamdev.filehub.processes.user.confirmation.email;
+package com.teamdev.filehub.processes.user.confirmation.email.confirm;
 
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.dao.RecordId;
