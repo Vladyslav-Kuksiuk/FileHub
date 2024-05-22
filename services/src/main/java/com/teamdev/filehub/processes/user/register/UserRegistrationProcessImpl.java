@@ -78,6 +78,6 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
     }
 
     public static String emailConfirmationLink(String email) {
-        return "http://localhost:4567/confirm-email/" + encrypt(email);
+        return "http://localhost:4567/#confirm-email/" + encrypt(email);
     }
 }

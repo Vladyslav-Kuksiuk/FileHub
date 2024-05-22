@@ -45,8 +45,8 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
                                    .value(),
                              record.login(),
                              record.password(),
-                record.isEmailConfirmed(),
-                record.emailHash());
+                             record.isEmailConfirmed(),
+                             record.emailHash());
     }
 
     @Override
@@ -56,8 +56,8 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
         return String.format("UPDATE %s " +
                                      "SET " +
                                      "login = '%s', " +
-                                     "password = '%s'" +
-                                     "is_email_confirmed = '%s'" +
+                                     "password = '%s'," +
+                                     "is_email_confirmed = '%s'," +
                                      "email_hash = '%s'" +
                                      "WHERE id = '%s'",
                              table,

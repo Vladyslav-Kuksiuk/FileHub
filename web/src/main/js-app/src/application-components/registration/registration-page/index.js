@@ -4,7 +4,8 @@ import {FieldValidationError} from '../../../server-connection/field-validation-
 import {inject} from '../../../registry.js';
 import {EMAIL_ADDRESS} from "../../../storage-service.js";
 
-const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
+const NAVIGATE_EVENT_CONFIRMATION_EMAIL_SENT = 'NAVIGATE_EVENT_CONFIRMATION_EMAIL_SENT';
+const NAVIGATE_EVENT_LOGIN = 'NAVIGATE_EVENT_LOGIN';
 
 /**
  * Registration page component.
@@ -31,13 +32,13 @@ export class RegistrationPage extends Component {
     const formSlot = this.getSlot('form');
     const form = new RegistrationForm(formSlot);
     form.onNavigateToAuthorization(()=>{
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_LOGIN));
     });
     form.onSubmit((data)=>{
       this.storageService.put(EMAIL_ADDRESS, data.login)
       this.apiService.register(data)
           .then(()=>{
-            this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT));
+            this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_CONFIRMATION_EMAIL_SENT));
           })
           .catch((error)=>{
             if (error instanceof FieldValidationError) {
@@ -59,8 +60,17 @@ export class RegistrationPage extends Component {
    *
    * @param {Function} listener
    */
+  onNavigateToLogin(listener) {
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_LOGIN, listener);
+  }
+
+  /**
+   * Adds listener on navigate to email confirmation sent event.
+   *
+   * @param {Function} listener
+   */
   onNavigateToEmailConfirmationSent(listener) {
-    this.#eventTarget.addEventListener(NAVIGATE_EVENT, listener);
+    this.#eventTarget.addEventListener(NAVIGATE_EVENT_CONFIRMATION_EMAIL_SENT, listener);
   }
 
   /**

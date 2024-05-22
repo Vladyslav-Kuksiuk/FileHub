@@ -12,6 +12,7 @@ import {registry} from '../../registry.js';
 import {ResetStateAction} from '../../state-management/reset-state-action';
 import {AUTH_TOKEN, EMAIL_ADDRESS} from '../../storage-service';
 import {EmailConfirmationSentPage} from "../email-confirmation/email-confirmation-sent-page/index.js";
+import {EmailConfirmationReceivedPage} from "../email-confirmation/email-confirmation-received-page/index.js";
 /**
  * Application component.
  */
@@ -64,6 +65,9 @@ export class Application extends Component {
           page.onNavigateToEmailConfirmationSent(() => {
             router.redirect(ROUTE.EMAIL_CONFIRMATION_SENT);
           });
+          page.onNavigateToLogin(()=>{
+            router.redirect(ROUTE.LOGIN)
+          })
         })
         .addRoute(ROUTE.EMAIL_CONFIRMATION_SENT, () => {
           this.rootElement.innerHTML = '';
@@ -77,6 +81,21 @@ export class Application extends Component {
             return;
           }
           const page = new EmailConfirmationSentPage(this.rootElement);
+        })
+        .addRoute(ROUTE.EMAIL_CONFIRMATION_RECEIVED, () => {
+          this.rootElement.innerHTML = '';
+          const storage = registry.getInstance('storageService');
+          if (storage.get(AUTH_TOKEN) != null) {
+            router.redirect(ROUTE.FILE_LIST);
+            return;
+          }
+          const page = new EmailConfirmationReceivedPage(this.rootElement);
+          page.onNavigateToLogin(()=>{
+            router.redirect(ROUTE.LOGIN)
+          })
+          page.onNavigateToRegistration(()=>{
+            router.redirect(ROUTE.REGISTRATION)
+          })
         })
         .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
           this.rootElement.innerHTML = '';

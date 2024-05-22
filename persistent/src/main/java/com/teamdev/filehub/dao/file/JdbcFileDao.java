@@ -58,7 +58,7 @@ public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
             ResultSet resultSet =
                     dbConnection().executeQuery(
                             String.format(
-                                    "SELECT * FROM %s WHERE folder_id = '%s' AND name ILIKE '%s'",
+                                    "SELECT * FROM %s WHERE folder_id = '%s' AND name ILIKE '%%%s%%'",
                                     tableName(),
                                     folderId.value(),
                                     namePart));

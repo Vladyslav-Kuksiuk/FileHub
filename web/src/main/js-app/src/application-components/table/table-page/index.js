@@ -160,7 +160,7 @@ export class TablePage extends Component {
     return `
     <div class="page-wrapper table-page-wrapper">
     <header class="page-header">
-        <a href="/web-client/static"><img alt="FileHub" height="37" src="static/images/logo.png"
+        <a href=""><img alt="FileHub" height="37" src="static/images/logo.png"
                                           title="FileHub" width="200"></a>
             <ul class="authorized-user-panel">
             <li>
