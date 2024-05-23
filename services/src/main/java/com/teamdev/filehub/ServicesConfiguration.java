@@ -12,6 +12,8 @@ import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
 import com.teamdev.filehub.postman.EmailService;
 import com.teamdev.filehub.postman.SendGridEmailService;
+import com.teamdev.filehub.processes.admin.authentication.AdminAuthenticationProcess;
+import com.teamdev.filehub.processes.admin.authentication.AdminAuthenticationProcessImpl;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcessImpl;
 import com.teamdev.filehub.processes.filesystem.remove.FileRemoveProcess;
@@ -35,6 +37,8 @@ import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcessImpl;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
+import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationView;
+import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
 import com.teamdev.filehub.views.folder.content.FolderContentView;
@@ -63,6 +67,9 @@ public class ServicesConfiguration {
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
     private final UserProfileView userProfileView;
+
+    private final AdminAuthenticationProcess adminAuthenticationProcess;
+    private final AdminAuthorizationView adminAuthorizationView;
 
     private final FolderInfoView folderInfoView;
     private final FolderContentView folderContentView;
@@ -118,6 +125,9 @@ public class ServicesConfiguration {
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
+
+        adminAuthenticationProcess = new AdminAuthenticationProcessImpl();
+        adminAuthorizationView = new AdminAuthorizationViewImpl();
 
         folderInfoView = new FolderInfoViewImpl(folderDao);
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
@@ -175,6 +185,14 @@ public class ServicesConfiguration {
 
     public RemoveProcess getFolderRemoveProcess() {
         return folderRemoveProcess;
+    }
+
+    public AdminAuthenticationProcess getAdminAuthenticationProcess() {
+        return adminAuthenticationProcess;
+    }
+
+    public AdminAuthorizationView getAdminAuthorizationView() {
+        return adminAuthorizationView;
     }
 
     public UserAuthorizationView getUserAuthorizationView() {

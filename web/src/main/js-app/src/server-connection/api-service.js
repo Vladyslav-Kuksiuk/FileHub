@@ -4,10 +4,11 @@ import {ApiServiceError} from './api-service-error';
 import {UserProfile} from '../state-management/user/user-profile';
 import {FolderInfo} from '../state-management/folder/folder-info';
 import {FolderContentItem} from '../state-management/folder/folder-content-item';
-import {AUTH_TOKEN} from '../storage-service';
+import {AUTH_TOKEN, ADMIN_AUTH_TOKEN} from '../storage-service';
 import {inject} from '../registry';
 
 export const LOG_IN_USER_PATH = 'api/login';
+export const LOG_IN_ADMIN_PATH = 'api/login-admin';
 export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
@@ -59,6 +60,29 @@ export class ApiService {
         throw new ApiServiceError();
       }
       this.storageService.put(AUTH_TOKEN, response.body.authenticationToken);
+    });
+  }
+
+  /**
+   * Log in admin.
+   *
+   * @param {UserData} data
+   * @returns {Promise<ApiServiceError>}
+   */
+  async logInAdmin(data) {
+    return this.requestService.postJson(LOG_IN_ADMIN_PATH, {
+      login: data.login,
+      password: data.password,
+    }).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        throw new ApiServiceError(LOGIN_401_ERROR);
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+      this.storageService.put(ADMIN_AUTH_TOKEN, response.body.authenticationToken);
     });
   }
 
@@ -308,6 +332,16 @@ export class ApiService {
         .finally(() => {
           this.#redirectToLogin();
         });
+  }
+
+  /**
+   * Logs out admin.
+   *
+   * @returns {Promise<ApiServiceError>}
+   */
+  async logOutAdmin() {
+    this.storageService.clear();
+    this.#redirectToLogin()
   }
 
   /**

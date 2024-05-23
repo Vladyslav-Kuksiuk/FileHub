@@ -29,6 +29,7 @@ public class RESTServer {
         post("api/send-confirmation-email", new SendConfirmationEmailRoute(context.getSendEmailConfirmationProcess()));
         post("api/confirm-email/:confirmationToken", new ConfirmEmailRoute(context.getEmailConfirmationProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
+        post("api/login-admin", new AdminAuthenticationRoute(context.getAdminAuthenticationProcess()));
         post("api/logout",
              new LogoutRoute(context.getUserAuthorizationView(), context.getUserLogoutProcess()));
 
