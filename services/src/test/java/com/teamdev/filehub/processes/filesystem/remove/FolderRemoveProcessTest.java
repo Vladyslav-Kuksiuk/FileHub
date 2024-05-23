@@ -58,7 +58,9 @@ class FolderRemoveProcessTest {
                 userId,
                 "name",
                 "mimetype",
-                123);
+                123,
+                120,
+                "ext");
 
         var fileRecord2 = new FileRecord(
                 new RecordId("fileRecord2"),
@@ -66,7 +68,9 @@ class FolderRemoveProcessTest {
                 userId,
                 "name",
                 "mimetype",
-                123);
+                123,
+                120,
+                "ext");
 
         var fileDao = Mockito.mock(FileDao.class);
         Mockito.when(fileDao.getByFolderId(folderRecord.id()))

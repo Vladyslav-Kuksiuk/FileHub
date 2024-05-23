@@ -165,6 +165,8 @@ export class FileListWrapper extends StateAwareWrapper {
                     name: newName,
                     size: file.size,
                     mimetype: file.mimetype,
+                    archivedSize: file.archivedSize,
+                    extension: file.extension,
                   })));
                 });
 

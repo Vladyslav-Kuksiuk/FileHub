@@ -30,7 +30,10 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                                   new RecordId(resultSet.getString("owner_id")),
                                   resultSet.getString("name"),
                                   resultSet.getString("mimetype"),
-                                  resultSet.getLong("size"));
+                                  resultSet.getLong("size"),
+                                  resultSet.getLong("archived_size"),
+                                  resultSet.getString("extension")
+                    );
 
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);
@@ -41,8 +44,8 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
     public String recordInsertSql(@Nonnull FileRecord record) {
         Preconditions.checkNotNull(record);
 
-        return String.format("INSERT INTO %s (id, folder_id, owner_id, name, mimetype, size)" +
-                                     "VALUES('%s','%s', '%s','%s','%s','%o')",
+        return String.format("INSERT INTO %s (id, folder_id, owner_id, name, mimetype, size, archived_size, extension)" +
+                                     "VALUES('%s','%s', '%s','%s','%s','%d','%d','%s')",
                              table,
                              record.id()
                                    .value(),
@@ -52,7 +55,10 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                                    .value(),
                              record.name(),
                              record.mimetype(),
-                             record.size());
+                             record.size(),
+                             record.archivedSize(),
+                             record.extension()
+        );
     }
 
     @Override
@@ -65,7 +71,9 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                                      "owner_id='%s', " +
                                      "name='%s', " +
                                      "mimetype='%s', " +
-                                     "size=%o " +
+                                     "size=%d, " +
+                                     "archived_size=%d, " +
+                                     "extension='%s' " +
                                      "WHERE id = '%s'",
                              table,
                              record.folderId()
@@ -75,6 +83,8 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                              record.name(),
                              record.mimetype(),
                              record.size(),
+                             record.archivedSize(),
+                             record.extension(),
                              record.id()
                                    .value());
     }

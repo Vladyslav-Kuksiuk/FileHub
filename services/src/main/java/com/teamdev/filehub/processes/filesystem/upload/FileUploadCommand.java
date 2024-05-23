@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class FileUploadCommand extends AuthenticatedUserCommand {
 
     private final RecordId folderId;
-    private final String name;
+    private final String fullname;
     private final String mimetype;
     private final long size;
     private final InputStream fileInputStream;
@@ -29,7 +29,7 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
         super(userId);
 
         this.folderId = Preconditions.checkNotNull(folderId);
-        this.name = Preconditions.checkNotNull(name);
+        this.fullname = Preconditions.checkNotNull(name);
         this.mimetype = Preconditions.checkNotNull(mimetype);
         this.size = size;
         this.fileInputStream = Preconditions.checkNotNull(inputStream);
@@ -40,8 +40,8 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
         return folderId;
     }
 
-    public String name() {
-        return name;
+    public String fullname() {
+        return fullname;
     }
 
     public String mimetype() {
@@ -58,7 +58,7 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(folderId, name, mimetype, size, fileInputStream);
+        return Objects.hashCode(folderId, fullname, mimetype, size, fileInputStream);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class FileUploadCommand extends AuthenticatedUserCommand {
         FileUploadCommand command = (FileUploadCommand) o;
         return size == command.size &&
                 Objects.equal(folderId, command.folderId) &&
-                Objects.equal(name, command.name) &&
+                Objects.equal(fullname, command.fullname) &&
                 Objects.equal(mimetype, command.mimetype) &&
                 Objects.equal(fileInputStream, command.fileInputStream);
     }

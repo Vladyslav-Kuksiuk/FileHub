@@ -15,8 +15,8 @@ public class FileStorageStub extends FileStorage {
     }
 
     @Override
-    public void uploadFile(RecordId fileId, InputStream fileInput) {
-
+    public long uploadFile(RecordId fileId, InputStream fileInput) {
+        return 0;
     }
 
     @Override

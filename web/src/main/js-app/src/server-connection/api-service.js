@@ -203,6 +203,8 @@ export class ApiService {
             size: item.size,
             mimetype: item.mimetype,
             itemsAmount: item.itemsAmount,
+            archivedSize: item.archivedSize,
+            extension: item.extension,
           }));
         });
   }
@@ -236,6 +238,8 @@ export class ApiService {
             size: item.size,
             mimetype: item.mimetype,
             itemsAmount: item.itemsAmount,
+            archivedSize: item.archivedSize,
+            extension: item.extension,
           }));
         });
   }

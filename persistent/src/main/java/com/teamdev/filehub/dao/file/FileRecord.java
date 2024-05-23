@@ -17,6 +17,8 @@ public class FileRecord extends DatabaseRecord {
     private final String name;
     private final String mimetype;
     private final long size;
+    private final long archivedSize;
+    private final String extension;
 
     public FileRecord(
             @Nonnull RecordId id,
@@ -24,7 +26,10 @@ public class FileRecord extends DatabaseRecord {
             @Nonnull RecordId ownerId,
             @Nonnull String name,
             @Nonnull String mimetype,
-            long size) {
+            long size,
+            long archivedSize,
+            @Nonnull String extension
+            ) {
         super(Preconditions.checkNotNull(id));
 
         this.folderId = Preconditions.checkNotNull(folderId);
@@ -32,6 +37,8 @@ public class FileRecord extends DatabaseRecord {
         this.name = Preconditions.checkNotNull(name);
         this.mimetype = Preconditions.checkNotNull(mimetype);
         this.size = size;
+        this.archivedSize = archivedSize;
+        this.extension = Preconditions.checkNotNull(extension);
     }
 
     public RecordId folderId() {
@@ -52,6 +59,14 @@ public class FileRecord extends DatabaseRecord {
 
     public long size() {
         return size;
+    }
+
+    public long archivedSize() {
+        return archivedSize;
+    }
+
+    public String extension() {
+        return extension;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.dao.user.UserRecord;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +63,16 @@ public class UserDaoFake implements UserDao {
                                     .equals(login))
                 .findFirst();
 
+        return optionalUser;
+    }
+
+    @Override
+    public Optional<UserRecord> findByEmailHash(@Nonnull String emailHash) {
+        Optional<UserRecord> optionalUser = users.values()
+                .stream()
+                .filter(user -> user.emailHash()
+                        .equals(emailHash))
+                .findFirst();
         return optionalUser;
     }
 }

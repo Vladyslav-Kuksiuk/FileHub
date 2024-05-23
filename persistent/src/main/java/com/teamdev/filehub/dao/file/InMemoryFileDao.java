@@ -32,7 +32,9 @@ public class InMemoryFileDao implements FileDao {
                               new RecordId(data.ownerId()),
                               data.name(),
                               data.mimetype(),
-                              data.size());
+                              data.size(),
+                              data.archivedSize(),
+                              data.extension());
     }
 
     private static FileData convertRecordIntoData(FileRecord record) {
@@ -44,7 +46,9 @@ public class InMemoryFileDao implements FileDao {
                                   .value(),
                             record.name(),
                             record.mimetype(),
-                            record.size());
+                            record.size(),
+                            record.archivedSize(),
+                            record.extension());
     }
 
     /**

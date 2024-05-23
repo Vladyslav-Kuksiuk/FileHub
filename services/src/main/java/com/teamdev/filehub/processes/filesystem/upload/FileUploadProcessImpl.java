@@ -45,7 +45,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
               .log("[PROCESS STARTED] - File uploading - user id: %s, file: %s.",
                    command.userId()
                           .value(),
-                   command.name());
+                   command.fullname());
 
         Optional<FolderRecord> optionalFolderRecord = folderDao.find(command.folderId());
 
@@ -55,7 +55,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                   .log("[PROCESS FAILED] - File uploading - Folder not found - user id: %s, file: %s.",
                        command.userId()
                               .value(),
-                       command.name());
+                       command.fullname());
 
             throw new DataNotFoundException("Folder not found");
         }
@@ -69,7 +69,7 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                   .log("[PROCESS FAILED] - File uploading - Access denied - user id: %s, file: %s.",
                        command.userId()
                               .value(),
-                       command.name());
+                       command.fullname());
 
             throw new AccessDeniedException("Access denied.");
         }
@@ -78,27 +78,41 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                 new RecordId(command.userId()
                                     .value() +
                                      "_" +
-                                     command.name() +
+                                     command.fullname() +
                                      LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
                                                   .format(LocalDateTimeUtil.FORMATTER));
+
+        var archivedSize = fileStorage.uploadFile(fileId, command.inputStream());
+        var name = splitFileNameAndExtension(command.fullname());
 
         FileRecord fileRecord = new FileRecord(fileId,
                                                command.folderId(),
                                                command.userId(),
-                                               command.name(),
+                                               name[0],
                                                command.mimetype(),
-                                               command.size());
+                                               command.size(),
+                                               archivedSize,
+                                               name[1]);
 
         fileDao.create(fileRecord);
-
-        fileStorage.uploadFile(fileId, command.inputStream());
 
         logger.atInfo()
               .log("[PROCESS FINISHED] - File uploading - user id: %s, file: %s.",
                    command.userId()
                           .value(),
-                   command.name());
+                   command.fullname());
 
         return fileId;
+    }
+
+    public static String[] splitFileNameAndExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex == -1 || lastDotIndex == 0) {
+            return new String[]{fileName, ""};
+        }
+
+        String name = fileName.substring(0, lastDotIndex);
+        String extension = fileName.substring(lastDotIndex + 1);
+        return new String[]{name, extension};
     }
 }

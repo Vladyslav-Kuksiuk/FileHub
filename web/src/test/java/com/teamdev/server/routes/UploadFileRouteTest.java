@@ -97,7 +97,7 @@ class UploadFileRouteTest {
         Mockito.when(part.getInputStream())
                .thenReturn(inputStream);
         Mockito.when(part.getSubmittedFileName())
-               .thenReturn(uploadCommand.name());
+               .thenReturn(uploadCommand.fullname());
         Mockito.when(part.getContentType())
                .thenReturn(uploadCommand.mimetype());
         Mockito.when(part.getSize())

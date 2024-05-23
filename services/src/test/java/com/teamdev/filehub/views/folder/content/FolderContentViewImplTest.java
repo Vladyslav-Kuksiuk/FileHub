@@ -63,7 +63,9 @@ class FolderContentViewImplTest {
                         folderRecord.ownerId(),
                         "file1",
                         "txt",
-                        123123
+                        123123,
+                        123000,
+                        "fileext1"
                 ),
                 new FileRecord(
                         new RecordId("fileId2"),
@@ -71,7 +73,9 @@ class FolderContentViewImplTest {
                         folderRecord.ownerId(),
                         "file2",
                         "pdf",
-                        123123
+                        123123,
+                        123000,
+                        "fileext2"
                 ));
 
         var folderDao = Mockito.mock(FolderDao.class);
@@ -107,7 +111,9 @@ class FolderContentViewImplTest {
                                  .value(),
                              file.name(),
                              file.size(),
-                             file.mimetype())));
+                             file.mimetype(),
+                        file.archivedSize(),
+                        file.extension())));
 
         assertThat(folderContent.items())
                 .isEqualTo(expectedFolderContent.items());

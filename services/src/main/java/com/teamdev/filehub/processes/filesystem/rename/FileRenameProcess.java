@@ -71,7 +71,9 @@ public class FileRenameProcess implements RenameProcess {
                                       fileRecord.ownerId(),
                                       command.newName(),
                                       fileRecord.mimetype(),
-                                      fileRecord.size()));
+                                      fileRecord.size(),
+                fileRecord.archivedSize(),
+                fileRecord.extension()));
 
         logger.atInfo()
               .log("[PROCESS FINISHED] - File renaming - user id: %s, file: %s.",

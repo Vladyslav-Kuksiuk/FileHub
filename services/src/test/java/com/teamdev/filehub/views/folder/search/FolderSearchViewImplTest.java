@@ -39,9 +39,9 @@ public class FolderSearchViewImplTest {
             throws DataNotFoundException, AccessDeniedException {
 
         var folderRecord = new FolderRecord(new RecordId("folderId"),
-                                            new RecordId("userId"),
-                                            new RecordId(null),
-                                            "folder");
+                new RecordId("userId"),
+                new RecordId(null),
+                "folder");
 
         var searchWord = "name";
 
@@ -66,7 +66,9 @@ public class FolderSearchViewImplTest {
                         folderRecord.ownerId(),
                         "fileName1",
                         "txt",
-                        123123
+                        123123,
+                        123000,
+                        "fileext1"
                 ),
                 new FileRecord(
                         new RecordId("fileId2"),
@@ -74,22 +76,24 @@ public class FolderSearchViewImplTest {
                         folderRecord.ownerId(),
                         "fileName2",
                         "pdf",
-                        123123
+                        123123,
+                        123000,
+                        "fileext2"
                 ));
 
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderRecord.id()))
-               .thenReturn(Optional.of(folderRecord));
+                .thenReturn(Optional.of(folderRecord));
         Mockito.when(folderDao.getByParentIdAndNamePart(folderRecord.id(), searchWord))
-               .thenReturn(innerFolderList);
+                .thenReturn(innerFolderList);
 
         var fileDao = Mockito.mock(FileDao.class);
         Mockito.when(fileDao.getByFolderIdAndNamePart(folderRecord.id(), searchWord))
-               .thenReturn(fileList);
+                .thenReturn(fileList);
 
         var query = new FolderSearchQuery(folderRecord.ownerId(),
-                                          folderRecord.id(),
-                                          searchWord);
+                folderRecord.id(),
+                searchWord);
 
         var view = new FolderSearchViewImpl(folderDao, fileDao);
 
@@ -99,19 +103,21 @@ public class FolderSearchViewImplTest {
 
         innerFolderList.forEach(folder -> expectedFolderContent.addItem(
                 new FolderItem(folder.id()
-                                     .value(),
-                               folder.parentFolderId()
-                                     .value(),
-                               folder.name())));
+                        .value(),
+                        folder.parentFolderId()
+                                .value(),
+                        folder.name())));
 
         fileList.forEach(file -> expectedFolderContent.addItem(
                 new FileItem(file.id()
-                                 .value(),
-                             file.folderId()
-                                 .value(),
-                             file.name(),
-                             file.size(),
-                             file.mimetype())));
+                        .value(),
+                        file.folderId()
+                                .value(),
+                        file.name(),
+                        file.size(),
+                        file.mimetype(),
+                        file.archivedSize(),
+                        file.extension())));
 
         assertThat(folderContent.items())
                 .isEqualTo(expectedFolderContent.items());
@@ -126,15 +132,15 @@ public class FolderSearchViewImplTest {
 
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderId))
-               .thenReturn(Optional.empty());
+                .thenReturn(Optional.empty());
 
         var fileDao = Mockito.mock(FileDao.class);
 
         var view = new FolderSearchViewImpl(folderDao, fileDao);
 
         var query = new FolderSearchQuery(new RecordId("userid"),
-                                          folderId,
-                                          "searchWord");
+                folderId,
+                "searchWord");
 
         assertThrows(DataNotFoundException.class, () -> {
             view.handle(query);
@@ -155,15 +161,15 @@ public class FolderSearchViewImplTest {
 
         var folderDao = Mockito.mock(FolderDao.class);
         Mockito.when(folderDao.find(folderRecord.id()))
-               .thenReturn(Optional.of(folderRecord));
+                .thenReturn(Optional.of(folderRecord));
 
         var fileDao = Mockito.mock(FileDao.class);
 
         var view = new FolderSearchViewImpl(folderDao, fileDao);
 
         var query = new FolderSearchQuery(new RecordId("notOwnerUser"),
-                                          folderRecord.id(),
-                                          "searchWord");
+                folderRecord.id(),
+                "searchWord");
 
         assertThrows(AccessDeniedException.class, () -> {
             view.handle(query);

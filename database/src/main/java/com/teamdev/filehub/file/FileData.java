@@ -16,13 +16,17 @@ public class FileData extends Data {
     private final String name;
     private final String mimetype;
     private final long size;
+    private final long archivedSize;
+    private final String extension;
 
     public FileData(@Nonnull String id,
                     @Nonnull String folderId,
                     @Nonnull String ownerId,
                     @Nonnull String name,
                     @Nonnull String mimetype,
-                    long size) {
+                    long size,
+                    long archivedSize,
+                    @Nonnull String extension) {
         super(Preconditions.checkNotNull(id));
 
         this.folderId = Preconditions.checkNotNull(folderId);
@@ -30,6 +34,8 @@ public class FileData extends Data {
         this.name = Preconditions.checkNotNull(name);
         this.mimetype = Preconditions.checkNotNull(mimetype);
         this.size = size;
+        this.archivedSize = archivedSize;
+        this.extension = Preconditions.checkNotNull(extension);
     }
 
     public String folderId() {
@@ -51,6 +57,15 @@ public class FileData extends Data {
     public long size() {
         return size;
     }
+
+    public long archivedSize() {
+        return archivedSize;
+    }
+
+    public String extension() {
+        return extension;
+    }
+
 
     @Override
     public int hashCode() {

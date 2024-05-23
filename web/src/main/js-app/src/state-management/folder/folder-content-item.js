@@ -28,9 +28,19 @@ export class FolderContentItem {
   size;
 
   /**
+   * @type {number}
+   */
+  archivedSize;
+
+  /**
    * @type {string}
    */
   mimetype;
+
+  /**
+   * @type {string}
+   */
+  extension;
 
   /**
    * @type {number}
@@ -45,6 +55,8 @@ export class FolderContentItem {
    * @property {string} name
    * @property {string} mimetype
    * @property {number} size
+   * @property {number} archivedSize
+   * @property {string} extension
    */
 
   /**
@@ -68,6 +80,8 @@ export class FolderContentItem {
     this.size = properties.size;
     this.mimetype = properties.mimetype;
     this.itemsAmount = properties.itemsAmount;
+    this.archivedSize = properties.archivedSize;
+    this.extension = properties.extension;
     Object.freeze(this);
   }
 }

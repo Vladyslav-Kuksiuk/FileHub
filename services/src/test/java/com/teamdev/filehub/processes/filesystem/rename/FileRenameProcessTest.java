@@ -37,7 +37,9 @@ class FileRenameProcessTest {
                 new RecordId("userId"),
                 "oldName",
                 "mimetype",
-                123
+                123,
+                120,
+                "ext"
         );
 
         var newName = "newName";
@@ -62,7 +64,9 @@ class FileRenameProcessTest {
                        fileRecord.ownerId(),
                        newName,
                        fileRecord.mimetype(),
-                       fileRecord.size()));
+                       fileRecord.size(),
+                       fileRecord.archivedSize(),
+                       fileRecord.extension()));
 
     }
 
@@ -101,7 +105,9 @@ class FileRenameProcessTest {
                 new RecordId("userId"),
                 "oldName",
                 "mimetype",
-                123
+                123,
+                120,
+                "ext"
         );
         var newName = "newName";
 

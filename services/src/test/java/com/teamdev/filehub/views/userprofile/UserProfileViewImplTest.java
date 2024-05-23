@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.teamdev.util.StringEncryptor.encrypt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserProfileViewImplTest {
@@ -22,7 +23,9 @@ public class UserProfileViewImplTest {
         UserRecord userRecord = new UserRecord(
                 new RecordId("userId"),
                 "login",
-                "password");
+                "password",
+                true,
+                encrypt("login"));
 
         FolderRecord folderRecord = new FolderRecord(
                 new RecordId("folderId"),
@@ -90,7 +93,9 @@ public class UserProfileViewImplTest {
         UserRecord userRecord = new UserRecord(
                 new RecordId("userId"),
                 "login",
-                "password");
+                "password",
+                true,
+                encrypt("login"));
 
         RecordId folderId = new RecordId("folderId");
 

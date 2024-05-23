@@ -39,7 +39,9 @@ class FileRemoveProcessTest {
                 new RecordId("userId"),
                 "oldName",
                 "mimetype",
-                123
+                123,
+                120,
+                "ext"
         );
 
         var fileDao = Mockito.mock(FileDao.class);
@@ -103,7 +105,9 @@ class FileRemoveProcessTest {
                 new RecordId("userId"),
                 "oldName",
                 "mimetype",
-                123
+                123,
+                120,
+                "ext"
         );
 
         var fileDao = Mockito.mock(FileDao.class);
