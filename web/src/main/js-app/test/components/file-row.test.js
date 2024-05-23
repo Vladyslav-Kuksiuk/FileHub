@@ -165,7 +165,7 @@ describe('FileRow', () => {
 
     const listenerMock = jest.fn();
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 10000);
+    const fileRow = new FileRow(document.body, 'name', 'type',1, 10000);
     fileRow.onRemove(listenerMock);
 
     document.body.querySelector('[data-td="remove-button"]').click();
@@ -176,7 +176,7 @@ describe('FileRow', () => {
   test('Should open and close renaming form by blur', () => {
     expect.assertions(2);
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 1);
+    const fileRow = new FileRow(document.body, 'name', 'type',1, 1);
     const openFormListener = jest.fn();
 
     fileRow.onRenameFormOpen(openFormListener);

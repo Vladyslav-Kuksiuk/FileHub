@@ -144,7 +144,7 @@ export class FileListWrapper extends StateAwareWrapper {
               return (slot) => {
                 const temporaryName = (state.renamingItem?.id === file.id) ? state.renamingItem.name : file.name;
 
-                const fileRow = new FileRow(slot, file.name, file.mimetype, file.size, temporaryName);
+                const fileRow = new FileRow(slot, file.name, file.mimetype, file.size, file.archivedSize, temporaryName);
 
                 fileRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
