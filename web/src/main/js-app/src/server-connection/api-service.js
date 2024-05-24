@@ -15,6 +15,7 @@ export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
 export const EMAIL_CONFIRMATION_PATH = 'api/confirm-email/';
 export const SEND_CONFIRMATION_EMAIL_PATH = 'api/send-confirmation-email';
+export const LOAD_FILES_STATISTICS_PATH = 'api/files-statistics';
 const FOLDER_PATH = 'api/folder/';
 const FILE_PATH = 'api/file/';
 
@@ -230,6 +231,35 @@ export class ApiService {
             archivedSize: item.archivedSize,
             extension: item.extension,
           }));
+        });
+  }
+
+  /**
+   * Loads files statistics.
+   *
+   * @returns {Promise< * | ApiServiceError>}
+   */
+  async loadFilesStatistics() {
+    return this.requestService.getJson(LOAD_FILES_STATISTICS_PATH, this.storageService.get(ADMIN_AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body.items.map((item)=>{
+            return {
+              mimetype: item.mimetype,
+              filesNumber: item.filesNumber,
+              size: item.size,
+              archivedSize: item.archivedSize,
+            }
+          });
         });
   }
 

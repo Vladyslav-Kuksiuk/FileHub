@@ -141,4 +141,9 @@ public class InMemoryFileDao implements FileDao {
                 .map(InMemoryFileDao::convertDataIntoRecord)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public FilesStatistics getFilesStatistics() {
+        return null;
+    }
 }

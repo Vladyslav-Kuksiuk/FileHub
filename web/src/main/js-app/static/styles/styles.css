@@ -344,6 +344,33 @@ a:hover {
     padding: 0 0 0 10px;
 }
 
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 10px;
+}
+
+.charts-container p {
+    text-align: center;
+}
+
+.charts-container canvas {
+    width: 100%;
+}
+
+.horizontal-chart-container {
+    width: 100%;
+}
+
+.horizontal-chart-container p {
+    text-align: center;
+}
+
+.horizontal-chart-container canvas {
+    width: 100%;
+}
+
 .data-buttons-container {
     visibility: hidden;
 }

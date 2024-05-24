@@ -35,6 +35,8 @@ import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcessImpl;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcessImpl;
+import com.teamdev.filehub.views.admin.statistics.FilesStatisticsView;
+import com.teamdev.filehub.views.admin.statistics.FilesStatisticsViewImpl;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
 import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationView;
@@ -81,6 +83,8 @@ public class ServicesConfiguration {
     private final FileUploadProcess fileUploadProcess;
     private final RenameProcess fileRenameProcess;
     private final RemoveProcess fileRemoveProcess;
+
+    private final FilesStatisticsView filesStatisticsView;
 
     private final FileDownloadView fileDownloadView;
 
@@ -141,6 +145,7 @@ public class ServicesConfiguration {
         fileRemoveProcess = new FileRemoveProcess(fileDao, fileStorage);
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
+        filesStatisticsView = new FilesStatisticsViewImpl(fileDao);
     }
 
     public UserRegistrationProcess getUserRegistrationProcess() {
@@ -213,5 +218,9 @@ public class ServicesConfiguration {
 
     public EmailConfirmationProcess getEmailConfirmationProcess() {
         return emailConfirmationProcess;
+    }
+
+    public FilesStatisticsView getFilesStatisticsView() {
+        return filesStatisticsView;
     }
 }

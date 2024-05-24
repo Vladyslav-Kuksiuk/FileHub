@@ -75,4 +75,34 @@ public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
             throw new RuntimeException("Database query failed.", e);
         }
     }
+
+    @Override
+    public FilesStatistics getFilesStatistics() {
+        try {
+            ResultSet resultSet =
+                    dbConnection().executeQuery(
+                                    "SELECT mimetype, " +
+                                            "Count(*) as files_number, " +
+                                            "SUM(size) as size, " +
+                                            "SUM(archived_size) as archived_size " +
+                                            "FROM public.files " +
+                                            "GROUP BY mimetype;");
+
+            var statistics = new FilesStatistics();
+
+            while (resultSet.next()) {
+                statistics.addMimetypeItem(new FilesStatisticsMimetypeItem(
+                        resultSet.getString("mimetype"),
+                        resultSet.getLong("files_number"),
+                        resultSet.getLong("size"),
+                        resultSet.getLong("archived_size")
+                ));
+            }
+
+            return statistics;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Database query failed.", e);
+        }
+    }
 }

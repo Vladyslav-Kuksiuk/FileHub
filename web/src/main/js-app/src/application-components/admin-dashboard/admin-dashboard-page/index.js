@@ -1,6 +1,7 @@
 import {Component} from "../../../components/component.js";
 import {inject} from "../../../registry.js";
 import {LogOutAdminAction} from "../../../state-management/user/log-out-admin-action.js";
+import {FileTypeFactory} from "../../../components/file-list/file-type-factory.js";
 
 /**
  * Admin Dashboard page component.
@@ -9,6 +10,7 @@ export class AdminDashboardPage extends Component {
     #eventTarget = new EventTarget();
     @inject stateManagementService;
     @inject titleService;
+    @inject apiService;
 
     /**
      * @param {HTMLElement} parent
@@ -23,49 +25,139 @@ export class AdminDashboardPage extends Component {
      * @inheritDoc
      */
     afterRender() {
-        const ctx =  this.rootElement.querySelector('[data-td="file-type-chart"]')
+        const filesNumberChart =  this.rootElement.querySelector('[data-td="files-number-chart"]')
+        const filesSizeByMimetypeChart =  this.rootElement.querySelector('[data-td="files-size-by-mimetype-chart"]')
+        const archivedFilesSizeByMimetypeChart =  this.rootElement.querySelector('[data-td="archived-files-size-by-mimetype-chart"]')
+        const archivedFilesSizeVsNonArchivedChart =  this.rootElement.querySelector('[data-td="archived-vs-non-archived-horizontal-chart"]')
 
-        var data = {
-            labels: ['Красный', 'Зеленый', 'Синий'],
-            datasets: [{
-                label: 'Мой набор данных',
-                data: [12, 19, 6],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(75, 192, 192, 0.5)',
-                    'rgba(54, 162, 235, 0.5)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(54, 162, 235, 1)'
-                ],
-                borderWidth: 1
-            }]
-        };
-
-        var options = {
-            responsive: false,
-            maintainAspectRatio: false,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
+        this.apiService.loadFilesStatistics()
+            .then((items)=> {
+                let filesNumberChartData = {
+                    labels: items.map((item) => (new FileTypeFactory()).getType(item.mimetype).type),
+                    datasets: [{
+                        label: 'Files number',
+                        data: items.map((item) => item.filesNumber)
+                    }]
+                }
+                let filesSizeByMimetypeData = {
+                    labels: items.map((item) => (new FileTypeFactory()).getType(item.mimetype).type),
+                    datasets: [{
+                        label: 'Files size',
+                        data: items.map((item) => item.size)
+                    }]
+                }
+                let archivedFilesSizeByMimetypeData = {
+                    labels: items.map((item) => (new FileTypeFactory()).getType(item.mimetype).type),
+                    datasets: [{
+                        label: 'Archived files size',
+                        data: items.map((item) => item.archivedSize)
+                    }]
+                }
+                let sizeDoughnutOptions = {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    plugins: {
+                      tooltip: {
+                          callbacks: {
+                              label: (ctx) => {
+                                  return ctx.label + ': ' + this.#convertSize(ctx.parsed)
+                              }
+                          }
+                      }
                     }
-                }]
-            }
-        };
+                };
 
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: data,
-            options: options
-        });
+                new Chart(filesNumberChart, {
+                    type: 'doughnut',
+                    data: filesNumberChartData,
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+                new Chart(filesSizeByMimetypeChart, {
+                    type: 'doughnut',
+                    data: filesSizeByMimetypeData,
+                    options: sizeDoughnutOptions
+                });
+                new Chart(archivedFilesSizeByMimetypeChart, {
+                    type: 'doughnut',
+                    data: archivedFilesSizeByMimetypeData,
+                    options: sizeDoughnutOptions
+                });
+                new Chart(archivedFilesSizeVsNonArchivedChart, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Actual size', 'Archived size'],
+                        datasets: [{
+                            label: 'Size',
+                            data: [
+                               items.reduce((accumulator, cur) => {
+                                   return accumulator + cur.size
+                               }, 0),
+                               items.reduce((accumulator, cur) => {
+                                   return accumulator + cur.archivedSize
+                               }, 0),
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => {
+                                        return ctx.label + ': ' + this.#convertSize(ctx.parsed.x)
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+            .catch((e)=> {
+                console.log(e)
+            })
         this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
             event.preventDefault();
             this.stateManagementService.dispatch(new LogOutAdminAction());
         });
     }
+
+    /**
+     * @param {number} size
+     * @returns {string}
+     * @private
+     */
+    #convertSize(size) {
+        let iteration = 0;
+        while (size > 1024) {
+            iteration++;
+            size/=1024;
+        }
+        const prefixArray = ['B', 'KB', 'MB', 'GB', 'TB'];
+        return size.toFixed(1) + ' ' + prefixArray[iteration];
+    };
 
     /**
      * @inheritDoc
@@ -101,7 +193,25 @@ export class AdminDashboardPage extends Component {
         <h1>Admin Dashboard</h1>
         <hr class="horizontal-line">
         <div>
-            <canvas ${this.markElement('file-type-chart')}></canvas>
+            <span class="charts-container">
+                <div>
+                    <p>Files number by mimetype</p>
+                    <canvas ${this.markElement('files-number-chart')}></canvas>
+                </div>
+                <div>
+                    <p>Files size by mimetype</p>
+                    <canvas ${this.markElement('files-size-by-mimetype-chart')}></canvas>
+                </div>
+                <div>
+                    <p>Archived files size by mimetype</p>
+                    <canvas ${this.markElement('archived-files-size-by-mimetype-chart')}></canvas>
+                </div>
+            </span>
+            <br>
+            <div class="horizontal-chart-container">
+                <p>Archived files size vs actual files size</p>
+                <canvas ${this.markElement('archived-vs-non-archived-horizontal-chart')}></canvas>
+            </div>
         </div>
     </main>
 </div>
