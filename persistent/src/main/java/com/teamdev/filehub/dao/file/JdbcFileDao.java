@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A {@link FileDao} implementation to work with authentication via JDBC as {@link JdbcDao}.
@@ -42,6 +43,34 @@ public class JdbcFileDao extends JdbcDao<FileRecord> implements FileDao {
             }
 
             return files;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Database query failed.", e);
+        }
+    }
+
+    @Override
+    public Optional<FileRecord> getByShareTag(String shareTag) {
+        Preconditions.checkNotNull(shareTag);
+
+        try {
+            ResultSet resultSet =
+                    dbConnection().executeQuery(
+                            String.format("SELECT * FROM %s WHERE share_tag = '%s'",
+                                    tableName(),
+                                    shareTag));
+
+            List<FileRecord> files = new ArrayList<>();
+
+            while (resultSet.next()) {
+                files.add(sqlRecordConverter().resultSetToRecord(resultSet));
+            }
+
+            if(files.isEmpty()){
+                return Optional.empty();
+            }else{
+                return Optional.of(files.get(0));
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException("Database query failed.", e);

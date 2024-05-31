@@ -43,6 +43,11 @@ export class FolderContentItem {
   extension;
 
   /**
+   * @type {string}
+   */
+  shareTag;
+
+  /**
    * @type {number}
    */
   itemsAmount;
@@ -57,6 +62,7 @@ export class FolderContentItem {
    * @property {number} size
    * @property {number} archivedSize
    * @property {string} extension
+   * @property {string} shareTag
    */
 
   /**
@@ -82,6 +88,7 @@ export class FolderContentItem {
     this.itemsAmount = properties.itemsAmount;
     this.archivedSize = properties.archivedSize;
     this.extension = properties.extension;
+    this.shareTag = properties.shareTag;
     Object.freeze(this);
   }
 }

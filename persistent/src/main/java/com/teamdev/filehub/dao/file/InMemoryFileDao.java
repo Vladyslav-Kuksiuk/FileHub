@@ -34,7 +34,8 @@ public class InMemoryFileDao implements FileDao {
                               data.mimetype(),
                               data.size(),
                               data.archivedSize(),
-                              data.extension());
+                              data.extension(),
+                data.shareTag());
     }
 
     private static FileData convertRecordIntoData(FileRecord record) {
@@ -48,7 +49,8 @@ public class InMemoryFileDao implements FileDao {
                             record.mimetype(),
                             record.size(),
                             record.archivedSize(),
-                            record.extension());
+                            record.extension(),
+                record.shareTag());
     }
 
     /**
@@ -132,6 +134,11 @@ public class InMemoryFileDao implements FileDao {
                 .stream()
                 .map(InMemoryFileDao::convertDataIntoRecord)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<FileRecord> getByShareTag(String shareTag) {
+        return Optional.empty();
     }
 
     @Override

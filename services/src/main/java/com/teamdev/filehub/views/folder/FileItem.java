@@ -13,6 +13,7 @@ public class FileItem extends FolderContentItem {
     private final long archivedSize;
     private final String mimetype;
     private final String extension;
+    private final String shareTag;
 
     public FileItem(@Nonnull String id,
                     @Nonnull String parentId,
@@ -20,7 +21,8 @@ public class FileItem extends FolderContentItem {
                     long size,
                     @Nonnull String mimetype,
                     long archivedSize,
-                    String extension) {
+                    String extension,
+                    String shareTag) {
         super("file",
               Preconditions.checkNotNull(id),
               Preconditions.checkNotNull(parentId),
@@ -30,6 +32,7 @@ public class FileItem extends FolderContentItem {
         this.archivedSize = archivedSize;
         this.mimetype = Preconditions.checkNotNull(mimetype);
         this.extension = Preconditions.checkNotNull(extension);
+        this.shareTag = shareTag;
     }
 
     public long size() {
@@ -46,5 +49,9 @@ public class FileItem extends FolderContentItem {
 
     public String extension() {
         return extension;
+    }
+
+    public String shareLink() {
+        return shareTag;
     }
 }

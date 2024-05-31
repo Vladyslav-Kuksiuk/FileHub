@@ -100,6 +100,15 @@ a:hover {
     color: #a81c12;
 }
 
+.icon-button .glyphicon-link,
+.icon-button .glyphicon-exclamation-sign{
+    color: #4bc9f5;
+}
+
+.icon-button:hover .glyphicon-link {
+    color: #019ad7;
+}
+
 .glyphicon-repeat {
     animation: 0.5s ease-in-out infinite running rotate;
 }

@@ -11,6 +11,7 @@ import {RenameItemAction} from '../../state-management/folder/rename-item-action
 import {FolderContentItem} from '../../state-management/folder/folder-content-item';
 import {DownloadFileAction} from '../../state-management/folder/download-file-action';
 import {State} from '../../state-management/state';
+import {DefineSharingFileAction} from "../../state-management/folder/define-sharing-file-action.js";
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -148,6 +149,10 @@ export class FileListWrapper extends StateAwareWrapper {
 
                 fileRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                });
+
+                fileRow.onShare(()=>{
+                  this.stateManagementService.dispatch(new DefineSharingFileAction(file));
                 });
 
                 fileRow.onRenameFormOpen(() => {

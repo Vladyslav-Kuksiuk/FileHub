@@ -15,6 +15,8 @@ import {ModalCreate} from '../../../components/modal-create';
 import {ModalCreateWrapper} from '../modal-create-wrapper';
 import {SearchRowWrapper} from '../search-row-wrapper';
 import {SearchRow} from '../../../components/search-row';
+import {ModalShare} from "../modal-share.js";
+import {ModalShareWrapper} from "../modal-share-wrapper.js";
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 const SEARCH_EVENT = 'SEARCH_EVENT';
@@ -25,6 +27,7 @@ const FILE_LIST_SLOT = 'file-list-slot';
 const MODAL_REMOVE_SLOT = 'modal-remove-slot';
 const BUTTON_GROUP_SLOT = 'button-group-slot';
 const MODAL_CREATE_SLOT = 'modal-create-slot';
+const MODAL_SHARE_SLOT = 'modal-share-slot';
 
 /**
  * Table page component.
@@ -33,6 +36,7 @@ export class TablePage extends Component {
   #eventTarget = new EventTarget();
   @inject stateManagementService;
   @inject titleService;
+  #modalShareWrapper;
   #modalRemoveWrapper;
   #modalCreateWrapper;
   #userInfoWrapper;
@@ -54,6 +58,10 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
+    const modalShareSlot = this.getSlot(MODAL_SHARE_SLOT)
+    this.#modalShareWrapper = new ModalShareWrapper()
+    this.#modalShareWrapper.wrap(new ModalShare(modalShareSlot, true, null, null))
+
     const modalRemoveSlot = this.getSlot(MODAL_REMOVE_SLOT);
     this.#modalRemoveWrapper = new ModalRemoveWrapper();
     this.#modalRemoveWrapper.wrap(new ModalRemove(modalRemoveSlot, '', '', null));
@@ -129,6 +137,7 @@ export class TablePage extends Component {
     this.#fileListWrapper.removeStateListeners();
     this.#modalRemoveWrapper.removeStateListeners();
     this.#modalCreateWrapper.removeStateListeners();
+    this.#modalShareWrapper.removeStateListeners();
   }
 
   /**
@@ -210,6 +219,7 @@ export class TablePage extends Component {
     </footer>
 ${this.addSlot(MODAL_REMOVE_SLOT)}
 ${this.addSlot(MODAL_CREATE_SLOT)}
+${this.addSlot(MODAL_SHARE_SLOT)}
 </div>
     `;
   }

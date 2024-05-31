@@ -18,6 +18,7 @@ public class FileData extends Data {
     private final long size;
     private final long archivedSize;
     private final String extension;
+    private final String shareTag;
 
     public FileData(@Nonnull String id,
                     @Nonnull String folderId,
@@ -26,7 +27,9 @@ public class FileData extends Data {
                     @Nonnull String mimetype,
                     long size,
                     long archivedSize,
-                    @Nonnull String extension) {
+                    @Nonnull String extension,
+                    @Nonnull String shareTag
+                    ) {
         super(Preconditions.checkNotNull(id));
 
         this.folderId = Preconditions.checkNotNull(folderId);
@@ -36,6 +39,7 @@ public class FileData extends Data {
         this.size = size;
         this.archivedSize = archivedSize;
         this.extension = Preconditions.checkNotNull(extension);
+        this.shareTag = Preconditions.checkNotNull(shareTag);
     }
 
     public String folderId() {
@@ -66,6 +70,9 @@ public class FileData extends Data {
         return extension;
     }
 
+    public String shareTag() {
+        return shareTag;
+    }
 
     @Override
     public int hashCode() {
@@ -85,6 +92,9 @@ public class FileData extends Data {
                 size == data.size && Objects.equal(folderId, data.folderId) &&
                 Objects.equal(ownerId, data.ownerId) &&
                 Objects.equal(name, data.name) &&
+                Objects.equal(shareTag, data.shareTag) &&
+                Objects.equal(archivedSize, data.archivedSize) &&
+                Objects.equal(extension, data.extension) &&
                 Objects.equal(mimetype, data.mimetype);
     }
 }

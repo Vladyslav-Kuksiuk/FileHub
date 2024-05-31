@@ -15,6 +15,7 @@ import {EmailConfirmationSentPage} from "../email-confirmation/email-confirmatio
 import {EmailConfirmationReceivedPage} from "../email-confirmation/email-confirmation-received-page/index.js";
 import {AdminAuthorizationPage} from "../admin-authorization/admin-authorization-page";
 import {AdminDashboardPage} from "../admin-dashboard/admin-dashboard-page";
+import {DownloadSharedFile} from "../download-shared-file/index.js";
 /**
  * Application component.
  */
@@ -119,6 +120,10 @@ export class Application extends Component {
           page.onNavigateToRegistration(()=>{
             router.redirect(ROUTE.REGISTRATION)
           })
+        })
+        .addRoute(ROUTE.SHARED_FILE, () => {
+          this.rootElement.innerHTML = '';
+          const page = new DownloadSharedFile(this.rootElement);
         })
         .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
           this.rootElement.innerHTML = '';

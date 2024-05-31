@@ -4,6 +4,7 @@ import com.teamdev.filehub.dao.DataAccessObject;
 import com.teamdev.filehub.dao.RecordId;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * {@link DataAccessObject} which is intended to work with file meta context.
@@ -18,6 +19,8 @@ public interface FileDao extends DataAccessObject<FileRecord> {
      * @return list of {@link FileRecord} with same folder id.
      */
     List<FileRecord> getByFolderId(RecordId folderId);
+
+    Optional<FileRecord> getByShareTag(String shareTag);
 
     /**
      * Returns list of {@link FileRecord} with same folder id and name part.

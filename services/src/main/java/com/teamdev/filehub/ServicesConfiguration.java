@@ -26,6 +26,8 @@ import com.teamdev.filehub.processes.filesystem.remove.RemoveProcess;
 import com.teamdev.filehub.processes.filesystem.rename.FileRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.FolderRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
+import com.teamdev.filehub.processes.filesystem.share.ChangeFileShareStatusProcess;
+import com.teamdev.filehub.processes.filesystem.share.ChangeFileShareStatusProcessImpl;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
@@ -48,6 +50,10 @@ import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationView;
 import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
+import com.teamdev.filehub.views.file.SharedFileDownloadView;
+import com.teamdev.filehub.views.file.SharedFileDownloadViewImpl;
+import com.teamdev.filehub.views.file.SharedFileView;
+import com.teamdev.filehub.views.file.SharedFileViewImpl;
 import com.teamdev.filehub.views.folder.content.FolderContentView;
 import com.teamdev.filehub.views.folder.content.FolderContentViewImpl;
 import com.teamdev.filehub.views.folder.info.FolderInfoView;
@@ -74,6 +80,8 @@ public class ServicesConfiguration {
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
     private final UserProfileView userProfileView;
+    private final SharedFileView sharedFileView;
+    private final SharedFileDownloadView sharedFileDownloadView;
 
     private final AdminAuthenticationProcess adminAuthenticationProcess;
     private final AdminAuthorizationView adminAuthorizationView;
@@ -87,6 +95,7 @@ public class ServicesConfiguration {
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
     private final RenameProcess fileRenameProcess;
+    private final ChangeFileShareStatusProcess changeFileShareStatusProcess;
     private final RemoveProcess fileRemoveProcess;
 
     private final FilesStatisticsView filesStatisticsView;
@@ -137,6 +146,8 @@ public class ServicesConfiguration {
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
+        sharedFileView = new SharedFileViewImpl(fileDao);
+        sharedFileDownloadView = new SharedFileDownloadViewImpl(fileDao, fileStorage);
 
         adminAuthenticationProcess = new AdminAuthenticationProcessImpl();
         adminAuthorizationView = new AdminAuthorizationViewImpl();
@@ -150,6 +161,7 @@ public class ServicesConfiguration {
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
         fileRenameProcess = new FileRenameProcess(fileDao);
+        changeFileShareStatusProcess = new ChangeFileShareStatusProcessImpl(fileDao);
         fileRemoveProcess = new FileRemoveProcess(fileDao, fileStorage);
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
@@ -241,6 +253,18 @@ public class ServicesConfiguration {
 
     public ChangeBanStatusProcess getChangeBanStatusProcess() {
         return changeBanStatusProcess;
+    }
+
+    public SharedFileView getSharedFileView() {
+        return sharedFileView;
+    }
+
+    public SharedFileDownloadView getSharedFileDownloadView() {
+        return sharedFileDownloadView;
+    }
+
+    public ChangeFileShareStatusProcess getChangeFileShareStatusProcess() {
+        return changeFileShareStatusProcess;
     }
 
     public DeleteUserFilesProcess getDeleteUserFilesProcess() {

@@ -26,6 +26,7 @@ export const MUTATOR_NAMES = {
   SET_RENAMING_ITEM: 'setRenamingItem',
   SET_IS_ITEM_RENAMING: 'setIsItemRenaming',
   SET_ITEM_RENAMING_ERRORS: 'setItemRenamingErrors',
+  SET_SHARING_FILE: 'setSharingFile',
   RESET_STATE: 'resetState',
 };
 
@@ -221,6 +222,11 @@ export const MUTATORS = {
     return new State({...state,
       isItemRenaming: false,
       itemRenamingErrors: errors,
+    });
+  },
+  [MUTATOR_NAMES.SET_SHARING_FILE]: (state, item) => {
+    return new State({...state,
+      fileInSharingState: item
     });
   },
 

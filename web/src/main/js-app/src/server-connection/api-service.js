@@ -16,6 +16,10 @@ export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
+export const SHARE_FILE_PATH = 'api/file/share';
+export const VIEW_SHARED_FILE_PATH = 'api/shared-file/view/';
+export const DOWNLOAD_SHARED_FILE_PATH = 'api/shared-file/download/';
+export const STOP_SHARING_FILE_PATH = 'api/file/stop-sharing';
 export const EMAIL_CONFIRMATION_PATH = 'api/confirm-email/';
 export const SEND_CONFIRMATION_EMAIL_PATH = 'api/send-confirmation-email';
 export const LOAD_FILES_STATISTICS_PATH = 'api/files-statistics';
@@ -182,6 +186,40 @@ export class ApiService {
   }
 
   /**
+   * Loads shared file data.
+   *
+   * @returns {Promise<UserProfile | ApiServiceError>}
+   */
+  async viewSharedFile(tag) {
+    return this.requestService.getJson(VIEW_SHARED_FILE_PATH + tag).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        this.#redirectToLogin();
+        return;
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+      let item = response.body
+      return new FolderContentItem({
+        type: item.type,
+        id: item.id,
+        parentId: item.parentId,
+        name: item.name,
+        size: item.size,
+        mimetype: item.mimetype,
+        itemsAmount: item.itemsAmount,
+        archivedSize: item.archivedSize,
+        extension: item.extension,
+        shareTag: item.shareTag
+      });
+    }).catch(()=>{
+      throw new ApiServiceError();
+    });
+  }
+
+  /**
    * Loads folder info.
    *
    * @param {string} folderId
@@ -238,6 +276,7 @@ export class ApiService {
             itemsAmount: item.itemsAmount,
             archivedSize: item.archivedSize,
             extension: item.extension,
+            shareTag: item.shareTag
           }));
         });
   }
@@ -329,6 +368,58 @@ export class ApiService {
   }
 
   /**
+   * Share file.
+   *
+   * @param {String} file
+   * @returns {Promise<ApiServiceError>}
+   */
+  async shareFile(file) {
+    return this.requestService.postJson(SHARE_FILE_PATH, {
+      file: file,
+    },this.storageService.get(AUTH_TOKEN)).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        this.#redirectToLogin();
+        return;
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+      return {
+        name: response.body.name,
+        shareTag: response.body.shareTag
+      }
+    });
+  }
+
+  /**
+   * Stop sharing file.
+   *
+   * @param {String} file
+   * @returns {Promise<ApiServiceError>}
+   */
+  async stopSharingFile(file) {
+    return this.requestService.postJson(STOP_SHARING_FILE_PATH, {
+      file: file,
+    },this.storageService.get(AUTH_TOKEN)).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        this.#redirectToLogin();
+        return;
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+      return {
+        name: response.body.name,
+        shareTag: response.body.shareTag
+      }
+    });
+  }
+
+  /**
    * Unban user.
    *
    * @param {String} email
@@ -404,6 +495,7 @@ export class ApiService {
             itemsAmount: item.itemsAmount,
             archivedSize: item.archivedSize,
             extension: item.extension,
+            shareTag: item.shareTag
           }));
         });
   }
@@ -553,6 +645,30 @@ export class ApiService {
    */
   async downloadFile(fileId) {
     return this.requestService.getBlob('api/files/' + fileId, this.storageService.get(AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.storageService.put(AUTH_TOKEN, null);
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body;
+        });
+  }
+
+  /**
+   * Downloads shared file.
+   *
+   * @param {string} shareTag
+   * @returns {Promise<Blob | ApiServiceError>}
+   */
+  async downloadSharedFile(shareTag) {
+    return this.requestService.getBlob(DOWNLOAD_SHARED_FILE_PATH + shareTag)
         .catch(()=>{
           throw new ApiServiceError();
         })

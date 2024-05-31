@@ -92,7 +92,8 @@ public class FileUploadProcessImpl implements FileUploadProcess {
                                                command.mimetype(),
                                                command.size(),
                                                archivedSize,
-                                               name[1]);
+                                               name[1],
+                null);
 
         fileDao.create(fileRecord);
 

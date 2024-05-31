@@ -30,9 +30,13 @@ public class RESTServer {
         post("api/confirm-email/:confirmationToken", new ConfirmEmailRoute(context.getEmailConfirmationProcess()));
         get("api/files-statistics", new LoadFilesStatisticsRoute(context.getAdminAuthorizationView(), context.getFilesStatisticsView()));
         get("api/user-statistics/:email", new LoadUserStatisticsRoute(context.getAdminAuthorizationView(), context.getUserStatisticsView()));
+        get("api/shared-file/view/:tag", new LoadSharedFileRoute(context.getSharedFileView()));
+        get("api/shared-file/download/:tag", new DownloadSharedFileRoute(context.getSharedFileDownloadView()));
         post("api/user/ban", new ChangeBanStatusRoute(context.getAdminAuthorizationView(), context.getChangeBanStatusProcess(), true));
         post("api/user/unban", new ChangeBanStatusRoute(context.getAdminAuthorizationView(), context.getChangeBanStatusProcess(), false));
         post("api/user/delete-files", new DeleteUsersFilesRoute(context.getAdminAuthorizationView(), context.getDeleteUserFilesProcess()));
+        post("api/file/share", new ChangeFileShareStatusRoute(context.getUserAuthorizationView(), context.getChangeFileShareStatusProcess(), true));
+        post("api/file/stop-sharing", new ChangeFileShareStatusRoute(context.getUserAuthorizationView(), context.getChangeFileShareStatusProcess(), false));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
         post("api/login-admin", new AdminAuthenticationRoute(context.getAdminAuthenticationProcess()));
         post("api/logout",
