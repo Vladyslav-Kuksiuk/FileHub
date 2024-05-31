@@ -45,7 +45,8 @@ public class InMemoryUserDao implements UserDao {
                     userData.login(),
                     userData.password(),
                     userData.isEmailConfirmed(),
-                    userData.emailHash()));
+                    userData.emailHash(),
+                    userData.isBanned()));
 
         }
 
@@ -82,7 +83,8 @@ public class InMemoryUserDao implements UserDao {
                 record.login(),
                 record.password(),
                 record.isEmailConfirmed(),
-                record.emailHash());
+                record.emailHash(),
+                record.isBanned());
 
         userTable.create(userData);
 
@@ -104,7 +106,7 @@ public class InMemoryUserDao implements UserDao {
                 record.login(),
                 record.password(),
                 record.isEmailConfirmed(),
-                record.emailHash());
+                record.emailHash(), record.isBanned());
 
         userTable.update(userData);
 
@@ -133,7 +135,8 @@ public class InMemoryUserDao implements UserDao {
                     userData.login(),
                     userData.password(),
                     userData.isEmailConfirmed(),
-                    userData.emailHash()));
+                    userData.emailHash(),
+                    userData.isBanned()));
         }
 
         return Optional.empty();
@@ -153,7 +156,8 @@ public class InMemoryUserDao implements UserDao {
                     userData.login(),
                     userData.password(),
                     userData.isEmailConfirmed(),
-                    userData.emailHash()));
+                    userData.emailHash(),
+                    userData.isBanned()));
         }
 
         return Optional.empty();

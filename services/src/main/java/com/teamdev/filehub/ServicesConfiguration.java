@@ -14,6 +14,10 @@ import com.teamdev.filehub.postman.EmailService;
 import com.teamdev.filehub.postman.SendGridEmailService;
 import com.teamdev.filehub.processes.admin.authentication.AdminAuthenticationProcess;
 import com.teamdev.filehub.processes.admin.authentication.AdminAuthenticationProcessImpl;
+import com.teamdev.filehub.processes.admin.ban.ChangeBanStatusProcess;
+import com.teamdev.filehub.processes.admin.ban.ChangeBanStatusProcessImpl;
+import com.teamdev.filehub.processes.admin.filesystem.DeleteUserFilesProcess;
+import com.teamdev.filehub.processes.admin.filesystem.DeleteUserFilesProcessImpl;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcessImpl;
 import com.teamdev.filehub.processes.filesystem.remove.FileRemoveProcess;
@@ -28,7 +32,6 @@ import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProce
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
 import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationProcess;
 import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationProcessImpl;
-import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationCommand;
 import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationProcess;
 import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationProcessImpl;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
@@ -37,6 +40,8 @@ import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcessImpl;
 import com.teamdev.filehub.views.admin.statistics.FilesStatisticsView;
 import com.teamdev.filehub.views.admin.statistics.FilesStatisticsViewImpl;
+import com.teamdev.filehub.views.admin.userstatistics.UserStatisticsView;
+import com.teamdev.filehub.views.admin.userstatistics.UserStatisticsViewImpl;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
 import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationView;
@@ -85,6 +90,9 @@ public class ServicesConfiguration {
     private final RemoveProcess fileRemoveProcess;
 
     private final FilesStatisticsView filesStatisticsView;
+    private final UserStatisticsView userStatisticsView;
+    private final ChangeBanStatusProcess changeBanStatusProcess;
+    private final DeleteUserFilesProcess deleteUserFilesProcess;
 
     private final FileDownloadView fileDownloadView;
 
@@ -146,6 +154,9 @@ public class ServicesConfiguration {
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
         filesStatisticsView = new FilesStatisticsViewImpl(fileDao);
+        userStatisticsView = new UserStatisticsViewImpl(userDao, fileDao);
+        changeBanStatusProcess = new ChangeBanStatusProcessImpl(userDao);
+        deleteUserFilesProcess = new DeleteUserFilesProcessImpl(userDao,folderDao, fileDao, fileStorage);
     }
 
     public UserRegistrationProcess getUserRegistrationProcess() {
@@ -222,5 +233,17 @@ public class ServicesConfiguration {
 
     public FilesStatisticsView getFilesStatisticsView() {
         return filesStatisticsView;
+    }
+
+    public UserStatisticsView getUserStatisticsView() {
+        return userStatisticsView;
+    }
+
+    public ChangeBanStatusProcess getChangeBanStatusProcess() {
+        return changeBanStatusProcess;
+    }
+
+    public DeleteUserFilesProcess getDeleteUserFilesProcess() {
+        return deleteUserFilesProcess;
     }
 }

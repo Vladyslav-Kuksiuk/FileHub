@@ -39,7 +39,7 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
 
     @Override
     public UserAuthenticationResponse handle(@Nonnull UserAuthenticationCommand command)
-            throws UserCredentialsMismatchException, UserEmailNotConfirmedException {
+            throws UserCredentialsMismatchException, UserEmailNotConfirmedException, UserBannedException {
         Preconditions.checkNotNull(command);
 
         logger.atInfo()
@@ -78,6 +78,14 @@ public class UserAuthenticationProcessImpl implements UserAuthenticationProcess 
                     confirmationEmailText(emailConfirmationLink(command.login())));
 
             throw new UserEmailNotConfirmedException("Email is not confirmed.");
+        }
+
+        if(userRecord.isBanned()){
+            logger.atWarning()
+                    .log("[PROCESS FAILED] - User authentication - User is banned - login: %s.",
+                            command.login());
+
+            throw new UserBannedException("User is banned.");
         }
 
         LocalDateTime authenticationTime = LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE);

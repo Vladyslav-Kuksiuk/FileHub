@@ -88,7 +88,7 @@ export class TablePage extends Component {
     const searchRowWrapper = new SearchRowWrapper();
     this.#searchRowWrapper = searchRowWrapper;
     const searchRowSlot = this.getSlot(SEARCH_ROW_SLOT);
-    searchRowWrapper.wrap(new SearchRow(searchRowSlot), (folderId, searchValue)=>{
+    searchRowWrapper.wrap(new SearchRow(searchRowSlot, "Enter entity name..."), (folderId, searchValue)=>{
       this.#eventTarget.dispatchEvent(new CustomEvent(SEARCH_EVENT, {
         detail: {
           folderId: folderId,

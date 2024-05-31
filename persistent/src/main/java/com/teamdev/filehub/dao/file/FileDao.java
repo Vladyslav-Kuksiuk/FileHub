@@ -31,4 +31,6 @@ public interface FileDao extends DataAccessObject<FileRecord> {
     List<FileRecord> getByFolderIdAndNamePart(RecordId folderId, String namePart);
 
     FilesStatistics getFilesStatistics();
+
+    FilesStatistics getFilesStatistics(RecordId user);
 }

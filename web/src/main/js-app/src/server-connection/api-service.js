@@ -9,6 +9,9 @@ import {inject} from '../registry';
 
 export const LOG_IN_USER_PATH = 'api/login';
 export const LOG_IN_ADMIN_PATH = 'api/login-admin';
+export const BAN_USER_PATH = 'api/user/ban';
+export const UNBAN_USER_PATH = 'api/user/unban';
+export const DELETE_USER_FILES_PATH = 'api/user/delete-files';
 export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
@@ -16,12 +19,14 @@ export const LOG_OUT_USER_PATH = 'api/logout';
 export const EMAIL_CONFIRMATION_PATH = 'api/confirm-email/';
 export const SEND_CONFIRMATION_EMAIL_PATH = 'api/send-confirmation-email';
 export const LOAD_FILES_STATISTICS_PATH = 'api/files-statistics';
+export const LOAD_USER_STATISTICS_PATH = 'api/user-statistics/';
 const FOLDER_PATH = 'api/folder/';
 const FILE_PATH = 'api/file/';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
 export const LOGIN_403_ERROR = 'Email address is not confirmed';
-export const EMAIL_SEND_ERROR = 'User with provided email doesn\'t exist';
+export const LOGIN_423_ERROR = 'User banned';
+export const EMAIL_ERROR = 'User with provided email doesn\'t exist';
 
 /**
  * Service to handle server request and response.
@@ -56,6 +61,9 @@ export class ApiService {
       }
       if (response.status === 403) {
         throw new ApiServiceError(LOGIN_403_ERROR);
+      }
+      if (response.status === 423) {
+        throw new ApiServiceError(LOGIN_423_ERROR);
       }
       if (response.status !== 200) {
         throw new ApiServiceError();
@@ -99,7 +107,7 @@ export class ApiService {
       throw new ApiServiceError();
     }).then((response) => {
       if (response.status === 404) {
-        throw new ApiServiceError(EMAIL_SEND_ERROR);
+        throw new ApiServiceError(EMAIL_ERROR);
       }
       if (response.status !== 200) {
         throw new ApiServiceError();
@@ -118,7 +126,7 @@ export class ApiService {
           throw new ApiServiceError();
         }).then((response) => {
           if (response.status === 404) {
-            throw new ApiServiceError(EMAIL_SEND_ERROR);
+            throw new ApiServiceError(EMAIL_ERROR);
           }
           if (response.status !== 200) {
             throw new ApiServiceError();
@@ -261,6 +269,108 @@ export class ApiService {
             }
           });
         });
+  }
+
+  /**
+   * Loads user statistics.
+   *
+   * @returns {Promise< * | ApiServiceError>}
+   */
+  async loadUserStatistics(email) {
+    return this.requestService.getJson(LOAD_USER_STATISTICS_PATH + email, this.storageService.get(ADMIN_AUTH_TOKEN))
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 401) {
+            this.#redirectToLogin();
+            return;
+          }
+          if (response.status === 404) {
+            throw new ApiServiceError(EMAIL_ERROR, response.status);
+          }
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return {
+            isBanned: response.body.isBanned,
+            items: response.body.items.map((item)=>{
+              return {
+                mimetype: item.mimetype,
+                filesNumber: item.filesNumber,
+                size: item.size,
+                archivedSize: item.archivedSize,
+              }
+            })
+          }
+        });
+  }
+
+  /**
+   * Ban user.
+   *
+   * @param {String} email
+   * @returns {Promise<ApiServiceError>}
+   */
+  async banUser(email) {
+    return this.requestService.postJson(BAN_USER_PATH, {
+      email: email,
+    },this.storageService.get(ADMIN_AUTH_TOKEN)).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        this.#redirectToLogin();
+        return;
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+    });
+  }
+
+  /**
+   * Unban user.
+   *
+   * @param {String} email
+   * @returns {Promise<ApiServiceError>}
+   */
+  async unbanUser(email) {
+    return this.requestService.postJson(UNBAN_USER_PATH, {
+      email: email,
+    },this.storageService.get(ADMIN_AUTH_TOKEN)).catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        this.#redirectToLogin();
+        return;
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+    });
+  }
+
+  /**
+   * Delete user files.
+   *
+   * @param {String} email
+   * @returns {Promise<ApiServiceError>}
+   */
+  async deleteUserFiles(email) {
+    return this.requestService.postJson(DELETE_USER_FILES_PATH, {
+      email: email,
+    },this.storageService.get(ADMIN_AUTH_TOKEN))
+        .catch(()=>{
+      throw new ApiServiceError();
+    }).then((response) => {
+      if (response.status === 401) {
+        this.#redirectToLogin();
+        return;
+      }
+      if (response.status !== 200) {
+        throw new ApiServiceError();
+      }
+    });
   }
 
   /**

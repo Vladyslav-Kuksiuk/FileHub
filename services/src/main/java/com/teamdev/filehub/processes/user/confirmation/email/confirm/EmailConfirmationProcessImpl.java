@@ -39,7 +39,8 @@ public class EmailConfirmationProcessImpl implements EmailConfirmationProcess {
                 user.login(),
                 user.password(),
                 true,
-                user.emailHash()
+                user.emailHash(),
+                user.isBanned()
         ));
 
         logger.atInfo()

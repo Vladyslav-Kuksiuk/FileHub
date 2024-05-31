@@ -29,6 +29,10 @@ public class RESTServer {
         post("api/send-confirmation-email", new SendConfirmationEmailRoute(context.getSendEmailConfirmationProcess()));
         post("api/confirm-email/:confirmationToken", new ConfirmEmailRoute(context.getEmailConfirmationProcess()));
         get("api/files-statistics", new LoadFilesStatisticsRoute(context.getAdminAuthorizationView(), context.getFilesStatisticsView()));
+        get("api/user-statistics/:email", new LoadUserStatisticsRoute(context.getAdminAuthorizationView(), context.getUserStatisticsView()));
+        post("api/user/ban", new ChangeBanStatusRoute(context.getAdminAuthorizationView(), context.getChangeBanStatusProcess(), true));
+        post("api/user/unban", new ChangeBanStatusRoute(context.getAdminAuthorizationView(), context.getChangeBanStatusProcess(), false));
+        post("api/user/delete-files", new DeleteUsersFilesRoute(context.getAdminAuthorizationView(), context.getDeleteUserFilesProcess()));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
         post("api/login-admin", new AdminAuthenticationRoute(context.getAdminAuthenticationProcess()));
         post("api/logout",

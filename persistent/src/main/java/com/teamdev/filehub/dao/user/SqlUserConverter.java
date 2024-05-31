@@ -28,7 +28,9 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
                                   resultSet.getString("login"),
                                   resultSet.getString("password"),
                                   resultSet.getBoolean("is_email_confirmed"),
-                                  resultSet.getString("email_hash"));
+                                  resultSet.getString("email_hash"),
+                                  resultSet.getBoolean("is_banned")
+                    );
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);
         }
@@ -38,15 +40,16 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
     public String recordInsertSql(@Nonnull UserRecord record) {
         Preconditions.checkNotNull(record);
 
-        return String.format("INSERT INTO %s (id, login, password, is_email_confirmed, email_hash)" +
-                                     "VALUES('%s','%s','%s','%s','%s')",
+        return String.format("INSERT INTO %s (id, login, password, is_email_confirmed, email_hash, is_banned)" +
+                                     "VALUES('%s','%s','%s','%s','%s', '%s')",
                              table,
                              record.id()
                                    .value(),
                              record.login(),
                              record.password(),
                              record.isEmailConfirmed(),
-                             record.emailHash());
+                             record.emailHash(),
+                             record.isBanned());
     }
 
     @Override
@@ -58,13 +61,15 @@ class SqlUserConverter implements SqlRecordConverter<UserRecord> {
                                      "login = '%s', " +
                                      "password = '%s'," +
                                      "is_email_confirmed = '%s'," +
-                                     "email_hash = '%s'" +
+                                     "email_hash = '%s'," +
+                                     "is_banned = '%s'" +
                                      "WHERE id = '%s'",
                              table,
                              record.login(),
                              record.password(),
                              record.isEmailConfirmed(),
                              record.emailHash(),
+                             record.isBanned(),
                              record.id()
                                    .value());
     }

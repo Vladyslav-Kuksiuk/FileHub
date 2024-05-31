@@ -1,7 +1,14 @@
 import {Component} from "../../../components/component.js";
 import {inject} from "../../../registry.js";
 import {LogOutAdminAction} from "../../../state-management/user/log-out-admin-action.js";
-import {FileTypeFactory} from "../../../components/file-list/file-type-factory.js";
+import {SearchRow} from "../../../components/search-row/index.js";
+import {ApiServiceError} from "../../../server-connection/api-service-error.js";
+import {StatisticCharts} from "./statistics.js";
+import {UserStatus} from "./user-status.js";
+
+const SEARCH_ROW_SLOT = "SEARCH_ROW_SLOT"
+const USER_STATUS_SLOT = "BUTTON_GROUP_SLOT"
+const STATISTICS_SLOT = "STATISTICS_SLOT"
 
 /**
  * Admin Dashboard page component.
@@ -11,6 +18,10 @@ export class AdminDashboardPage extends Component {
     @inject stateManagementService;
     @inject titleService;
     @inject apiService;
+    #isUserBanned = false
+    #user = null
+    #userFiles = null
+
 
     /**
      * @param {HTMLElement} parent
@@ -25,139 +36,111 @@ export class AdminDashboardPage extends Component {
      * @inheritDoc
      */
     afterRender() {
-        const filesNumberChart =  this.rootElement.querySelector('[data-td="files-number-chart"]')
-        const filesSizeByMimetypeChart =  this.rootElement.querySelector('[data-td="files-size-by-mimetype-chart"]')
-        const archivedFilesSizeByMimetypeChart =  this.rootElement.querySelector('[data-td="archived-files-size-by-mimetype-chart"]')
-        const archivedFilesSizeVsNonArchivedChart =  this.rootElement.querySelector('[data-td="archived-vs-non-archived-horizontal-chart"]')
+        let statisticsSlot = this.getSlot(STATISTICS_SLOT)
+        let statisticCharts = new StatisticCharts(statisticsSlot)
 
-        this.apiService.loadFilesStatistics()
-            .then((items)=> {
-                let filesNumberChartData = {
-                    labels: items.map((item) => (new FileTypeFactory()).getType(item.mimetype).type),
-                    datasets: [{
-                        label: 'Files number',
-                        data: items.map((item) => item.filesNumber)
-                    }]
-                }
-                let filesSizeByMimetypeData = {
-                    labels: items.map((item) => (new FileTypeFactory()).getType(item.mimetype).type),
-                    datasets: [{
-                        label: 'Files size',
-                        data: items.map((item) => item.size)
-                    }]
-                }
-                let archivedFilesSizeByMimetypeData = {
-                    labels: items.map((item) => (new FileTypeFactory()).getType(item.mimetype).type),
-                    datasets: [{
-                        label: 'Archived files size',
-                        data: items.map((item) => item.archivedSize)
-                    }]
-                }
-                let sizeDoughnutOptions = {
-                    responsive: false,
-                    maintainAspectRatio: false,
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    plugins: {
-                      tooltip: {
-                          callbacks: {
-                              label: (ctx) => {
-                                  return ctx.label + ': ' + this.#convertSize(ctx.parsed)
-                              }
-                          }
-                      }
-                    }
-                };
+        let statusSlot = this.getSlot(USER_STATUS_SLOT)
+        let userStatus = new UserStatus(statusSlot, this.#user != null, this.#user, this.#isUserBanned)
+        userStatus.onBanClick((email)=>{
+            if(window.confirm(`Do you really want to ban ${email}?`)){
+                this.apiService.banUser(email)
+                    .then(()=>{
+                        userStatus.reload(true, email, true)
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    })
+            }
+        })
+        userStatus.onUnbanClick((email)=>{
+            if(window.confirm(`Do you really want to unban ${email}?`)){
+                this.apiService.unbanUser(email)
+                    .then(()=>{
+                        userStatus.reload(true, email, false)
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    })
+            }
+        })
+        userStatus.onDeleteFilesClick((email)=>{
+            if(window.confirm(`Do you really want to delete all ${email} files?`)){
+                this.apiService.deleteUserFiles(email)
+                    .then(()=>{
+                        this.apiService.loadUserStatistics(email)
+                            .then((stats) => {
+                                statisticCharts.reload(stats.items, email)
+                                this.#isUserBanned = stats.isBanned
+                                this.#user = email
+                                userStatus.reload(true, email, stats.isBanned)
+                            })
+                            .catch((e) => {
+                                if(e instanceof ApiServiceError && e.statusCode() === 404){
+                                    searchRow.error = "User not found"
+                                }else {
+                                    searchRow.error = "Something failed, please try again"
+                                }
+                                console.log(e)
+                            })
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    })
+            }
+        })
 
-                new Chart(filesNumberChart, {
-                    type: 'doughnut',
-                    data: filesNumberChartData,
-                    options: {
-                        responsive: false,
-                        maintainAspectRatio: false,
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
+        let searchSlot = this.getSlot(SEARCH_ROW_SLOT)
+        let searchRow = new SearchRow(searchSlot, "Enter user email...")
+        searchRow.onSearchClick((searchInput) => {
+            searchRow.error = null
+            if(searchInput.trim().length === 0) {
+                this.apiService.loadFilesStatistics()
+                    .then((files)=> {
+                        statisticCharts.reload(files, null)
+                        userStatus.reload(false, null, false)
+                    })
+                    .catch((e)=> {
+                        searchRow.error = "Something failed, please try again"
+                        console.log(e)
+                    })
+            } else if(searchInput.trim().length < 3) {
+                searchRow.error = "Please enter at least 3 symbols"
+            } else {
+                this.apiService.loadUserStatistics(searchInput)
+                    .then((stats) => {
+                        statisticCharts.reload(stats.items, searchInput)
+                        this.#isUserBanned = stats.isBanned
+                        this.#user = searchInput
+                        userStatus.reload(true, searchInput, stats.isBanned)
+                    })
+                    .catch((e) => {
+                        if(e instanceof ApiServiceError && e.statusCode() === 404){
+                            searchRow.error = "User not found"
+                        }else {
+                            searchRow.error = "Something failed, please try again"
                         }
-                    }
-                });
-                new Chart(filesSizeByMimetypeChart, {
-                    type: 'doughnut',
-                    data: filesSizeByMimetypeData,
-                    options: sizeDoughnutOptions
-                });
-                new Chart(archivedFilesSizeByMimetypeChart, {
-                    type: 'doughnut',
-                    data: archivedFilesSizeByMimetypeData,
-                    options: sizeDoughnutOptions
-                });
-                new Chart(archivedFilesSizeVsNonArchivedChart, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Actual size', 'Archived size'],
-                        datasets: [{
-                            label: 'Size',
-                            data: [
-                               items.reduce((accumulator, cur) => {
-                                   return accumulator + cur.size
-                               }, 0),
-                               items.reduce((accumulator, cur) => {
-                                   return accumulator + cur.archivedSize
-                               }, 0),
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: (ctx) => {
-                                        return ctx.label + ': ' + this.#convertSize(ctx.parsed.x)
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            })
-            .catch((e)=> {
-                console.log(e)
-            })
+                        console.log(e)
+                    })
+            }
+        })
+        if(this.#user === null) {
+            this.apiService.loadFilesStatistics()
+                .then((files)=> {
+                    statisticCharts.reload(files, null)
+                    userStatus.reload(false, null, null)
+                })
+                .catch((e)=> {
+                    console.log(e)
+                })
+        } else {
+            statisticCharts.reload(this.#userFiles, this.#user)
+            userStatus.reload(true, this.#user, this.#isUserBanned)
+        }
         this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
             event.preventDefault();
             this.stateManagementService.dispatch(new LogOutAdminAction());
         });
     }
-
-    /**
-     * @param {number} size
-     * @returns {string}
-     * @private
-     */
-    #convertSize(size) {
-        let iteration = 0;
-        while (size > 1024) {
-            iteration++;
-            size/=1024;
-        }
-        const prefixArray = ['B', 'KB', 'MB', 'GB', 'TB'];
-        return size.toFixed(1) + ' ' + prefixArray[iteration];
-    };
 
     /**
      * @inheritDoc
@@ -193,25 +176,15 @@ export class AdminDashboardPage extends Component {
         <h1>Admin Dashboard</h1>
         <hr class="horizontal-line">
         <div>
-            <span class="charts-container">
-                <div>
-                    <p>Files number by mimetype</p>
-                    <canvas ${this.markElement('files-number-chart')}></canvas>
+            <div class="row table-tool-bar">
+                <div class="col-xs-8 col-sm-6">
+                    ${this.addSlot(SEARCH_ROW_SLOT)}
                 </div>
-                <div>
-                    <p>Files size by mimetype</p>
-                    <canvas ${this.markElement('files-size-by-mimetype-chart')}></canvas>
-                </div>
-                <div>
-                    <p>Archived files size by mimetype</p>
-                    <canvas ${this.markElement('archived-files-size-by-mimetype-chart')}></canvas>
-                </div>
-            </span>
-            <br>
-            <div class="horizontal-chart-container">
-                <p>Archived files size vs actual files size</p>
-                <canvas ${this.markElement('archived-vs-non-archived-horizontal-chart')}></canvas>
             </div>
+            ${this.addSlot(USER_STATUS_SLOT)}
+            <br>
+               ${this.addSlot(STATISTICS_SLOT)}
+            <br>
         </div>
     </main>
 </div>

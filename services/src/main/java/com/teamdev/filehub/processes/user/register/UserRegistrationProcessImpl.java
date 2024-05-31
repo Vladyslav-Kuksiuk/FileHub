@@ -48,7 +48,8 @@ public class UserRegistrationProcessImpl implements UserRegistrationProcess {
                                                command.login(),
                                                encrypt(command.password()),
                                                false,
-                                               encrypt(command.login()));
+                                               encrypt(command.login()),
+                                               false);
 
         if (userDao.findByLogin(command.login())
                    .isPresent()) {

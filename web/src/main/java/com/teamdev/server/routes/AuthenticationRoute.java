@@ -37,7 +37,7 @@ public class AuthenticationRoute extends WrappedRoute {
      */
     @Override
     protected void wrappedRequestHandle(WrappedRequest request, Response response)
-            throws JsonEntityValidationException, UserCredentialsMismatchException, UserEmailNotConfirmedException {
+            throws JsonEntityValidationException, UserCredentialsMismatchException, UserEmailNotConfirmedException, UserBannedException {
 
         UserAuthenticationCommand command =
                 new UserAuthenticationCommand(

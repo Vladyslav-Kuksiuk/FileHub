@@ -146,4 +146,9 @@ public class InMemoryFileDao implements FileDao {
     public FilesStatistics getFilesStatistics() {
         return null;
     }
+
+    @Override
+    public FilesStatistics getFilesStatistics(RecordId user) {
+        return null;
+    }
 }

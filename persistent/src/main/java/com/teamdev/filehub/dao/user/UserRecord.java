@@ -16,12 +16,14 @@ public class UserRecord extends DatabaseRecord {
     private final String password;
     private final boolean isEmailConfirmed;
     private final String emailHash;
+    private final boolean isBanned;
 
     public UserRecord(@Nonnull RecordId id,
                       @Nonnull String login,
                       @Nonnull String password,
                       boolean isEmailConfirmed,
-                      @Nonnull String emailHash) {
+                      @Nonnull String emailHash,
+                      boolean isBanned) {
         super(Preconditions.checkNotNull(id));
 
         Preconditions.checkNotNull(login);
@@ -36,6 +38,7 @@ public class UserRecord extends DatabaseRecord {
         this.password = password;
         this.isEmailConfirmed = isEmailConfirmed;
         this.emailHash = emailHash;
+        this.isBanned = isBanned;
     }
 
     public String login() {
@@ -52,6 +55,10 @@ public class UserRecord extends DatabaseRecord {
 
     public String emailHash() {
         return emailHash;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
     }
 
     @Override
@@ -72,6 +79,7 @@ public class UserRecord extends DatabaseRecord {
                 Objects.equal(login, that.login) &&
                 Objects.equal(password, that.password) &&
                 Objects.equal(isEmailConfirmed, that.isEmailConfirmed) &&
-                Objects.equal(emailHash, that.emailHash);
+                Objects.equal(emailHash, that.emailHash) &&
+                Objects.equal(isBanned, that.isBanned);
     }
 }

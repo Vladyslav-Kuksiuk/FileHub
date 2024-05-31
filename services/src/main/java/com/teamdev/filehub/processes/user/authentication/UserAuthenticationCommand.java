@@ -29,5 +29,4 @@ public class UserAuthenticationCommand implements Command {
     public String password() {
         return password;
     }
-
 }
