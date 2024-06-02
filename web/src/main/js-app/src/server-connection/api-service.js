@@ -154,6 +154,9 @@ export class ApiService {
       if (response.status === 422) {
         throw new FieldValidationError(response.body.errors);
       }
+      if (response.status === 409) {
+        throw new ApiServiceError("User with provided email already exist.");
+      }
       if (response.status !== 200) {
         throw new ApiServiceError();
       }

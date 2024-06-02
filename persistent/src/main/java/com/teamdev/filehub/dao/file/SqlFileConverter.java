@@ -50,7 +50,7 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
         }
 
         return String.format("INSERT INTO %s (id, folder_id, owner_id, name, mimetype, size, archived_size, extension, share_tag)" +
-                                     "VALUES('%s','%s', '%s','%s','%s','%d','%d','%s', '%s')",
+                                     "VALUES('%s','%s', '%s','%s','%s','%d','%d','%s', %s)",
                              table,
                              record.id()
                                    .value(),

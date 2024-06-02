@@ -15,6 +15,8 @@ import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.teamdev.util.StringEncryptor.encrypt;
+
 /**
  * {@link FileUploadProcess} implementation.
  */
@@ -75,12 +77,12 @@ public class FileUploadProcessImpl implements FileUploadProcess {
         }
 
         RecordId fileId =
-                new RecordId(command.userId()
+                new RecordId(encrypt(command.userId()
                                     .value() +
                                      "_" +
                                      command.fullname() +
                                      LocalDateTime.now(LocalDateTimeUtil.TIME_ZONE)
-                                                  .format(LocalDateTimeUtil.FORMATTER));
+                                                  .format(LocalDateTimeUtil.FORMATTER)));
 
         var archivedSize = fileStorage.uploadFile(fileId, command.inputStream());
         var name = splitFileNameAndExtension(command.fullname());

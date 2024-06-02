@@ -65,9 +65,6 @@ public class ConfirmationEmail {
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <img src="" alt="Company Logo">
-        </div>
         <div class="content">
             <h1>Email Confirmation</h1>
             <p>Hello, Client!</p>

@@ -23,7 +23,7 @@ public class AdminAuthenticationProcessImpl implements AdminAuthenticationProces
         logger.atInfo()
               .log("[PROCESS STARTED] - Admin authentication - login: %s.", command.login());
 
-        if (!command.login().equals("admin") || !command.password().equals("adminqwe")) {
+        if (!command.login().equals("vlad.kuksiuk@gmail.com") || !command.password().equals("qweqwe123123")) {
 
             logger.atWarning()
                   .log("[PROCESS FAILED] - Admin authentication - Password incorrect - login: %s.",
