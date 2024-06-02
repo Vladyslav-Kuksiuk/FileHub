@@ -100,6 +100,15 @@ a:hover {
     color: #a81c12;
 }
 
+.icon-button .glyphicon-link,
+.icon-button .glyphicon-exclamation-sign{
+    color: #4bc9f5;
+}
+
+.icon-button:hover .glyphicon-link {
+    color: #019ad7;
+}
+
 .glyphicon-repeat {
     animation: 0.5s ease-in-out infinite running rotate;
 }
@@ -333,7 +342,7 @@ a:hover {
     white-space: nowrap;
     display: none;
     text-align: end;
-    width: 110px;
+    width: 170px;
     padding-top: 11px;
 }
 
@@ -342,6 +351,33 @@ a:hover {
     text-align: center;
     width: 86px;
     padding: 0 0 0 10px;
+}
+
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 10px;
+}
+
+.charts-container p {
+    text-align: center;
+}
+
+.charts-container canvas {
+    width: 100%;
+}
+
+.horizontal-chart-container {
+    width: 100%;
+}
+
+.horizontal-chart-container p {
+    text-align: center;
+}
+
+.horizontal-chart-container canvas {
+    width: 100%;
 }
 
 .data-buttons-container {

@@ -32,7 +32,10 @@ public class InMemoryFileDao implements FileDao {
                               new RecordId(data.ownerId()),
                               data.name(),
                               data.mimetype(),
-                              data.size());
+                              data.size(),
+                              data.archivedSize(),
+                              data.extension(),
+                data.shareTag());
     }
 
     private static FileData convertRecordIntoData(FileRecord record) {
@@ -44,7 +47,10 @@ public class InMemoryFileDao implements FileDao {
                                   .value(),
                             record.name(),
                             record.mimetype(),
-                            record.size());
+                            record.size(),
+                            record.archivedSize(),
+                            record.extension(),
+                record.shareTag());
     }
 
     /**
@@ -131,10 +137,25 @@ public class InMemoryFileDao implements FileDao {
     }
 
     @Override
+    public Optional<FileRecord> getByShareTag(String shareTag) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<FileRecord> getByFolderIdAndNamePart(RecordId folderId, String namePart) {
         return fileTable.getByFolderIdAndNamePart(folderId.value(), namePart)
                 .stream()
                 .map(InMemoryFileDao::convertDataIntoRecord)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public FilesStatistics getFilesStatistics() {
+        return null;
+    }
+
+    @Override
+    public FilesStatistics getFilesStatistics(RecordId user) {
+        return null;
     }
 }

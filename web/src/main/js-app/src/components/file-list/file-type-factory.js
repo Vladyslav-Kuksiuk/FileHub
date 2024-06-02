@@ -51,6 +51,18 @@ export class FileTypeFactory {
       type: 'Excel Workbook',
       icon: 'glyphicon-list-alt',
     },
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': {
+      type: 'Word Document',
+      icon: 'glyphicon-book',
+    },
+    'application/x-msdownload': {
+      type: 'Executable',
+      icon: 'glyphicon-flag',
+    },
+    'application/octet-stream': {
+      type: 'Game Data',
+      icon: 'glyphicon-wrench',
+    }
   };
 
   /**

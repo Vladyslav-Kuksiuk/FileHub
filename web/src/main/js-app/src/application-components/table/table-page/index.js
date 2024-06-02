@@ -15,6 +15,8 @@ import {ModalCreate} from '../../../components/modal-create';
 import {ModalCreateWrapper} from '../modal-create-wrapper';
 import {SearchRowWrapper} from '../search-row-wrapper';
 import {SearchRow} from '../../../components/search-row';
+import {ModalShare} from "../modal-share.js";
+import {ModalShareWrapper} from "../modal-share-wrapper.js";
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 const SEARCH_EVENT = 'SEARCH_EVENT';
@@ -25,6 +27,7 @@ const FILE_LIST_SLOT = 'file-list-slot';
 const MODAL_REMOVE_SLOT = 'modal-remove-slot';
 const BUTTON_GROUP_SLOT = 'button-group-slot';
 const MODAL_CREATE_SLOT = 'modal-create-slot';
+const MODAL_SHARE_SLOT = 'modal-share-slot';
 
 /**
  * Table page component.
@@ -33,6 +36,7 @@ export class TablePage extends Component {
   #eventTarget = new EventTarget();
   @inject stateManagementService;
   @inject titleService;
+  #modalShareWrapper;
   #modalRemoveWrapper;
   #modalCreateWrapper;
   #userInfoWrapper;
@@ -54,6 +58,10 @@ export class TablePage extends Component {
    * @inheritDoc
    */
   afterRender() {
+    const modalShareSlot = this.getSlot(MODAL_SHARE_SLOT)
+    this.#modalShareWrapper = new ModalShareWrapper()
+    this.#modalShareWrapper.wrap(new ModalShare(modalShareSlot, true, null, null))
+
     const modalRemoveSlot = this.getSlot(MODAL_REMOVE_SLOT);
     this.#modalRemoveWrapper = new ModalRemoveWrapper();
     this.#modalRemoveWrapper.wrap(new ModalRemove(modalRemoveSlot, '', '', null));
@@ -88,7 +96,7 @@ export class TablePage extends Component {
     const searchRowWrapper = new SearchRowWrapper();
     this.#searchRowWrapper = searchRowWrapper;
     const searchRowSlot = this.getSlot(SEARCH_ROW_SLOT);
-    searchRowWrapper.wrap(new SearchRow(searchRowSlot), (folderId, searchValue)=>{
+    searchRowWrapper.wrap(new SearchRow(searchRowSlot, "Enter entity name..."), (folderId, searchValue)=>{
       this.#eventTarget.dispatchEvent(new CustomEvent(SEARCH_EVENT, {
         detail: {
           folderId: folderId,
@@ -129,6 +137,7 @@ export class TablePage extends Component {
     this.#fileListWrapper.removeStateListeners();
     this.#modalRemoveWrapper.removeStateListeners();
     this.#modalCreateWrapper.removeStateListeners();
+    this.#modalShareWrapper.removeStateListeners();
   }
 
   /**
@@ -160,8 +169,8 @@ export class TablePage extends Component {
     return `
     <div class="page-wrapper table-page-wrapper">
     <header class="page-header">
-        <a href="/web-client/static"><img alt="TeamDev" height="37" src="static/images/logo.png"
-                                          title="TeamDev" width="200"></a>
+        <a href=""><img alt="FileHub" height="37" src="static/images/logo.png"
+                                          title="FileHub" width="200"></a>
             <ul class="authorized-user-panel">
             <li>
                 ${this.addSlot(USER_INFO_SLOT)}
@@ -188,28 +197,29 @@ export class TablePage extends Component {
     <footer class="page-footer">
         <ul class="list-inline social-icons">
             <li>
-                <a href="https://www.linkedin.com/company/teamdev-ltd-/"
+                <a href="https://www.linkedin.com/in/vladyslavkuksiuk/"
                    target="_blank" title="Linked In">
                     <img alt="Linked In" src="static/images/icon-linkedin.png">
                 </a>
             </li>
             <li>
-                <a href="https://www.facebook.com/TeamDev" target="_blank" title="Facebook">
+                <a href="https://www.facebook.com/profile.php?id=100078765320939" target="_blank" title="Facebook">
                     <img alt="Facebook" src="static/images/icon-facebook.png">
                 </a>
             </li>
             <li>
-                <a href="https://www.instagram.com/teamdev_ltd/" target="_blank" title="Instagram">
+                <a href="https://www.instagram.com/_hellamb_/" target="_blank" title="Instagram">
                     <img alt="Instagram" src="static/images/icon-instagram.png">
                 </a>
             </li>
         </ul>
         <p class="copyright">
-            Copyright © 2020 <a href="/">TeamDev</a>. All rights reserved.
+            Copyright © 2024 <a href="/">Vladyslav Kuksiuk</a>. All rights reserved.
         </p>
     </footer>
 ${this.addSlot(MODAL_REMOVE_SLOT)}
 ${this.addSlot(MODAL_CREATE_SLOT)}
+${this.addSlot(MODAL_SHARE_SLOT)}
 </div>
     `;
   }

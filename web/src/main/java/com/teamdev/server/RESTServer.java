@@ -1,18 +1,7 @@
 package com.teamdev.server;
 
 import com.teamdev.filehub.ServicesConfiguration;
-import com.teamdev.server.routes.AuthenticationRoute;
-import com.teamdev.server.routes.CreateFolderRoute;
-import com.teamdev.server.routes.DownloadFileRoute;
-import com.teamdev.server.routes.LoadFolderContentRoute;
-import com.teamdev.server.routes.LoadFolderRoute;
-import com.teamdev.server.routes.LoadUserRoute;
-import com.teamdev.server.routes.LogoutRoute;
-import com.teamdev.server.routes.RegistrationRoute;
-import com.teamdev.server.routes.RemoveItemRoute;
-import com.teamdev.server.routes.RenameItemRoute;
-import com.teamdev.server.routes.SearchInFolderRoute;
-import com.teamdev.server.routes.UploadFileRoute;
+import com.teamdev.server.routes.*;
 
 import static spark.Spark.delete;
 import static spark.Spark.get;
@@ -37,7 +26,19 @@ public class RESTServer {
         ServicesConfiguration context = new ServicesConfiguration();
 
         post("api/register", new RegistrationRoute(context.getUserRegistrationProcess()));
+        post("api/send-confirmation-email", new SendConfirmationEmailRoute(context.getSendEmailConfirmationProcess()));
+        post("api/confirm-email/:confirmationToken", new ConfirmEmailRoute(context.getEmailConfirmationProcess()));
+        get("api/files-statistics", new LoadFilesStatisticsRoute(context.getAdminAuthorizationView(), context.getFilesStatisticsView()));
+        get("api/user-statistics/:email", new LoadUserStatisticsRoute(context.getAdminAuthorizationView(), context.getUserStatisticsView()));
+        get("api/shared-file/view/:tag", new LoadSharedFileRoute(context.getSharedFileView()));
+        get("api/shared-file/download/:tag", new DownloadSharedFileRoute(context.getSharedFileDownloadView()));
+        post("api/user/ban", new ChangeBanStatusRoute(context.getAdminAuthorizationView(), context.getChangeBanStatusProcess(), true));
+        post("api/user/unban", new ChangeBanStatusRoute(context.getAdminAuthorizationView(), context.getChangeBanStatusProcess(), false));
+        post("api/user/delete-files", new DeleteUsersFilesRoute(context.getAdminAuthorizationView(), context.getDeleteUserFilesProcess()));
+        post("api/file/share", new ChangeFileShareStatusRoute(context.getUserAuthorizationView(), context.getChangeFileShareStatusProcess(), true));
+        post("api/file/stop-sharing", new ChangeFileShareStatusRoute(context.getUserAuthorizationView(), context.getChangeFileShareStatusProcess(), false));
         post("api/login", new AuthenticationRoute(context.getUserAuthenticationProcess()));
+        post("api/login-admin", new AdminAuthenticationRoute(context.getAdminAuthenticationProcess()));
         post("api/logout",
              new LogoutRoute(context.getUserAuthorizationView(), context.getUserLogoutProcess()));
 

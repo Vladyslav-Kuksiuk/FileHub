@@ -10,6 +10,14 @@ import com.teamdev.filehub.dao.folder.JdbcFolderDao;
 import com.teamdev.filehub.dao.user.JdbcUserDao;
 import com.teamdev.filehub.dao.user.UserDao;
 import com.teamdev.filehub.filestorage.FileStorage;
+import com.teamdev.filehub.postman.EmailService;
+import com.teamdev.filehub.postman.SendGridEmailService;
+import com.teamdev.filehub.processes.admin.authentication.AdminAuthenticationProcess;
+import com.teamdev.filehub.processes.admin.authentication.AdminAuthenticationProcessImpl;
+import com.teamdev.filehub.processes.admin.ban.ChangeBanStatusProcess;
+import com.teamdev.filehub.processes.admin.ban.ChangeBanStatusProcessImpl;
+import com.teamdev.filehub.processes.admin.filesystem.DeleteUserFilesProcess;
+import com.teamdev.filehub.processes.admin.filesystem.DeleteUserFilesProcessImpl;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcess;
 import com.teamdev.filehub.processes.filesystem.create.FolderCreateProcessImpl;
 import com.teamdev.filehub.processes.filesystem.remove.FileRemoveProcess;
@@ -18,18 +26,34 @@ import com.teamdev.filehub.processes.filesystem.remove.RemoveProcess;
 import com.teamdev.filehub.processes.filesystem.rename.FileRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.FolderRenameProcess;
 import com.teamdev.filehub.processes.filesystem.rename.RenameProcess;
+import com.teamdev.filehub.processes.filesystem.share.ChangeFileShareStatusProcess;
+import com.teamdev.filehub.processes.filesystem.share.ChangeFileShareStatusProcessImpl;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcess;
 import com.teamdev.filehub.processes.filesystem.upload.FileUploadProcessImpl;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcess;
 import com.teamdev.filehub.processes.user.authentication.UserAuthenticationProcessImpl;
+import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationProcess;
+import com.teamdev.filehub.processes.user.confirmation.email.confirm.EmailConfirmationProcessImpl;
+import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationProcess;
+import com.teamdev.filehub.processes.user.confirmation.email.send.SendEmailConfirmationProcessImpl;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcess;
 import com.teamdev.filehub.processes.user.logout.UserLogoutProcessImpl;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcess;
 import com.teamdev.filehub.processes.user.register.UserRegistrationProcessImpl;
+import com.teamdev.filehub.views.admin.statistics.FilesStatisticsView;
+import com.teamdev.filehub.views.admin.statistics.FilesStatisticsViewImpl;
+import com.teamdev.filehub.views.admin.userstatistics.UserStatisticsView;
+import com.teamdev.filehub.views.admin.userstatistics.UserStatisticsViewImpl;
 import com.teamdev.filehub.views.authorization.UserAuthorizationView;
 import com.teamdev.filehub.views.authorization.UserAuthorizationViewImpl;
+import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationView;
+import com.teamdev.filehub.views.authorization.admin.AdminAuthorizationViewImpl;
 import com.teamdev.filehub.views.download.FileDownloadView;
 import com.teamdev.filehub.views.download.FileDownloadViewImpl;
+import com.teamdev.filehub.views.file.SharedFileDownloadView;
+import com.teamdev.filehub.views.file.SharedFileDownloadViewImpl;
+import com.teamdev.filehub.views.file.SharedFileView;
+import com.teamdev.filehub.views.file.SharedFileViewImpl;
 import com.teamdev.filehub.views.folder.content.FolderContentView;
 import com.teamdev.filehub.views.folder.content.FolderContentViewImpl;
 import com.teamdev.filehub.views.folder.info.FolderInfoView;
@@ -50,10 +74,17 @@ import java.util.Properties;
 public class ServicesConfiguration {
 
     private final UserRegistrationProcess userRegistrationProcess;
+    private final SendEmailConfirmationProcess sendEmailConfirmationProcess;
+    private final EmailConfirmationProcess emailConfirmationProcess;
     private final UserAuthenticationProcess userAuthenticationProcess;
     private final UserLogoutProcess userLogoutProcess;
     private final UserAuthorizationView userAuthorizationView;
     private final UserProfileView userProfileView;
+    private final SharedFileView sharedFileView;
+    private final SharedFileDownloadView sharedFileDownloadView;
+
+    private final AdminAuthenticationProcess adminAuthenticationProcess;
+    private final AdminAuthorizationView adminAuthorizationView;
 
     private final FolderInfoView folderInfoView;
     private final FolderContentView folderContentView;
@@ -64,9 +95,19 @@ public class ServicesConfiguration {
     private final FolderCreateProcess folderCreateProcess;
     private final FileUploadProcess fileUploadProcess;
     private final RenameProcess fileRenameProcess;
+    private final ChangeFileShareStatusProcess changeFileShareStatusProcess;
     private final RemoveProcess fileRemoveProcess;
 
+    private final FilesStatisticsView filesStatisticsView;
+    private final UserStatisticsView userStatisticsView;
+    private final ChangeBanStatusProcess changeBanStatusProcess;
+    private final DeleteUserFilesProcess deleteUserFilesProcess;
+
     private final FileDownloadView fileDownloadView;
+
+    public SendEmailConfirmationProcess getSendEmailConfirmationProcess() {
+        return sendEmailConfirmationProcess;
+    }
 
     public ServicesConfiguration() {
 
@@ -76,7 +117,7 @@ public class ServicesConfiguration {
         Properties properties = new Properties();
 
         try (var resources = getClass().getClassLoader()
-                                       .getResourceAsStream("database.properties")
+                                       .getResourceAsStream("secret.properties")
         ) {
 
             properties.load(resources);
@@ -96,11 +137,20 @@ public class ServicesConfiguration {
 
         FileStorage fileStorage = new FileStorage(storagePath.toString());
 
-        userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao);
-        userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao);
+        EmailService emailService = new SendGridEmailService(properties.getProperty("sg.key"));
+
+        userRegistrationProcess = new UserRegistrationProcessImpl(userDao, folderDao, emailService);
+        emailConfirmationProcess = new EmailConfirmationProcessImpl(userDao);
+        sendEmailConfirmationProcess = new SendEmailConfirmationProcessImpl(userDao, emailService);
+        userAuthenticationProcess = new UserAuthenticationProcessImpl(userDao, authDao, emailService);
         userLogoutProcess = new UserLogoutProcessImpl(authDao);
         userAuthorizationView = new UserAuthorizationViewImpl(authDao);
         userProfileView = new UserProfileViewImpl(userDao, folderDao);
+        sharedFileView = new SharedFileViewImpl(fileDao);
+        sharedFileDownloadView = new SharedFileDownloadViewImpl(fileDao, fileStorage);
+
+        adminAuthenticationProcess = new AdminAuthenticationProcessImpl();
+        adminAuthorizationView = new AdminAuthorizationViewImpl();
 
         folderInfoView = new FolderInfoViewImpl(folderDao);
         folderContentView = new FolderContentViewImpl(folderDao, fileDao);
@@ -111,9 +161,14 @@ public class ServicesConfiguration {
         folderCreateProcess = new FolderCreateProcessImpl(folderDao);
         fileUploadProcess = new FileUploadProcessImpl(folderDao, fileDao, fileStorage);
         fileRenameProcess = new FileRenameProcess(fileDao);
+        changeFileShareStatusProcess = new ChangeFileShareStatusProcessImpl(fileDao);
         fileRemoveProcess = new FileRemoveProcess(fileDao, fileStorage);
         fileDownloadView = new FileDownloadViewImpl(fileDao, fileStorage);
 
+        filesStatisticsView = new FilesStatisticsViewImpl(fileDao);
+        userStatisticsView = new UserStatisticsViewImpl(userDao, fileDao);
+        changeBanStatusProcess = new ChangeBanStatusProcessImpl(userDao);
+        deleteUserFilesProcess = new DeleteUserFilesProcessImpl(userDao,folderDao, fileDao, fileStorage);
     }
 
     public UserRegistrationProcess getUserRegistrationProcess() {
@@ -160,6 +215,14 @@ public class ServicesConfiguration {
         return folderRemoveProcess;
     }
 
+    public AdminAuthenticationProcess getAdminAuthenticationProcess() {
+        return adminAuthenticationProcess;
+    }
+
+    public AdminAuthorizationView getAdminAuthorizationView() {
+        return adminAuthorizationView;
+    }
+
     public UserAuthorizationView getUserAuthorizationView() {
         return userAuthorizationView;
     }
@@ -174,5 +237,37 @@ public class ServicesConfiguration {
 
     public RenameProcess getFileRenameProcess() {
         return fileRenameProcess;
+    }
+
+    public EmailConfirmationProcess getEmailConfirmationProcess() {
+        return emailConfirmationProcess;
+    }
+
+    public FilesStatisticsView getFilesStatisticsView() {
+        return filesStatisticsView;
+    }
+
+    public UserStatisticsView getUserStatisticsView() {
+        return userStatisticsView;
+    }
+
+    public ChangeBanStatusProcess getChangeBanStatusProcess() {
+        return changeBanStatusProcess;
+    }
+
+    public SharedFileView getSharedFileView() {
+        return sharedFileView;
+    }
+
+    public SharedFileDownloadView getSharedFileDownloadView() {
+        return sharedFileDownloadView;
+    }
+
+    public ChangeFileShareStatusProcess getChangeFileShareStatusProcess() {
+        return changeFileShareStatusProcess;
+    }
+
+    public DeleteUserFilesProcess getDeleteUserFilesProcess() {
+        return deleteUserFilesProcess;
     }
 }

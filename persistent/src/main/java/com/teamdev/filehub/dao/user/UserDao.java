@@ -18,4 +18,6 @@ public interface UserDao extends DataAccessObject<UserRecord> {
      * @return Optional founded {@link UserRecord}.
      */
     Optional<UserRecord> findByLogin(@Nonnull String login);
+
+    Optional<UserRecord> findByEmailHash(@Nonnull String emailHash);
 }

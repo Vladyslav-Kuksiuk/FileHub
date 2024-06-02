@@ -68,6 +68,8 @@ dependencies {
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 
     testImplementation("org.mockito:mockito-core:4.7.0")
+
+    implementation("com.sendgrid:sendgrid-java:4.9.3")
 }
 
 application {

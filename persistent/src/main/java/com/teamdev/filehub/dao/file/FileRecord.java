@@ -7,6 +7,8 @@ import com.teamdev.filehub.dao.RecordId;
 
 import javax.annotation.Nonnull;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * {@link DatabaseRecord} implementation which is intended to store data about file meta context.
  */
@@ -17,6 +19,9 @@ public class FileRecord extends DatabaseRecord {
     private final String name;
     private final String mimetype;
     private final long size;
+    private final long archivedSize;
+    private final String extension;
+    private final String shareTag;
 
     public FileRecord(
             @Nonnull RecordId id,
@@ -24,14 +29,21 @@ public class FileRecord extends DatabaseRecord {
             @Nonnull RecordId ownerId,
             @Nonnull String name,
             @Nonnull String mimetype,
-            long size) {
-        super(Preconditions.checkNotNull(id));
+            long size,
+            long archivedSize,
+            @Nonnull String extension,
+            String shareTag
+            ) {
+        super(checkNotNull(id));
 
-        this.folderId = Preconditions.checkNotNull(folderId);
-        this.ownerId = Preconditions.checkNotNull(ownerId);
-        this.name = Preconditions.checkNotNull(name);
-        this.mimetype = Preconditions.checkNotNull(mimetype);
+        this.folderId = checkNotNull(folderId);
+        this.ownerId = checkNotNull(ownerId);
+        this.name = checkNotNull(name);
+        this.mimetype = checkNotNull(mimetype);
         this.size = size;
+        this.archivedSize = archivedSize;
+        this.extension = checkNotNull(extension);
+        this.shareTag = shareTag;
     }
 
     public RecordId folderId() {
@@ -54,6 +66,18 @@ public class FileRecord extends DatabaseRecord {
         return size;
     }
 
+    public long archivedSize() {
+        return archivedSize;
+    }
+
+    public String extension() {
+        return extension;
+    }
+
+    public String shareTag() {
+        return shareTag;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(folderId, ownerId, name, mimetype, size);
@@ -73,6 +97,8 @@ public class FileRecord extends DatabaseRecord {
                 Objects.equal(id(), that.id()) &&
                 Objects.equal(ownerId, that.ownerId) &&
                 Objects.equal(name, that.name) &&
-                Objects.equal(mimetype, that.mimetype);
+                Objects.equal(mimetype, that.mimetype) &&
+                Objects.equal(extension, that.extension) &&
+                Objects.equal(shareTag, that.shareTag);
     }
 }

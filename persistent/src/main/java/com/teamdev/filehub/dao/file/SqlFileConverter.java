@@ -30,7 +30,11 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                                   new RecordId(resultSet.getString("owner_id")),
                                   resultSet.getString("name"),
                                   resultSet.getString("mimetype"),
-                                  resultSet.getLong("size"));
+                                  resultSet.getLong("size"),
+                                  resultSet.getLong("archived_size"),
+                                  resultSet.getString("extension"),
+                                  resultSet.getString("share_tag")
+                    );
 
         } catch (SQLException e) {
             throw new RuntimeException("Result set reading failed.", e);
@@ -40,9 +44,13 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
     @Override
     public String recordInsertSql(@Nonnull FileRecord record) {
         Preconditions.checkNotNull(record);
+        var shareTag = "null";
+        if(record.shareTag() != null){
+            shareTag = "'"+record.shareTag() + "'";
+        }
 
-        return String.format("INSERT INTO %s (id, folder_id, owner_id, name, mimetype, size)" +
-                                     "VALUES('%s','%s', '%s','%s','%s','%o')",
+        return String.format("INSERT INTO %s (id, folder_id, owner_id, name, mimetype, size, archived_size, extension, share_tag)" +
+                                     "VALUES('%s','%s', '%s','%s','%s','%d','%d','%s', %s)",
                              table,
                              record.id()
                                    .value(),
@@ -52,12 +60,20 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                                    .value(),
                              record.name(),
                              record.mimetype(),
-                             record.size());
+                             record.size(),
+                             record.archivedSize(),
+                             record.extension(),
+                             shareTag
+        );
     }
 
     @Override
     public String recordUpdateSql(@Nonnull FileRecord record) {
         Preconditions.checkNotNull(record);
+        var shareTag = "null";
+        if(record.shareTag() != null){
+            shareTag = "'"+record.shareTag() + "'";
+        }
 
         return String.format("UPDATE %s " +
                                      "SET " +
@@ -65,7 +81,10 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                                      "owner_id='%s', " +
                                      "name='%s', " +
                                      "mimetype='%s', " +
-                                     "size=%o " +
+                                     "size=%d, " +
+                                     "archived_size=%d, " +
+                                     "extension='%s', " +
+                                     "share_tag=%s " +
                                      "WHERE id = '%s'",
                              table,
                              record.folderId()
@@ -75,6 +94,9 @@ class SqlFileConverter implements SqlRecordConverter<FileRecord> {
                              record.name(),
                              record.mimetype(),
                              record.size(),
+                             record.archivedSize(),
+                             record.extension(),
+                             shareTag,
                              record.id()
                                    .value());
     }

@@ -23,7 +23,7 @@ export class DownloadService {
           .then((data) => {
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(data);
-            a.download = file.name;
+            a.download = file.name + '.' + file.extension;
             a.click();
           });
     }

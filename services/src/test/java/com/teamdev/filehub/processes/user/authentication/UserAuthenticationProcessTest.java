@@ -2,14 +2,17 @@ package com.teamdev.filehub.processes.user.authentication;
 
 import com.google.common.testing.NullPointerTester;
 import com.teamdev.filehub.AuthenticationDaoFake;
+import com.teamdev.filehub.EmailServiceFake;
 import com.teamdev.filehub.UserDaoFake;
 import com.teamdev.filehub.dao.RecordId;
 import com.teamdev.filehub.dao.user.UserRecord;
+import com.teamdev.filehub.postman.EmailService;
 import com.teamdev.util.StringEncryptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.teamdev.util.StringEncryptor.encrypt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserAuthenticationProcessTest {
@@ -20,28 +23,30 @@ public class UserAuthenticationProcessTest {
     private UserRecord registeredUser;
 
     private UserRecord notRegisteredUser;
+    private EmailService emailService;
 
     @BeforeEach
     void setUp() {
         UserDaoFake userDao = new UserDaoFake();
         authenticationDao = new AuthenticationDaoFake();
+        emailService = new EmailServiceFake();
         authenticationProcess = new UserAuthenticationProcessImpl(userDao,
-                                                                  authenticationDao);
+                                                                  authenticationDao, emailService);
 
         registeredUser = new UserRecord(new RecordId("user1"),
                                         "user1",
-                                        StringEncryptor.encrypt("password1"));
+                                        encrypt("password1"), true, encrypt("user1"));
 
         notRegisteredUser = new UserRecord(new RecordId("user2"),
                                            "user2",
-                                           StringEncryptor.encrypt("password2"));
+                                           encrypt("password2"), true, encrypt("user2"));
 
         userDao.create(registeredUser);
 
     }
 
     @Test
-    void authenticationTest() throws UserCredentialsMismatchException {
+    void authenticationTest() throws UserCredentialsMismatchException, UserEmailNotConfirmedException {
 
         UserAuthenticationCommand command = new UserAuthenticationCommand(registeredUser.login(),
                                                                           "password1");
@@ -87,7 +92,7 @@ public class UserAuthenticationProcessTest {
 
         UserAuthenticationProcessImpl authenticationProcess = new UserAuthenticationProcessImpl(
                 new UserDaoFake(),
-                new AuthenticationDaoFake());
+                new AuthenticationDaoFake(), emailService);
 
         NullPointerTester tester = new NullPointerTester();
         tester.testMethod(authenticationProcess,

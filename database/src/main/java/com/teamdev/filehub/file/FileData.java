@@ -16,13 +16,20 @@ public class FileData extends Data {
     private final String name;
     private final String mimetype;
     private final long size;
+    private final long archivedSize;
+    private final String extension;
+    private final String shareTag;
 
     public FileData(@Nonnull String id,
                     @Nonnull String folderId,
                     @Nonnull String ownerId,
                     @Nonnull String name,
                     @Nonnull String mimetype,
-                    long size) {
+                    long size,
+                    long archivedSize,
+                    @Nonnull String extension,
+                    @Nonnull String shareTag
+                    ) {
         super(Preconditions.checkNotNull(id));
 
         this.folderId = Preconditions.checkNotNull(folderId);
@@ -30,6 +37,9 @@ public class FileData extends Data {
         this.name = Preconditions.checkNotNull(name);
         this.mimetype = Preconditions.checkNotNull(mimetype);
         this.size = size;
+        this.archivedSize = archivedSize;
+        this.extension = Preconditions.checkNotNull(extension);
+        this.shareTag = Preconditions.checkNotNull(shareTag);
     }
 
     public String folderId() {
@@ -52,6 +62,18 @@ public class FileData extends Data {
         return size;
     }
 
+    public long archivedSize() {
+        return archivedSize;
+    }
+
+    public String extension() {
+        return extension;
+    }
+
+    public String shareTag() {
+        return shareTag;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(folderId, ownerId, name, mimetype, size);
@@ -70,6 +92,9 @@ public class FileData extends Data {
                 size == data.size && Objects.equal(folderId, data.folderId) &&
                 Objects.equal(ownerId, data.ownerId) &&
                 Objects.equal(name, data.name) &&
+                Objects.equal(shareTag, data.shareTag) &&
+                Objects.equal(archivedSize, data.archivedSize) &&
+                Objects.equal(extension, data.extension) &&
                 Objects.equal(mimetype, data.mimetype);
     }
 }

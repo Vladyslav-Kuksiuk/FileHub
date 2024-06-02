@@ -10,9 +10,10 @@ import {UserData} from '../../../user-data';
 export const EMAIL = 'email';
 export const PASSWORD = 'password';
 export const CONFIRM_PASSWORD = 'confirm-password';
-const EMAIL_MIN_LENGTH = 5;
-const PASSWORD_MIN_LENGTH = 6;
-const EMAIL_VALIDATION_REGEX = /^[a-zA-Z\d+.\-_@]+$/;
+const EMAIL_MIN_LENGTH = 6;
+const PASSWORD_MIN_LENGTH = 8;
+const EMAIL_VALIDATION_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PASSWORD_VALIDATION_REGEX = /^[a-zA-Z0-9]+$/;
 export const EMAIL_LENGTH_ERROR = `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`;
 export const PASSWORD_LENGTH_ERROR = `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`;
 export const EMAIL_VALIDATION_ERROR = 'Allowed only a-Z and +.-_@ .';
@@ -96,9 +97,11 @@ export class RegistrationForm extends Component {
       return new FormValidationConfigBuilder()
           .addField(EMAIL,
               validateLength(EMAIL_MIN_LENGTH, `Length must be at least ${EMAIL_MIN_LENGTH} symbols.`),
-              validateByRegexp(EMAIL_VALIDATION_REGEX, 'Allowed only a-Z and +.-_@ .'))
+              validateByRegexp(EMAIL_VALIDATION_REGEX, 'Email must be real.'))
           .addField(PASSWORD,
-              validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`))
+              validateLength(PASSWORD_MIN_LENGTH, `Length must be at least ${PASSWORD_MIN_LENGTH} symbols.`),
+              validateByRegexp(PASSWORD_VALIDATION_REGEX, 'Allowed only a-Z and 0-9.')
+              )
           .addField(CONFIRM_PASSWORD,
               validateSameValue(formData.get(PASSWORD),
                   'Passwords don\'t match.'))

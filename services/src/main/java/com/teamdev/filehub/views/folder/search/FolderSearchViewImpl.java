@@ -20,7 +20,6 @@ import java.util.Optional;
  * {@link FolderSearchView} implementation.
  */
 public class FolderSearchViewImpl implements FolderSearchView {
-
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private final FolderDao folderDao;
@@ -91,7 +90,10 @@ public class FolderSearchViewImpl implements FolderSearchView {
                                  .value(),
                              file.name(),
                              file.size(),
-                             file.mimetype())
+                             file.mimetype(),
+                             file.archivedSize(),
+                             file.extension(),
+                             file.shareTag())
         ));
 
         logger.atInfo()

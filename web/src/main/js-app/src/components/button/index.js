@@ -5,6 +5,7 @@ export const BUTTON_TYPE = {
   DEFAULT: 'btn-default',
   PRIMARY: 'btn-primary',
   DANGER: 'btn-danger',
+  SUCCESS: 'btn-success',
 };
 
 /**

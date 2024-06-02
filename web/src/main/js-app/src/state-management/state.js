@@ -121,6 +121,11 @@ export class State {
   itemRenamingErrors = [];
 
   /**
+   * @type {FolderContentItem | null}
+   */
+  fileInSharingState = null
+
+  /**
    * @param {object} state
    */
   constructor(state = {}) {

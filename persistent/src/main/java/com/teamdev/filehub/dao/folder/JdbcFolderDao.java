@@ -83,7 +83,7 @@ public class JdbcFolderDao extends JdbcDao<FolderRecord> implements FolderDao {
             ResultSet resultSet =
                     dbConnection().executeQuery(
                             String.format(
-                                    "SELECT * FROM %s WHERE parent_folder_id = '%s' AND name ILIKE '%s'",
+                                    "SELECT * FROM %s WHERE parent_folder_id = '%s' AND name ILIKE '%%%s%%'",
                                     tableName(),
                                     parentId.value(),
                                     namePart));

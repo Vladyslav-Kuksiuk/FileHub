@@ -5,6 +5,8 @@ const REMOVE_CLICK_EVENT = 'REMOVE_CLICK_EVENT';
 const DOWNLOAD_CLICK_EVENT = 'DOWNLOAD_CLICK_EVENT';
 const OPEN_RENAME_FORM_EVENT = 'OPEN_RENAME_FORM_EVENT';
 const RENAME_EVENT = 'RENAME_EVENT';
+const SHARE_CLICK_EVENT = 'SHARE_CLICK_EVENT';
+const SHARE_BUTTON = 'file-row-share-button';
 const REMOVE_BUTTON = 'remove-button';
 const DOWNLOAD_BUTTON = 'download-button';
 const NAME_CELL = 'name-cell';
@@ -19,6 +21,7 @@ export class FileRow extends Component {
   #temporaryName;
   #mimetype;
   #size;
+  #archivedSize;
   #isRenameFormOpen = false;
   #isRenaming = false;
   #renamingErrors = [];
@@ -33,13 +36,15 @@ export class FileRow extends Component {
    * @param {string} name
    * @param {string} mimetype
    * @param {number} size
+   * @param {number} archivedSize
    * @param {string} temporaryName
    */
-  constructor(parent, name, mimetype, size, temporaryName = name) {
+  constructor(parent, name, mimetype, size, archivedSize, temporaryName = name) {
     super(parent);
     this.#name = name;
     this.#mimetype = mimetype;
     this.#size = size;
+    this.#archivedSize = archivedSize;
     this.#temporaryName = temporaryName;
     this.init();
   }
@@ -56,6 +61,11 @@ export class FileRow extends Component {
     this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON}"]`)?.addEventListener('click', (event)=>{
       event.preventDefault();
       this.#eventTarget.dispatchEvent(new Event(REMOVE_CLICK_EVENT));
+    });
+
+    this.rootElement.querySelector(`[data-td="${SHARE_BUTTON}"]`)?.addEventListener('click', (event)=>{
+      event.preventDefault();
+      this.#eventTarget.dispatchEvent(new Event(SHARE_CLICK_EVENT));
     });
 
     this.rootElement.querySelector(`[data-td="${NAME_CELL}"]`)?.addEventListener('dblclick', ()=>{
@@ -102,6 +112,15 @@ export class FileRow extends Component {
    */
   onRemove(listener) {
     this.#eventTarget.addEventListener(REMOVE_CLICK_EVENT, listener);
+  }
+
+  /**
+   * Adds listener on share button click event.
+   *
+   * @param {function(): void} listener
+   */
+  onShare(listener) {
+    this.#eventTarget.addEventListener(SHARE_CLICK_EVENT, listener);
   }
 
   /**
@@ -193,6 +212,7 @@ export class FileRow extends Component {
   markup() {
     const type = this.fileTypeFactory.getType(this.#mimetype);
     const size = this.#convertSize(this.#size);
+    const archivedSize = this.#convertSize(this.#archivedSize);
     let nameCellContent = this.#name;
     let errors = '';
 
@@ -247,9 +267,12 @@ export class FileRow extends Component {
        </td>
        <td class="cell-name" ${this.markElement(NAME_CELL)} >${nameCellContent}</td>
        <td class="cell-type">${type?.type}</td>
-       <td class="cell-size">${size}</td>
+       <td class="cell-size">${size} (${archivedSize})</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
+               <button ${this.markElement(SHARE_BUTTON)} class="icon-button" title="Share">
+                   <span aria-hidden="true" class="glyphicon glyphicon-link"></span>
+               </button>
                ${downloadingButton}
                <button ${this.markElement(REMOVE_BUTTON)} class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>

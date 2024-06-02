@@ -12,12 +12,14 @@ export class SearchRow extends Component {
   #error;
   #inputValue = '';
   #eventTarget = new EventTarget();
+  #placeholder
 
   /**
    * @param {HTMLElement} parent
    */
-  constructor(parent) {
+  constructor(parent, placeholder) {
     super(parent);
+    this.#placeholder = placeholder
     this.init();
   }
 
@@ -70,7 +72,7 @@ export class SearchRow extends Component {
   <div class="input-group search-line">
     <input ${this.markElement(INPUT)} class="form-control ${this.#error ? 'input-error' : ''}" 
            id="search" name="Search" value="${this.#inputValue}"
-           placeholder="Enter entity name..." type="text"
+           placeholder="${this.#placeholder}" type="text"
            ${this.#isLoading ? 'disabled' : ''}>
     <span class="input-group-btn">
       <button ${this.markElement(BUTTON)} class="btn btn-primary" title="Search" type="button"

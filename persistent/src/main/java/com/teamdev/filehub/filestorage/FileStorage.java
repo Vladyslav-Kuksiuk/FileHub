@@ -5,13 +5,10 @@ import com.google.common.flogger.FluentLogger;
 import com.teamdev.filehub.dao.RecordId;
 
 import javax.annotation.Nonnull;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * API to work with files in filesystem.
@@ -38,12 +35,12 @@ public class FileStorage {
      * @param fileInput
      *         file to save.
      */
-    public void uploadFile(@Nonnull RecordId fileId,
+    public long uploadFile(@Nonnull RecordId fileId,
                            @Nonnull InputStream fileInput) {
         Preconditions.checkNotNull(fileId);
         Preconditions.checkNotNull(fileInput);
 
-        String fullPath = storageFolderPath + fileId.value();
+        String fullPath = storageFolderPath + fileId.value() + ".zip";
 
         File targetFile = new File(fullPath);
         if (!targetFile.exists()) {
@@ -61,22 +58,28 @@ public class FileStorage {
 
         }
 
-        try (OutputStream outStream = new FileOutputStream(targetFile)) {
+        try (OutputStream fileOut = new FileOutputStream(targetFile);
+             var zipOut = new ZipOutputStream(fileOut)) {
+
+            ZipEntry zipEntry = new ZipEntry("value");
+            zipOut.putNextEntry(zipEntry);
 
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;
             while ((bytesRead = fileInput.read(buffer)) != -1) {
-                outStream.write(buffer, 0, bytesRead);
+                zipOut.write(buffer, 0, bytesRead);
             }
             fileInput.close();
+            zipOut.closeEntry();
 
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
 
         logger.atInfo()
-              .log("[FILE WRITTEN] - Path: %s.", fullPath);
+                .log("[FILE WRITTEN] - Path: %s.", fullPath);
 
+        return targetFile.length();
     }
 
     /**
@@ -87,7 +90,7 @@ public class FileStorage {
     public InputStream downloadFile(@Nonnull RecordId fileId) {
         Preconditions.checkNotNull(fileId);
 
-        String fullPath = storageFolderPath + fileId.value();
+        String fullPath = storageFolderPath + fileId.value() + ".zip";
         File file = new File(fullPath);
 
         if (!file.exists()) {
@@ -95,12 +98,34 @@ public class FileStorage {
         }
 
         try {
-            InputStream fileInput = new FileInputStream(file);
+            InputStream fileInput = getFileInputStreamFromZip(fullPath, "value");
             return fileInput;
-        } catch (FileNotFoundException exception) {
+        } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
 
+    }
+
+    public static InputStream getFileInputStreamFromZip(String zipFilePath, String fileNameInZip) throws IOException {
+        try (FileInputStream fis = new FileInputStream(zipFilePath);
+             ZipInputStream zis = new ZipInputStream(fis)) {
+
+            ZipEntry zipEntry;
+            while ((zipEntry = zis.getNextEntry()) != null) {
+                if (zipEntry.getName().equals(fileNameInZip)) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = zis.read(buffer)) >= 0) {
+                        baos.write(buffer, 0, length);
+                    }
+                    zis.closeEntry();
+                    return new ByteArrayInputStream(baos.toByteArray());
+                }
+                zis.closeEntry();
+            }
+        }
+        return null;
     }
 
     /**
@@ -109,7 +134,7 @@ public class FileStorage {
     public void removeFile(@Nonnull RecordId fileId) {
         Preconditions.checkNotNull(fileId);
 
-        String fullPath = storageFolderPath + fileId.value();
+        String fullPath = storageFolderPath + fileId.value() + ".zip";
         File file = new File(fullPath);
 
         if (!file.exists()) {

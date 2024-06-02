@@ -13,6 +13,8 @@ import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.teamdev.util.StringEncryptor.encrypt;
+
 /**
  * {@link FolderCreateProcess} implementation.
  */
@@ -67,12 +69,11 @@ public class FolderCreateProcessImpl implements FolderCreateProcess {
         }
 
         RecordId newFolderId =
-                new RecordId(
-                        command.userId()
-                               .value() +
-                                command.folderName() +
-                                LocalDateTime.now(
-                                        LocalDateTimeUtil.TIME_ZONE));
+                new RecordId(encrypt(command.userId()
+                        .value() +
+                        command.folderName() +
+                        LocalDateTime.now(
+                                LocalDateTimeUtil.TIME_ZONE)));
 
         FolderRecord newFolderRecord = new FolderRecord(newFolderId,
                                                         command.userId(),

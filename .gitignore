@@ -64,3 +64,6 @@ web/src/main/js-app/dist
 web/src/main/js-app/manifest.hash.json
 /web/src/main/resources/web-client/
 /storage/
+/web/storage/
+
+/services/src/main/resources/secret.properties

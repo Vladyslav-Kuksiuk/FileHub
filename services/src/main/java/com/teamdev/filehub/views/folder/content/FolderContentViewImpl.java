@@ -87,7 +87,10 @@ public class FolderContentViewImpl implements FolderContentView {
                                  .value(),
                              file.name(),
                              file.size(),
-                             file.mimetype())
+                             file.mimetype(),
+                             file.archivedSize(),
+                             file.extension(),
+                             file.shareTag())
         ));
 
         logger.atInfo()

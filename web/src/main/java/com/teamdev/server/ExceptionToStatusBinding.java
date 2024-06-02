@@ -5,7 +5,9 @@ import com.google.gson.JsonSyntaxException;
 import com.teamdev.filehub.AccessDeniedException;
 import com.teamdev.filehub.DataNotFoundException;
 import com.teamdev.filehub.RequestFieldValidationException;
+import com.teamdev.filehub.processes.user.authentication.UserBannedException;
 import com.teamdev.filehub.processes.user.authentication.UserCredentialsMismatchException;
+import com.teamdev.filehub.processes.user.authentication.UserEmailNotConfirmedException;
 import com.teamdev.filehub.processes.user.register.UserAlreadyRegisteredException;
 import com.teamdev.filehub.views.authorization.UserAuthorizationException;
 
@@ -26,8 +28,10 @@ class ExceptionToStatusBinding {
 
         exceptionStatusMap.put(UserCredentialsMismatchException.class, 401);
         exceptionStatusMap.put(UserAuthorizationException.class, 401);
+        exceptionStatusMap.put(UserEmailNotConfirmedException.class, 403);
 
         exceptionStatusMap.put(AccessDeniedException.class, 403);
+        exceptionStatusMap.put(UserBannedException.class, 423);
         exceptionStatusMap.put(DataNotFoundException.class, 404);
 
         exceptionStatusMap.put(UserAlreadyRegisteredException.class, 409);

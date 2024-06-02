@@ -1,4 +1,6 @@
 export const AUTH_TOKEN = 'auth-token';
+export const ADMIN_AUTH_TOKEN = 'admin-auth-token';
+export const EMAIL_ADDRESS = 'email-address';
 
 /**
  * Service to store data between sessions.
