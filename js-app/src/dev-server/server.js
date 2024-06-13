@@ -202,6 +202,29 @@ app.post('/folders/:folderId/content', (req, res) => {
   }, 500);
 });
 
+app.post('/folders', (req, res) => {
+  setTimeout(() => {
+    const id = 'testUser-'+counter();
+    const newFolder ={
+      type: 'folder',
+      name: req.body.name,
+      id: id,
+      parentId: req.body.parentId,
+      itemsAmount: 0,
+    };
+    foldersInfo[id] = newFolder;
+
+    Object.entries(foldersContent).forEach(([folderId, contentArray]) => {
+      if (folderId === req.body.parentId) {
+        contentArray.push(newFolder);
+      }
+    });
+    foldersContent[id] = [];
+    res.status(200);
+    res.send({});
+  }, 500);
+});
+
 app.get('/logout', (req, res) => {
   res.status(200);
   res.send({});

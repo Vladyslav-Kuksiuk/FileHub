@@ -294,6 +294,83 @@ describe('Mutators', () => {
     expect(newState).toStrictEqual(expectedState);
   });
 
+  test(`Should return new state with changed isFolderCreationModalOpen`, function() {
+    expect.assertions(1);
+
+    const prevState = new State({
+      folderCreationError: 'error',
+    });
+
+    const expectedState = new State({
+      isFolderCreationModalOpen: true,
+      folderCreationError: null,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_IS_FOLDER_CREATION_MODAL_OPEN](prevState, true);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed folderInCreationState and folderCreationError`, function() {
+    expect.assertions(1);
+
+    const prevState = new State({
+      folderCreationError: 'error',
+    });
+
+    const expectedState = new State({
+      folderInCreationState: {},
+      folderCreationError: null,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE](prevState, {});
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed folderInCreationState`, function() {
+    expect.assertions(1);
+
+    const prevState = new State({
+      folderInCreationState: {},
+      folderCreationError: 'error',
+    });
+
+    const expectedState = new State({
+      folderInCreationState: null,
+      folderCreationError: 'error',
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE](prevState, null);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed folderInCreationState and isFolderCreationModalOpen`, function() {
+    expect.assertions(1);
+
+    const prevState = new State({
+      folderInCreationState: {},
+      isFolderCreationModalOpen: true,
+    });
+
+    const expectedState = new State({
+      folderInCreationState: null,
+      isFolderCreationModalOpen: false,
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_IN_CREATION_STATE](prevState, null);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
+  test(`Should return new state with changed folderCreationError`, function() {
+    expect.assertions(1);
+
+    const expectedState = new State({
+      folderCreationError: 'error',
+    });
+    const newState = MUTATORS[MUTATOR_NAMES.SET_FOLDER_CREATION_ERROR](state, 'error');
+
+    expect(newState).toStrictEqual(expectedState);
+  });
+
   test(`Should return new state with added foldersToUpload`, function() {
     expect.assertions(1);
 

@@ -700,4 +700,54 @@ describe('ApiService', () => {
       await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, {name: item.name}, undefined);
     });
   });
+
+  describe('createFolder', () => {
+    test(`Should successfully send folder creation request`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const folder = {
+        name: 'name',
+        parentId: 'parentId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'postJson')
+          .mockImplementation(async () => {
+            return new Response(200);
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.createFolder(folder)).resolves.toBeUndefined();
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith('api/folders/', folder, undefined);
+    });
+
+    test(`Should return error after folder creation request`, async function() {
+      expect.assertions(1);
+      const requestService = new RequestService();
+
+      jest.spyOn(requestService, 'postJson')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.createFolder({})).rejects.toEqual(new ApiServiceError());
+    });
+
+    test(`Should return error after folder creation request fetch error`, async function() {
+      expect.assertions(1);
+      const requestService = new RequestService();
+
+      jest.spyOn(requestService, 'postJson')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.createFolder({})).rejects.toEqual(new ApiServiceError());
+    });
+  });
 });

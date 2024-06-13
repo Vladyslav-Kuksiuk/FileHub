@@ -72,6 +72,20 @@ export class State {
   itemDeletingError = null;
 
   /**
+   * @type {boolean}
+   */
+  isFolderCreationModalOpen = false;
+
+  /**
+   * @type {FolderContentItem}
+   */
+  folderInCreationState = null;
+  /**
+   * @type {string | null}
+   */
+  folderCreationError = null;
+
+  /**
    * @type {string[]}
    */
   foldersToUpload = [];

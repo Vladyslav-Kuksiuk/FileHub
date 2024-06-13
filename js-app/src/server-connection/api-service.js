@@ -234,4 +234,28 @@ export class ApiService {
           }
         });
   }
+
+  /**
+   * Creates folder.
+   *
+   * @param {FolderContentItem} folder
+   * @returns {Promise<ApiServiceError>}
+   */
+  async createFolder(folder) {
+    return this.#requestService.postJson(
+        'api/folders/',
+        {
+          name: folder.name,
+          parentId: folder.parentId,
+        },
+        this.#userToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response)=>{
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
 }
