@@ -13,17 +13,19 @@ describe('Button', () => {
   test(`Should create and render Button component`, function() {
     expect.assertions(2);
 
-    const buttonText = 'myButton';
-    new Button(document.body, buttonText);
+    new Button(document.body, {});
 
     expect(document.body.querySelectorAll('[data-td="button-component"]').length).toBe(1);
-    expect(document.body.querySelector('[data-td="button-component"]').textContent).toBe(buttonText);
+    expect(document.body.querySelector('[data-td="button-component"]').textContent).toBe('');
   });
 
   test(`Should change button title`, function() {
     expect.assertions(2);
 
-    const button = new Button(document.body, buttonText);
+    const button = new Button(document.body, {
+      text: buttonText,
+      title: buttonText,
+    });
 
     expect(document.body.innerHTML).toBe(defaultSnapshot);
 
@@ -39,7 +41,10 @@ describe('Button', () => {
   test(`Should change button text`, function() {
     expect.assertions(2);
 
-    const button = new Button(document.body, buttonText);
+    const button = new Button(document.body, {
+      text: buttonText,
+      title: buttonText,
+    });
 
     expect(document.body.innerHTML).toBe(defaultSnapshot);
 
@@ -55,7 +60,10 @@ describe('Button', () => {
   test(`Should change button type`, function() {
     expect.assertions(2);
 
-    const button = new Button(document.body, buttonText);
+    const button = new Button(document.body, {
+      text: buttonText,
+      title: buttonText,
+    });
 
     expect(document.body.innerHTML).toBe(defaultSnapshot);
 
@@ -71,7 +79,10 @@ describe('Button', () => {
   test(`Should change button disabled state`, function() {
     expect.assertions(2);
 
-    const button = new Button(document.body, buttonText);
+    const button = new Button(document.body, {
+      text: buttonText,
+      title: buttonText,
+    });
 
     expect(document.body.innerHTML).toBe(defaultSnapshot);
 
@@ -86,7 +97,10 @@ describe('Button', () => {
   test('Should trigger click event', function() {
     expect.assertions(1);
 
-    const button = new Button(document.body, buttonText);
+    const button = new Button(document.body, {
+      text: buttonText,
+      title: buttonText,
+    });
     const listenerMock = jest.fn();
     button.onClick(listenerMock);
 

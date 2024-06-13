@@ -1,7 +1,42 @@
 import express from 'express';
+import formidable from 'formidable';
 
 const app = express();
 const port = 3001;
+let counterValue = 0;
+const counter = () => {
+  return counterValue++;
+};
+
+const convertType = (mimetype) => {
+  mimetype = mimetype.toString();
+  const types = {
+    'application/pdf': 'PDF Document',
+    'image/png': 'PNG Image',
+    'image/jpeg': 'JPEG Image',
+    'audio/mpeg': 'MP3 Audio',
+  };
+  return types[mimetype] ?? mimetype;
+};
+
+const convertSize = (size) => {
+  if (size < 1023) {
+    return size+' B';
+  }
+
+  if (size < 1048575) {
+    return (size/1024).toFixed(1) +' KB';
+  }
+
+  if (size < 1073741823) {
+    return (size/1048576).toFixed(1) +' MB';
+  }
+
+  if (size < 1099511627776) {
+    return (size/1073741824).toFixed(1) +' GB';
+  }
+};
+
 
 const foldersInfo = {
   'testUser-0': {
@@ -35,7 +70,7 @@ const foldersContent = {
       name: 'MyFavouriteTrack.mp3',
       type: 'MP3 Audio',
       size: '1.34 MB',
-      id: 'testUser-file-0',
+      id: 'testUser-file-'+counter(),
 
     },
   ],
@@ -49,13 +84,13 @@ const foldersContent = {
       name: 'MyFavouriteVideo.avi',
       type: 'AVI Movie',
       size: '3.4 GB',
-      id: 'testUser-file-1',
+      id: 'testUser-file-'+counter(),
     },
     {
       name: 'MyFavouriteText.pdf',
       type: 'PDF Document',
       size: '13 KB',
-      id: 'testUser-file-2',
+      id: 'testUser-file-'+counter(),
     },
   ],
   'testUser-2': [
@@ -140,6 +175,24 @@ app.get('/folders/:folderId/content', (req, res) => {
       res.status(404);
       res.send({});
     }
+  }, 500);
+});
+
+app.post('/folders/:folderId/content', (req, res) => {
+  setTimeout(() => {
+    const form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+      Object.entries(files).forEach(([key, file])=>{
+        foldersContent[req.params.folderId].push({
+          name: file.originalFilename,
+          type: convertType(file.mimetype),
+          size: convertSize(file.size),
+          id: 'testUser-file-'+counter(),
+        });
+      });
+    });
+    res.status(200);
+    res.send({});
   }, 500);
 });
 

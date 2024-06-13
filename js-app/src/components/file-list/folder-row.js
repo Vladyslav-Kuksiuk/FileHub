@@ -15,6 +15,8 @@ const FOLDER_LINK_SLOT = 'folder-link-slot';
 export class FolderRow extends Component {
   #name;
   #eventTarget = new EventTarget();
+  #isUploading = false;
+  #uploadingError = false;
   @inject fileTypeIconFactory;
 
   /**
@@ -67,6 +69,22 @@ export class FolderRow extends Component {
   }
 
   /**
+   * @param {boolean} isUploading
+   */
+  set isUploading(isUploading) {
+    this.#isUploading = isUploading;
+    this.render();
+  }
+
+  /**
+   * @param {string} uploadingError
+   */
+  set uploadingError(uploadingError) {
+    this.#uploadingError = uploadingError;
+    this.render();
+  }
+
+  /**
    * Adds listener on remove button click event.
    *
    * @param {function(): void} listener
@@ -79,8 +97,25 @@ export class FolderRow extends Component {
    * @inheritDoc
    */
   markup() {
+    let uploadingButton = `
+        <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="Upload file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+        </button>`;
+    if (this.#isUploading) {
+      uploadingButton = `
+      <button ${this.markElement(UPLOAD_BUTTON)} disabled class="icon-button" title="File uploading...">
+         <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
+      </button>`;
+    }
+
+    if (this.#uploadingError) {
+      uploadingButton = `
+        <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="${this.#uploadingError}">
+            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
+        </button>`;
+    }
     return `
-    <tr>
+    <tr class="folder-row">
         <td class="cell-arrow">
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
         </td>
@@ -92,9 +127,7 @@ export class FolderRow extends Component {
         <td class="cell-size">—</td>
         <td class="cell-buttons">
             <div class="data-buttons-container">
-                <button ${this.markElement(UPLOAD_BUTTON)} class="icon-button" title="Upload file.">
-                    <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                </button>
+                ${uploadingButton}
                 <button ${this.markElement(REMOVE_BUTTON)} class="icon-button" title="Delete">
                     <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                 </button>

@@ -9,6 +9,8 @@ import {FileList} from '../../../components/file-list';
 import {ModalRemove} from '../../../components/modal-remove';
 import {ModalRemoveWrapper} from '../modal-remove-wrapper';
 import {inject} from '../../../registry';
+import {ButtonGroupWrapper} from '../button-group-wrapper';
+import {ButtonGroup} from '../../../components/button-group';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
@@ -16,6 +18,7 @@ const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
 const FILE_LIST_SLOT = 'file-list-slot';
 const MODAL_REMOVE_SLOT = 'modal-remove-slot';
+const BUTTON_GROUP_SLOT = 'button-group-slot';
 
 /**
  * Table page component.
@@ -28,6 +31,7 @@ export class TablePage extends Component {
   #userInfoWrapper;
   #breadcrumbWrapper;
   #fileListWrapper;
+  #buttonGroupWrapper;
 
   /**
    * @param {HTMLElement} parent
@@ -80,6 +84,11 @@ export class TablePage extends Component {
         },
       }));
     });
+
+    const buttonGroupWrapper = new ButtonGroupWrapper();
+    this.#buttonGroupWrapper = buttonGroupWrapper;
+    const buttonGroupSlot = this.getSlot(BUTTON_GROUP_SLOT);
+    buttonGroupWrapper.wrap(new ButtonGroup(buttonGroupSlot));
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
@@ -154,17 +163,7 @@ export class TablePage extends Component {
                     </span>
                 </div>
             </div>
-            <div class="col-xs-4 col-sm-6 tool-bar-buttons">
-                <div aria-label="..." class="btn-group" role="group">
-                    <button class="btn btn-primary" title="Upload file" type="button">
-                        <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                    </button>
-                    <button class="btn btn-primary" data-target="#modal-create-folder" data-toggle="modal"
-                            title="Add folder" type="button">
-                        <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </div>
-            </div>
+            ${this.addSlot(BUTTON_GROUP_SLOT)}
         </div>
         ${this.addSlot(FILE_LIST_SLOT)}
     </main>

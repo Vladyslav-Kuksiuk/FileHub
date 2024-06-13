@@ -2,9 +2,10 @@ import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
 import {inject} from '../../registry';
-import {FolderRow} from '../../components/file-list/folder-row.js';
-import {FileRow} from '../../components/file-list/file-row.js';
+import {FolderRow} from '../../components/file-list/folder-row';
+import {FileRow} from '../../components/file-list/file-row';
 import {StateAwareWrapper} from '../state-aware-wrapper';
+import {UploadFilesAction} from '../../state-management/folder/upload-files-action';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -41,15 +42,38 @@ export class FileListWrapper extends StateAwareWrapper {
             .map((folder) => {
               return (slot) => {
                 const folderRow = new FolderRow(slot, folder.name);
+
                 folderRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(folder));
                 });
+
                 folderRow.onFolderLinkClick(()=>{
                   this.#eventTarget.dispatchEvent(new CustomEvent(NAVIGATE_EVENT_FOLDER, {
                     detail: {
                       folderId: folder.id,
                     },
                   }));
+                });
+
+                folderRow.onUpload(() => {
+                  const input = document.createElement('input');
+                  input.type = 'file';
+                  input.setAttribute('multiple', '');
+                  input.click();
+                  input.addEventListener('change', ()=>{
+                    this.stateManagementService.dispatch(
+                        new UploadFilesAction(
+                            folder.id,
+                            input.files));
+                  });
+                });
+
+                this.addStateListener('foldersToUpload', (state) => {
+                  folderRow.isUploading = state.foldersToUpload.includes(folder.id);
+                });
+
+                this.addStateListener('filesUploadingErrorInfo', (state) => {
+                  folderRow.uploadingError = state.filesUploadingErrorInfo[folder.id] ?? null;
                 });
               };
             });

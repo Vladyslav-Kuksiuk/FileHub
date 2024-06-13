@@ -5,6 +5,7 @@ import {StateManagementService} from '../../../src/state-management/state-manage
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 import {registry, clearRegistry} from '../../../src/registry';
 import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
+import {UploadFilesAction} from '../../../src/state-management/folder/upload-files-action';
 
 describe('FileListWrapper', () => {
   let stateManagementService;
@@ -35,6 +36,10 @@ describe('FileListWrapper', () => {
 
     registry.register('stateManagementService', ()=>{
       return stateManagementService;
+    });
+
+    registry.register('apiService', ()=>{
+      return {};
     });
 
     registry.register('fileTypeIconFactory', ()=>{
@@ -132,7 +137,7 @@ describe('FileListWrapper', () => {
     expect(contentMock).toHaveBeenCalledTimes(2);
   });
 
-  test('Should render folder row and trigger events', () => {
+  test('Should render folder row and trigger navigation and removing events', () => {
     expect.assertions(3);
 
     const wrapper = new FileListWrapper();
@@ -168,6 +173,60 @@ describe('FileListWrapper', () => {
     expect(dispatchMock).toHaveBeenCalledTimes(1);
     expect(dispatchMock).toHaveBeenCalledWith( new DefineRemovingItemAction(folder));
     expect(navigateListenerMock).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should render folder row and trigger uploading events', () => {
+    expect.assertions(4);
+
+    const wrapper = new FileListWrapper();
+    let folderCreator;
+    const setContentMock = jest.fn((folderCreators) => {
+      folderCreator = folderCreators[0];
+    });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const folder = {
+      type: 'folder',
+      name: 'name',
+      id: 'id',
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        folder,
+      ],
+    });
+
+    folderCreator(document.body);
+
+    stateListeners.foldersToUpload({
+      foldersToUpload: [folder.id],
+    });
+    expect(document.body.querySelector('[data-td="upload-button"]').title).toBe('File uploading...');
+
+    stateListeners.filesUploadingErrorInfo({
+      filesUploadingErrorInfo: {},
+    });
+    stateListeners.filesUploadingErrorInfo({
+      filesUploadingErrorInfo: {
+        [folder.id]: 'error',
+      },
+    });
+    expect(document.body.querySelector('[data-td="upload-button"]').title).toBe('error');
+
+    const createElementSpy = jest.spyOn(document, 'createElement');
+    document.body.querySelector('[data-td="upload-button"]').click();
+    const input = createElementSpy.mock.results[0].value;
+    input.dispatchEvent(new Event('change'));
+
+    expect(dispatchMock).toHaveBeenCalledTimes(1);
+    expect(dispatchMock).toHaveBeenCalledWith(new UploadFilesAction(folder.id, input.files));
   });
 
   test('Should render file row and trigger events', () => {

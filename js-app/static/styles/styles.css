@@ -77,7 +77,8 @@ a:hover {
     color: #115281;
 }
 
-.icon-button .glyphicon-upload {
+.icon-button .glyphicon-upload,
+.folder-row .icon-button .glyphicon-repeat{
     color: #26b926;
 }
 
@@ -89,7 +90,8 @@ a:hover {
     color: #097c09;
 }
 
-.icon-button .glyphicon-remove-circle {
+.icon-button .glyphicon-remove-circle,
+.icon-button .glyphicon-exclamation-sign{
     color: #cb5c54;
 }
 

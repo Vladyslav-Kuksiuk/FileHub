@@ -72,6 +72,16 @@ export class State {
   itemDeletingError = null;
 
   /**
+   * @type {string[]}
+   */
+  foldersToUpload = [];
+
+  /**
+   * @type {Object<string, string>}
+   */
+  filesUploadingErrorInfo = {};
+
+  /**
    * @param {object} state
    */
   constructor(state = {}) {
