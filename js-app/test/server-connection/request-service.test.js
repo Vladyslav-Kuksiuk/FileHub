@@ -161,4 +161,32 @@ describe('RequestService', () => {
 
     return expect(responsePromise).rejects.toThrow(Error);
   });
+
+  test('Should correctly send DELETE request  and handle response', function() {
+    const url = 'MyUrl';
+
+    global.fetch = jest.fn(async () => {
+      return {
+        status: 200,
+      };
+    });
+
+    const requestService = new RequestService();
+    const token = 'myToken';
+    const responsePromise = requestService.delete(url, token);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return responsePromise.then((response) => {
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual({});
+    });
+  });
 });

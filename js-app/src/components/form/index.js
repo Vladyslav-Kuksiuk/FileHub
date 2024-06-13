@@ -1,5 +1,5 @@
 import {Component} from '../component';
-import {Button} from '../button';
+import {Button, BUTTON_TYPE} from '../button';
 
 const FORM_SUBMIT_EVENT = 'FORM_SUBMIT_EVENT';
 /**
@@ -37,7 +37,7 @@ export class Form extends Component {
    */
   afterRender() {
     const buttonSlot = this.getSlot('button');
-    new Button(buttonSlot, this.#buttonText);
+    new Button(buttonSlot, this.#buttonText, BUTTON_TYPE.PRIMARY);
 
     const linkSlot = this.getSlot('link');
     this.#linkCreator?.(linkSlot);

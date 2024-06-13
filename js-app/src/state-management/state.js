@@ -57,6 +57,21 @@ export class State {
   locationMetadata = null;
 
   /**
+   * @type {FolderContentItem}
+   */
+  itemInRemovingState = null;
+
+  /**
+   * @type {boolean}
+   */
+  isItemDeleting = false;
+
+  /**
+   * @type {string}
+   */
+  itemDeletingError = null;
+
+  /**
    * @param {object} state
    */
   constructor(state = {}) {

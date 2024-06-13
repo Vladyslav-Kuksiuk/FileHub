@@ -39,7 +39,7 @@ export class StateManagementService {
           }));
         }
       });
-    });
+    }, this);
   }
 
   /**

@@ -30,7 +30,7 @@ export class RequestService {
   }
 
   /**
-   * Sends GET request with parameters and converts server response.
+   * Sends GET request and converts server response.
    *
    * @param {string} url
    * @param {string} token
@@ -50,5 +50,23 @@ export class RequestService {
     } catch (e) {
       return new Response(response.status);
     }
+  }
+
+  /**
+   * Sends DELETE request and converts server response.
+   *
+   * @param {string} url
+   * @param {string} token
+   * @returns {Promise<Response>}
+   */
+  async delete(url, token) {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
+    return new Response(response.status);
   }
 }

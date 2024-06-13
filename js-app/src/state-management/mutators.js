@@ -10,6 +10,9 @@ export const MUTATOR_NAMES = {
   SET_IS_FOLDER_CONTENT_LOADING: 'isFolderContentLoading',
   SET_FOLDER_CONTENT: 'setFolderContent',
   SET_FOLDER_CONTENT_ERROR: 'setFolderContentError',
+  SET_REMOVING_ITEM: 'setRemovingItem',
+  SET_IS_ITEM_DELETING: 'setIsItemDeleting',
+  SET_ITEM_DELETING_ERROR: 'setFItemDeletingError',
   SET_LOCATION_METADATA: 'setLocationMetadata',
 };
 
@@ -60,6 +63,35 @@ export const MUTATORS = {
   },
   [MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR]: (state, error) =>{
     return new State({...state, folderContentError: error});
+  },
+
+  [MUTATOR_NAMES.SET_IS_ITEM_DELETING]: (state, isDeleting) =>{
+    if (isDeleting) {
+      return new State({...state,
+        isItemDeleting: isDeleting,
+        itemDeletingError: null,
+      });
+    }
+
+    if (!isDeleting && state.itemDeletingError) {
+      return new State({...state,
+        isItemDeleting: isDeleting,
+      });
+    }
+
+    return new State({...state,
+      isItemDeleting: isDeleting,
+      itemInRemovingState: null,
+    });
+  },
+  [MUTATOR_NAMES.SET_REMOVING_ITEM]: (state, item) =>{
+    return new State({...state,
+      itemInRemovingState: item,
+      itemDeletingError: null,
+    });
+  },
+  [MUTATOR_NAMES.SET_ITEM_DELETING_ERROR]: (state, error) =>{
+    return new State({...state, itemDeletingError: error});
   },
 
   [MUTATOR_NAMES.SET_LOCATION_METADATA]: (state, locationMetadata) =>{

@@ -3,6 +3,7 @@ import {Link} from '../link';
 import {FileTypeIconFactory} from './file-type-icon-factory';
 
 const FOLDER_LINK = 'folder-link-';
+const REMOVE_BUTTON = 'remove-button-';
 
 /**
  * File list component.
@@ -17,7 +18,8 @@ export class FileList extends Component {
   /**
    * @typedef Folder
    * @param {string} name
-   * @param {Function} linkListener
+   * @param {function(void): void} linkListener
+   * @param {function(void): void} deleteListener
    */
 
   /**
@@ -25,6 +27,7 @@ export class FileList extends Component {
    * @param {string} name
    * @param {string} type
    * @param {string} size
+   * @param {function(void): void} deleteListener
    */
 
   /**
@@ -56,6 +59,11 @@ export class FileList extends Component {
         const link = new Link(linkSlot, folder.name);
         link.onClick(folder.linkListener);
       }
+    });
+
+    [...this.#folders, ...this.#files].forEach((item, index) => {
+      this.rootElement.querySelector(`[data-td="${REMOVE_BUTTON+index}"]`)
+          ?.addEventListener('click', item.deleteListener);
     });
   }
 
@@ -135,7 +143,7 @@ export class FileList extends Component {
                                     title="Upload file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                             </button>
-                            <button class="icon-button" title="Delete">
+                            <button ${this.markElement(REMOVE_BUTTON + index)} class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
@@ -144,7 +152,7 @@ export class FileList extends Component {
                 </tr>
                 `;
     });
-    this.#files.forEach((file) => {
+    this.#files.forEach((file, index) => {
       folderContent +=
                 `
                 <tr>
@@ -161,7 +169,8 @@ export class FileList extends Component {
                                     title="Download file.">
                                 <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
                             </button>
-                            <button class="icon-button" title="Delete">
+                            <button ${this.markElement(REMOVE_BUTTON +(this.#folders.length + index))}
+                             class="icon-button" title="Delete">
                                 <span aria-hidden="true"
                                       class="glyphicon glyphicon-remove-circle"></span>
                             </button>
