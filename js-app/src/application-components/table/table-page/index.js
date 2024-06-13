@@ -14,7 +14,6 @@ import {ButtonGroup} from '../../../components/button-group';
 import {ModalCreate} from '../../../components/modal-create';
 import {ModalCreateWrapper} from '../modal-create-wrapper';
 
-const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 const USER_INFO_SLOT = 'user-info-slot';
 const BREADCRUMB_SLOT = 'breadcrumb-slot';
@@ -100,7 +99,6 @@ export class TablePage extends Component {
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
-      this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
       this.stateManagementService.dispatch(new LogOutUserAction());
     });
   }
@@ -114,15 +112,6 @@ export class TablePage extends Component {
     this.#fileListWrapper.removeStateListeners();
     this.#modalRemoveWrapper.removeStateListeners();
     this.#modalCreateWrapper.removeStateListeners();
-  }
-
-  /**
-   * Adds listener on navigate to authorization event.
-   *
-   * @param {Function} listener
-   */
-  onNavigateToAuthorization(listener) {
-    this.#eventTarget.addEventListener(NAVIGATE_EVENT_AUTHORIZATION, listener);
   }
 
   /**

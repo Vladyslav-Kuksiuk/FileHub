@@ -9,6 +9,8 @@ import {ApplicationContext} from '../application-context';
 import {ROUTE} from '../../router/routes';
 import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action';
 import {registry} from '../../registry.js';
+import {ResetStateAction} from '../../state-management/reset-state-action';
+import {AUTH_TOKEN} from '../../storage-service';
 /**
  * Application component.
  */
@@ -32,6 +34,12 @@ export class Application extends Component {
         })
         .addRoute(ROUTE.LOGIN, () => {
           this.rootElement.innerHTML = '';
+          const storage = registry.getInstance('storageService');
+          if (storage.get(AUTH_TOKEN) != null) {
+            registry.getInstance('stateManagementService').dispatch(new ResetStateAction());
+            router.redirect(ROUTE.FILE_LIST);
+            return;
+          }
           const page =
             new AuthorizationPage(this.rootElement);
           page.onNavigateToRegistration(() => {
@@ -43,18 +51,25 @@ export class Application extends Component {
         })
         .addRoute(ROUTE.REGISTRATION, () => {
           this.rootElement.innerHTML = '';
+          const storage = registry.getInstance('storageService');
+          if (storage.get(AUTH_TOKEN) != null) {
+            router.redirect(ROUTE.FILE_LIST);
+            return;
+          }
           const page =
             new RegistrationPage(this.rootElement);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
           });
         })
-        .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
+        .addRoute(ROUTE.FILE_LIST_FOLDER, () => {
           this.rootElement.innerHTML = '';
-          const page = new TablePage(this.rootElement);
-          page.onNavigateToAuthorization(() => {
+          const storage = registry.getInstance('storageService');
+          if (storage.get(AUTH_TOKEN) == null) {
             router.redirect(ROUTE.LOGIN);
-          });
+            return;
+          }
+          const page = new TablePage(this.rootElement);
           page.onNavigateToFolder((folderId)=>{
             router.redirect(ROUTE.FILE_LIST+'/'+folderId);
           });
@@ -64,8 +79,15 @@ export class Application extends Component {
         })
         .addHomeRoutePath(ROUTE.FILE_LIST_FOLDER)
         .build();
-
+    registry.getInstance('apiService').redirectToLogin = ()=>{
+      registry.getInstance('storageService').clear();
+      router.redirect(ROUTE.LOGIN);
+      setTimeout(()=>{
+        registry.getInstance('stateManagementService').dispatch(new ResetStateAction());
+      });
+    };
     const router = new Router(routerConfig);
+    router.handleUrlPath();
   }
 
   /**

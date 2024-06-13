@@ -14,7 +14,12 @@ export class Router {
     window.addEventListener('hashchange', () => {
       this.#handleRoute(window.location.hash.replace('#', ''));
     });
+  }
 
+  /**
+   * Handles path from url.
+   */
+  handleUrlPath() {
     this.#handleRoute(window.location.hash.replace('#', ''));
   }
 

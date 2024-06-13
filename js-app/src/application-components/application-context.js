@@ -7,6 +7,7 @@ import {State} from '../state-management/state';
 import {MUTATORS} from '../state-management/mutators';
 import {registry} from '../registry';
 import {FileTypeFactory} from '../components/file-list/file-type-factory';
+import {StorageService} from '../storage-service';
 
 
 /**
@@ -19,6 +20,10 @@ export class ApplicationContext {
   constructor() {
     registry.register('titleService', ()=>{
       return new TitleService('FileHub', ' - ');
+    });
+
+    registry.register('storageService', () => {
+      return new StorageService();
     });
 
     registry.register('requestService', () => {

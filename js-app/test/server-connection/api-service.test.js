@@ -22,6 +22,7 @@ describe('ApiService', () => {
   const login = 'login';
   const password = 'password';
   let requestService;
+  let storageService;
 
   beforeEach(()=>{
     clearRegistry();
@@ -35,8 +36,17 @@ describe('ApiService', () => {
       delete: () => {},
     };
 
+    storageService = {
+      put: jest.fn(),
+      get: jest.fn(),
+    };
+
     registry.register('requestService', ()=>{
       return requestService;
+    });
+
+    registry.register('storageService', ()=>{
+      return storageService;
     });
   });
 
@@ -190,52 +200,61 @@ describe('ApiService', () => {
   });
 
   describe('logOut', () => {
-    test(`Should successfully log out`, async function() {
-      expect.assertions(3);
+    test(`Should successfully log out on successfully server response`, async function() {
+      expect.assertions(4);
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'getJson')
+          .spyOn(requestService, 'postJson')
           .mockImplementation(async () => {
             return new Response(200, {});
           });
 
       const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
 
       await expect(apiService.logOut()).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, {}, undefined);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
-    test(`Should return error after log out`, async function() {
-      expect.assertions(3);
+    test(`Should successfully log out on error server response`, async function() {
+      expect.assertions(4);
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'getJson')
+          .spyOn(requestService, 'postJson')
           .mockImplementation(async () => {
-            return new Response(405, {});
+            return new Response(402, {});
           });
 
       const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
 
-      await expect(apiService.logOut()).rejects.toEqual(new ApiServiceError());
+      await expect(apiService.logOut()).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, {}, undefined);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
-    test(`Should return error after request error`, async function() {
-      expect.assertions(3);
+    test(`Should successfully log out on error in fetch`, async function() {
+      expect.assertions(4);
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'getJson')
+          .spyOn(requestService, 'postJson')
           .mockImplementation(async () => {
             throw new Error();
           });
 
       const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
 
-      await expect(apiService.logOut()).rejects.toEqual(new ApiServiceError());
+      await expect(apiService.logOut()).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
-      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, undefined);
+      await expect(requestServiceMock).toHaveBeenCalledWith(LOG_OUT_USER_PATH, {}, undefined);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -279,6 +298,23 @@ describe('ApiService', () => {
       await expect(apiService.loadUser()).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_USER_PATH, undefined);
+    });
+
+    test(`Should redirect to login at 401 error after user loading`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getJson')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.loadUser();
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
     test(`Should return error after request error`, async function() {
@@ -340,6 +376,23 @@ describe('ApiService', () => {
       await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID', undefined);
+    });
+
+    test(`Should redirect to login at 401 error after folder info loading`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getJson')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.loadFolderInfo();
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
     test('Should return error after request error', async function() {
@@ -405,6 +458,23 @@ describe('ApiService', () => {
       await expect(apiService.loadFolderContent('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID/content', undefined);
+    });
+
+    test(`Should redirect to login at 401 error after folder content loading`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getJson')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.loadFolderContent('notID');
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
     test('Should return error after request error', async function() {
@@ -485,6 +555,28 @@ describe('ApiService', () => {
       await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, undefined);
+    });
+
+    test(`Should redirect to login at 401 error after folder deleting`, async function() {
+      expect.assertions(2);
+
+      const item = {
+        type: 'folder',
+        id: 'itemId',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'delete')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.deleteItem(item);
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
     test(`Should return error after deleting file`, async function() {
@@ -587,6 +679,23 @@ describe('ApiService', () => {
       await expect(apiService.uploadFiles('folderId', [])).rejects.toEqual(new ApiServiceError());
     });
 
+    test(`Should redirect to login at 401 error after files uploading`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'postFormData')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.uploadFiles('folderId', []);
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
+    });
+
     test(`Should return error after upload files fetch error`, async function() {
       expect.assertions(1);
 
@@ -645,6 +754,23 @@ describe('ApiService', () => {
       await expect(apiService.renameItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, {name: item.name}, undefined);
+    });
+
+    test(`Should redirect to login at 401 error after file renaming`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'put')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.renameItem({type: 'file'});
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
     test(`Should return FieldValidationError after renaming file`, async function() {
@@ -731,6 +857,23 @@ describe('ApiService', () => {
       await expect(apiService.createFolder({})).rejects.toEqual(new ApiServiceError());
     });
 
+    test(`Should redirect to login at 401 error after folder creation`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'postJson')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.createFolder({});
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
+    });
+
     test(`Should return error after folder creation request fetch error`, async function() {
       expect.assertions(1);
 
@@ -779,6 +922,23 @@ describe('ApiService', () => {
       await expect(apiService.downloadFile('fileId')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/files/fileId', undefined);
+    });
+
+    test(`Should redirect to login at 401 error after file downloading`, async function() {
+      expect.assertions(2);
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getBlob')
+          .mockImplementation(async () => {
+            return new Response(401, {});
+          });
+
+      const apiService = new ApiService();
+      const redirectMock = jest.fn();
+      apiService.redirectToLogin = redirectMock;
+      await apiService.downloadFile({});
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(redirectMock).toHaveBeenCalledTimes(1);
     });
 
     test(`Should return error after request error`, async function() {

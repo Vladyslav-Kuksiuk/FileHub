@@ -74,6 +74,7 @@ describe('Router', () => {
       window.location.hash = '';
 
       const router = new Router(routerConfig);
+      router.handleUrlPath();
 
       expect(document.body.textContent).toBe('login');
       expect(window.location.hash).toBe('');
@@ -102,6 +103,7 @@ describe('Router', () => {
       window.location.hash = '';
 
       const router = new Router(routerConfig);
+      router.handleUrlPath();
 
       expect(document.body.textContent).toBe('login');
       router.redirect('register');
@@ -134,6 +136,7 @@ describe('Router', () => {
           .build();
 
       const router = new Router(config);
+      router.handleUrlPath();
       router.redirect('path/123');
 
       setTimeout(()=>{

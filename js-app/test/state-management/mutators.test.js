@@ -522,4 +522,17 @@ describe('Mutators', () => {
 
     expect(newState).toStrictEqual(expectedState);
   });
+
+  test(`Should return new state with default settings`, function() {
+    expect.assertions(1);
+
+    state = new State({
+      isItemRenaming: true,
+      folderCreationError: 'error',
+    });
+    const expectedState = new State();
+    const newState = MUTATORS[MUTATOR_NAMES.RESET_STATE](state);
+
+    expect(newState).toStrictEqual(expectedState);
+  });
 });
