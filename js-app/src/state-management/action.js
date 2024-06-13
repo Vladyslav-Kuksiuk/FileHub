@@ -1,4 +1,3 @@
-import {StateManagementService} from './state-management-service';
 /**
  *  Base Action class.
  */
@@ -17,7 +16,6 @@ export class Action {
    *
    * @abstract
    * @param {Function} executor
-   * @param {StateManagementService} stateManagementService
    */
-  execute(executor, stateManagementService) {}
+  execute(executor) {}
 }

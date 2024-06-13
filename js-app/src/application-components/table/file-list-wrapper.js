@@ -1,7 +1,7 @@
-import {ApplicationContext} from '../application-context';
 import {FileList} from '../../components/file-list';
 import {LoadFolderContentAction} from '../../state-management/folder/load-folder-content-action';
 import {DefineRemovingItemAction} from '../../state-management/folder/define-removing-item-action';
+import {inject} from '../../registry';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
@@ -11,19 +11,17 @@ const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
  */
 export class FileListWrapper extends StateAwareWrapper {
   #eventTarget = new EventTarget();
-  #stateManagementService;
+  @inject stateManagementService;
 
   /**
-   * @param {ApplicationContext} applicationContext
+   * Constructor.
    */
-  constructor(applicationContext) {
-    super(applicationContext.stateManagementService);
-    this.#stateManagementService = applicationContext.stateManagementService;
-
+  constructor() {
+    super();
     this.addStateListener('folderInfo', (state) => {
       if (state.folderInfo && !state.isFolderContentLoading) {
-        this.#stateManagementService.dispatch(
-            new LoadFolderContentAction(state.folderInfo.id, applicationContext.apiService));
+        this.stateManagementService.dispatch(
+            new LoadFolderContentAction(state.folderInfo.id));
       }
     });
   }
@@ -49,7 +47,7 @@ export class FileListWrapper extends StateAwareWrapper {
                   }));
                 },
                 deleteListener: () => {
-                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(folder));
+                  this.stateManagementService.dispatch(new DefineRemovingItemAction(folder));
                 },
               };
             });
@@ -62,7 +60,7 @@ export class FileListWrapper extends StateAwareWrapper {
                 type: file.type,
                 size: file.size,
                 deleteListener: () => {
-                  this.#stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                  this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
                 },
               };
             });

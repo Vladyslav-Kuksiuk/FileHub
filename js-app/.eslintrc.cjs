@@ -1,15 +1,18 @@
 module.exports = {
   'env': {
     'browser': true,
+    'node': true,
     'es2021': true,
     'jest/globals': true,
   },
+  "parser": "@babel/eslint-parser",
   'extends': [
     'google',
     'plugin:jest/recommended',
   ],
   'overrides': [],
   'parserOptions': {
+    'requireConfigFile': false,
     'ecmaVersion': 'latest',
     'sourceType': 'module',
   },

@@ -1,35 +1,43 @@
-import {ApplicationContext} from '../../../src/application-components/application-context';
 import {FileListWrapper} from '../../../src/application-components/table/file-list-wrapper';
 import {FileList} from '../../../src/components/file-list';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
 import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
+import {registry, clearRegistry} from '../../../src/registry';
 
 describe('FileListWrapper', () => {
-  let applicationContext;
   let stateListeners = {};
   let dispatchMock;
   let addStateListenerMock;
+  let removeStateListenerMock;
 
   beforeEach(() => {
-    applicationContext = new ApplicationContext();
-
+    clearRegistry();
     stateListeners = {};
-    addStateListenerMock = jest.spyOn(applicationContext.stateManagementService, 'addStateListener')
-        .mockImplementation((field, listener)=>{
-          stateListeners[field] = listener;
-          return {
-            field: field,
-            listener: listener,
-          };
-        });
-    dispatchMock = jest.spyOn(applicationContext.stateManagementService, 'dispatch')
-        .mockImplementation(()=>{});
+    addStateListenerMock = jest.fn((field, listener)=>{
+      stateListeners[field] = listener;
+      return {
+        field: field,
+        listener: listener,
+      };
+    });
+
+    dispatchMock = jest.fn();
+
+    removeStateListenerMock = jest.fn();
+
+    registry.register('stateManagementService', ()=>{
+      return {
+        addStateListener: addStateListenerMock,
+        dispatch: dispatchMock,
+        removeStateListener: removeStateListenerMock,
+      };
+    });
   });
 
   test('Should add folderInfo state listeners', function() {
     expect.assertions(2);
-    new FileListWrapper(applicationContext);
+    new FileListWrapper();
 
     expect(addStateListenerMock).toHaveBeenCalledTimes(1);
     expect(addStateListenerMock.mock.calls[0][0]).toBe('folderInfo');
@@ -37,7 +45,11 @@ describe('FileListWrapper', () => {
 
   test('Should dispatch LoadFolderContentAction', function() {
     expect.assertions(2);
-    new FileListWrapper(applicationContext);
+    registry.register('apiService', ()=> {
+      return {};
+    });
+
+    new FileListWrapper();
 
     stateListeners['folderInfo']({
       folderInfo: {
@@ -47,13 +59,19 @@ describe('FileListWrapper', () => {
 
     expect(dispatchMock).toHaveBeenCalledTimes(1);
     expect(dispatchMock)
-        .toHaveBeenCalledWith(new LoadFolderContentAction('123', applicationContext.apiService));
+        .toHaveBeenCalledWith(new LoadFolderContentAction('123'));
   });
 
   test(`Should add state listeners`, function() {
     expect.assertions(11);
 
-    const wrapper = new FileListWrapper(applicationContext);
+    registry.register('fileTypeIconFactory', ()=>{
+      return {
+        getIcon: ()=>{},
+      };
+    });
+
+    const wrapper = new FileListWrapper();
     const folderContent = new FileList(document.body, false, false, [], []);
 
     const isLoadingMock = jest.spyOn(folderContent, 'isLoading', 'set').mockImplementation(()=>{});
@@ -79,8 +97,14 @@ describe('FileListWrapper', () => {
     stateListeners.isUserProfileLoading({
       isUserProfileLoading: true,
     });
+    stateListeners.isUserProfileLoading({
+      isUserProfileLoading: false,
+    });
     stateListeners.isFolderInfoLoading({
       isFolderInfoLoading: true,
+    });
+    stateListeners.isFolderInfoLoading({
+      isFolderInfoLoading: false,
     });
     stateListeners.folderContent({});
     stateListeners.folderContent(folderContentState);
@@ -99,10 +123,7 @@ describe('FileListWrapper', () => {
   test('Should trigger onNavigateToFolder listener', function() {
     expect.assertions(5);
 
-    const dispatchActionMock = jest.spyOn(applicationContext.stateManagementService, 'dispatch')
-        .mockImplementation(() => {});
-
-    const fileListWrapper = new FileListWrapper(applicationContext);
+    const fileListWrapper = new FileListWrapper();
     const folderContent = [{
       type: 'folder',
       name: 'myFolder',
@@ -117,7 +138,7 @@ describe('FileListWrapper', () => {
 
     let folders;
     let files;
-    const setContentMock = jest.fn().mockImplementation((givenFolders, givenFiles)=>{
+    const setContentMock = jest.fn((givenFolders, givenFiles)=>{
       folders = givenFolders;
       files = givenFiles;
     });
@@ -140,8 +161,8 @@ describe('FileListWrapper', () => {
     expect(navigateListenerMock).toHaveBeenCalledTimes(1);
     expect(navigateListenerMock)
         .toHaveBeenCalledWith(folderContent[0].id);
-    expect(dispatchActionMock).toHaveBeenCalledTimes(2);
-    expect(dispatchActionMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[0]));
-    expect(dispatchActionMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[1]));
+    expect(dispatchMock).toHaveBeenCalledTimes(2);
+    expect(dispatchMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[0]));
+    expect(dispatchMock).toHaveBeenCalledWith(new DefineRemovingItemAction(folderContent[1]));
   });
 });

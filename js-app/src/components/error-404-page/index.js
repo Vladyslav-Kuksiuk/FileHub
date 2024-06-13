@@ -1,6 +1,6 @@
 import {Component} from '../component';
 import {Link} from '../link';
-import {ApplicationContext} from '../../application-components/application-context';
+import {inject} from '../../registry.js';
 
 const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
 
@@ -9,14 +9,14 @@ const NAVIGATE_EVENT = 'NAVIGATE_EVENT';
  */
 export class Error404Page extends Component {
   #eventTarget = new EventTarget();
+  @inject titleService;
 
   /**
    * @param {HTMLElement} parent
-   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, applicationContext) {
+  constructor(parent) {
     super(parent);
-    applicationContext.titleService.setTitles(['404']);
+    this.titleService.setTitles(['404']);
     this.init();
   }
 

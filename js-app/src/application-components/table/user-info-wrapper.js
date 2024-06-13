@@ -1,23 +1,22 @@
 import {LoadUserAction} from '../../state-management/user/load-user-action';
 import {UserInfo} from '../../components/user-info';
-import {ApplicationContext} from '../application-context';
+import {inject} from '../../registry';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 
 /**
  * UserInfo wrapper for state change listening.
  */
 export class UserInfoWrapper extends StateAwareWrapper {
-  #stateManagementService;
+  @inject stateManagementService;
 
   /**
-   * @param {ApplicationContext} applicationContext
+   * Constructor.
    */
-  constructor(applicationContext) {
-    super(applicationContext.stateManagementService);
-    this.#stateManagementService = applicationContext.stateManagementService;
-    const state = applicationContext.stateManagementService.state;
+  constructor() {
+    super();
+    const state = this.stateManagementService.state;
     if (state.userProfile == null && !state.isUserProfileLoading) {
-      this.#stateManagementService.dispatch(new LoadUserAction(applicationContext.apiService));
+      this.stateManagementService.dispatch(new LoadUserAction());
     }
   }
 

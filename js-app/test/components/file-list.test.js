@@ -1,9 +1,17 @@
 import {FileList} from '../../src/components/file-list';
 import {jest} from '@jest/globals';
+import {clearRegistry} from '../../src/registry';
+import {registry} from '../../src/registry';
 
 describe('FileList', () => {
   beforeEach(() => {
+    clearRegistry();
     document.body.innerHTML = '';
+    registry.register('fileTypeIconFactory', ()=>{
+      return {
+        getIcon: ()=>{},
+      };
+    });
   });
 
   test(`Should render FolderContent component with 2 folders and 2 files`, function() {

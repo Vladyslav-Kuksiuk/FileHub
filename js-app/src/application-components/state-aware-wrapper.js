@@ -1,19 +1,12 @@
 import {State} from '../state-management/state';
-import {StateManagementService} from '../state-management/state-management-service';
+import {inject} from '../registry';
 
 /**
  * Base wrapper class to work with {@link StateManagementService}.
  */
 export class StateAwareWrapper {
-  #stateManagementService;
+  @inject stateManagementService;
   #stateListeners = [];
-
-  /**
-   * @param {StateManagementService} stateManagementService
-   */
-  constructor(stateManagementService) {
-    this.#stateManagementService = stateManagementService;
-  }
 
   /**
    * Adds state listener.
@@ -22,7 +15,7 @@ export class StateAwareWrapper {
    * @param {function(State): void} listener
    */
   addStateListener(field, listener) {
-    this.#stateListeners.push(this.#stateManagementService.addStateListener(field, listener));
+    this.#stateListeners.push(this.stateManagementService.addStateListener(field, listener));
   }
 
   /**
@@ -30,7 +23,7 @@ export class StateAwareWrapper {
    */
   removeStateListeners() {
     this.#stateListeners.forEach((stateListener) => {
-      this.#stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
+      this.stateManagementService.removeStateListener(stateListener.field, stateListener.listener);
     });
   }
 }

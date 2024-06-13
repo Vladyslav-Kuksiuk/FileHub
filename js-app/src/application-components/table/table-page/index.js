@@ -1,6 +1,5 @@
 import {Component} from '../../../components/component';
 import {LogOutUserAction} from '../../../state-management/user/log-out-user-action';
-import {ApplicationContext} from '../../application-context';
 import {BreadcrumbWrapper} from '../breadcrumb-wrapper';
 import {UserInfoWrapper} from '../user-info-wrapper';
 import {Breadcrumb} from '../../../components/breadcrumb';
@@ -9,6 +8,7 @@ import {FileListWrapper} from '../file-list-wrapper';
 import {FileList} from '../../../components/file-list';
 import {ModalRemove} from '../../../components/modal-remove';
 import {ModalRemoveWrapper} from '../modal-remove-wrapper';
+import {inject} from '../../../registry';
 
 const NAVIGATE_EVENT_AUTHORIZATION = 'NAVIGATE_EVENT_AUTHORIZATION';
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
@@ -22,8 +22,8 @@ const MODAL_REMOVE_SLOT = 'modal-remove-slot';
  */
 export class TablePage extends Component {
   #eventTarget = new EventTarget();
-  #stateManagementService;
-  #applicationContext;
+  @inject stateManagementService;
+  @inject titleService;
   #modalRemoveWrapper;
   #userInfoWrapper;
   #breadcrumbWrapper;
@@ -31,13 +31,10 @@ export class TablePage extends Component {
 
   /**
    * @param {HTMLElement} parent
-   * @param {ApplicationContext} applicationContext
    */
-  constructor(parent, applicationContext) {
+  constructor(parent) {
     super(parent);
-    this.#applicationContext = applicationContext;
-    applicationContext.titleService.setTitles(['Table']);
-    this.#stateManagementService = applicationContext.stateManagementService;
+    this.titleService.setTitles(['Table']);
     this.init();
   }
 
@@ -46,16 +43,16 @@ export class TablePage extends Component {
    */
   afterRender() {
     const modalRemoveSlot = this.getSlot(MODAL_REMOVE_SLOT);
-    this.#modalRemoveWrapper = new ModalRemoveWrapper(this.#applicationContext);
+    this.#modalRemoveWrapper = new ModalRemoveWrapper();
     this.#modalRemoveWrapper.wrap(new ModalRemove(modalRemoveSlot, '', '', null));
 
-    const userInfoWrapper = new UserInfoWrapper(this.#applicationContext);
+    const userInfoWrapper = new UserInfoWrapper();
     this.#userInfoWrapper = userInfoWrapper;
     const userInfoSlot = this.getSlot(USER_INFO_SLOT);
     userInfoWrapper.wrap(
         new UserInfo(userInfoSlot, false, null, false));
 
-    const breadcrumbWrapper = new BreadcrumbWrapper(this.#applicationContext);
+    const breadcrumbWrapper = new BreadcrumbWrapper();
     this.#breadcrumbWrapper = breadcrumbWrapper;
     const breadcrumbSlot = this.getSlot(BREADCRUMB_SLOT);
     breadcrumbWrapper.wrap(new Breadcrumb(
@@ -72,7 +69,7 @@ export class TablePage extends Component {
       }));
     });
 
-    const fileListWrapper = new FileListWrapper(this.#applicationContext);
+    const fileListWrapper = new FileListWrapper();
     this.#fileListWrapper = fileListWrapper;
     const fileListSlot = this.getSlot(FILE_LIST_SLOT);
     fileListWrapper.wrap(new FileList(fileListSlot, true, false, [], []));
@@ -86,8 +83,8 @@ export class TablePage extends Component {
 
     this.rootElement.querySelector('[data-td="logout-link"]').addEventListener('click', (event)=>{
       event.preventDefault();
-      this.#stateManagementService.dispatch(new LogOutUserAction(this.#applicationContext.apiService));
       this.#eventTarget.dispatchEvent(new Event(NAVIGATE_EVENT_AUTHORIZATION));
+      this.stateManagementService.dispatch(new LogOutUserAction());
     });
   }
 

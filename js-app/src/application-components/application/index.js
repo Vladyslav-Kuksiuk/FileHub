@@ -8,6 +8,7 @@ import {TablePage} from '../table/table-page';
 import {ApplicationContext} from '../application-context';
 import {ROUTE} from '../../router/routes';
 import {ChangeLocationMetadataAction} from '../../state-management/change-location-metadata-action';
+import {registry} from '../../registry.js';
 /**
  * Application component.
  */
@@ -19,12 +20,12 @@ export class Application extends Component {
     super(parent);
     this.init();
 
-    const applicationContext = new ApplicationContext();
+    new ApplicationContext();
 
     const routerConfig = new RouterConfigBuilder()
         .addErrorRoute(() => {
           this.rootElement.innerHTML = '';
-          const page = new Error404Page(this.rootElement, applicationContext);
+          const page = new Error404Page(this.rootElement);
           page.onNavigateToHome(() => {
             router.redirect('');
           });
@@ -32,7 +33,7 @@ export class Application extends Component {
         .addRoute(ROUTE.LOGIN, () => {
           this.rootElement.innerHTML = '';
           const page =
-            new AuthorizationPage(this.rootElement, applicationContext);
+            new AuthorizationPage(this.rootElement);
           page.onNavigateToRegistration(() => {
             router.redirect(ROUTE.REGISTRATION);
           });
@@ -43,14 +44,14 @@ export class Application extends Component {
         .addRoute(ROUTE.REGISTRATION, () => {
           this.rootElement.innerHTML = '';
           const page =
-            new RegistrationPage(this.rootElement, applicationContext);
+            new RegistrationPage(this.rootElement);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
           });
         })
         .addRoute(ROUTE.FILE_LIST_FOLDER, (params) => {
           this.rootElement.innerHTML = '';
-          const page = new TablePage(this.rootElement, applicationContext);
+          const page = new TablePage(this.rootElement);
           page.onNavigateToAuthorization(() => {
             router.redirect(ROUTE.LOGIN);
           });
@@ -59,7 +60,7 @@ export class Application extends Component {
           });
         })
         .addMetadataChangeListener((metadata)=>{
-          applicationContext.stateManagementService.dispatch(new ChangeLocationMetadataAction(metadata));
+          registry.getInstance('stateManagementService').dispatch(new ChangeLocationMetadataAction(metadata));
         })
         .addHomeRoutePath(ROUTE.FILE_LIST_FOLDER)
         .build();

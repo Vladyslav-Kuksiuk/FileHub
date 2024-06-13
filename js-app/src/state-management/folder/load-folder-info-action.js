@@ -1,22 +1,20 @@
 import {Action} from '../action';
-import {ApiService} from '../../server-connection/api-service';
 import {MUTATOR_NAMES} from '../mutators';
+import {inject} from '../../registry';
 
 /**
  * Action to perform folder info loading.
  */
 export class LoadFolderInfoAction extends Action {
   #folderId;
-  #apiService;
+  @inject apiService;
 
   /**
    * @param {string} folderId
-   * @param {ApiService} apiService
    */
-  constructor(folderId, apiService) {
+  constructor(folderId) {
     super();
     this.#folderId = folderId;
-    this.#apiService = apiService;
   }
 
   /**
@@ -25,7 +23,7 @@ export class LoadFolderInfoAction extends Action {
   execute(executor) {
     executor(MUTATOR_NAMES.SET_IS_FOLDER_INFO_LOADING, true);
 
-    return this.#apiService
+    return this.apiService
         .loadFolderInfo(this.#folderId)
         .then((folderInfo) => {
           executor(MUTATOR_NAMES.SET_FOLDER_INFO, folderInfo);
