@@ -4,7 +4,6 @@ import {ModalRemoveWrapper} from '../../../src/application-components/table/moda
 import {DeleteItemAction} from '../../../src/state-management/folder/delete-item-action';
 import {DefineRemovingItemAction} from '../../../src/state-management/folder/define-removing-item-action';
 import {clearRegistry, registry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 
 describe('ModalRemoveWrapper', () => {
@@ -14,11 +13,10 @@ describe('ModalRemoveWrapper', () => {
 
   beforeEach(() => {
     clearRegistry();
-    const apiService = new ApiService({});
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {
-      return apiService;
+      return {};
     });
 
     registry.register('stateManagementService', () => {

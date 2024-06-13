@@ -1,4 +1,3 @@
-import {RequestService} from '../../src/server-connection/request-service';
 import {Response} from '../../src/server-connection/response';
 import {
   ApiService,
@@ -17,16 +16,33 @@ import {FieldValidationError} from '../../src/server-connection/field-validation
 import {FolderInfo} from '../../src/state-management/folder/folder-info.js';
 import {UserProfile} from '../../src/state-management/user/user-profile.js';
 import {FolderContentItem} from '../../src/state-management/folder/folder-content-item';
+import {clearRegistry, registry} from '../../src/registry';
 
 describe('ApiService', () => {
   const login = 'login';
   const password = 'password';
+  let requestService;
+
+  beforeEach(()=>{
+    clearRegistry();
+
+    requestService = {
+      postJson: () => {},
+      put: () => {},
+      postFormData: () => {},
+      getJson: () => {},
+      getBlob: () => {},
+      delete: () => {},
+    };
+
+    registry.register('requestService', ()=>{
+      return requestService;
+    });
+  });
 
   describe('logIn', () => {
     test(`Should successfully log in`, async function() {
       expect.assertions(3);
-
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -34,7 +50,7 @@ describe('ApiService', () => {
             return new Response(200, {token: 'myToken'});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.logIn(new UserData(login, password))).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
@@ -43,7 +59,6 @@ describe('ApiService', () => {
 
     test(`Should return error after login with error message ${DEFAULT_ERROR}`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -51,7 +66,7 @@ describe('ApiService', () => {
             return new Response(400, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.logIn(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
@@ -61,7 +76,6 @@ describe('ApiService', () => {
 
     test(`Should return error after request error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -69,7 +83,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.logIn(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
@@ -79,7 +93,6 @@ describe('ApiService', () => {
 
     test(`Should return error after login with error message ${LOGIN_401_ERROR}`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -87,7 +100,7 @@ describe('ApiService', () => {
             return new Response(401, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.logIn(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError(LOGIN_401_ERROR));
@@ -99,7 +112,6 @@ describe('ApiService', () => {
   describe('register', () => {
     test(`Should successfully register`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -107,7 +119,7 @@ describe('ApiService', () => {
             return new Response(200, {token: 'myToken'});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.register(new UserData(login, password))).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
@@ -116,7 +128,6 @@ describe('ApiService', () => {
 
     test(`Should return error after registration with error message ${DEFAULT_ERROR}`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -124,7 +135,7 @@ describe('ApiService', () => {
             return new Response(400, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.register(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
@@ -134,7 +145,6 @@ describe('ApiService', () => {
 
     test(`Should return error after request error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
@@ -142,7 +152,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.register(new UserData(login, password)))
           .rejects.toEqual(new ApiServiceError());
@@ -163,15 +173,13 @@ describe('ApiService', () => {
         },
       ];
 
-      const requestService = new RequestService();
-
       const requestServiceMock = jest
           .spyOn(requestService, 'postJson')
           .mockImplementation(async () => {
             return new Response(422, {errors: errors});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.register(new UserData('login', 'password')))
           .rejects.toEqual(new FieldValidationError(errors));
@@ -184,7 +192,6 @@ describe('ApiService', () => {
   describe('logOut', () => {
     test(`Should successfully log out`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -192,7 +199,7 @@ describe('ApiService', () => {
             return new Response(200, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.logOut()).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
@@ -201,7 +208,6 @@ describe('ApiService', () => {
 
     test(`Should return error after log out`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -209,7 +215,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.logOut()).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
@@ -218,7 +224,6 @@ describe('ApiService', () => {
 
     test(`Should return error after request error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -226,7 +231,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.logOut()).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
@@ -237,7 +242,6 @@ describe('ApiService', () => {
   describe('loadUser', () => {
     test(`Should successfully load user`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const userProfile = new UserProfile(
           'testUser',
@@ -255,7 +259,7 @@ describe('ApiService', () => {
             });
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.loadUser()).resolves.toStrictEqual(userProfile);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
@@ -264,7 +268,6 @@ describe('ApiService', () => {
 
     test(`Should return error after user loading`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -272,7 +275,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadUser()).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_USER_PATH, undefined);
@@ -280,7 +283,6 @@ describe('ApiService', () => {
 
     test(`Should return error after request error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -288,7 +290,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadUser()).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_USER_PATH, undefined);
@@ -298,7 +300,6 @@ describe('ApiService', () => {
   describe('loadFolderInfo', () => {
     test(`Should successfully load folder info`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const folderInfo = new FolderInfo(
           'folderName',
@@ -320,7 +321,7 @@ describe('ApiService', () => {
             });
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadFolderInfo(folderInfo.id)).resolves.toStrictEqual(folderInfo);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + folderInfo.id, undefined);
@@ -328,7 +329,6 @@ describe('ApiService', () => {
 
     test(`Should return error after loading folder info`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -336,7 +336,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID', undefined);
@@ -344,7 +344,6 @@ describe('ApiService', () => {
 
     test('Should return error after request error', async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -352,7 +351,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadFolderInfo('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID', undefined);
@@ -362,7 +361,6 @@ describe('ApiService', () => {
   describe('loadFolderContent', () => {
     test(`Should successfully load folder content`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const folderId = 'folderId';
       const folderContent = [new FolderContentItem(
@@ -387,7 +385,7 @@ describe('ApiService', () => {
             });
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadFolderContent(folderId)).resolves.toStrictEqual(folderContent);
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock)
@@ -396,7 +394,6 @@ describe('ApiService', () => {
 
     test(`Should return error after loading folder content`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -404,7 +401,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadFolderContent('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID/content', undefined);
@@ -412,7 +409,6 @@ describe('ApiService', () => {
 
     test('Should return error after request error', async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getJson')
@@ -420,7 +416,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.loadFolderContent('notID')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith(LOAD_FOLDER_PATH + 'notID/content', undefined);
@@ -430,7 +426,6 @@ describe('ApiService', () => {
   describe('deleteItem', () => {
     test(`Should successfully delete folder`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const item = {
         type: 'folder',
@@ -443,7 +438,7 @@ describe('ApiService', () => {
             return new Response(200);
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.deleteItem(item)).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock)
@@ -452,7 +447,6 @@ describe('ApiService', () => {
 
     test(`Should successfully delete file`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
 
       const item = {
         type: 'notAFolder',
@@ -465,7 +459,7 @@ describe('ApiService', () => {
             return new Response(200);
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.deleteItem(item)).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock)
@@ -474,7 +468,7 @@ describe('ApiService', () => {
 
     test(`Should return error after deleting folder`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'folder',
@@ -487,7 +481,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, undefined);
@@ -495,7 +489,7 @@ describe('ApiService', () => {
 
     test(`Should return error after deleting file`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'notAFolder',
@@ -508,7 +502,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, undefined);
@@ -516,7 +510,7 @@ describe('ApiService', () => {
 
     test(`Should return error after deleting folder fetch error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'folder',
@@ -529,7 +523,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, undefined);
@@ -537,7 +531,7 @@ describe('ApiService', () => {
 
     test(`Should return error after deleting file fetch error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'notAFolder',
@@ -550,7 +544,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.deleteItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, undefined);
@@ -560,7 +554,7 @@ describe('ApiService', () => {
   describe('uploadFiles', () => {
     test(`Should successfully upload files`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const folderId = 'folderId';
 
@@ -573,7 +567,7 @@ describe('ApiService', () => {
       const formData = new FormData();
       formData.append('files_0', {});
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.uploadFiles(folderId, [{}])).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock)
@@ -582,27 +576,27 @@ describe('ApiService', () => {
 
     test(`Should return error after upload files`, async function() {
       expect.assertions(1);
-      const requestService = new RequestService();
+
 
       jest.spyOn(requestService, 'postFormData')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.uploadFiles('folderId', [])).rejects.toEqual(new ApiServiceError());
     });
 
     test(`Should return error after upload files fetch error`, async function() {
       expect.assertions(1);
-      const requestService = new RequestService();
+
 
       jest.spyOn(requestService, 'postFormData')
           .mockImplementation(async () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.uploadFiles('folderId', [])).rejects.toEqual(new ApiServiceError());
     });
   });
@@ -610,7 +604,7 @@ describe('ApiService', () => {
   describe('renameItem', () => {
     test(`Should successfully rename folder`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'folder',
@@ -624,7 +618,7 @@ describe('ApiService', () => {
             return new Response(200);
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.renameItem(item)).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock)
@@ -633,7 +627,7 @@ describe('ApiService', () => {
 
     test(`Should return error after renaming file`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'notAFolder',
@@ -647,7 +641,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.renameItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, {name: item.name}, undefined);
@@ -655,7 +649,7 @@ describe('ApiService', () => {
 
     test(`Should return FieldValidationError after renaming file`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'notAFolder',
@@ -672,7 +666,7 @@ describe('ApiService', () => {
             });
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.renameItem(item)).rejects.toEqual(new FieldValidationError([error]));
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, {name: item.name}, undefined);
@@ -680,7 +674,7 @@ describe('ApiService', () => {
 
     test(`Should return error after renaming folder fetch error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const item = {
         type: 'folder',
@@ -694,7 +688,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.renameItem(item)).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, {name: item.name}, undefined);
@@ -704,7 +698,7 @@ describe('ApiService', () => {
   describe('createFolder', () => {
     test(`Should successfully send folder creation request`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const folder = {
         name: 'name',
@@ -717,7 +711,7 @@ describe('ApiService', () => {
             return new Response(200);
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.createFolder(folder)).resolves.toBeUndefined();
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock)
@@ -726,27 +720,27 @@ describe('ApiService', () => {
 
     test(`Should return error after folder creation request`, async function() {
       expect.assertions(1);
-      const requestService = new RequestService();
+
 
       jest.spyOn(requestService, 'postJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.createFolder({})).rejects.toEqual(new ApiServiceError());
     });
 
     test(`Should return error after folder creation request fetch error`, async function() {
       expect.assertions(1);
-      const requestService = new RequestService();
+
 
       jest.spyOn(requestService, 'postJson')
           .mockImplementation(async () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.createFolder({})).rejects.toEqual(new ApiServiceError());
     });
   });
@@ -754,7 +748,7 @@ describe('ApiService', () => {
   describe('downloadFile', () => {
     test(`Should successfully download file`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const fileId = '123';
 
@@ -764,7 +758,7 @@ describe('ApiService', () => {
             return new Response(200, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
 
       await expect(apiService.downloadFile(fileId)).resolves.toStrictEqual({});
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
@@ -773,7 +767,7 @@ describe('ApiService', () => {
 
     test(`Should return error after file downloading request`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getBlob')
@@ -781,7 +775,7 @@ describe('ApiService', () => {
             return new Response(405, {});
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.downloadFile('fileId')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/files/fileId', undefined);
@@ -789,7 +783,7 @@ describe('ApiService', () => {
 
     test(`Should return error after request error`, async function() {
       expect.assertions(3);
-      const requestService = new RequestService();
+
 
       const requestServiceMock = jest
           .spyOn(requestService, 'getBlob')
@@ -797,7 +791,7 @@ describe('ApiService', () => {
             throw new Error();
           });
 
-      const apiService = new ApiService(requestService);
+      const apiService = new ApiService();
       await expect(apiService.downloadFile('fileId')).rejects.toEqual(new ApiServiceError());
       await expect(requestServiceMock).toHaveBeenCalledTimes(1);
       await expect(requestServiceMock).toHaveBeenCalledWith('api/files/fileId', undefined);

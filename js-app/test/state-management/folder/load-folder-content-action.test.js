@@ -1,7 +1,6 @@
 import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {jest} from '@jest/globals';
 import {LoadFolderContentAction} from '../../../src/state-management/folder/load-folder-content-action';
-import {ApiService} from '../../../src/server-connection/api-service.js';
 import {clearRegistry, registry} from '../../../src/registry.js';
 
 describe('LoadFolderContentAction', () => {
@@ -9,7 +8,9 @@ describe('LoadFolderContentAction', () => {
 
   beforeEach(()=>{
     clearRegistry();
-    apiService = new ApiService({});
+    apiService = {
+      loadFolderContent: () => {},
+    };
 
     registry.register('apiService', () => {
       return apiService;

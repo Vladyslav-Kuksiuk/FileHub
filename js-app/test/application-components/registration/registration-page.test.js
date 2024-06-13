@@ -2,7 +2,6 @@ import {RegistrationPage} from '../../../src/application-components/registration
 import {jest} from '@jest/globals';
 import {UserData} from '../../../src/user-data';
 import {clearRegistry, registry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {FieldValidationError} from '../../../src/server-connection/field-validation-error';
 
 describe('RegistrationPage', () => {
@@ -15,7 +14,9 @@ describe('RegistrationPage', () => {
     const titleService = {
       setTitles: () => {},
     };
-    apiService = new ApiService({});
+    apiService = {
+      register: ()=>{},
+    };
 
     registry.register('apiService', () => {
       return apiService;

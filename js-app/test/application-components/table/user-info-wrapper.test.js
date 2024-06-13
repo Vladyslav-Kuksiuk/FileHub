@@ -2,7 +2,6 @@ import {LoadUserAction} from '../../../src/state-management/user/load-user-actio
 import {UserInfoWrapper} from '../../../src/application-components/table/user-info-wrapper';
 import {UserInfo} from '../../../src/components/user-info';
 import {jest} from '@jest/globals';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 import {clearRegistry, registry} from '../../../src/registry';
 
@@ -13,11 +12,10 @@ describe('UserInfoWrapper', () => {
 
   beforeEach(() => {
     clearRegistry();
-    const apiService = new ApiService({});
     stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {
-      return apiService;
+      return {};
     });
 
     registry.register('stateManagementService', () => {

@@ -2,7 +2,6 @@ import {MUTATOR_NAMES} from '../../../src/state-management/mutators';
 import {LogOutUserAction} from '../../../src/state-management/user/log-out-user-action';
 import {jest} from '@jest/globals';
 import {clearRegistry, registry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 
 
 describe('LogOutUserAction', () => {
@@ -10,7 +9,9 @@ describe('LogOutUserAction', () => {
 
   beforeEach(()=>{
     clearRegistry();
-    apiService = new ApiService({});
+    apiService = {
+      logOut: () => {},
+    };
 
     registry.register('apiService', () => {
       return apiService;

@@ -3,7 +3,6 @@ import {Breadcrumb} from '../../../src/components/breadcrumb';
 import {jest} from '@jest/globals';
 import {LoadFolderInfoAction} from '../../../src/state-management/folder/load-folder-info-action';
 import {clearRegistry, registry} from '../../../src/registry';
-import {ApiService} from '../../../src/server-connection/api-service';
 import {StateManagementService} from '../../../src/state-management/state-management-service';
 
 describe('BreadcrumbWrapper', () => {
@@ -14,11 +13,10 @@ describe('BreadcrumbWrapper', () => {
   beforeEach(() => {
     clearRegistry();
 
-    const apiService = new ApiService({});
     const stateManagementService = new StateManagementService({}, {});
 
     registry.register('apiService', () => {
-      return apiService;
+      return {};
     });
 
     registry.register('stateManagementService', () => {
