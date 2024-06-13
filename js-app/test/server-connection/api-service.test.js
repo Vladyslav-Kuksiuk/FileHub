@@ -187,7 +187,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {});
           });
@@ -204,7 +204,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -221,7 +221,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });
@@ -245,7 +245,7 @@ describe('ApiService', () => {
       );
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
               userProfile: {
@@ -267,7 +267,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -283,7 +283,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });
@@ -308,7 +308,7 @@ describe('ApiService', () => {
       );
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
               folderInfo: {
@@ -331,7 +331,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -347,7 +347,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });
@@ -374,7 +374,7 @@ describe('ApiService', () => {
       )];
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(200, {
               folderContent: [{
@@ -399,7 +399,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             return new Response(405, {});
           });
@@ -415,7 +415,7 @@ describe('ApiService', () => {
       const requestService = new RequestService();
 
       const requestServiceMock = jest
-          .spyOn(requestService, 'get')
+          .spyOn(requestService, 'getJson')
           .mockImplementation(async () => {
             throw new Error();
           });
@@ -748,6 +748,59 @@ describe('ApiService', () => {
 
       const apiService = new ApiService(requestService);
       await expect(apiService.createFolder({})).rejects.toEqual(new ApiServiceError());
+    });
+  });
+
+  describe('downloadFile', () => {
+    test(`Should successfully download file`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const fileId = '123';
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getBlob')
+          .mockImplementation(async () => {
+            return new Response(200, {});
+          });
+
+      const apiService = new ApiService(requestService);
+
+      await expect(apiService.downloadFile(fileId)).resolves.toStrictEqual({});
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/files/'+fileId, undefined);
+    });
+
+    test(`Should return error after file downloading request`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getBlob')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.downloadFile('fileId')).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/files/fileId', undefined);
+    });
+
+    test(`Should return error after request error`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'getBlob')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.downloadFile('fileId')).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/files/fileId', undefined);
     });
   });
 });

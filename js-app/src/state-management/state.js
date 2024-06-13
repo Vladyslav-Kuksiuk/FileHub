@@ -96,6 +96,16 @@ export class State {
   filesUploadingErrorInfo = {};
 
   /**
+   * @type {string[]}
+   */
+  downloadingFiles = [];
+
+  /**
+   * @type {Object<string, string>}
+   */
+  filesDownloadingError = {};
+
+  /**
    * @type {FolderContentItem | null}
    */
   renamingItem = null;

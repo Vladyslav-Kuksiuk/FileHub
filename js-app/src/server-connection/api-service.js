@@ -81,7 +81,7 @@ export class ApiService {
    * @returns {Promise<UserProfile | ApiServiceError>}
    */
   async loadUser() {
-    return this.#requestService.get(LOAD_USER_PATH, this.#userToken).catch(()=>{
+    return this.#requestService.getJson(LOAD_USER_PATH, this.#userToken).catch(()=>{
       throw new ApiServiceError();
     }).then((response) => {
       if (response.status !== 200) {
@@ -103,7 +103,7 @@ export class ApiService {
    * @returns {Promise<FolderInfo | ApiServiceError>}
    */
   async loadFolderInfo(folderId) {
-    return this.#requestService.get(LOAD_FOLDER_PATH+folderId, this.#userToken)
+    return this.#requestService.getJson(LOAD_FOLDER_PATH+folderId, this.#userToken)
         .catch(()=>{
           throw new ApiServiceError();
         })
@@ -127,7 +127,7 @@ export class ApiService {
    * @returns {Promise<FolderContentItem[] | ApiServiceError>}
    */
   async loadFolderContent(folderId) {
-    return this.#requestService.get(LOAD_FOLDER_PATH+folderId+'/content', this.#userToken)
+    return this.#requestService.getJson(LOAD_FOLDER_PATH+folderId+'/content', this.#userToken)
         .catch(()=>{
           throw new ApiServiceError();
         })
@@ -197,7 +197,7 @@ export class ApiService {
    * @returns {Promise<ApiServiceError>}
    */
   async logOut() {
-    return this.#requestService.get(LOG_OUT_USER_PATH, this.#userToken)
+    return this.#requestService.getJson(LOG_OUT_USER_PATH, this.#userToken)
         .catch(()=>{
           throw new ApiServiceError();
         })
@@ -256,6 +256,25 @@ export class ApiService {
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
+        });
+  }
+
+  /**
+   * Downloads file.
+   *
+   * @param {string} fileId
+   * @returns {Promise<Blob | ApiServiceError>}
+   */
+  async downloadFile(fileId) {
+    return this.#requestService.getBlob('api/files/' + fileId, this.#userToken)
+        .catch(()=>{
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+          return response.body;
         });
   }
 }

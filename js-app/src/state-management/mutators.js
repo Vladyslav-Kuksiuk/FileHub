@@ -20,7 +20,9 @@ export const MUTATOR_NAMES = {
   ADD_FOLDER_TO_UPLOAD: 'addFolderToUpload',
   REMOVE_FOLDER_TO_UPLOAD: 'removeFolderToUpload',
   ADD_FILES_UPLOADING_ERROR_INFO: 'addFilesUploadingErrorInfo',
-  REMOVE_FILES_UPLOADING_ERROR_INFO: 'removeFilesUploadingErrorInfo',
+  ADD_DOWNLOADING_FILE: 'addDownloadingFile',
+  REMOVE_DOWNLOADING_FILE: 'removeDownloadingFile',
+  ADD_FILE_DOWNLOADING_ERROR: 'addFileDownloadingError',
   SET_RENAMING_ITEM: 'setRenamingItem',
   SET_IS_ITEM_RENAMING: 'setIsItemRenaming',
   SET_ITEM_RENAMING_ERRORS: 'setItemRenamingErrors',
@@ -167,6 +169,29 @@ export const MUTATORS = {
       filesUploadingErrorInfo: {
         ...state.filesUploadingErrorInfo,
         [errorInfo.folderId]: errorInfo.error,
+      },
+    });
+  },
+
+  [MUTATOR_NAMES.ADD_DOWNLOADING_FILE]: (state, fileId) => {
+    return new State({...state,
+      downloadingFiles: [...state.downloadingFiles, fileId],
+      filesDownloadingError: {
+        ...state.filesDownloadingError,
+        [fileId]: undefined,
+      },
+    });
+  },
+  [MUTATOR_NAMES.REMOVE_DOWNLOADING_FILE]: (state, fileId) => {
+    return new State({...state,
+      downloadingFiles: state.downloadingFiles.filter((file) => file !== fileId),
+    });
+  },
+  [MUTATOR_NAMES.ADD_FILE_DOWNLOADING_ERROR]: (state, errorInfo) => {
+    return new State({...state,
+      filesDownloadingError: {
+        ...state.filesDownloadingError,
+        [errorInfo.fileId]: errorInfo.error,
       },
     });
   },

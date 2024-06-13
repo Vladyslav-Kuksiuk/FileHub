@@ -22,7 +22,7 @@ describe('FileRow', () => {
     new FileRow(document.body, name, type, size);
 
     expect(document.body.innerHTML).toBe(
-        `<tr>
+        `<tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon undefined"></span>
@@ -32,15 +32,42 @@ describe('FileRow', () => {
        <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button data-td="download-button" class="icon-button" title="Download file.">
-                   <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
-               </button>
+               
+        <button data-td="download-button" class="icon-button" title="Download file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
+        </button>
                <button data-td="remove-button" class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>
            </div>
        </td>
     </tr>`);
+  });
+
+  test(`Should create and render FileRow component in downloading state`, function() {
+    expect.assertions(1);
+
+    const name = 'myName';
+    const type = 'myType';
+    const size = 1;
+    const fileRow = new FileRow(document.body, name, type, size);
+    fileRow.isDownloading = true;
+
+    expect(document.body.querySelector('[data-td="download-button"]').innerHTML.trim()).toBe(
+        `<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>`);
+  });
+
+  test(`Should create and render FileRow component in download error state`, function() {
+    expect.assertions(1);
+
+    const name = 'myName';
+    const type = 'myType';
+    const size = 1;
+    const fileRow = new FileRow(document.body, name, type, size);
+    fileRow.downloadingError = 'error';
+
+    expect(document.body.querySelector('[data-td="download-button"]').innerHTML.trim()).toBe(
+        `<span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>`);
   });
 
   test(`Should create and render FileRow component in renameFormOpen state with errors`, function() {
@@ -54,7 +81,7 @@ describe('FileRow', () => {
     fileRow.renamingErrors = ['error'];
 
     expect(document.body.innerHTML).toBe(
-        `<tr>
+        `<tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon undefined"></span>
@@ -69,9 +96,10 @@ describe('FileRow', () => {
        <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button data-td="download-button" class="icon-button" title="Download file.">
-                   <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
-               </button>
+               
+        <button data-td="download-button" class="icon-button" title="Download file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
+        </button>
                <button data-td="remove-button" class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>
@@ -90,7 +118,7 @@ describe('FileRow', () => {
     fileRow.isRenaming = true;
 
     expect(document.body.innerHTML).toBe(
-        `<tr>
+        `<tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon undefined"></span>
@@ -107,9 +135,10 @@ describe('FileRow', () => {
        <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button data-td="download-button" class="icon-button" title="Download file.">
-                   <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
-               </button>
+               
+        <button data-td="download-button" class="icon-button" title="Download file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
+        </button>
                <button data-td="remove-button" class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>

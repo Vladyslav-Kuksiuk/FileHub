@@ -8,6 +8,7 @@ import {DefineRemovingItemAction} from '../../../src/state-management/folder/def
 import {UploadFilesAction} from '../../../src/state-management/folder/upload-files-action';
 import {DefineRenamingItemAction} from '../../../src/state-management/folder/define-renaming-item-action';
 import {RenameItemAction} from '../../../src/state-management/folder/rename-item-action';
+import {DownloadFileAction} from '../../../src/state-management/folder/download-file-action';
 
 describe('FileListWrapper', () => {
   let stateManagementService;
@@ -41,6 +42,10 @@ describe('FileListWrapper', () => {
     });
 
     registry.register('apiService', ()=>{
+      return {};
+    });
+
+    registry.register('downloadService', ()=>{
       return {};
     });
 
@@ -490,6 +495,60 @@ describe('FileListWrapper', () => {
 
     document.body.querySelector('[data-td="rename-input"]').dispatchEvent(new Event('change'));
     expect(dispatchMock).toHaveBeenCalledWith(new DefineRenamingItemAction(new RenameItemAction(file)));
+  });
+
+  test('Should render file row and trigger downloading events', () => {
+    expect.assertions(3);
+
+    const wrapper = new FileListWrapper();
+    let fileCreator;
+    const setContentMock = jest.fn((folderCreators, fileCreators) => {
+      fileCreator = fileCreators[0];
+    });
+    const state = {};
+    jest.spyOn(stateManagementService, 'state', 'get')
+        .mockImplementation(() => {
+          return state;
+        });
+
+    const navigateListenerMock = jest.fn();
+
+    wrapper.wrap({
+      setContent: setContentMock,
+    });
+    wrapper.onNavigateToFolder(navigateListenerMock);
+
+    const file = {
+      type: 'file',
+      name: 'name',
+      id: 'id',
+      size: 1,
+    };
+
+    stateListeners.folderContent({
+      folderContent: [
+        file,
+      ],
+    });
+
+    fileCreator(document.body);
+    document.body.querySelector('[data-td="download-button"]').dispatchEvent(new Event('click'));
+    state.isItemRenaming = false;
+    expect(dispatchMock).toHaveBeenCalledWith(new DownloadFileAction(file));
+
+    stateListeners.downloadingFiles({
+      downloadingFiles: [file.id],
+    });
+    expect(document.body.querySelector('[data-td="download-button"]').innerHTML.trim()).toBe(
+        `<span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>`);
+
+    stateListeners.filesDownloadingError({
+      filesDownloadingError: {
+        [file.id]: 'error',
+      },
+    });
+    expect(document.body.querySelector('[data-td="download-button"]').innerHTML.trim()).toBe(
+        `<span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>`);
   });
 
   test('Shouldn`t open rename form on file row', () => {

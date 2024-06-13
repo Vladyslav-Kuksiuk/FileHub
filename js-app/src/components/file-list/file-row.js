@@ -14,20 +14,19 @@ const RENAME_INPUT = 'rename-input';
  * FileRow component.
  */
 export class FileRow extends Component {
+  @inject fileTypeFactory;
   #name;
   #temporaryName;
   #mimetype;
   #size;
   #isRenameFormOpen = false;
-
   #isRenaming = false;
-
   #renamingErrors = [];
   #eventTarget = new EventTarget();
-  @inject fileTypeFactory;
-
   #blurListener;
   #renameInput;
+  #isDownloading = false;
+  #downloadingError;
 
   /**
    * @param {HTMLElement} parent
@@ -138,6 +137,24 @@ export class FileRow extends Component {
   }
 
   /**
+   * @param {boolean} isDownloading
+   */
+  set isDownloading(isDownloading) {
+    this.#isDownloading = isDownloading;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
+    this.render();
+  }
+
+  /**
+   * @param {string} downloadingError
+   */
+  set downloadingError(downloadingError) {
+    this.#downloadingError = downloadingError;
+    this.#renameInput?.removeEventListener('blur', this.#blurListener);
+    this.render();
+  }
+
+  /**
    * @param {boolean} isRenaming
    */
   set isRenaming(isRenaming) {
@@ -179,6 +196,25 @@ export class FileRow extends Component {
     let nameCellContent = this.#name;
     let errors = '';
 
+    let downloadingButton = `
+        <button ${this.markElement(DOWNLOAD_BUTTON)} class="icon-button" title="Download file.">
+            <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
+        </button>`;
+
+    if (this.#isDownloading) {
+      downloadingButton = `
+      <button ${this.markElement(DOWNLOAD_BUTTON)} disabled class="icon-button" title="File downloading...">
+         <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
+      </button>`;
+    }
+
+    if (this.#downloadingError) {
+      downloadingButton = `
+        <button ${this.markElement(DOWNLOAD_BUTTON)} class="icon-button" title="${this.#downloadingError}">
+            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
+        </button>`;
+    }
+
     this.#renamingErrors.forEach((error) => {
       errors += `<p class="help-block text-danger">${error}</p>`;
     });
@@ -204,7 +240,7 @@ export class FileRow extends Component {
     }
 
     return `
-    <tr>
+    <tr class="file-row">
        <td class="cell-arrow"></td>
        <td class="cell-icon">
            <span aria-hidden="true" class="glyphicon ${type?.icon}"></span>
@@ -214,9 +250,7 @@ export class FileRow extends Component {
        <td class="cell-size">${size}</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
-               <button ${this.markElement(DOWNLOAD_BUTTON)} class="icon-button" title="Download file.">
-                   <span aria-hidden="true" class="glyphicon glyphicon-download"></span>
-               </button>
+               ${downloadingButton}
                <button ${this.markElement(REMOVE_BUTTON)} class="icon-button" title="Delete">
                    <span aria-hidden="true" class="glyphicon glyphicon-remove-circle"></span>
                </button>

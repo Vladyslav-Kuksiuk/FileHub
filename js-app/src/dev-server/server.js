@@ -151,6 +151,13 @@ app.put('/file/:id', ((req, res) => {
   }, 1000);
 }));
 
+app.get('/files/:id', (req, res)=>{
+  setTimeout(()=>{
+    res.download('./src/dev-server/test.txt' );
+    res.status(200);
+  }, 500);
+});
+
 app.put('/folder/:id', ((req, res) => {
   setTimeout(() => {
     res.status(422);
