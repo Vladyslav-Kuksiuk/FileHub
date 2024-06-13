@@ -5,9 +5,9 @@ import {jest} from '@jest/globals';
 describe('FileRow', () => {
   beforeEach(()=>{
     clearRegistry();
-    registry.register('fileTypeIconFactory', ()=>{
+    registry.register('fileTypeFactory', ()=>{
       return {
-        getIcon: ()=>{},
+        getType: ()=>{},
       };
     });
     document.body.innerHTML = '';
@@ -18,7 +18,7 @@ describe('FileRow', () => {
 
     const name = 'myName';
     const type = 'myType';
-    const size = 'mySize';
+    const size = 1;
     new FileRow(document.body, name, type, size);
 
     expect(document.body.innerHTML).toBe(
@@ -28,8 +28,8 @@ describe('FileRow', () => {
            <span aria-hidden="true" class="glyphicon undefined"></span>
        </td>
        <td class="cell-name" data-td="name-cell">${name}</td>
-       <td class="cell-type">${type}</td>
-       <td class="cell-size">${size}</td>
+       <td class="cell-type">undefined</td>
+       <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
                <button data-td="download-button" class="icon-button" title="Download file.">
@@ -48,7 +48,7 @@ describe('FileRow', () => {
 
     const name = 'myName';
     const type = 'type';
-    const size = 'size';
+    const size = 1;
     const fileRow = new FileRow(document.body, name, type, size);
     fileRow.isRenameFormOpen = true;
     fileRow.renamingErrors = ['error'];
@@ -65,8 +65,8 @@ describe('FileRow', () => {
         ' type="text" value="myName" data-td="rename-input">\n' +
         `          <p class="help-block text-danger">error</p>
       </form> </td>
-       <td class="cell-type">${type}</td>
-       <td class="cell-size">${size}</td>
+       <td class="cell-type">undefined</td>
+       <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
                <button data-td="download-button" class="icon-button" title="Download file.">
@@ -85,7 +85,7 @@ describe('FileRow', () => {
 
     const name = 'myName';
     const type = 'type';
-    const size = 'size';
+    const size = 1;
     const fileRow = new FileRow(document.body, name, type, size);
     fileRow.isRenaming = true;
 
@@ -103,8 +103,8 @@ describe('FileRow', () => {
         `          <span aria-hidden="true" class="glyphicon glyphicon-repeat"></span>
       </form>
       </td>
-       <td class="cell-type">${type}</td>
-       <td class="cell-size">${size}</td>
+       <td class="cell-type">undefined</td>
+       <td class="cell-size">1.0 B</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
                <button data-td="download-button" class="icon-button" title="Download file.">
@@ -123,7 +123,7 @@ describe('FileRow', () => {
 
     const listenerMock = jest.fn();
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
+    const fileRow = new FileRow(document.body, 'name', 'type', 1);
     fileRow.onDownload(listenerMock);
 
     document.body.querySelector('[data-td="download-button"]').click();
@@ -136,7 +136,7 @@ describe('FileRow', () => {
 
     const listenerMock = jest.fn();
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
+    const fileRow = new FileRow(document.body, 'name', 'type', 10000);
     fileRow.onRemove(listenerMock);
 
     document.body.querySelector('[data-td="remove-button"]').click();
@@ -147,7 +147,7 @@ describe('FileRow', () => {
   test('Should open and close renaming form by blur', () => {
     expect.assertions(2);
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
+    const fileRow = new FileRow(document.body, 'name', 'type', 1);
     const openFormListener = jest.fn();
 
     fileRow.onRenameFormOpen(openFormListener);
@@ -167,7 +167,7 @@ describe('FileRow', () => {
   test('Should open and close renaming form by submitting without changes', () => {
     expect.assertions(2);
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
+    const fileRow = new FileRow(document.body, 'name', 'type', 1);
     const openFormListener = jest.fn();
 
     fileRow.onRenameFormOpen(openFormListener);
@@ -187,7 +187,7 @@ describe('FileRow', () => {
   test('Shouldn`t open renaming form if it is already open', () => {
     expect.assertions(1);
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
+    const fileRow = new FileRow(document.body, 'name', 'type', 1);
     const openFormListener = jest.fn();
 
     fileRow.onRenameFormOpen(openFormListener);
@@ -202,7 +202,7 @@ describe('FileRow', () => {
     expect.assertions(2);
 
     const newName = 'newName';
-    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
+    const fileRow = new FileRow(document.body, 'name', 'type', 1);
     const renameListener = jest.fn();
 
     fileRow.onRename(renameListener);
@@ -221,7 +221,7 @@ describe('FileRow', () => {
   test('Shouldn`t trigger blur and submit event after change event', () => {
     expect.assertions(1);
 
-    const fileRow = new FileRow(document.body, 'name', 'type', 'size');
+    const fileRow = new FileRow(document.body, 'name', 'type', 1);
     const openFormListener = jest.fn();
 
     fileRow.onRenameFormOpen(openFormListener);

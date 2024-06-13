@@ -7,9 +7,9 @@ describe('FileList', () => {
   beforeEach(() => {
     clearRegistry();
     document.body.innerHTML = '';
-    registry.register('fileTypeIconFactory', ()=>{
+    registry.register('fileTypeFactory', ()=>{
       return {
-        getIcon: ()=>{},
+        getType: ()=>{},
       };
     });
   });

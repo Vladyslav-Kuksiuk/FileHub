@@ -16,7 +16,7 @@ const RENAME_INPUT = 'rename-input';
 export class FileRow extends Component {
   #name;
   #temporaryName;
-  #type;
+  #mimetype;
   #size;
   #isRenameFormOpen = false;
 
@@ -24,7 +24,7 @@ export class FileRow extends Component {
 
   #renamingErrors = [];
   #eventTarget = new EventTarget();
-  @inject fileTypeIconFactory;
+  @inject fileTypeFactory;
 
   #blurListener;
   #renameInput;
@@ -32,14 +32,14 @@ export class FileRow extends Component {
   /**
    * @param {HTMLElement} parent
    * @param {string} name
-   * @param {string} type
-   * @param {string} size
+   * @param {string} mimetype
+   * @param {number} size
    * @param {string} temporaryName
    */
-  constructor(parent, name, type, size, temporaryName = name) {
+  constructor(parent, name, mimetype, size, temporaryName = name) {
     super(parent);
     this.#name = name;
-    this.#type = type;
+    this.#mimetype = mimetype;
     this.#size = size;
     this.#temporaryName = temporaryName;
     this.init();
@@ -156,9 +156,26 @@ export class FileRow extends Component {
   }
 
   /**
+   * @param {number} size
+   * @returns {string}
+   * @private
+   */
+  #convertSize(size) {
+    let iteration = 0;
+    while (size > 1024) {
+      iteration++;
+      size/=1024;
+    }
+    const prefixArray = ['B', 'KB', 'MB', 'GB', 'TB'];
+    return size.toFixed(1) + ' ' + prefixArray[iteration];
+  };
+
+  /**
    * @inheritDoc
    */
   markup() {
+    const type = this.fileTypeFactory.getType(this.#mimetype);
+    const size = this.#convertSize(this.#size);
     let nameCellContent = this.#name;
     let errors = '';
 
@@ -190,11 +207,11 @@ export class FileRow extends Component {
     <tr>
        <td class="cell-arrow"></td>
        <td class="cell-icon">
-           <span aria-hidden="true" class="glyphicon ${this.fileTypeIconFactory.getIcon(this.#type)}"></span>
+           <span aria-hidden="true" class="glyphicon ${type?.icon}"></span>
        </td>
        <td class="cell-name" ${this.markElement(NAME_CELL)} >${nameCellContent}</td>
-       <td class="cell-type">${this.#type}</td>
-       <td class="cell-size">${this.#size}</td>
+       <td class="cell-type">${type?.type}</td>
+       <td class="cell-size">${size}</td>
        <td class="cell-buttons">
            <div class="data-buttons-container">
                <button ${this.markElement(DOWNLOAD_BUTTON)} class="icon-button" title="Download file.">

@@ -8,36 +8,6 @@ const counter = () => {
   return counterValue++;
 };
 
-const convertType = (mimetype) => {
-  mimetype = mimetype.toString();
-  const types = {
-    'application/pdf': 'PDF Document',
-    'image/png': 'PNG Image',
-    'image/jpeg': 'JPEG Image',
-    'audio/mpeg': 'MP3 Audio',
-  };
-  return types[mimetype] ?? mimetype;
-};
-
-const convertSize = (size) => {
-  if (size < 1023) {
-    return size+' B';
-  }
-
-  if (size < 1048575) {
-    return (size/1024).toFixed(1) +' KB';
-  }
-
-  if (size < 1073741823) {
-    return (size/1048576).toFixed(1) +' MB';
-  }
-
-  if (size < 1099511627776) {
-    return (size/1073741824).toFixed(1) +' GB';
-  }
-};
-
-
 const foldersInfo = {
   'testUser-0': {
     name: 'Home',
@@ -65,13 +35,15 @@ const foldersContent = {
       name: 'FirstFolder',
       type: 'folder',
       id: 'testUser-1',
+      parentId: 'testUser-0',
     },
     {
       name: 'MyFavouriteTrack.mp3',
-      type: 'MP3 Audio',
-      size: '1.34 MB',
+      type: 'file',
+      mimetype: 'audio/mpeg',
+      size: 1405091,
       id: 'testUser-file-'+counter(),
-
+      parentId: 'testUser-0',
     },
   ],
   'testUser-1': [
@@ -79,25 +51,30 @@ const foldersContent = {
       name: 'SecondFolder',
       type: 'folder',
       id: 'testUser-2',
+      parentId: 'testUser-1',
     },
     {
       name: 'MyFavouriteVideo.avi',
-      type: 'AVI Movie',
-      size: '3.4 GB',
+      type: 'file',
+      mimetype: 'video/x-msvideo',
+      size: 3650722201,
       id: 'testUser-file-'+counter(),
+      parentId: 'testUser-1',
     },
     {
       name: 'MyFavouriteText.pdf',
-      type: 'PDF Document',
-      size: '13 KB',
+      type: 'file',
+      mimetype: 'application/pdf',
+      size: 13312,
       id: 'testUser-file-'+counter(),
+      parentId: 'testUser-1',
     },
   ],
   'testUser-2': [
     {
       name: 'SecondFolder',
       id: 'testUser-2',
-      parentId: 'testUser-1',
+      parentId: 'testUser-2',
       itemsAmount: 1,
     },
   ],
@@ -212,9 +189,11 @@ app.post('/folders/:folderId/content', (req, res) => {
       Object.entries(files).forEach(([key, file])=>{
         foldersContent[req.params.folderId].push({
           name: file.originalFilename,
-          type: convertType(file.mimetype),
-          size: convertSize(file.size),
+          type: 'file',
+          mimetype: file.mimetype,
+          size: file.size,
           id: 'testUser-file-'+counter(),
+          parentId: req.params.folderId,
         });
       });
     });

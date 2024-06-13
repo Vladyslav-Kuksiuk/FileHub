@@ -135,13 +135,15 @@ export class ApiService {
           if (response.status !== 200) {
             throw new ApiServiceError();
           }
-          return response.body.folderContent.map((item)=>new FolderContentItem(
-              item.type,
-              item.id,
-              item.name,
-              item.size,
-              item.parentId,
-          ));
+          return response.body.folderContent.map((item)=>new FolderContentItem({
+            type: item.type,
+            id: item.id,
+            parentId: item.parentId,
+            name: item.name,
+            size: item.size,
+            mimetype: item.mimetype,
+            itemsAmount: item.itemsAmount,
+          }));
         });
   }
 
