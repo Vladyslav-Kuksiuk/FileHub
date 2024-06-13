@@ -82,6 +82,21 @@ export class State {
   filesUploadingErrorInfo = {};
 
   /**
+   * @type {FolderContentItem | null}
+   */
+  renamingItem = null;
+
+  /**
+   * @type {boolean}
+   */
+  isItemRenaming = false;
+
+  /**
+   * @type {string[]}
+   */
+  itemRenamingErrors = [];
+
+  /**
    * @param {object} state
    */
   constructor(state = {}) {

@@ -11,8 +11,8 @@ export const REGISTER_USER_PATH = 'api/register';
 export const LOAD_USER_PATH = 'api/user';
 export const LOAD_FOLDER_PATH = 'api/folders/';
 export const LOG_OUT_USER_PATH = 'api/logout';
-const DELETE_FOLDER_PATH = 'api/folder/';
-const DELETE_FILE_PATH = 'api/file/';
+const FOLDER_PATH = 'api/folder/';
+const FILE_PATH = 'api/file/';
 
 export const LOGIN_401_ERROR = 'Invalid login or password';
 
@@ -140,6 +140,7 @@ export class ApiService {
               item.id,
               item.name,
               item.size,
+              item.parentId,
           ));
         });
   }
@@ -150,12 +151,38 @@ export class ApiService {
    * @param {FolderContentItem} item
    */
   async deleteItem(item) {
-    const path = item.type === 'folder' ? DELETE_FOLDER_PATH : DELETE_FILE_PATH;
+    const path = item.type === 'folder' ? FOLDER_PATH : FILE_PATH;
     return this.#requestService.delete(path+item.id, this.#userToken)
         .catch(() => {
           throw new ApiServiceError();
         })
         .then((response) => {
+          if (response.status !== 200) {
+            throw new ApiServiceError();
+          }
+        });
+  }
+
+  /**
+   * Renames item.
+   *
+   * @param {FolderContentItem} item
+   */
+  async renameItem(item) {
+    const path = item.type === 'folder' ? FOLDER_PATH : FILE_PATH;
+
+    return this.#requestService.put(path+item.id,
+        {
+          name: item.name,
+        },
+        this.#userToken)
+        .catch(() => {
+          throw new ApiServiceError();
+        })
+        .then((response) => {
+          if (response.status === 422) {
+            throw new FieldValidationError(response.body.errors);
+          }
           if (response.status !== 200) {
             throw new ApiServiceError();
           }

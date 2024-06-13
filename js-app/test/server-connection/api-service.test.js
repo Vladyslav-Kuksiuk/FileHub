@@ -364,13 +364,14 @@ describe('ApiService', () => {
       expect.assertions(3);
       const requestService = new RequestService();
 
+      const folderId = 'folderId';
       const folderContent = [new FolderContentItem(
           'type',
           'id',
           'name',
           'size',
+          'folderId',
       )];
-      const folderId = 'folderId';
 
       const requestServiceMock = jest
           .spyOn(requestService, 'get')
@@ -381,6 +382,7 @@ describe('ApiService', () => {
                 id: folderContent[0].id,
                 name: folderContent[0].name,
                 size: folderContent[0].size,
+                parentId: folderContent[0].parentId,
               }],
             });
           });
@@ -602,6 +604,100 @@ describe('ApiService', () => {
 
       const apiService = new ApiService(requestService);
       await expect(apiService.uploadFiles('folderId', [])).rejects.toEqual(new ApiServiceError());
+    });
+  });
+
+  describe('renameItem', () => {
+    test(`Should successfully rename folder`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'folder',
+        id: 'itemId',
+        name: 'name',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'put')
+          .mockImplementation(async () => {
+            return new Response(200);
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.renameItem(item)).resolves.toBeUndefined();
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock)
+          .toHaveBeenCalledWith('api/folder/'+item.id, {name: item.name}, undefined);
+    });
+
+    test(`Should return error after renaming file`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'notAFolder',
+        id: 'itemId',
+        name: 'name',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'put')
+          .mockImplementation(async () => {
+            return new Response(405, {});
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.renameItem(item)).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, {name: item.name}, undefined);
+    });
+
+    test(`Should return FieldValidationError after renaming file`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'notAFolder',
+        id: 'itemId',
+        name: 'name',
+      };
+      const error = {errorText: 'error'};
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'put')
+          .mockImplementation(async () => {
+            return new Response(422, {
+              errors: [error],
+            });
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.renameItem(item)).rejects.toEqual(new FieldValidationError([error]));
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/file/'+item.id, {name: item.name}, undefined);
+    });
+
+    test(`Should return error after renaming folder fetch error`, async function() {
+      expect.assertions(3);
+      const requestService = new RequestService();
+
+      const item = {
+        type: 'folder',
+        id: 'itemId',
+        name: 'name',
+      };
+
+      const requestServiceMock = jest
+          .spyOn(requestService, 'put')
+          .mockImplementation(async () => {
+            throw new Error();
+          });
+
+      const apiService = new ApiService(requestService);
+      await expect(apiService.renameItem(item)).rejects.toEqual(new ApiServiceError());
+      await expect(requestServiceMock).toHaveBeenCalledTimes(1);
+      await expect(requestServiceMock).toHaveBeenCalledWith('api/folder/'+item.id, {name: item.name}, undefined);
     });
   });
 });

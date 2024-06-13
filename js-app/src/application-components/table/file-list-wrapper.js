@@ -6,6 +6,9 @@ import {FolderRow} from '../../components/file-list/folder-row';
 import {FileRow} from '../../components/file-list/file-row';
 import {StateAwareWrapper} from '../state-aware-wrapper';
 import {UploadFilesAction} from '../../state-management/folder/upload-files-action';
+import {DefineRenamingItemAction} from '../../state-management/folder/define-renaming-item-action';
+import {RenameItemAction} from '../../state-management/folder/rename-item-action';
+import {FolderContentItem} from '../../state-management/folder/folder-content-item';
 
 const NAVIGATE_EVENT_FOLDER = 'NAVIGATE_EVENT_FOLDER';
 
@@ -41,7 +44,9 @@ export class FileListWrapper extends StateAwareWrapper {
             .filter((item) => item.type === 'folder')
             .map((folder) => {
               return (slot) => {
-                const folderRow = new FolderRow(slot, folder.name);
+                const temporaryName = (state.renamingItem?.id === folder.id) ? state.renamingItem.name : folder.name;
+
+                const folderRow = new FolderRow(slot, folder.name, temporaryName);
 
                 folderRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(folder));
@@ -75,6 +80,41 @@ export class FileListWrapper extends StateAwareWrapper {
                 this.addStateListener('filesUploadingErrorInfo', (state) => {
                   folderRow.uploadingError = state.filesUploadingErrorInfo[folder.id] ?? null;
                 });
+
+                folderRow.onRenameFormOpen(() => {
+                  if (!this.stateManagementService.state.isItemRenaming) {
+                    this.stateManagementService.dispatch(new DefineRenamingItemAction(folder));
+                    folderRow.isRenameFormOpen = true;
+                  }
+                });
+
+                folderRow.onRename((newName) => {
+                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
+                      folder.type,
+                      folder.id,
+                      newName,
+                      folder.size,
+                      folder.parentId,
+                  )));
+                });
+
+                this.addStateListener('renamingItem', (state) => {
+                  folderRow.isRenameFormOpen = state.renamingItem?.id === folder.id;
+                });
+
+                this.addStateListener('isItemRenaming', (state) => {
+                  if (state.renamingItem?.id === folder.id) {
+                    folderRow.isRenaming = state.isItemRenaming;
+                  }
+                });
+
+                this.addStateListener('itemRenamingErrors', (state) => {
+                  if (state.renamingItem?.id === folder.id) {
+                    folderRow.renamingErrors = state.itemRenamingErrors;
+                  } else {
+                    folderRow.renamingErrors = [];
+                  }
+                });
               };
             });
 
@@ -82,9 +122,47 @@ export class FileListWrapper extends StateAwareWrapper {
             .filter((item) => item.type !== 'folder')
             .map((file) => {
               return (slot) => {
-                const fileRow = new FileRow(slot, file.name, file.type, file.size);
+                const temporaryName = (state.renamingItem?.id === file.id) ? state.renamingItem.name : file.name;
+
+                const fileRow = new FileRow(slot, file.name, file.type, file.size, temporaryName);
+
                 fileRow.onRemove(()=>{
                   this.stateManagementService.dispatch(new DefineRemovingItemAction(file));
+                });
+
+                fileRow.onRenameFormOpen(() => {
+                  if (!this.stateManagementService.state.isItemRenaming) {
+                    this.stateManagementService.dispatch(new DefineRenamingItemAction(file));
+                    fileRow.isRenameFormOpen = true;
+                  }
+                });
+
+                fileRow.onRename((newName) => {
+                  this.stateManagementService.dispatch(new RenameItemAction(new FolderContentItem(
+                      file.type,
+                      file.id,
+                      newName,
+                      file.size,
+                      file.parentId,
+                  )));
+                });
+
+                this.addStateListener('renamingItem', (state) => {
+                  fileRow.isRenameFormOpen = state.renamingItem?.id === file.id;
+                });
+
+                this.addStateListener('isItemRenaming', (state) => {
+                  if (state.renamingItem?.id === file.id) {
+                    fileRow.isRenaming = state.isItemRenaming;
+                  }
+                });
+
+                this.addStateListener('itemRenamingErrors', (state) => {
+                  if (state.renamingItem?.id === file.id) {
+                    fileRow.renamingErrors = state.itemRenamingErrors;
+                  } else {
+                    fileRow.renamingErrors = [];
+                  }
                 });
               };
             });

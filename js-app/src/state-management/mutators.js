@@ -18,6 +18,9 @@ export const MUTATOR_NAMES = {
   REMOVE_FOLDER_TO_UPLOAD: 'removeFolderToUpload',
   ADD_FILES_UPLOADING_ERROR_INFO: 'addFilesUploadingErrorInfo',
   REMOVE_FILES_UPLOADING_ERROR_INFO: 'removeFilesUploadingErrorInfo',
+  SET_RENAMING_ITEM: 'setRenamingItem',
+  SET_IS_ITEM_RENAMING: 'setIsItemRenaming',
+  SET_ITEM_RENAMING_ERRORS: 'setItemRenamingErrors',
 };
 
 export const MUTATORS = {
@@ -63,7 +66,16 @@ export const MUTATORS = {
     return new State({...state, isFolderContentLoading: isLoading});
   },
   [MUTATOR_NAMES.SET_FOLDER_CONTENT]: (state, folderContent) =>{
-    return new State({...state, folderContent: folderContent});
+    let newState = {...state,
+      folderContent: folderContent,
+      filesUploadingErrorInfo: {},
+      itemRenamingErrors: []};
+
+    if (!state.isItemRenaming) {
+      newState = {...newState, renamingItem: null};
+    }
+
+    return new State(newState);
   },
   [MUTATOR_NAMES.SET_FOLDER_CONTENT_ERROR]: (state, error) =>{
     return new State({...state, folderContentError: error});
@@ -101,7 +113,6 @@ export const MUTATORS = {
   [MUTATOR_NAMES.SET_LOCATION_METADATA]: (state, locationMetadata) =>{
     return new State({...state,
       locationMetadata: locationMetadata,
-      filesUploadingErrorInfo: {},
     });
   },
 
@@ -125,6 +136,33 @@ export const MUTATORS = {
         ...state.filesUploadingErrorInfo,
         [errorInfo.folderId]: errorInfo.error,
       },
+    });
+  },
+
+  [MUTATOR_NAMES.SET_RENAMING_ITEM]: (state, item) => {
+    if (item) {
+      return new State({...state,
+        renamingItem: item,
+        itemRenamingErrors: [],
+      });
+    }
+
+    return new State({...state,
+      isItemRenaming: false,
+      renamingItem: item,
+      itemRenamingErrors: [],
+    });
+  },
+  [MUTATOR_NAMES.SET_IS_ITEM_RENAMING]: (state, isRenaming) => {
+    return new State({...state,
+      isItemRenaming: isRenaming,
+      itemRenamingErrors: [],
+    });
+  },
+  [MUTATOR_NAMES.SET_ITEM_RENAMING_ERRORS]: (state, errors) => {
+    return new State({...state,
+      isItemRenaming: false,
+      itemRenamingErrors: errors,
     });
   },
 };
